@@ -83,6 +83,7 @@ public class UserService {
     }
 
     private UserProfileResponse toProfileResponse(User user) {
+        // Map subject entities to names for the response DTO
         List<String> subjectNames = user.getSubjects().stream()
                 .map(Subject::getName)
                 .toList();
