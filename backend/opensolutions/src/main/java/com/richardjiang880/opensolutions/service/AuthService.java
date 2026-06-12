@@ -64,6 +64,7 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
+        log.info("New user registered: {}", request.email());
         mailService.sendVerificationEmail(request.email(), verificationCode);
     }
 
