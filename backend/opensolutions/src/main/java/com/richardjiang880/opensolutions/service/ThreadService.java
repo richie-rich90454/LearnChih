@@ -82,7 +82,7 @@ public class ThreadService {
 
         thread = channelThreadRepository.save(thread);
 
-        // The first post in the thread is the content from the request itself
+        // Auto-create the first post from the thread creation request content
         ChannelPost firstPost = ChannelPost.builder()
                 .thread(thread)
                 .user(user)
