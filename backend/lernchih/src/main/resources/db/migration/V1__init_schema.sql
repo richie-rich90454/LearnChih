@@ -1,5 +1,5 @@
 -- ============================================================
--- OpenSolutions Forum - Initial Schema
+-- LernChih Forum - Initial Schema
 -- Flyway Migration V1
 -- ============================================================
 
