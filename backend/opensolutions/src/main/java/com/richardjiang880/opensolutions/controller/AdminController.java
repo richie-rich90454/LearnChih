@@ -75,6 +75,7 @@ public class AdminController {
             throw new IllegalArgumentException("Report is already resolved");
         }
 
+        // Normalize action to lowercase for case-insensitive comparison
         String action = request.action().toLowerCase();
         if ("resolve".equals(action)) {
             report.setStatus(ReportStatus.RESOLVED);
