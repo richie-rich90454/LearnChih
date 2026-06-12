@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+/**
+ * Service for gamification features including upvotes and leaderboard.
+ */
 public class GamificationService {
 
     private final UpvoteRepository upvoteRepository;
