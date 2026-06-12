@@ -124,6 +124,7 @@ public class ThreadService {
         return response;
     }
 
+    @Transactional(readOnly = true)
     public Page<PostResponse> getResourcePosts(Long threadId, Pageable pageable) {
         return resourcePostRepository.findByThreadIdOrderByCreatedAtAsc(threadId, pageable)
                 .map(p -> new PostResponse(
