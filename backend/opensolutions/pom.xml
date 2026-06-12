@@ -8,8 +8,8 @@
 		<version>4.1.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.richardjiang880.opensolutions</groupId>
-	<artifactId>opensolutions</artifactId>
+	<groupId>com.richardjiang880.lernchih</groupId>
+	<artifactId>lernchih</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>
