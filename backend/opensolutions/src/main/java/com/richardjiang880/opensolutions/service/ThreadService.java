@@ -161,6 +161,7 @@ public class ThreadService {
             throw new IllegalArgumentException("Only admins and moderators can delete posts");
         }
 
+        // Route deletion to the correct repository based on post type
         if ("resource".equalsIgnoreCase(type)) {
             resourcePostRepository.deleteById(postId);
         } else if ("channel".equalsIgnoreCase(type)) {
