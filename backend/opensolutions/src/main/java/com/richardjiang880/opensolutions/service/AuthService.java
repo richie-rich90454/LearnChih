@@ -46,6 +46,7 @@ public class AuthService {
 
     @Transactional
     public void register(RegisterRequest request) {
+        // Email format validation is handled by @Email annotation on the DTO
         if (userRepository.existsByEmail(request.email())) {
             throw new IllegalArgumentException("Email is already registered");
         }
