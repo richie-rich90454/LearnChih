@@ -1,0 +1,14 @@
+[Unit]
+Description=LernChih Spring Boot Application
+After=network.target mysql.service
+
+[Service]
+Type=simple
+User=lernchih
+WorkingDirectory=/opt/lernchih
+ExecStart=/usr/bin/java -Xmx512m -jar /opt/lernchih/lernchih.jar
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
