@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+/**
+ * Service for managing discussion threads in resources and channels.
+ */
 public class ThreadService {
 
     private final ResourcePostRepository resourcePostRepository;
