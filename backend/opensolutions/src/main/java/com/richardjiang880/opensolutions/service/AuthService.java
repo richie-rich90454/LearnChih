@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
+/**
+ * Authentication service handling registration, login, and email verification.
+ */
 public class AuthService {
 
     private final UserRepository userRepository;
