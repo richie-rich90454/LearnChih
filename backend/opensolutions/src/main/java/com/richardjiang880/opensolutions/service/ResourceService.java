@@ -161,6 +161,7 @@ public class ResourceService {
         Resource resource = resourceRepository.findById(resourceId)
                 .orElseThrow(() -> new IllegalArgumentException("Resource not found"));
 
+        // Only admins and moderators can delete resources
         if (!isAdminOrModerator(currentUser)) {
             throw new IllegalArgumentException("Only admins and moderators can delete resources");
         }
