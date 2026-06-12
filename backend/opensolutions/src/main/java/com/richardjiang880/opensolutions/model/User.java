@@ -51,7 +51,7 @@ public class User {
     @Column(nullable = false)
     private Integer credits;
 
-    // Many students can be interested in many subjects
+    // LAZY fetch to avoid N+1 queries - subjects loaded only when accessed
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "user_subjects",
