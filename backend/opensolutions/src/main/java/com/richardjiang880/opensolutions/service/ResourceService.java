@@ -200,6 +200,7 @@ public class ResourceService {
             Path targetLocation = uploadPath.resolve(uniqueFilename);
             Files.copy(file.getInputStream(), targetLocation);
 
+            log.info("Saved uploaded file: {}", uniqueFilename);
             return uniqueFilename;
         } catch (IOException e) {
             throw new RuntimeException("Failed to save uploaded file", e);
