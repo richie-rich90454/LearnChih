@@ -196,6 +196,7 @@ public class ResourceService {
             if (originalFilename != null && originalFilename.contains(".")) {
                 extension = originalFilename.substring(originalFilename.lastIndexOf("."));
             }
+            // Use UUID to prevent filename collisions and path traversal
             String uniqueFilename = UUID.randomUUID() + extension;
 
             Path targetLocation = uploadPath.resolve(uniqueFilename);
