@@ -17,6 +17,7 @@ public class MailService {
         this.mailSender = mailSender;
     }
 
+    // Sends email asynchronously to avoid blocking the request thread
     @Async
     public void sendVerificationEmail(String to, String code) {
         SimpleMailMessage message = new SimpleMailMessage();
