@@ -74,7 +74,7 @@ public class ChannelController {
     public ResponseEntity<Page<ChannelThreadResponse>> getChannelThreads(
             @PathVariable Long id,
             @PageableDefault(size = 20) Pageable pageable) {
-        // Make sure the channel actually exists
+        // Validate channel exists before querying threads
         if (!channelRepository.existsById(id)) {
             throw new IllegalArgumentException("Channel not found");
         }
