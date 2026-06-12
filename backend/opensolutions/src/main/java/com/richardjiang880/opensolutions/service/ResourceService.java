@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,6 +24,8 @@ import java.util.UUID;
  * Service for resource CRUD, file uploads, and upvote management.
  */
 public class ResourceService {
+
+    private static final Logger log = LoggerFactory.getLogger(ResourceService.class);
 
     private final ResourceRepository resourceRepository;
     private final ResourceThreadRepository resourceThreadRepository;
