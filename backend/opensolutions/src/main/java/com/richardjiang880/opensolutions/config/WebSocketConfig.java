@@ -8,6 +8,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
+/**
+ * WebSocket configuration for real-time messaging via STOMP protocol.
+ */
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
