@@ -63,6 +63,7 @@ public class ThreadService {
         );
 
         // Push the new post to anyone subscribed to this thread
+        log.debug("Broadcasting post to /topic/thread/{}", threadId);
         messagingTemplate.convertAndSend("/topic/thread/" + threadId, response);
 
         return response;
