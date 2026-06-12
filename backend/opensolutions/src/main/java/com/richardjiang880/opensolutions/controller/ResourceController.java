@@ -45,6 +45,7 @@ public class ResourceController {
     @PostMapping
     public ResponseEntity<ResourceResponse> createResource(
             @AuthenticationPrincipal UserDetails userDetails,
+            // @ModelAttribute handles multipart form data for file uploads
             @Valid @ModelAttribute CreateResourceRequest request,
             @RequestParam(value = "file", required = false) MultipartFile file) {
         User user = getUserFromDetails(userDetails);
