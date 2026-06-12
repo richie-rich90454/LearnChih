@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+/**
+ * Service for user profile management and social links.
+ */
 public class UserService {
 
     private final UserRepository userRepository;
