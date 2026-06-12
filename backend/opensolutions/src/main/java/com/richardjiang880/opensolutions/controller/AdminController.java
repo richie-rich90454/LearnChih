@@ -71,6 +71,7 @@ public class AdminController {
         Report report = reportRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Report not found"));
 
+        // Only PENDING reports can be resolved or dismissed
         if (report.getStatus() != ReportStatus.PENDING) {
             throw new IllegalArgumentException("Report is already resolved");
         }
