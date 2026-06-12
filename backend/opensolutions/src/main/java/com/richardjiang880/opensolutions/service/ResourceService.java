@@ -186,6 +186,7 @@ public class ResourceService {
     private String saveFile(MultipartFile file) {
         try {
             Path uploadPath = Paths.get(uploadDir);
+            // Create upload directory if it doesn't exist
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
