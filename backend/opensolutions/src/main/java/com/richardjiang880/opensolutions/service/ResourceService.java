@@ -100,6 +100,7 @@ public class ResourceService {
         return resource;
     }
 
+    @Transactional(readOnly = true)
     public Page<Resource> getResources(Pageable pageable, Long subjectId, ResourceCategory category) {
         if (subjectId != null || category != null) {
             return resourceRepository.findWithFilters(subjectId, category, pageable);
