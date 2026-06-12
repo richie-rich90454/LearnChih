@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/threads")
+/**
+ * REST controller for resource thread post operations.
+ */
 public class ThreadController {
 
     private final ThreadService threadService;
