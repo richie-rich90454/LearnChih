@@ -12,6 +12,9 @@ import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/files")
+/**
+ * REST controller for serving uploaded files.
+ */
 public class FileController {
 
     @Value("${app.upload.dir}")
