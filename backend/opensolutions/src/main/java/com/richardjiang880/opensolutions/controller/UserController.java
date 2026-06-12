@@ -72,6 +72,9 @@ public class UserController {
     }
 
     private User getUserFromDetails(UserDetails userDetails) {
+        if (userDetails == null) {
+            throw new IllegalStateException("No authenticated user found");
+        }
         return userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new IllegalStateException("Authenticated user not found in database"));
     }
