@@ -48,6 +48,8 @@ public class FileController {
                 contentType = MediaType.IMAGE_GIF_VALUE;
             } else if (lowerName.endsWith(".webp")) {
                 contentType = "image/webp";
+            } else if (lowerName.endsWith(".docx")) {
+                contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
             } else if (lowerName.endsWith(".mp4")) {
                 contentType = "video/mp4";
             }
