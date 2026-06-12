@@ -38,7 +38,7 @@ public class GamificationService {
         boolean alreadyUpvoted = upvoteRepository.existsByUserIdAndResourceId(currentUser.getId(), resourceId);
 
         if (alreadyUpvoted) {
-            // Remove the upvote and deduct credits
+            // Remove the upvote and deduct 2 credits
             upvoteRepository.deleteByUserIdAndResourceId(currentUser.getId(), resourceId);
             currentUser.setCredits(Math.max(0, currentUser.getCredits() - 2));
             userRepository.save(currentUser);
