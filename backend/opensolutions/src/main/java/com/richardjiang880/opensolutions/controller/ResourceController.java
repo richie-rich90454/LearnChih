@@ -76,6 +76,7 @@ public class ResourceController {
             @RequestParam(required = false) Long subjectId,
             @RequestParam(required = false) ResourceCategory category,
             @AuthenticationPrincipal UserDetails userDetails) {
+        // Check upvote status for each resource if user is authenticated
         Long currentUserId = userDetails != null ? getUserFromDetails(userDetails).getId() : null;
 
         Page<Resource> resources = resourceService.getResources(pageable, subjectId, category);
@@ -108,6 +109,7 @@ public class ResourceController {
     public ResponseEntity<ResourceDetailResponse> getResourceDetail(
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetails userDetails) {
+        // Check upvote status for each resource if user is authenticated
         Long currentUserId = userDetails != null ? getUserFromDetails(userDetails).getId() : null;
         ResourceDetailResponse response = resourceService.getResourceDetail(id, currentUserId);
         return ResponseEntity.ok(response);
