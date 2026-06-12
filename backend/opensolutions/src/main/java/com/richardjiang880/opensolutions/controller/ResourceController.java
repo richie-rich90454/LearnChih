@@ -22,6 +22,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/resources")
+/**
+ * REST controller for resource CRUD and upvote operations.
+ */
 public class ResourceController {
 
     private final ResourceService resourceService;
