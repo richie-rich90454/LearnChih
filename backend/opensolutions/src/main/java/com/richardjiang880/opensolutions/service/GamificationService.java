@@ -67,6 +67,7 @@ public class GamificationService {
     }
 
     @Transactional(readOnly = true)
+    // Returns top 50 users sorted by credits descending
     public List<LeaderboardEntry> getLeaderboard() {
         return userRepository.findTop50ByCreditsDesc().stream()
                 .map(user -> new LeaderboardEntry(
