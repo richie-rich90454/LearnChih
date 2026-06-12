@@ -74,6 +74,7 @@ public class UserService {
         UserSocial social = userSocialRepository.findById(socialId)
                 .orElseThrow(() -> new IllegalArgumentException("Social link not found"));
 
+        // Ensure users can only delete their own social links
         if (!social.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("You can only remove your own social links");
         }
