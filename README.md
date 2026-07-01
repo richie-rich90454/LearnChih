@@ -38,12 +38,37 @@ The frontend dev server proxies API requests to `localhost:8080`.
 ## Configuration
 
 Backend configuration lives in `backend/lernchih/src/main/resources/application.properties`.
+Secrets and environment-specific values are externalized via environment variables (with
+sensible defaults for local development where noted).
 
-Key properties:
-- `spring.datasource.*` — MySQL connection
-- `app.jwt.secret` — JWT signing key
-- `spring.mail.*` — SMTP settings
-- `app.mail.from` — sender address
+### Required environment variables
+
+These must be set or the application will fail to start:
+
+- `JWT_SECRET` — JWT signing key (long, random string)
+- `DB_PASSWORD` — MySQL database password
+
+### Optional environment variables (with defaults)
+
+- `DB_URL` — JDBC URL (default: `jdbc:mysql://localhost:3306/lernchih_db?useSSL=false&serverTimezone=UTC&characterEncoding=utf8mb4`)
+- `DB_USERNAME` — MySQL username (default: `root`)
+- `MAIL_HOST` — SMTP host (default: `localhost`)
+- `MAIL_PORT` — SMTP port (default: `1025`)
+- `MAIL_AUTH` — enable SMTP auth (default: `false`)
+- `MAIL_STARTTLS` — enable STARTTLS (default: `false`)
+- `CORS_ORIGINS` — comma-separated list of allowed CORS origins (default: `http://localhost:5173,http://localhost:3000`)
+
+For local development, set at least `JWT_SECRET` and `DB_PASSWORD`:
+
+```bash
+export JWT_SECRET="your-long-random-secret"
+export DB_PASSWORD="your-db-password"
+cd backend/lernchih
+./mvnw spring-boot:run
+```
+
+In production, provide these via the systemd environment file (`/etc/lernchih/lernchih.env`,
+referenced by `lernchih.service`).
 
 ## Production Build
 

@@ -6,6 +6,11 @@ After=network.target mysql.service
 Type=simple
 User=lernchih
 WorkingDirectory=/opt/lernchih
+# Load environment variables from /etc/lernchih/lernchih.env (create this file).
+# Required: JWT_SECRET, DB_PASSWORD
+# Optional (have defaults): DB_USERNAME, DB_URL, MAIL_HOST, MAIL_PORT, MAIL_AUTH,
+#   MAIL_STARTTLS, CORS_ORIGINS
+EnvironmentFile=-/etc/lernchih/lernchih.env
 ExecStart=/usr/bin/java -Xmx512m -jar /opt/lernchih/lernchih.jar
 Restart=on-failure
 RestartSec=10
