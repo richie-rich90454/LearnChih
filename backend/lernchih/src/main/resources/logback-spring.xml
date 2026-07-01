@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Logback configuration for LernChih.
+
+    Emits single-line logs that include the "requestId" MDC value (populated by
+    RequestIdFilter) so every log line can be correlated to a request. The
+    X-Request-ID response header carries the same value for client-side tracing.
+
+    A full structured-JSON encoder (e.g. LogstashEncoder) can be added later by
+    adding the net.logstash.logback:logstash-logback-encoder dependency and
+    replacing the <pattern> encoder below with:
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+-->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
