@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Frontend build artifacts (served by backend in prod, built by CI) ###
+src/main/resources/static/
