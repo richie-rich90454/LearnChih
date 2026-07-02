@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { FluentProvider, webLightTheme } from '@fluentui/react-components'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HelmetProvider } from 'react-helmet-async'
+import './i18n'
 import App from './App'
 
 const queryClient = new QueryClient({

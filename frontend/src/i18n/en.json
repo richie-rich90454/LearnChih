@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "resources": "Resources",
+    "channels": "Channels",
+    "leaderboard": "Leaderboard",
+    "profile": "Profile",
+    "admin": "Admin",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "noResults": "No results found",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "registerTitle": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "username": "Username",
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "logoutButton": "Logout",
+    "invalidCredentials": "Invalid email or password",
+    "emailNotVerified": "Please verify your email before logging in",
+    "registerSuccess": "Account created. Check your email to verify.",
+    "verifyEmail": "Verify Email",
+    "verifyEmailTitle": "Email Verification",
+    "enterCode": "Enter verification code",
+    "resendCode": "Resend code",
+    "codeResent": "Verification code resent"
+  },
+  "resources": {
+    "title": "Resources",
+    "create": "Create Resource",
+    "searchPlaceholder": "Search resources...",
+    "upvotes": "upvotes",
+    "noResources": "No resources yet",
+    "uploadDate": "Uploaded",
+    "download": "Download"
+  },
+  "channels": {
+    "title": "Channels",
+    "create": "Create Channel",
+    "threads": "Threads",
+    "noThreads": "No threads yet",
+    "createThread": "Create Thread",
+    "replies": "replies"
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "quickLinks": "Quick Links",
+    "recentResources": "Recent Resources",
+    "yourStats": "Your Stats"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "rank": "Rank",
+    "user": "User",
+    "credits": "Credits"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "memberSince": "Member since",
+    "credits": "Credits",
+    "role": "Role"
+  },
+  "language": {
+    "toggle": "中文",
+    "label": "Language"
+  }
+}

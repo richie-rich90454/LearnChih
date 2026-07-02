@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "dashboard": "仪表板",
+    "resources": "资源",
+    "channels": "频道",
+    "leaderboard": "排行榜",
+    "profile": "个人资料",
+    "admin": "管理",
+    "login": "登录",
+    "logout": "退出",
+    "register": "注册"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "出错了",
+    "retry": "重试",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "search": "搜索",
+    "noResults": "未找到结果",
+    "confirm": "确认",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一页",
+    "previous": "上一页"
+  },
+  "auth": {
+    "loginTitle": "登录",
+    "registerTitle": "创建账户",
+    "email": "邮箱",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "username": "用户名",
+    "loginButton": "登录",
+    "registerButton": "注册",
+    "logoutButton": "退出登录",
+    "invalidCredentials": "邮箱或密码错误",
+    "emailNotVerified": "登录前请先验证邮箱",
+    "registerSuccess": "账户创建成功，请检查邮箱完成验证",
+    "verifyEmail": "验证邮箱",
+    "verifyEmailTitle": "邮箱验证",
+    "enterCode": "输入验证码",
+    "resendCode": "重新发送验证码",
+    "codeResent": "验证码已重新发送"
+  },
+  "resources": {
+    "title": "资源",
+    "create": "创建资源",
+    "searchPlaceholder": "搜索资源...",
+    "upvotes": "点赞",
+    "noResources": "暂无资源",
+    "uploadDate": "上传于",
+    "download": "下载"
+  },
+  "channels": {
+    "title": "频道",
+    "create": "创建频道",
+    "threads": "讨论",
+    "noThreads": "暂无讨论",
+    "createThread": "创建讨论",
+    "replies": "回复"
+  },
+  "dashboard": {
+    "welcome": "欢迎回来",
+    "quickLinks": "快捷链接",
+    "recentResources": "最新资源",
+    "yourStats": "你的统计"
+  },
+  "leaderboard": {
+    "title": "排行榜",
+    "rank": "排名",
+    "user": "用户",
+    "credits": "积分"
+  },
+  "profile": {
+    "title": "个人资料",
+    "editProfile": "编辑资料",
+    "memberSince": "加入于",
+    "credits": "积分",
+    "role": "角色"
+  },
+  "language": {
+    "toggle": "English",
+    "label": "语言"
+  }
+}
