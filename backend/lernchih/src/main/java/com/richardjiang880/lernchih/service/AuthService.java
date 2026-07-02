@@ -1,9 +1,11 @@
 package com.richardjiang880.lernchih.service;
 
 import com.richardjiang880.lernchih.dto.*;
+import com.richardjiang880.lernchih.model.PasswordResetToken;
 import com.richardjiang880.lernchih.model.RefreshToken;
 import com.richardjiang880.lernchih.model.Role;
 import com.richardjiang880.lernchih.model.User;
+import com.richardjiang880.lernchih.repository.PasswordResetTokenRepository;
 import com.richardjiang880.lernchih.repository.RefreshTokenRepository;
 import com.richardjiang880.lernchih.repository.UserRepository;
 import com.richardjiang880.lernchih.security.JwtUtils;
@@ -42,26 +44,32 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final MailService mailService;
+    private final TotpService totpService;
 
     @Value("${app.jwt.refresh-expiration:604800000}")
     private long refreshExpirationMs;
 
     public AuthService(UserRepository userRepository,
                        RefreshTokenRepository refreshTokenRepository,
+                       PasswordResetTokenRepository passwordResetTokenRepository,
                        PasswordEncoder passwordEncoder,
                        AuthenticationManager authenticationManager,
                        JwtUtils jwtUtils,
-                       MailService mailService) {
+                       MailService mailService,
+                       TotpService totpService) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.mailService = mailService;
+        this.totpService = totpService;
     }
 
     @Transactional
@@ -211,6 +219,78 @@ public class AuthService {
             token.setRevoked(true);
             refreshTokenRepository.save(token);
         });
+    }
+
+    @Transactional
+    public TotpSetupResponse setupTotp(User user) {
+        String secret = totpService.generateSecret();
+        user.setTotpSecret(secret);
+        userRepository.save(user);
+
+        String qrUri = String.format(
+                "otpauth://totp/LernChih:%s?secret=%s&issuer=LernChih",
+                user.getEmail(),
+                secret
+        );
+        return new TotpSetupResponse(secret, qrUri);
+    }
+
+    @Transactional
+    public void verifyTotp(User user, int code) {
+        if (user.getTotpSecret() == null) {
+            throw new IllegalArgumentException("TOTP not set up");
+        }
+        if (!totpService.verifyCode(user.getTotpSecret(), code)) {
+            throw new IllegalArgumentException("Invalid TOTP code");
+        }
+        user.setTotpEnabled(true);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void requestPasswordReset(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        String rawToken = generateRawRefreshToken();
+        String tokenHash = sha256Hex(rawToken);
+
+        PasswordResetToken resetToken = PasswordResetToken.builder()
+                .user(user)
+                .tokenHash(tokenHash)
+                .expiresAt(LocalDateTime.now().plusHours(1))
+                .used(false)
+                .build();
+        passwordResetTokenRepository.save(resetToken);
+
+        // TODO: build reset link from app.base-url property
+        String resetLink = "https://lernchih.example.com/reset-password?token=" + rawToken;
+        mailService.sendNotificationEmail(
+                user.getEmail(),
+                "LernChih - Password Reset Request",
+                "Click the link to reset your password:\n\n" + resetLink + "\n\nThis link expires in 1 hour."
+        );
+    }
+
+    @Transactional
+    public void resetPassword(String rawToken, String newPassword) {
+        String tokenHash = sha256Hex(rawToken);
+        PasswordResetToken token = passwordResetTokenRepository.findByTokenHash(tokenHash)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid reset token"));
+
+        if (token.getUsed()) {
+            throw new IllegalArgumentException("Reset token already used");
+        }
+        if (token.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Reset token has expired");
+        }
+
+        User user = token.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        token.setUsed(true);
+        passwordResetTokenRepository.save(token);
     }
 
     // ---- Refresh-token helpers -------------------------------------------------

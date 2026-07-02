@@ -1,5 +1,6 @@
 package com.richardjiang880.lernchih.config;
 
+import com.richardjiang880.lernchih.security.ApiKeyAuthFilter;
 import com.richardjiang880.lernchih.security.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final ApiKeyAuthFilter apiKeyAuthFilter;
     private final List<String> corsAllowedOrigins;
 
     // When true (production behind an HTTPS terminator): require a secure
@@ -37,8 +39,11 @@ public class SecurityConfig {
     @Value("${app.security.https-only:false}")
     private boolean httpsOnly;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter, List<String> corsAllowedOrigins) {
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter,
+                          ApiKeyAuthFilter apiKeyAuthFilter,
+                          List<String> corsAllowedOrigins) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.apiKeyAuthFilter = apiKeyAuthFilter;
         this.corsAllowedOrigins = corsAllowedOrigins;
     }
 
@@ -73,6 +78,7 @@ public class SecurityConfig {
                 }
             })
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/2fa/**").authenticated()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/files/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
@@ -81,6 +87,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/resources/{id}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/channels").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/channels/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/study-groups").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/study-groups/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/feeds/**").permitAll()
                 .requestMatchers("/robots.txt").permitAll()
                 .requestMatchers("/sitemap.xml").permitAll()
                 .requestMatchers("/sitemap-resources.xml").permitAll()
@@ -89,6 +98,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "MODERATOR")
                 .anyRequest().authenticated()
             )
+            .addFilterBefore(apiKeyAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         // HTTPS-only (production) mode: require a secure channel. HSTS preload
