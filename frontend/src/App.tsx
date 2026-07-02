@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation, useOutlet } from 'react-router-dom'
 import {
   Spinner,
   Toaster,
@@ -11,6 +11,7 @@ import CookieConsent from './components/CookieConsent'
 import { UpdatePrompt } from './components/UpdatePrompt'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { CommandPalette, useCommandPaletteShortcut } from './components/CommandPalette'
+import { PageTransition } from './components/PageTransition'
 import { prefetchRoute } from './hooks/useRoutePrefetch'
 import { useRouteAnnouncer } from './hooks/useRouteAnnouncer'
 
@@ -64,6 +65,16 @@ function RouteAnnouncer() {
   )
 }
 
+function AnimatedOutlet() {
+  const location = useLocation()
+  const element = useOutlet()
+  return (
+    <PageTransition key={location.pathname}>
+      {element}
+    </PageTransition>
+  )
+}
+
 function AppShell() {
   const { open, setOpen } = useCommandPaletteShortcut()
 
@@ -72,11 +83,11 @@ function AppShell() {
       <CommandPalette open={open} onOpenChange={setOpen} />
       <Routes>
         {/* Public routes */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/verify" element={<VerifyEmailPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
+        <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
+        <Route path="/verify" element={<PageTransition><VerifyEmailPage /></PageTransition>} />
+        <Route path="/forgot-password" element={<PageTransition><ForgotPasswordPage /></PageTransition>} />
+        <Route path="/reset-password" element={<PageTransition><ResetPasswordPage /></PageTransition>} />
 
         {/* Protected routes */}
         <Route
@@ -86,8 +97,9 @@ function AppShell() {
             </RequireAuth>
           }
         >
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/resources" element={<ResourcesPage />} />
+          <Route element={<AnimatedOutlet />}>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/resources" element={<ResourcesPage />} />
           <Route path="/resources/:id" element={<ResourceDetailPage />} />
           <Route path="/channels" element={<ChannelsPage />} />
           <Route path="/channels/:channelId/threads/:threadId" element={<ChannelThreadPage />} />
@@ -103,6 +115,7 @@ function AppShell() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/bookmarks" element={<BookmarksPage />} />
           <Route path="/study-groups" element={<StudyGroupsPage />} />
+          </Route>
         </Route>
 
         {/* Public catch-all 404 (must be last) */}

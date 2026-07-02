@@ -34,6 +34,8 @@ import type { Resource } from '../types'
 import Seo from '../components/Seo'
 import { Pagination } from '../components/Pagination'
 import { TagList } from '../components/TagBadge'
+import { StaggerReveal } from '../components/StaggerReveal'
+import { HoverLift } from '../components/HoverLift'
 import { useBookmarkStore } from '../store/bookmarkStore'
 
 const useStyles = makeStyles({
@@ -341,48 +343,49 @@ export default function ResourcesPage() {
           virtualization (e.g. react-window / react-virtual) to avoid
           rendering off-screen DOM nodes. Not added now to keep the change
           dependency-free. Keys are already stable (resource.id). */}
-      <div className={styles.grid}>
+      <StaggerReveal className={styles.grid}>
         {paginatedResources.map((resource) => (
-          <Card
-            key={resource.id}
-            className={styles.resourceCard}
-            onClick={() => navigate(`/resources/${resource.id}`)}
-          >
-            <div className={styles.cardHeader}>
-              <Subtitle2>{resource.title}</Subtitle2>
-              <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                <Button
-                  appearance="subtle"
-                  size="small"
-                  icon={isBookmarked(resource.id) ? <Bookmark24Filled /> : <Bookmark24Regular />}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    toggleBookmark(resource.id, resource.title)
-                  }}
-                  aria-label={isBookmarked(resource.id) ? 'Remove bookmark' : 'Add bookmark'}
-                />
-                <Badge appearance="tint" size="small">
-                  {resource.category?.replace('_', ' ') || 'General'}
+          <HoverLift key={resource.id}>
+            <Card
+              className={styles.resourceCard}
+              onClick={() => navigate(`/resources/${resource.id}`)}
+            >
+              <div className={styles.cardHeader}>
+                <Subtitle2>{resource.title}</Subtitle2>
+                <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                  <Button
+                    appearance="subtle"
+                    size="small"
+                    icon={isBookmarked(resource.id) ? <Bookmark24Filled /> : <Bookmark24Regular />}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      toggleBookmark(resource.id, resource.title)
+                    }}
+                    aria-label={isBookmarked(resource.id) ? 'Remove bookmark' : 'Add bookmark'}
+                  />
+                  <Badge appearance="tint" size="small">
+                    {resource.category?.replace('_', ' ') || 'General'}
+                  </Badge>
+                </div>
+              </div>
+              <div className={styles.cardMeta}>
+                <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
+                  by {resource.authorName || 'Unknown'}
+                </span>
+                <Badge appearance="outline" size="small">
+                  {resource.upvoteCount ?? 0} upvotes
                 </Badge>
               </div>
-            </div>
-            <div className={styles.cardMeta}>
-              <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
-                by {resource.authorName || 'Unknown'}
-              </span>
-              <Badge appearance="outline" size="small">
-                {resource.upvoteCount ?? 0} upvotes
-              </Badge>
-            </div>
-            {resource.subject && (
-              <Badge appearance="outline" size="small" style={{ marginTop: '4px' }}>
-                {resource.subject}
-              </Badge>
-            )}
-            {resource.tags && <TagList tags={resource.tags} />}
-          </Card>
+              {resource.subject && (
+                <Badge appearance="outline" size="small" style={{ marginTop: '4px' }}>
+                  {resource.subject}
+                </Badge>
+              )}
+              {resource.tags && <TagList tags={resource.tags} />}
+            </Card>
+          </HoverLift>
         ))}
-      </div>
+      </StaggerReveal>
 
       <Pagination
         currentPage={currentPage}

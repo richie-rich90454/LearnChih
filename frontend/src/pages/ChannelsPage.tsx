@@ -31,6 +31,8 @@ import { useDebounce } from '../hooks/useDebounce'
 import type { Channel, ChannelThread } from '../types'
 import Seo from '../components/Seo'
 import { Pagination } from '../components/Pagination'
+import { StaggerReveal } from '../components/StaggerReveal'
+import { HoverLift } from '../components/HoverLift'
 
 const useStyles = makeStyles({
   container: {
@@ -213,35 +215,36 @@ export default function ChannelsPage() {
 
       <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
         {/* Channel list */}
-        <div className={styles.channelList} style={{ flex: 1, minWidth: '280px' }}>
+        <StaggerReveal className={styles.channelList} style={{ flex: 1, minWidth: '280px' }}>
           {channelList.length === 0 && !isLoading && (
             <MessageBar>
               <MessageBarBody>No channels available.</MessageBarBody>
             </MessageBar>
           )}
           {channelList.map((channel) => (
-            <Card
-              key={channel.id}
-              className={styles.channelCard}
-              style={{
-                backgroundColor: selectedChannelId === channel.id ? 'var(--colorNeutralBackground1Selected)' : undefined,
-              }}
-              onClick={() => setSelectedChannelId(channel.id)}
-            >
-              <div className={styles.channelHeader}>
-                <Subtitle2>{channel.name}</Subtitle2>
-                <Badge appearance="outline" size="small">
-                  {channel.threadCount ?? 0} threads
-                </Badge>
-              </div>
-              {channel.description && (
-                <Body1 style={{ color: 'var(--colorNeutralForeground3)', marginTop: '4px', display: 'block' }}>
-                  {channel.description}
-                </Body1>
-              )}
-            </Card>
+            <HoverLift key={channel.id}>
+              <Card
+                className={styles.channelCard}
+                style={{
+                  backgroundColor: selectedChannelId === channel.id ? 'var(--colorNeutralBackground1Selected)' : undefined,
+                }}
+                onClick={() => setSelectedChannelId(channel.id)}
+              >
+                <div className={styles.channelHeader}>
+                  <Subtitle2>{channel.name}</Subtitle2>
+                  <Badge appearance="outline" size="small">
+                    {channel.threadCount ?? 0} threads
+                  </Badge>
+                </div>
+                {channel.description && (
+                  <Body1 style={{ color: 'var(--colorNeutralForeground3)', marginTop: '4px', display: 'block' }}>
+                    {channel.description}
+                  </Body1>
+                )}
+              </Card>
+            </HoverLift>
           ))}
-        </div>
+        </StaggerReveal>
 
         {/* Threads for selected channel */}
         {selectedChannelId && (
@@ -267,7 +270,7 @@ export default function ChannelsPage() {
                 <Option value="posts">Most Posts</Option>
               </Dropdown>
             </div>
-            <div className={styles.threadList}>
+            <StaggerReveal className={styles.threadList}>
               {threads.length === 0 && (
                 <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>No threads yet. Start one!</Body1>
               )}
@@ -279,23 +282,24 @@ export default function ChannelsPage() {
                   rendering off-screen cards. Not added now to keep the change
                   dependency-free. Keys are already stable (thread.id). */}
               {paginatedThreads.map((thread) => (
-                <Card
-                  key={thread.id}
-                  className={styles.threadCard}
-                  onClick={() => navigate(`/channels/${selectedChannelId}/threads/${thread.id}`)}
-                >
-                  <Subtitle2>{thread.title}</Subtitle2>
-                  <div className={styles.channelMeta}>
-                    <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
-                      by {thread.authorName || 'Unknown'}
-                    </span>
-                    <Badge appearance="outline" size="small">
-                      {thread.postCount ?? 0} posts
-                    </Badge>
-                  </div>
-                </Card>
+                <HoverLift key={thread.id}>
+                  <Card
+                    className={styles.threadCard}
+                    onClick={() => navigate(`/channels/${selectedChannelId}/threads/${thread.id}`)}
+                  >
+                    <Subtitle2>{thread.title}</Subtitle2>
+                    <div className={styles.channelMeta}>
+                      <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
+                        by {thread.authorName || 'Unknown'}
+                      </span>
+                      <Badge appearance="outline" size="small">
+                        {thread.postCount ?? 0} posts
+                      </Badge>
+                    </div>
+                  </Card>
+                </HoverLift>
               ))}
-            </div>
+            </StaggerReveal>
             <Pagination
               currentPage={threadPage}
               totalPages={threadTotalPages}
