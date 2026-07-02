@@ -30,6 +30,7 @@ import {
 import useAuthStore from '../store/authStore'
 import { useDir } from '../hooks/useDir'
 import { useTranslation } from 'react-i18next'
+import { useThemeStore } from '../hooks/useThemeStore'
 
 interface NavItem {
   path: string
@@ -120,6 +121,8 @@ export default function AppLayout() {
   const { user, logout } = useAuthStore()
   const { t, i18n } = useTranslation()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const mode = useThemeStore((s) => s.mode)
+  const toggle = useThemeStore((s) => s.toggle)
 
   const isAdmin = user?.role === 'ADMIN' || user?.role === 'MODERATOR'
 
@@ -226,6 +229,13 @@ export default function AppLayout() {
               }}
             >
               {t('language.toggle')}
+            </Button>
+            <Button
+              appearance="subtle"
+              onClick={toggle}
+              aria-label="Toggle dark mode"
+            >
+              {mode === 'light' ? '🌙' : '☀️'}
             </Button>
             <Menu>
             <MenuTrigger disableButtonEnhancement>

@@ -1,10 +1,21 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { FluentProvider, webLightTheme } from '@fluentui/react-components'
+import { FluentProvider, webDarkTheme, webLightTheme } from '@fluentui/react-components'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HelmetProvider } from 'react-helmet-async'
 import './i18n'
 import App from './App'
+import { useThemeStore } from './hooks/useThemeStore'
+
+function ThemedApp() {
+  const mode = useThemeStore((s) => s.mode)
+  const theme = mode === 'dark' ? webDarkTheme : webLightTheme
+  return (
+    <FluentProvider theme={theme}>
+      <App />
+    </FluentProvider>
+  )
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,9 +33,7 @@ createRoot(rootElement).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
-        <FluentProvider theme={webLightTheme}>
-          <App />
-        </FluentProvider>
+        <ThemedApp />
       </HelmetProvider>
     </QueryClientProvider>
   </StrictMode>,

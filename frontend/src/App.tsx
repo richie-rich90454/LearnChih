@@ -9,6 +9,7 @@ import RequireAuth from './components/RequireAuth'
 import AppLayout from './components/AppLayout'
 import CookieConsent from './components/CookieConsent'
 import { UpdatePrompt } from './components/UpdatePrompt'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { prefetchRoute } from './hooks/useRoutePrefetch'
 import { useRouteAnnouncer } from './hooks/useRouteAnnouncer'
 
@@ -71,6 +72,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <RouteAnnouncer />
+      <ErrorBoundary>
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           {/* Public routes */}
@@ -101,7 +103,8 @@ export default function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
-      <Toaster position="top" />
+      </ErrorBoundary>
+      <Toaster position="bottom-end" timeout={4000} toasterId="main-toaster" />
       <CookieConsent />
       <UpdatePrompt />
     </BrowserRouter>
