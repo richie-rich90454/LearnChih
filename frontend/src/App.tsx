@@ -7,6 +7,7 @@ import {
 } from '@fluentui/react-components'
 import RequireAuth from './components/RequireAuth'
 import AppLayout from './components/AppLayout'
+import CookieConsent from './components/CookieConsent'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const RegisterPage = lazy(() => import('./pages/RegisterPage'))
@@ -69,6 +70,7 @@ export default function App() {
         </Routes>
       </Suspense>
       <Toaster position="top" />
+      <CookieConsent />
     </BrowserRouter>
   )
 }
