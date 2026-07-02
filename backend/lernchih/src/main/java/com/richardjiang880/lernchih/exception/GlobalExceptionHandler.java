@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -19,6 +21,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -30,22 +33,29 @@ public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    private final MessageSource messageSource;
+
+    public GlobalExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
     // Business logic errors return 400 Bad Request
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ProblemDetail> handleBadRequest(IllegalArgumentException ex, WebRequest request) {
-        return problem(HttpStatus.BAD_REQUEST, "Bad Request", ex.getMessage(), request);
+        String detail = msg("error.badrequest", new Object[]{ex.getMessage()}, ex.getMessage());
+        return problem(HttpStatus.BAD_REQUEST, "Bad Request", detail, request);
     }
 
     // Internal state errors return 500 Internal Server Error
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ProblemDetail> handleIllegalState(IllegalStateException ex, WebRequest request) {
-        return problem(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", ex.getMessage(), request);
+        return problem(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", msg("error.general.internal", null, ex.getMessage()), request);
     }
 
     // Return 403 for Spring Security access denied exceptions
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ProblemDetail> handleAccessDenied(AccessDeniedException ex, WebRequest request) {
-        return problem(HttpStatus.FORBIDDEN, "Forbidden", "Access denied", request);
+        return problem(HttpStatus.FORBIDDEN, "Forbidden", msg("error.general.access-denied", null, "Access denied"), request);
     }
 
     // Handle @Valid body validation errors with field-level detail (400)
@@ -56,7 +66,7 @@ public class GlobalExceptionHandler {
             fieldErrors.put(error.getField(), error.getDefaultMessage());
         }
 
-        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, msg("error.validation", new Object[]{fieldErrors.toString()}, "Validation failed"));
         pd.setTitle("Validation Failed");
         pd.setInstance(requestUri(request));
         pd.setProperty("fieldErrors", fieldErrors);
@@ -70,7 +80,7 @@ public class GlobalExceptionHandler {
         ex.getConstraintViolations().forEach(v ->
                 violations.put(v.getPropertyPath().toString(), v.getMessage()));
 
-        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Constraint violation");
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, msg("error.validation", new Object[]{violations.toString()}, "Constraint violation"));
         pd.setTitle("Validation Failed");
         pd.setInstance(requestUri(request));
         pd.setProperty("violations", violations);
@@ -80,13 +90,24 @@ public class GlobalExceptionHandler {
     // Entity not found returns 404
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ProblemDetail> handleEntityNotFound(EntityNotFoundException ex, WebRequest request) {
-        return problem(HttpStatus.NOT_FOUND, "Not Found", ex.getMessage(), request);
+        return problem(HttpStatus.NOT_FOUND, "Not Found", msg("error.resource.not-found", null, ex.getMessage()), request);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ProblemDetail> handleGenericException(Exception ex, WebRequest request) {
         log.error("Unexpected error occurred", ex);
-        return problem(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", "An unexpected error occurred", request);
+        return problem(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", msg("error.general.internal", null, "An unexpected error occurred"), request);
+    }
+
+    // Resolve a message from the bundle using the request locale (Accept-Language).
+    private String msg(String key, Object[] args, String fallback) {
+        try {
+            Locale locale = LocaleContextHolder.getLocale();
+            String resolved = messageSource.getMessage(key, args, locale);
+            return resolved != null ? resolved : fallback;
+        } catch (Exception ignored) {
+            return fallback;
+        }
     }
 
     // Build a RFC 7807 ProblemDetail response with application/problem+json content type
