@@ -1,10 +1,12 @@
 package com.richardjiang880.lernchih.config;
 
 import com.richardjiang880.lernchih.security.JwtAuthFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,10 +30,22 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final List<String> corsAllowedOrigins;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+    // When true (production behind an HTTPS terminator): require a secure
+    // channel and enable HSTS preload. Defaults to false for local dev.
+    @Value("${app.security.https-only:false}")
+    private boolean httpsOnly;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter, List<String> corsAllowedOrigins) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.corsAllowedOrigins = corsAllowedOrigins;
     }
+
+    // Cookie hardening guidance (Task 1.3): the app currently stores JWTs in
+    // localStorage and does not issue Set-Cookie headers. Any future Set-Cookie
+    // (e.g. a refresh-token cookie added in a later batch) MUST use
+    // Secure; HttpOnly; SameSite=Lax. Verify with ResponseCookie builders.
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,6 +54,24 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             // Stateless session - required for JWT-based authentication
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // Security response headers (Task 1.1). HSTS is enabled only when
+            // app.security.https-only is true (Task 1.2). Referrer-Policy and
+            // Permissions-Policy are added by SecurityHeadersFilter.
+            .headers(h -> {
+                h.contentTypeOptions(Customizer.withDefaults());
+                h.frameOptions(fo -> fo.deny());
+                h.contentSecurityPolicy(csp -> csp.policyDirectives(
+                        "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
+                        + "img-src 'self' data: blob: https:; font-src 'self' data:; "
+                        + "connect-src 'self' ws: wss:; frame-ancestors 'none'; "
+                        + "base-uri 'self'; form-action 'self'"));
+                if (httpsOnly) {
+                    h.httpStrictTransportSecurity(hsts -> hsts
+                            .maxAgeInSeconds(63072000)
+                            .includeSubDomains(true)
+                            .preload(true));
+                }
+            })
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/files/**").permitAll()
@@ -54,14 +86,22 @@ public class SecurityConfig {
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
+        // HTTPS-only (production) mode: require a secure channel. HSTS preload
+        // is configured above, also gated on the same flag.
+        if (httpsOnly) {
+            http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
+        }
+
         return http.build();
     }
 
-    // CORS configuration for frontend development and production
+    // CORS configuration for frontend development and production. Allowed
+    // origins come from the corsAllowedOrigins bean (EnvConfig), populated from
+    // app.cors.allowed-origins / CORS_ORIGINS env var.
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
+        config.setAllowedOrigins(corsAllowedOrigins);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
