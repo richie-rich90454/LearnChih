@@ -6,7 +6,7 @@ import {
   getChannelPosts,
   createChannelPost,
 } from '../api/channels'
-import type { Channel, ChannelThread, Post, CreateChannelThreadRequest } from '../types'
+import type { Channel, ChannelThread, Post, CreateChannelThreadRequest, CreatePostRequest } from '../types'
 
 export function useChannels() {
   return useQuery<Channel[]>({
@@ -45,7 +45,7 @@ export function useChannelPosts(channelId: number | null | undefined, threadId: 
 export function useCreateChannelPost(channelId: number | null | undefined, threadId: string | undefined) {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (content: string) => createChannelPost(channelId, threadId, content),
+    mutationFn: (data: CreatePostRequest) => createChannelPost(channelId, threadId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['channelPosts', channelId, threadId] })
     },
