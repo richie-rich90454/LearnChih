@@ -88,6 +88,19 @@ const useStyles = makeStyles({
       display: 'none',
     },
   },
+  skipLink: {
+    position: 'absolute',
+    top: '-40px',
+    left: '0',
+    background: '#0078d4',
+    color: 'white',
+    padding: '8px 16px',
+    zIndex: '1000',
+    transition: 'top 0.2s',
+    '&:focus': {
+      top: '0',
+    },
+  },
 })
 
 const navItems: NavItem[] = [
@@ -152,19 +165,23 @@ export default function AppLayout() {
 
   return (
     <div className={styles.root}>
+      <a href="#main-content" className={styles.skipLink}>
+        Skip to content
+      </a>
+
       {/* Desktop sidebar */}
-      <div className={styles.desktopDrawer}>
+      <aside className={styles.desktopDrawer} aria-label="Sidebar">
         <InlineDrawer open position="start" size="small">
           <DrawerHeader>
             <Title3>LernChih</Title3>
           </DrawerHeader>
           <DrawerBody>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <nav aria-label="Main navigation" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               <NavLinks />
-            </div>
+            </nav>
           </DrawerBody>
         </InlineDrawer>
-      </div>
+      </aside>
 
       {/* Mobile drawer */}
       <Drawer
@@ -177,9 +194,9 @@ export default function AppLayout() {
           <Title3>LernChih</Title3>
         </DrawerHeader>
         <DrawerBody>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <nav aria-label="Main navigation" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <NavLinks />
-          </div>
+          </nav>
         </DrawerBody>
       </Drawer>
 
@@ -216,7 +233,7 @@ export default function AppLayout() {
           </Menu>
         </header>
 
-        <main className={styles.content}>
+        <main id="main-content" tabIndex={-1} className={styles.content}>
           <Outlet />
         </main>
       </div>
