@@ -10,20 +10,31 @@ import AppLayout from './components/AppLayout'
 import CookieConsent from './components/CookieConsent'
 import { UpdatePrompt } from './components/UpdatePrompt'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { CommandPalette, useCommandPaletteShortcut } from './components/CommandPalette'
 import { prefetchRoute } from './hooks/useRoutePrefetch'
 import { useRouteAnnouncer } from './hooks/useRouteAnnouncer'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const RegisterPage = lazy(() => import('./pages/RegisterPage'))
 const VerifyEmailPage = lazy(() => import('./pages/VerifyEmailPage'))
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'))
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'))
 const DashboardPage = lazy(() => import('./pages/DashboardPage'))
 const ResourcesPage = lazy(() => import('./pages/ResourcesPage'))
 const ResourceDetailPage = lazy(() => import('./pages/ResourceDetailPage'))
 const ChannelsPage = lazy(() => import('./pages/ChannelsPage'))
 const ChannelThreadPage = lazy(() => import('./pages/ChannelThreadPage'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
+const NotificationsPage = lazy(() => import('./pages/NotificationsPage'))
+const FlashcardsPage = lazy(() => import('./pages/FlashcardsPage'))
+const QuizPage = lazy(() => import('./pages/QuizPage'))
 const LeaderboardPage = lazy(() => import('./pages/LeaderboardPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
+const ModerationPage = lazy(() => import('./pages/ModerationPage'))
+const ApiDocsPage = lazy(() => import('./pages/ApiDocsPage'))
+const SearchPage = lazy(() => import('./pages/SearchPage'))
+const BookmarksPage = lazy(() => import('./pages/BookmarksPage'))
+const StudyGroupsPage = lazy(() => import('./pages/StudyGroupsPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 const useStyles = makeStyles({
@@ -53,6 +64,54 @@ function RouteAnnouncer() {
   )
 }
 
+function AppShell() {
+  const { open, setOpen } = useCommandPaletteShortcut()
+
+  return (
+    <>
+      <CommandPalette open={open} onOpenChange={setOpen} />
+      <Routes>
+        {/* Public routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/verify" element={<VerifyEmailPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+        {/* Protected routes */}
+        <Route
+          element={
+            <RequireAuth>
+              <AppLayout />
+            </RequireAuth>
+          }
+        >
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/resources/:id" element={<ResourceDetailPage />} />
+          <Route path="/channels" element={<ChannelsPage />} />
+          <Route path="/channels/:channelId/threads/:threadId" element={<ChannelThreadPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/:id" element={<ProfilePage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/flashcards" element={<FlashcardsPage />} />
+          <Route path="/quizzes" element={<QuizPage />} />
+          <Route path="/leaderboard" element={<LeaderboardPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/moderation" element={<ModerationPage />} />
+          <Route path="/api-docs" element={<ApiDocsPage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/bookmarks" element={<BookmarksPage />} />
+          <Route path="/study-groups" element={<StudyGroupsPage />} />
+        </Route>
+
+        {/* Public catch-all 404 (must be last) */}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
+  )
+}
+
 export default function App() {
   // Warm primary nav route chunks on idle; hover/focus prefetch lives in AppLayout.
   useEffect(() => {
@@ -61,6 +120,11 @@ export default function App() {
       prefetchRoute('resources', () => import('./pages/ResourcesPage'))
       prefetchRoute('channels', () => import('./pages/ChannelsPage'))
       prefetchRoute('leaderboard', () => import('./pages/LeaderboardPage'))
+      prefetchRoute('flashcards', () => import('./pages/FlashcardsPage'))
+      prefetchRoute('quizzes', () => import('./pages/QuizPage'))
+      prefetchRoute('search', () => import('./pages/SearchPage'))
+      prefetchRoute('bookmarks', () => import('./pages/BookmarksPage'))
+      prefetchRoute('study-groups', () => import('./pages/StudyGroupsPage'))
     }
     if (typeof window.requestIdleCallback === 'function') {
       window.requestIdleCallback(run)
@@ -73,36 +137,9 @@ export default function App() {
     <BrowserRouter>
       <RouteAnnouncer />
       <ErrorBoundary>
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
-          {/* Public routes */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/verify" element={<VerifyEmailPage />} />
-
-          {/* Protected routes */}
-          <Route
-            element={
-              <RequireAuth>
-                <AppLayout />
-              </RequireAuth>
-            }
-          >
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/resources" element={<ResourcesPage />} />
-            <Route path="/resources/:id" element={<ResourceDetailPage />} />
-            <Route path="/channels" element={<ChannelsPage />} />
-            <Route path="/channels/:channelId/threads/:threadId" element={<ChannelThreadPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/profile/:id" element={<ProfilePage />} />
-            <Route path="/leaderboard" element={<LeaderboardPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-          </Route>
-
-          {/* Public catch-all 404 (must be last) */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Suspense>
+        <Suspense fallback={<LoadingFallback />}>
+          <AppShell />
+        </Suspense>
       </ErrorBoundary>
       <Toaster position="bottom-end" timeout={4000} toasterId="main-toaster" />
       <CookieConsent />

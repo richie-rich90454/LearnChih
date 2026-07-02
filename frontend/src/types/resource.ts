@@ -1,6 +1,12 @@
 export type ResourceCategory = 'ARTICLE' | 'VIDEO' | 'PDF' | 'GUIDE' | 'LECTURE_RECORDING' | 'OTHER';
 export type ResourceType = 'UPLOAD' | 'LINK';
 
+export interface ResourceTag {
+  id: number;
+  name: string;
+  color?: string;
+}
+
 export interface Resource {
   id: number;
   title: string;
@@ -20,6 +26,7 @@ export interface Resource {
   authorName?: string;
   subject?: string;
   url?: string;
+  tags?: ResourceTag[];
 }
 
 export interface ResourceDetail extends Resource {

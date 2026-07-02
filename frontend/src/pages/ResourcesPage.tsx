@@ -27,12 +27,14 @@ import {
   Select,
   Field,
 } from '@fluentui/react-components'
-import { Add24Regular, ArrowUpload24Regular, Link24Regular } from '@fluentui/react-icons'
+import { Add24Regular, ArrowUpload24Regular, Link24Regular, Bookmark24Regular, Bookmark24Filled } from '@fluentui/react-icons'
 import { useResources, useCreateResource } from '../hooks/useResources'
 import { useDebounce } from '../hooks/useDebounce'
 import type { Resource } from '../types'
 import Seo from '../components/Seo'
 import { Pagination } from '../components/Pagination'
+import { TagList } from '../components/TagBadge'
+import { useBookmarkStore } from '../store/bookmarkStore'
 
 const useStyles = makeStyles({
   container: {
@@ -113,6 +115,7 @@ export default function ResourcesPage() {
   const createMutation = useCreateResource()
 
   const resources: Resource[] = Array.isArray(data) ? data : (data as any)?.content || []
+  const { toggleBookmark, isBookmarked } = useBookmarkStore()
 
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'upvoted'>('newest')
@@ -347,9 +350,21 @@ export default function ResourcesPage() {
           >
             <div className={styles.cardHeader}>
               <Subtitle2>{resource.title}</Subtitle2>
-              <Badge appearance="tint" size="small">
-                {resource.category?.replace('_', ' ') || 'General'}
-              </Badge>
+              <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                <Button
+                  appearance="subtle"
+                  size="small"
+                  icon={isBookmarked(resource.id) ? <Bookmark24Filled /> : <Bookmark24Regular />}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    toggleBookmark(resource.id, resource.title)
+                  }}
+                  aria-label={isBookmarked(resource.id) ? 'Remove bookmark' : 'Add bookmark'}
+                />
+                <Badge appearance="tint" size="small">
+                  {resource.category?.replace('_', ' ') || 'General'}
+                </Badge>
+              </div>
             </div>
             <div className={styles.cardMeta}>
               <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
@@ -364,6 +379,7 @@ export default function ResourcesPage() {
                 {resource.subject}
               </Badge>
             )}
+            {resource.tags && <TagList tags={resource.tags} />}
           </Card>
         ))}
       </div>

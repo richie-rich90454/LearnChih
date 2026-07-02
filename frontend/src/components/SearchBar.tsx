@@ -1,0 +1,176 @@
+import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import {
+  Input,
+  makeStyles,
+  tokens,
+  Spinner,
+  Body1,
+  Caption1,
+  Badge,
+} from '@fluentui/react-components'
+import { Search24Regular, Dismiss24Regular } from '@fluentui/react-icons'
+import { useDebounce } from '../hooks/useDebounce'
+import { useSearch } from '../hooks/useSearch'
+import type { SearchResult } from '../hooks/useSearch'
+
+const useStyles = makeStyles({
+  root: {
+    position: 'relative',
+    width: '100%',
+    minWidth: '280px',
+  },
+  dropdown: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    marginTop: tokens.spacingVerticalXXS,
+    background: tokens.colorNeutralBackground1,
+    border: `1px solid ${tokens.colorNeutralStroke1}`,
+    borderRadius: tokens.borderRadiusMedium,
+    boxShadow: tokens.shadow16,
+    zIndex: 1000,
+    maxHeight: '360px',
+    overflowY: 'auto',
+  },
+  resultItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: tokens.spacingVerticalXXS,
+    padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalM}`,
+    cursor: 'pointer',
+    '&:hover': {
+      background: tokens.colorNeutralBackground1Hover,
+    },
+    '&:focus': {
+      background: tokens.colorNeutralBackground1Selected,
+      outline: 'none',
+    },
+  },
+  resultTop: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: tokens.spacingHorizontalS,
+    justifyContent: 'space-between',
+  },
+  empty: {
+    padding: tokens.spacingHorizontalM,
+    color: tokens.colorNeutralForeground3,
+  },
+})
+
+interface SearchBarProps {
+  placeholder?: string
+  debounceMs?: number
+  onNavigate?: () => void
+}
+
+/**
+ * Global search input with debounce and a results dropdown. Selecting a
+ * result navigates to its URL via react-router.
+ *
+ * Spec ref: F2.13.
+ */
+export function SearchBar({
+  placeholder = 'Search resources, channels, people...',
+  debounceMs = 250,
+  onNavigate,
+}: SearchBarProps) {
+  const styles = useStyles()
+  const navigate = useNavigate()
+  const [query, setQuery] = useState('')
+  const [open, setOpen] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  const debouncedQuery = useDebounce(query, debounceMs)
+  const { data, isFetching } = useSearch(debouncedQuery)
+
+  const results: SearchResult[] = data?.content ?? []
+
+  // Close dropdown when clicking outside.
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onClick)
+    return () => document.removeEventListener('mousedown', onClick)
+  }, [])
+
+  const handleSelect = (result: SearchResult) => {
+    setOpen(false)
+    setQuery('')
+    onNavigate?.()
+    navigate(result.url)
+  }
+
+  const showDropdown = open && query.trim().length > 0
+
+  return (
+    <div className={styles.root} ref={rootRef}>
+      <Input
+        value={query}
+        onChange={(_e, data) => {
+          setQuery(data.value)
+          setOpen(true)
+        }}
+        onFocus={() => setOpen(true)}
+        placeholder={placeholder}
+        contentBefore={<Search24Regular />}
+        contentAfter={
+          query ? (
+            <Dismiss24Regular
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                setQuery('')
+                setOpen(false)
+              }}
+            />
+          ) : isFetching ? (
+            <Spinner size="tiny" />
+          ) : null
+        }
+        aria-label="Global search"
+        aria-expanded={showDropdown}
+        aria-controls="search-results"
+        role="combobox"
+      />
+
+      {showDropdown && (
+        <div className={styles.dropdown} id="search-results" role="listbox">
+          {isFetching && results.length === 0 && (
+            <div className={styles.empty}>Searching...</div>
+          )}
+          {!isFetching && results.length === 0 && (
+            <div className={styles.empty}>No results for “{debouncedQuery}”.</div>
+          )}
+          {results.map((result) => (
+            <div
+              key={`${result.type}-${result.id}`}
+              className={styles.resultItem}
+              role="option"
+              aria-selected="false"
+              tabIndex={0}
+              onClick={() => handleSelect(result)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSelect(result)
+              }}
+            >
+              <div className={styles.resultTop}>
+                <Body1>{result.title}</Body1>
+                <Badge appearance="tint" size="small">
+                  {result.type}
+                </Badge>
+              </div>
+              {result.snippet && <Caption1>{result.snippet}</Caption1>}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default SearchBar

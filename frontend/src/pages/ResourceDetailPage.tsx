@@ -30,16 +30,22 @@ import {
   ArrowUp24Filled,
   Flag24Regular,
   ArrowLeft24Regular,
+  Bookmark24Regular,
+  Bookmark24Filled,
 } from '@fluentui/react-icons'
 import { useResource, useDeleteResource } from '../hooks/useResources'
 import { useResourcePosts, useCreateResourcePost } from '../hooks/useThreads'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { reportResource, toggleUpvote as toggleUpvoteApi } from '../api/resources'
 import useAuthStore from '../store/authStore'
+import { useBookmarkStore } from '../store/bookmarkStore'
 import useWebSocket from '../hooks/useWebSocket'
 import type { Post, ResourceDetail } from '../types'
 import Seo from '../components/Seo'
 import { ConfirmDialog } from '../components/ConfirmDialog'
+import ReportButton from '../components/ReportButton'
+import { RelatedResources } from '../components/RelatedResources'
+import { TagList } from '../components/TagBadge'
 import { articleSchema, breadcrumbSchema } from '../components/jsonLd'
 
 const useStyles = makeStyles({
@@ -97,6 +103,12 @@ const useStyles = makeStyles({
     gap: tokens.spacingHorizontalM,
     alignItems: 'flex-end',
   },
+  postActions: {
+    display: 'flex',
+    gap: tokens.spacingHorizontalS,
+    marginTop: tokens.spacingVerticalS,
+    alignItems: 'center',
+  },
 })
 
 function getBaseUrl(): string {
@@ -115,6 +127,7 @@ export default function ResourceDetailPage() {
   const queryClient = useQueryClient()
   const deleteResource = useDeleteResource()
   const user = useAuthStore((s) => s.user)
+  const { toggleBookmark, isBookmarked } = useBookmarkStore()
 
   // Optimistic upvote: update the cache instantly and roll back on error.
   const upvoteMutation = useMutation({
@@ -260,6 +273,12 @@ export default function ResourceDetailPage() {
           )}
         </div>
 
+        {resource?.tags && resource.tags.length > 0 && (
+          <div className={styles.infoMeta}>
+            <TagList tags={resource.tags} />
+          </div>
+        )}
+
         <div className={styles.actionRow}>
           <Button
             appearance={resource?.upvoted ? 'primary' : 'outline'}
@@ -267,6 +286,15 @@ export default function ResourceDetailPage() {
             onClick={handleUpvote}
           >
             {resource?.upvoteCount ?? 0}
+          </Button>
+
+          <Button
+            appearance={isBookmarked(resource?.id ?? 0) ? 'primary' : 'outline'}
+            icon={isBookmarked(resource?.id ?? 0) ? <Bookmark24Filled /> : <Bookmark24Regular />}
+            onClick={() => resource && toggleBookmark(resource.id, resource.title)}
+            aria-pressed={isBookmarked(resource?.id ?? 0)}
+          >
+            {isBookmarked(resource?.id ?? 0) ? 'Saved' : 'Save'}
           </Button>
 
           {resource?.url && (
@@ -350,9 +378,14 @@ export default function ResourceDetailPage() {
               </span>
             </div>
             <Body1>{post.content}</Body1>
+            <div className={styles.postActions}>
+              <ReportButton targetType="RESOURCE_POST" targetId={post.id} />
+            </div>
           </Card>
         ))}
       </div>
+
+      {id && <RelatedResources resourceId={id} />}
     </div>
   )
 }
