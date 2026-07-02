@@ -1,5 +1,6 @@
 package com.richardjiang880.lernchih.model;
 
+import com.richardjiang880.lernchih.model.enums.ContentFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -27,6 +28,11 @@ public class ResourcePost {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private ContentFormat format = ContentFormat.PLAIN;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

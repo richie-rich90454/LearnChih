@@ -1,5 +1,6 @@
 package com.richardjiang880.lernchih.model;
 
+import com.richardjiang880.lernchih.model.enums.ContentFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -25,6 +26,14 @@ public class ChannelThread {
 
     @Column(nullable = false)
     private String title;
+
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private ContentFormat format = ContentFormat.PLAIN;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

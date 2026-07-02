@@ -1,8 +1,11 @@
 package com.richardjiang880.lernchih.dto;
 
+import com.richardjiang880.lernchih.model.enums.ContentFormat;
 import jakarta.validation.constraints.NotBlank;
 
 public record CreatePostRequest(
     @NotBlank(message = "Content is required")
-    String content
+    String content,
+
+    ContentFormat format
 ) {}

@@ -1,5 +1,6 @@
 package com.richardjiang880.lernchih.model;
 
+import com.richardjiang880.lernchih.model.enums.ContentFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -22,6 +23,14 @@ public class ResourceThread {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resource_id", nullable = false, unique = true)
     private Resource resource;
+
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private ContentFormat format = ContentFormat.PLAIN;
 
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdAt ASC")

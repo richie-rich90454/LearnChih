@@ -2,6 +2,7 @@ package com.richardjiang880.lernchih.service;
 
 import com.richardjiang880.lernchih.dto.*;
 import com.richardjiang880.lernchih.model.*;
+import com.richardjiang880.lernchih.model.enums.ContentFormat;
 import com.richardjiang880.lernchih.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,11 +49,12 @@ public class ThreadService {
         ResourceThread thread = resourceThreadRepository.findById(threadId)
                 .orElseThrow(() -> new IllegalArgumentException("Resource thread not found"));
 
+        ContentFormat format = request.format() != null ? request.format() : ContentFormat.PLAIN;
         ResourcePost post = ResourcePost.builder()
                 .thread(thread)
                 .user(user)
-                // Post body may contain a safe subset of HTML markup.
-                .content(contentSanitizer.sanitize(request.content()))
+                .content(contentSanitizer.sanitizePlain(request.content()))
+                .format(format)
                 .build();
 
         post = resourcePostRepository.save(post);
@@ -78,10 +80,12 @@ public class ThreadService {
         Channel channel = channelRepository.findById(channelId)
                 .orElseThrow(() -> new IllegalArgumentException("Channel not found"));
 
+        ContentFormat format = request.format() != null ? request.format() : ContentFormat.PLAIN;
         ChannelThread thread = ChannelThread.builder()
                 .channel(channel)
-                // Thread titles are plain text.
                 .title(contentSanitizer.sanitizePlain(request.title()))
+                .content(contentSanitizer.sanitizePlain(request.content()))
+                .format(format)
                 .user(user)
                 .build();
 
@@ -91,8 +95,8 @@ public class ThreadService {
         ChannelPost firstPost = ChannelPost.builder()
                 .thread(thread)
                 .user(user)
-                // Post body may contain a safe subset of HTML markup.
-                .content(contentSanitizer.sanitize(request.content()))
+                .content(contentSanitizer.sanitizePlain(request.content()))
+                .format(format)
                 .build();
         channelPostRepository.save(firstPost);
 
@@ -112,11 +116,12 @@ public class ThreadService {
         ChannelThread thread = channelThreadRepository.findById(threadId)
                 .orElseThrow(() -> new IllegalArgumentException("Channel thread not found"));
 
+        ContentFormat format = request.format() != null ? request.format() : ContentFormat.PLAIN;
         ChannelPost post = ChannelPost.builder()
                 .thread(thread)
                 .user(user)
-                // Post body may contain a safe subset of HTML markup.
-                .content(contentSanitizer.sanitize(request.content()))
+                .content(contentSanitizer.sanitizePlain(request.content()))
+                .format(format)
                 .build();
 
         post = channelPostRepository.save(post);
