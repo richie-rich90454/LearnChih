@@ -16,6 +16,7 @@ import {
 } from '@fluentui/react-components'
 import { useLogin } from '../hooks/useAuth'
 import Seo from '../components/Seo'
+import OAuthButtons from '../components/OAuthButtons'
 
 const useStyles = makeStyles({
   pageContainer: {
@@ -118,7 +119,12 @@ export default function LoginPage() {
             </Button>
           </form>
 
+          <OAuthButtons />
+
           <div className={styles.linkRow}>
+            <Link to="/forgot-password" style={{ fontSize: 'var(--fontSizeBase300)' }}>
+              Forgot password?
+            </Link>
             <Text size={300}>Don&apos;t have an account?</Text>
             <Link to="/register" style={{ fontSize: 'var(--fontSizeBase300)' }}>
               Register

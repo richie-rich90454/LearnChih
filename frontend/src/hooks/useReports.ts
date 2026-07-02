@@ -1,16 +1,23 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   getReports,
+  createReport,
   resolveReport,
   deleteResourceAdmin,
   deletePostAdmin,
 } from '../api/reports'
-import type { Report } from '../types'
+import type { Report, CreateReportRequest } from '../types'
 
 export function useReports(params?: Record<string, string>) {
   return useQuery<Report[]>({
     queryKey: ['reports', params],
     queryFn: () => getReports(params).then((r) => r.data),
+  })
+}
+
+export function useCreateReport() {
+  return useMutation({
+    mutationFn: (data: CreateReportRequest) => createReport(data),
   })
 }
 

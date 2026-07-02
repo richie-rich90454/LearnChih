@@ -31,6 +31,9 @@ import useAuthStore from '../store/authStore'
 import { useDir } from '../hooks/useDir'
 import { useTranslation } from 'react-i18next'
 import { useThemeStore } from '../hooks/useThemeStore'
+import { SearchBar } from './SearchBar'
+import NotificationBell from './NotificationBell'
+import Footer from './Footer'
 
 interface NavItem {
   path: string
@@ -57,6 +60,19 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     gap: tokens.spacingHorizontalM,
+  },
+  headerCenter: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    padding: `0 ${tokens.spacingHorizontalL}`,
+    maxWidth: '520px',
+  },
+  headerRight: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: tokens.spacingHorizontalS,
   },
   mainArea: {
     display: 'flex',
@@ -219,7 +235,12 @@ export default function AppLayout() {
             <Title3 className={styles.desktopDrawer} style={{ display: 'none' }}>LernChih</Title3>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className={styles.headerCenter}>
+            <SearchBar placeholder="Search..." />
+          </div>
+
+          <div className={styles.headerRight}>
+            <NotificationBell />
             <Button
               appearance="subtle"
               onClick={() => {
@@ -261,6 +282,8 @@ export default function AppLayout() {
         <main id="main-content" tabIndex={-1} className={styles.content}>
           <Outlet />
         </main>
+
+        <Footer />
       </div>
     </div>
   )

@@ -26,12 +26,23 @@ import {
   MessageBarBody,
   Field,
   Select,
+  Switch,
+  Label,
+  Text,
 } from '@fluentui/react-components'
 import { Edit24Regular, Add24Regular, Dismiss24Regular } from '@fluentui/react-icons'
 import { useMyProfile, useUserProfile, useUpdateProfile, useUpdateSubjects, useAddSocial, useRemoveSocial } from '../hooks/useProfile'
+import { useNotificationPreferences } from '../hooks/usePreferences'
+import { useChangeEmail } from '../hooks/usePassword'
 import type { UserProfile } from '../types'
 import Seo from '../components/Seo'
 import { SkeletonLine, SkeletonCard } from '../components/Skeleton'
+import { BadgesWidget } from '../components/BadgesWidget'
+import { FollowButton } from '../components/FollowButton'
+import { EndorsementBadge } from '../components/EndorsementBadge'
+import { ConfirmDialog } from '../components/ConfirmDialog'
+import TwoFactorSetup from '../components/TwoFactorSetup'
+import { useExportUserData, useDeleteUserAccount } from '../hooks/useGdpr'
 
 const useStyles = makeStyles({
   container: {
@@ -105,6 +116,10 @@ export default function ProfilePage() {
   const updateSubjects = useUpdateSubjects()
   const addSocial = useAddSocial()
   const removeSocial = useRemoveSocial()
+  const { preferences, setPreferences } = useNotificationPreferences()
+  const changeEmail = useChangeEmail()
+  const exportData = useExportUserData()
+  const deleteAccount = useDeleteUserAccount()
 
   const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false)
   const [editName, setEditName] = useState<string>('')
@@ -117,6 +132,10 @@ export default function ProfilePage() {
   const [socialType, setSocialType] = useState<string>('GITHUB')
   const [socialLabel, setSocialLabel] = useState<string>('')
   const [socialUrl, setSocialUrl] = useState<string>('')
+
+  const [emailDialogOpen, setEmailDialogOpen] = useState<boolean>(false)
+  const [newEmail, setNewEmail] = useState<string>('')
+  const [emailPassword, setEmailPassword] = useState<string>('')
 
   if (isLoading) {
     return (
@@ -181,6 +200,19 @@ export default function ProfilePage() {
     removeSocial.mutate(socialId)
   }
 
+  const handleChangeEmail = () => {
+    changeEmail.mutate(
+      { newEmail, password: emailPassword },
+      {
+        onSuccess: () => {
+          setEmailDialogOpen(false)
+          setNewEmail('')
+          setEmailPassword('')
+        },
+      }
+    )
+  }
+
   return (
     <div className={styles.container}>
       <Seo
@@ -203,11 +235,16 @@ export default function ProfilePage() {
           <Badge appearance="tint">{profile?.role || 'STUDENT'}</Badge>
           {profile?.bio && <Body1 style={{ marginTop: '4px' }}>{profile.bio}</Body1>}
         </div>
-        {isOwnProfile && (
-          <Button appearance="outline" icon={<Edit24Regular />} onClick={handleEditOpen} style={{ marginLeft: 'auto' }}>
-            Edit
-          </Button>
-        )}
+        <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS, alignItems: 'flex-end' }}>
+          {isOwnProfile ? (
+            <Button appearance="outline" icon={<Edit24Regular />} onClick={handleEditOpen}>
+              Edit
+            </Button>
+          ) : (
+            profile && <FollowButton userId={profile.id ?? Number(id)} />
+          )}
+          {profile?.id && <EndorsementBadge userId={profile.id} />}
+        </div>
       </Card>
 
       {/* Subjects */}
@@ -259,6 +296,103 @@ export default function ProfilePage() {
             <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>No social links added</Body1>
           )}
         </div>
+      </Card>
+
+      {/* Notification preferences */}
+      {isOwnProfile && (
+        <Card className={styles.sectionCard}>
+          <div className={styles.sectionHeader}>
+            <Subtitle1 as="h2">Notification Preferences</Subtitle1>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Label htmlFor="email-notifications">Email notifications</Label>
+              <Switch
+                id="email-notifications"
+                checked={preferences.emailNotifications}
+                onChange={(_, data) =>
+                  setPreferences({ ...preferences, emailNotifications: data.checked as boolean })
+                }
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Label htmlFor="push-notifications">Push notifications</Label>
+              <Switch
+                id="push-notifications"
+                checked={preferences.pushNotifications}
+                onChange={(_, data) =>
+                  setPreferences({ ...preferences, pushNotifications: data.checked as boolean })
+                }
+              />
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* Account security */}
+      {isOwnProfile && (
+        <Card className={styles.sectionCard}>
+          <div className={styles.sectionHeader}>
+            <Subtitle1 as="h2">Account Security</Subtitle1>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL }}>
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: tokens.spacingVerticalS }}>
+                <div>
+                  <Text weight="semibold">Email address</Text>
+                  <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>{profile?.email}</Body1>
+                </div>
+                <Button appearance="outline" onClick={() => setEmailDialogOpen(true)}>
+                  Change email
+                </Button>
+              </div>
+            </div>
+            <TwoFactorSetup />
+          </div>
+        </Card>
+      )}
+
+      {/* Data & privacy */}
+      {isOwnProfile && (
+        <Card className={styles.sectionCard}>
+          <div className={styles.sectionHeader}>
+            <Subtitle1 as="h2">Data &amp; Privacy</Subtitle1>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <Text weight="semibold">Export my data</Text>
+                <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>Download a copy of your personal data.</Body1>
+              </div>
+              <Button
+                appearance="outline"
+                onClick={() => exportData.mutate()}
+                disabled={exportData.isPending}
+              >
+                {exportData.isPending ? <Spinner size="tiny" /> : 'Export'}
+              </Button>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <Text weight="semibold">Delete my account</Text>
+                <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>Permanently remove your account and data.</Body1>
+              </div>
+              <ConfirmDialog
+                trigger={<Button appearance="primary" color="danger">Delete account</Button>}
+                title="Delete your account?"
+                content="This will permanently delete your account and all associated data. This action cannot be undone."
+                confirmLabel="Delete"
+                destructive
+                onConfirm={() => deleteAccount.mutate()}
+              />
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* Badges */}
+      <Card className={styles.sectionCard}>
+        <BadgesWidget userId={profile?.id ?? Number(id)} />
       </Card>
 
       {/* Edit profile dialog */}
@@ -349,6 +483,52 @@ export default function ProfilePage() {
               <Button appearance="secondary" onClick={() => setSocialDialogOpen(false)}>Cancel</Button>
               <Button appearance="primary" onClick={handleAddSocial} disabled={addSocial.isPending || !socialUrl.trim()}>
                 {addSocial.isPending ? <Spinner size="tiny" /> : 'Add'}
+              </Button>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
+
+      {/* Change email dialog */}
+      <Dialog open={emailDialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setEmailDialogOpen(d.open)}>
+        <DialogSurface>
+          <DialogBody>
+            <DialogTitle>Change Email</DialogTitle>
+            <DialogContent>
+              <div className={styles.dialogForm}>
+                <Field label="New email">
+                  <Input
+                    type="email"
+                    value={newEmail}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewEmail(e.target.value)}
+                    placeholder="new@university.edu"
+                    aria-required="true"
+                  />
+                </Field>
+                <Field label="Current password">
+                  <Input
+                    type="password"
+                    value={emailPassword}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmailPassword(e.target.value)}
+                    placeholder="Enter your current password"
+                    aria-required="true"
+                  />
+                </Field>
+              </div>
+              {changeEmail.isError && (
+                <MessageBar intent="error" style={{ marginTop: tokens.spacingVerticalM }}>
+                  <MessageBarBody>Failed to change email. Please check your password and try again.</MessageBarBody>
+                </MessageBar>
+              )}
+            </DialogContent>
+            <DialogActions>
+              <Button appearance="secondary" onClick={() => setEmailDialogOpen(false)}>Cancel</Button>
+              <Button
+                appearance="primary"
+                onClick={handleChangeEmail}
+                disabled={changeEmail.isPending || !newEmail.trim() || !emailPassword.trim()}
+              >
+                {changeEmail.isPending ? <Spinner size="tiny" /> : 'Change email'}
               </Button>
             </DialogActions>
           </DialogBody>

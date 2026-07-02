@@ -15,6 +15,7 @@ import {
 } from '@fluentui/react-components'
 import { useRegister } from '../hooks/useAuth'
 import Seo from '../components/Seo'
+import OAuthButtons from '../components/OAuthButtons'
 
 const useStyles = makeStyles({
   pageContainer: {
@@ -159,6 +160,8 @@ export default function RegisterPage() {
               {registerMutation.isPending ? <Spinner size="tiny" /> : 'Create Account'}
             </Button>
           </form>
+
+          <OAuthButtons />
 
           <div className={styles.linkRow}>
             <span style={{ fontSize: 'var(--fontSizeBase300)' }}>Already have an account?</span>
