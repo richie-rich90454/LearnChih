@@ -204,6 +204,10 @@ export default function ChannelsPage() {
               {threads.length === 0 && (
                 <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>No threads yet. Start one!</Body1>
               )}
+              {/* TODO(perf): When threads exceed ~100 items, add list
+                  virtualization (e.g. react-window / react-virtual) to avoid
+                  rendering off-screen cards. Not added now to keep the change
+                  dependency-free. Keys are already stable (thread.id). */}
               {threads.map((thread) => (
                 <Card
                   key={thread.id}

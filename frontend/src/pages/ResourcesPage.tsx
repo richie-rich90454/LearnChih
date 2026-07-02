@@ -276,6 +276,10 @@ export default function ResourcesPage() {
           <MessageBarBody>No resources found. Upload the first one!</MessageBarBody>
         </MessageBar>
       )}
+      {/* TODO(perf): When resource counts exceed ~100 items, introduce list
+          virtualization (e.g. react-window / react-virtual) to avoid
+          rendering off-screen DOM nodes. Not added now to keep the change
+          dependency-free. Keys are already stable (resource.id). */}
       <div className={styles.grid}>
         {resources.map((resource) => (
           <Card
