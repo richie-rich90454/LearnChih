@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import {
   Spinner,
@@ -8,6 +8,7 @@ import {
 import RequireAuth from './components/RequireAuth'
 import AppLayout from './components/AppLayout'
 import CookieConsent from './components/CookieConsent'
+import { prefetchRoute } from './hooks/useRoutePrefetch'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const RegisterPage = lazy(() => import('./pages/RegisterPage'))
@@ -41,6 +42,21 @@ function LoadingFallback() {
 }
 
 export default function App() {
+  // Warm primary nav route chunks on idle; hover/focus prefetch lives in AppLayout.
+  useEffect(() => {
+    const run = () => {
+      prefetchRoute('dashboard', () => import('./pages/DashboardPage'))
+      prefetchRoute('resources', () => import('./pages/ResourcesPage'))
+      prefetchRoute('channels', () => import('./pages/ChannelsPage'))
+      prefetchRoute('leaderboard', () => import('./pages/LeaderboardPage'))
+    }
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(run)
+    } else {
+      window.setTimeout(run, 1500)
+    }
+  }, [])
+
   return (
     <BrowserRouter>
       <Suspense fallback={<LoadingFallback />}>
