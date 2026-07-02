@@ -4,6 +4,7 @@ import com.richardjiang880.lernchih.dto.*;
 import com.richardjiang880.lernchih.model.Resource;
 import com.richardjiang880.lernchih.model.ResourceCategory;
 import com.richardjiang880.lernchih.model.User;
+import com.richardjiang880.lernchih.repository.ResourceRepository;
 import com.richardjiang880.lernchih.repository.UpvoteRepository;
 import com.richardjiang880.lernchih.repository.UserRepository;
 import com.richardjiang880.lernchih.service.GamificationService;
@@ -31,15 +32,18 @@ public class ResourceController {
     private final GamificationService gamificationService;
     private final UserRepository userRepository;
     private final UpvoteRepository upvoteRepository;
+    private final ResourceRepository resourceRepository;
 
     public ResourceController(ResourceService resourceService,
                               GamificationService gamificationService,
                               UserRepository userRepository,
-                              UpvoteRepository upvoteRepository) {
+                              UpvoteRepository upvoteRepository,
+                              ResourceRepository resourceRepository) {
         this.resourceService = resourceService;
         this.gamificationService = gamificationService;
         this.userRepository = userRepository;
         this.upvoteRepository = upvoteRepository;
+        this.resourceRepository = resourceRepository;
     }
 
     @PostMapping
@@ -53,6 +57,7 @@ public class ResourceController {
 
         ResourceResponse response = new ResourceResponse(
                 resource.getId(),
+                resource.getSlug(),
                 resource.getTitle(),
                 resource.getDescription(),
                 resource.getCategory().name(),
@@ -87,6 +92,7 @@ public class ResourceController {
                     && upvoteRepository.existsByUserIdAndResourceId(currentUserId, r.getId());
             return new ResourceResponse(
                     r.getId(),
+                    r.getSlug(),
                     r.getTitle(),
                     r.getDescription(),
                     r.getCategory().name(),
@@ -108,11 +114,12 @@ public class ResourceController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResourceDetailResponse> getResourceDetail(
-            @PathVariable Long id,
+            @PathVariable String id,
             @AuthenticationPrincipal UserDetails userDetails) {
-        // Check upvote status for each resource if user is authenticated
+        // Accept either a numeric id or a slug on public deep links.
         Long currentUserId = userDetails != null ? getUserFromDetails(userDetails).getId() : null;
-        ResourceDetailResponse response = resourceService.getResourceDetail(id, currentUserId);
+        Long resourceId = resolveResourceId(id);
+        ResourceDetailResponse response = resourceService.getResourceDetail(resourceId, currentUserId);
         return ResponseEntity.ok(response);
     }
 
@@ -137,6 +144,16 @@ public class ResourceController {
     @GetMapping("/leaderboard")
     public ResponseEntity<List<LeaderboardEntry>> getLeaderboard() {
         return ResponseEntity.ok(gamificationService.getLeaderboard());
+    }
+
+    // Numeric segments resolve by id; anything else is treated as a slug.
+    private Long resolveResourceId(String id) {
+        if (id != null && id.matches("\\d+")) {
+            return Long.parseLong(id);
+        }
+        return resourceRepository.findBySlug(id)
+                .orElseThrow(() -> new IllegalArgumentException("Resource not found"))
+                .getId();
     }
 
     // Resolve authenticated User entity from Spring Security UserDetails

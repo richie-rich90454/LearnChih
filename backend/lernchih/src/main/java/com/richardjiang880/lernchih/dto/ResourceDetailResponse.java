@@ -5,6 +5,7 @@ import java.util.List;
 
 public record ResourceDetailResponse(
     Long id,
+    String slug,
     String title,
     String description,
     String category,

@@ -21,6 +21,9 @@ public class Resource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String slug;
+
     @Column(nullable = false)
     private String title;
 

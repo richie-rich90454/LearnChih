@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public record ResourceResponse(
     Long id,
+    String slug,
     String title,
     String description,
     String category,

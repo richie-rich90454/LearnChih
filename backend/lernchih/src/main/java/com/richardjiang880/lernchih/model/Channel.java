@@ -1,5 +1,6 @@
 package com.richardjiang880.lernchih.model;
 
+import com.richardjiang880.lernchih.util.SlugUtil;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -20,6 +21,9 @@ public class Channel {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    private String slug;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(columnDefinition = "TEXT")
@@ -35,5 +39,8 @@ public class Channel {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        if (slug == null || slug.isBlank()) {
+            slug = SlugUtil.slugify(name);
+        }
     }
 }

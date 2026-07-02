@@ -3,6 +3,7 @@ package com.richardjiang880.lernchih.service;
 import com.richardjiang880.lernchih.dto.*;
 import com.richardjiang880.lernchih.model.*;
 import com.richardjiang880.lernchih.repository.*;
+import com.richardjiang880.lernchih.util.SlugUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -82,10 +83,18 @@ public class ResourceService {
         Course course = request.getCourseId() != null
                 ? courseRepository.findById(request.getCourseId()).orElse(null) : null;
 
+        String sanitizedTitle = contentSanitizer.sanitizePlain(request.getTitle());
+        String baseSlug = SlugUtil.slugify(sanitizedTitle);
+        boolean slugCollision = resourceRepository.existsBySlug(baseSlug);
+        // When the base slug is already taken, save with a unique placeholder
+        // first so we can append the new entity's id to form base-<id>.
+        String tentativeSlug = slugCollision ? baseSlug + "-" + System.nanoTime() : baseSlug;
+
         Resource resource = Resource.builder()
                 // Sanitize user-supplied text: title is plain text, description
                 // may contain a safe subset of HTML markup.
-                .title(contentSanitizer.sanitizePlain(request.getTitle()))
+                .title(sanitizedTitle)
+                .slug(tentativeSlug)
                 .description(contentSanitizer.sanitize(request.getDescription()))
                 .category(request.getCategory())
                 .type(request.getType())
@@ -99,6 +108,12 @@ public class ResourceService {
                 .build();
 
         resource = resourceRepository.save(resource);
+
+        // On collision, finalize the slug as base-<id> (guaranteed unique).
+        if (slugCollision) {
+            resource.setSlug(baseSlug + "-" + resource.getId());
+            resource = resourceRepository.save(resource);
+        }
 
         // Auto-create a discussion thread for each new resource
         ResourceThread thread = ResourceThread.builder()
@@ -146,6 +161,7 @@ public class ResourceService {
 
         return new ResourceDetailResponse(
                 resource.getId(),
+                resource.getSlug(),
                 resource.getTitle(),
                 resource.getDescription(),
                 resource.getCategory().name(),

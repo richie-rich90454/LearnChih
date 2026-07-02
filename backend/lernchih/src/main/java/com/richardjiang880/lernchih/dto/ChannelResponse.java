@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public record ChannelResponse(
     Long id,
+    String slug,
     String name,
     String description,
     int threadCount,

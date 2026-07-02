@@ -47,6 +47,7 @@ public class ChannelController {
         List<ChannelResponse> channels = channelRepository.findAll().stream()
                 .map(c -> new ChannelResponse(
                         c.getId(),
+                        c.getSlug(),
                         c.getName(),
                         c.getDescription(),
                         c.getThreads().size(),
@@ -57,11 +58,12 @@ public class ChannelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ChannelResponse> getChannel(@PathVariable Long id) {
-        Channel channel = channelRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Channel not found"));
+    public ResponseEntity<ChannelResponse> getChannel(@PathVariable String id) {
+        // Accept either a numeric id or a slug on public deep links.
+        Channel channel = resolveChannel(id);
         ChannelResponse response = new ChannelResponse(
                 channel.getId(),
+                channel.getSlug(),
                 channel.getName(),
                 channel.getDescription(),
                 channel.getThreads().size(),
@@ -72,17 +74,18 @@ public class ChannelController {
 
     @GetMapping("/{id}/threads")
     public ResponseEntity<Page<ChannelThreadResponse>> getChannelThreads(
-            @PathVariable Long id,
+            @PathVariable String id,
             @PageableDefault(size = 20) Pageable pageable) {
-        // Validate channel exists before querying threads
-        if (!channelRepository.existsById(id)) {
+        // Accept either a numeric id or a slug; validate channel exists first.
+        Long channelId = resolveChannelId(id);
+        if (!channelRepository.existsById(channelId)) {
             throw new IllegalArgumentException("Channel not found");
         }
 
-        Page<ChannelThread> threads = channelThreadRepository.findByChannelIdOrderByCreatedAtDesc(id, pageable);
+        Page<ChannelThread> threads = channelThreadRepository.findByChannelIdOrderByCreatedAtDesc(channelId, pageable);
         Page<ChannelThreadResponse> responsePage = threads.map(t -> new ChannelThreadResponse(
                 t.getId(),
-                id,
+                channelId,
                 t.getTitle(),
                 t.getUser().getId(),
                 t.getUser().getName(),
@@ -118,6 +121,20 @@ public class ChannelController {
             @PathVariable Long threadId,
             @PageableDefault(size = 50) Pageable pageable) {
         return ResponseEntity.ok(threadService.getChannelPosts(threadId, pageable));
+    }
+
+    // Numeric segments resolve by id; anything else is treated as a slug.
+    private Channel resolveChannel(String id) {
+        if (id != null && id.matches("\\d+")) {
+            return channelRepository.findById(Long.parseLong(id))
+                    .orElseThrow(() -> new IllegalArgumentException("Channel not found"));
+        }
+        return channelRepository.findBySlug(id)
+                .orElseThrow(() -> new IllegalArgumentException("Channel not found"));
+    }
+
+    private Long resolveChannelId(String id) {
+        return resolveChannel(id).getId();
     }
 
     private User getUserFromDetails(UserDetails userDetails) {

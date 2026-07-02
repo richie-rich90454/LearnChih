@@ -9,8 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
+
+    Optional<Resource> findBySlug(String slug);
+
+    boolean existsBySlug(String slug);
 
     Page<Resource> findBySubjectId(Long subjectId, Pageable pageable);
 
