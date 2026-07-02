@@ -1,0 +1,17 @@
+{
+  "name": "LernChih - Learning Resource Platform",
+  "short_name": "LernChih",
+  "description": "A student forum for sharing learning resources",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0078d4",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
