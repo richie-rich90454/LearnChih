@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   makeStyles,
   tokens,
@@ -30,6 +30,7 @@ import {
 import { Add24Regular, ArrowUpload24Regular, Link24Regular } from '@fluentui/react-icons'
 import { useResources, useCreateResource } from '../hooks/useResources'
 import type { Resource } from '../types'
+import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
   container: {
@@ -85,6 +86,8 @@ const SUBJECTS = ['Mathematics', 'Physics', 'Computer Science', 'Chemistry', 'Bi
 export default function ResourcesPage() {
   const styles = useStyles()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const hasQueryParams = searchParams.has('q') || searchParams.has('page')
   const [categoryFilter, setCategoryFilter] = useState<string>('')
   const [subjectFilter, setSubjectFilter] = useState<string>('')
   const [dialogOpen, setDialogOpen] = useState<boolean>(false)
@@ -147,8 +150,15 @@ export default function ResourcesPage() {
 
   return (
     <div className={styles.container}>
+      <Seo
+        title="Learning Resources — LernChih"
+        description="Browse and share learning resources — notes, past papers, textbooks, and tutorials — contributed by the LernChih academic community."
+        canonicalPath="/resources"
+        robots={hasQueryParams ? 'noindex, follow' : 'index, follow'}
+        hreflang
+      />
       <div className={styles.headerRow}>
-        <Title2>Resources</Title2>
+        <Title2 as="h1">Resources</Title2>
         <Dialog open={dialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setDialogOpen(d.open)}>
           <DialogTrigger disableButtonEnhancement>
             <Button appearance="primary" icon={<Add24Regular />}>Upload Resource</Button>

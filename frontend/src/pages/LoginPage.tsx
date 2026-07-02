@@ -15,6 +15,7 @@ import {
   Spinner,
 } from '@fluentui/react-components'
 import { useLogin } from '../hooks/useAuth'
+import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
   pageContainer: {
@@ -64,9 +65,10 @@ export default function LoginPage() {
 
   return (
     <div className={styles.pageContainer}>
+      <Seo title="Log in — LernChih" canonicalPath="/login" robots="noindex, follow" />
       <Card className={styles.loginCard}>
         <div className={styles.cardBody}>
-          <Title3>Sign in to LernChih</Title3>
+          <Title3 as="h1">Sign in to LernChih</Title3>
 
           {loginMutation.isError && (
             <MessageBar intent="error">

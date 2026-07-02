@@ -18,6 +18,7 @@ import {
 import { Trophy24Regular } from '@fluentui/react-icons'
 import { useLeaderboard } from '../hooks/useResources'
 import type { LeaderboardEntry } from '../types'
+import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
   container: {
@@ -56,9 +57,15 @@ export default function LeaderboardPage() {
 
   return (
     <div className={styles.container}>
+      <Seo
+        title="Leaderboard — LernChih"
+        description="See the top contributors on the LernChih leaderboard, ranked by credits earned through sharing resources and helping the community."
+        canonicalPath="/leaderboard"
+        hreflang
+      />
       <div className={styles.headerRow}>
         <Trophy24Regular />
-        <Title2>Leaderboard</Title2>
+        <Title2 as="h1">Leaderboard</Title2>
       </div>
 
       {users.length === 0 ? (

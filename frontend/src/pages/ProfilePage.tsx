@@ -29,6 +29,7 @@ import {
 import { Edit24Regular, Add24Regular, Dismiss24Regular } from '@fluentui/react-icons'
 import { useMyProfile, useUserProfile, useUpdateProfile, useUpdateSubjects, useAddSocial, useRemoveSocial } from '../hooks/useProfile'
 import type { UserProfile } from '../types'
+import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
   container: {
@@ -166,6 +167,12 @@ export default function ProfilePage() {
 
   return (
     <div className={styles.container}>
+      <Seo
+        title={`${profile?.name || 'Profile'} — LernChih`}
+        description={`${profile?.name || 'User'}'s profile on LernChih.`}
+        canonicalPath={isOwnProfile ? '/profile' : `/profile/${id}`}
+        robots="noindex, follow"
+      />
       {/* Profile header */}
       <Card className={styles.profileHeader}>
         <div className={styles.avatarSection}>
@@ -175,7 +182,7 @@ export default function ProfilePage() {
           </Badge>
         </div>
         <div className={styles.profileInfo}>
-          <Title2>{profile?.name || 'User'}</Title2>
+          <Title2 as="h1">{profile?.name || 'User'}</Title2>
           <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>{profile?.email}</Body1>
           <Badge appearance="tint">{profile?.role || 'STUDENT'}</Badge>
           {profile?.bio && <Body1 style={{ marginTop: '4px' }}>{profile.bio}</Body1>}
@@ -190,7 +197,7 @@ export default function ProfilePage() {
       {/* Subjects */}
       <Card className={styles.sectionCard}>
         <div className={styles.sectionHeader}>
-          <Subtitle1>Subjects</Subtitle1>
+          <Subtitle1 as="h2">Subjects</Subtitle1>
           {isOwnProfile && (
             <Button appearance="subtle" icon={<Edit24Regular />} onClick={handleSubjectsOpen}>Edit</Button>
           )}
@@ -209,7 +216,7 @@ export default function ProfilePage() {
       {/* Social links */}
       <Card className={styles.sectionCard}>
         <div className={styles.sectionHeader}>
-          <Subtitle1>Social Links</Subtitle1>
+          <Subtitle1 as="h2">Social Links</Subtitle1>
           {isOwnProfile && (
             <Button appearance="subtle" icon={<Add24Regular />} onClick={() => setSocialDialogOpen(true)}>Add</Button>
           )}

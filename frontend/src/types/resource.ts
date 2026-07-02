@@ -9,6 +9,7 @@ export interface Resource {
   type: ResourceType;
   filePath: string | null;
   externalUrl: string | null;
+  slug?: string;
   userId: number;
   userName: string;
   subjectId: number | null;

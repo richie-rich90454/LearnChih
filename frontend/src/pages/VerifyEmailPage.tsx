@@ -15,6 +15,7 @@ import {
 } from '@fluentui/react-components'
 import { useVerifyEmail } from '../hooks/useAuth'
 import { resendVerification } from '../api/auth'
+import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
   pageContainer: {
@@ -114,9 +115,10 @@ export default function VerifyEmailPage() {
 
   return (
     <div className={styles.pageContainer}>
+      <Seo title="Verify your email — LernChih" canonicalPath="/verify" robots="noindex, nofollow" />
       <Card className={styles.verifyCard}>
         <div className={styles.cardBody}>
-          <Title3>Verify your email</Title3>
+          <Title3 as="h1">Verify your email</Title3>
           <p style={{ margin: 0, color: 'var(--colorNeutralForeground2)' }}>
             We sent a 6-digit code to <strong>{email || 'your email'}</strong>
           </p>

@@ -29,6 +29,7 @@ import { Shield24Regular, Checkmark24Regular, Delete24Regular } from '@fluentui/
 import { useReports, useResolveReport, useDeleteResourceAdmin, useDeletePostAdmin } from '../hooks/useReports'
 import useAuthStore from '../store/authStore'
 import type { Report } from '../types'
+import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
   container: {
@@ -99,17 +100,21 @@ export default function AdminPage() {
 
   if (!isAdmin) {
     return (
-      <MessageBar intent="error">
-        <MessageBarBody>You don&apos;t have permission to access this page.</MessageBarBody>
-      </MessageBar>
+      <>
+        <Seo title="Admin — LernChih" canonicalPath="/admin" robots="noindex, nofollow" />
+        <MessageBar intent="error">
+          <MessageBarBody>You don&apos;t have permission to access this page.</MessageBarBody>
+        </MessageBar>
+      </>
     )
   }
 
   return (
     <div className={styles.container}>
+      <Seo title="Admin — LernChih" canonicalPath="/admin" robots="noindex, nofollow" />
       <div className={styles.headerRow}>
         <Shield24Regular />
-        <Title2>Admin Panel</Title2>
+        <Title2 as="h1">Admin Panel</Title2>
       </div>
 
       {/* Filter */}

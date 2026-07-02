@@ -22,6 +22,7 @@ import useAuthStore from '../store/authStore'
 import { useMyProfile } from '../hooks/useProfile'
 import { useResources } from '../hooks/useResources'
 import type { UserProfile, Resource } from '../types'
+import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
   container: {
@@ -97,9 +98,15 @@ export default function DashboardPage() {
 
   return (
     <div className={styles.container}>
+      <Seo
+        title="Dashboard — LernChih"
+        description="Your LernChih dashboard: track your credits, jump to resources and channels, and see recent learning materials."
+        canonicalPath="/"
+        hreflang
+      />
       {/* Welcome */}
       <div>
-        <Title1>Welcome back, {user?.name || 'Student'}</Title1>
+        <Title1 as="h1">Welcome back, {user?.name || 'Student'}</Title1>
         <Subtitle2 style={{ color: 'var(--colorNeutralForeground2)', marginTop: '4px' }}>
           Here&apos;s what&apos;s happening in your academic community
         </Subtitle2>
@@ -130,7 +137,7 @@ export default function DashboardPage() {
 
       {/* Quick links */}
       <div>
-        <Title3 style={{ marginBottom: '12px' }}>Quick Links</Title3>
+        <Title3 as="h2" style={{ marginBottom: '12px' }}>Quick Links</Title3>
         <div className={styles.quickLinks}>
           <Card
             className={styles.quickLinkCard}
@@ -167,7 +174,7 @@ export default function DashboardPage() {
 
       {/* Recent resources */}
       <div>
-        <Title3 style={{ marginBottom: '12px' }}>Recent Resources</Title3>
+        <Title3 as="h2" style={{ marginBottom: '12px' }}>Recent Resources</Title3>
         {recentResources.length === 0 ? (
           <MessageBar>
             <MessageBarBody>No resources yet. Be the first to upload!</MessageBarBody>

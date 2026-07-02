@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   makeStyles,
   tokens,
@@ -26,6 +26,7 @@ import {
 import { Add24Regular } from '@fluentui/react-icons'
 import { useChannels, useChannel, useCreateChannelThread } from '../hooks/useChannels'
 import type { Channel, ChannelThread } from '../types'
+import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
   container: {
@@ -80,6 +81,8 @@ const useStyles = makeStyles({
 export default function ChannelsPage() {
   const styles = useStyles()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const hasQueryParams = searchParams.has('q') || searchParams.has('page')
   const { data: channels, isLoading, isError } = useChannels()
   const [selectedChannelId, setSelectedChannelId] = useState<number | null>(null)
   const { data: channelDetail } = useChannel(selectedChannelId)
@@ -108,8 +111,15 @@ export default function ChannelsPage() {
 
   return (
     <div className={styles.container}>
+      <Seo
+        title="Channels — LernChih"
+        description="Join subject-specific discussion channels on LernChih. Ask questions, share insights, and collaborate with your academic community."
+        canonicalPath="/channels"
+        robots={hasQueryParams ? 'noindex, follow' : 'index, follow'}
+        hreflang
+      />
       <div className={styles.headerRow}>
-        <Title2>Channels</Title2>
+        <Title2 as="h1">Channels</Title2>
         {selectedChannelId && (
           <Dialog open={dialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setDialogOpen(d.open)}>
             <DialogTrigger disableButtonEnhancement>
@@ -187,7 +197,7 @@ export default function ChannelsPage() {
         {/* Threads for selected channel */}
         {selectedChannelId && (
           <div className={styles.threadsSection} style={{ flex: 2 }}>
-            <Subtitle2 style={{ marginBottom: '12px' }}>
+            <Subtitle2 as="h2" style={{ marginBottom: '12px' }}>
               {channelDetail?.name || 'Channel'} — Threads
             </Subtitle2>
             <div className={styles.threadList}>

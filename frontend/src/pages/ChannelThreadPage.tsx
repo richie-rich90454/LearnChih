@@ -20,6 +20,8 @@ import { ArrowLeft24Regular } from '@fluentui/react-icons'
 import { useChannel, useChannelPosts, useCreateChannelPost } from '../hooks/useChannels'
 import useWebSocket from '../hooks/useWebSocket'
 import type { Post } from '../types'
+import Seo from '../components/Seo'
+import { discussionForumPostingSchema, breadcrumbSchema } from '../components/jsonLd'
 
 const useStyles = makeStyles({
   container: {
@@ -59,6 +61,13 @@ const useStyles = makeStyles({
   },
 })
 
+function getBaseUrl(): string {
+  const envBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL
+  if (envBaseUrl) return envBaseUrl.replace(/\/$/, '')
+  if (typeof window !== 'undefined') return window.location.origin
+  return ''
+}
+
 export default function ChannelThreadPage() {
   const styles = useStyles()
   const { channelId, threadId } = useParams<{ channelId: string; threadId: string }>()
@@ -89,8 +98,35 @@ export default function ChannelThreadPage() {
 
   const postList: Post[] = Array.isArray(posts) ? posts : (posts as any)?.content || []
 
+  const threadTitle = thread?.title || 'Thread'
+  const threadSlug = thread?.slug || threadId
+  const canonicalPath = `/channels/${channelId}/threads/${threadSlug}`
+  const baseUrl = getBaseUrl()
+  const threadUrl = `${baseUrl}${canonicalPath}`
+  const jsonLd = [
+    discussionForumPostingSchema({
+      title: threadTitle,
+      description: threadTitle,
+      url: threadUrl,
+      author: thread?.authorName || thread?.userName,
+      datePublished: thread?.createdAt,
+    }),
+    breadcrumbSchema([
+      { name: 'Channels', url: `${baseUrl}/channels` },
+      { name: channel?.name || 'Channel', url: `${baseUrl}/channels` },
+      { name: threadTitle, url: threadUrl },
+    ]),
+  ]
+
   return (
     <div className={styles.container}>
+      <Seo
+        title={`${threadTitle} — LernChih`}
+        description={`Discussion: ${threadTitle} in ${channel?.name || 'a channel'} on LernChih.`}
+        canonicalPath={canonicalPath}
+        jsonLd={jsonLd}
+        hreflang
+      />
       {/* Back */}
       <div className={styles.backRow}>
         <Button appearance="subtle" icon={<ArrowLeft24Regular />} onClick={() => navigate('/channels')}>
@@ -100,7 +136,7 @@ export default function ChannelThreadPage() {
 
       {/* Thread info */}
       <div className={styles.threadInfo}>
-        <Title2>{thread?.title || 'Thread'}</Title2>
+        <Title2 as="h1">{thread?.title || 'Thread'}</Title2>
         <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>
           in {channel?.name || 'Channel'}
         </Body1>

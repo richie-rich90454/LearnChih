@@ -14,6 +14,7 @@ import {
   Spinner,
 } from '@fluentui/react-components'
 import { useRegister } from '../hooks/useAuth'
+import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
   pageContainer: {
@@ -81,9 +82,10 @@ export default function RegisterPage() {
 
   return (
     <div className={styles.pageContainer}>
+      <Seo title="Create your account — LernChih" canonicalPath="/register" robots="noindex, follow" />
       <Card className={styles.registerCard}>
         <div className={styles.cardBody}>
-          <Title3>Create your account</Title3>
+          <Title3 as="h1">Create your account</Title3>
 
           {validationError && (
             <MessageBar intent="error">

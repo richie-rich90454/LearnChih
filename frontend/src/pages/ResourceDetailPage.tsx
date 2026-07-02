@@ -36,6 +36,8 @@ import { useResourcePosts, useCreateResourcePost } from '../hooks/useThreads'
 import { reportResource } from '../api/resources'
 import useWebSocket from '../hooks/useWebSocket'
 import type { Post } from '../types'
+import Seo from '../components/Seo'
+import { articleSchema, breadcrumbSchema } from '../components/jsonLd'
 
 const useStyles = makeStyles({
   container: {
@@ -93,6 +95,13 @@ const useStyles = makeStyles({
   },
 })
 
+function getBaseUrl(): string {
+  const envBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL
+  if (envBaseUrl) return envBaseUrl.replace(/\/$/, '')
+  if (typeof window !== 'undefined') return window.location.origin
+  return ''
+}
+
 export default function ResourceDetailPage() {
   const styles = useStyles()
   const { id } = useParams<{ id: string }>()
@@ -145,8 +154,36 @@ export default function ResourceDetailPage() {
 
   const postList: Post[] = Array.isArray(posts) ? posts : (posts as any)?.content || []
 
+  const resourceTitle = resource?.title || 'Resource'
+  const resourceSlug = resource?.slug || id
+  const canonicalPath = `/resources/${resourceSlug}`
+  const baseUrl = getBaseUrl()
+  const articleUrl = `${baseUrl}${canonicalPath}`
+  const seoDescription = resource?.description || `${resourceTitle} on LernChih`
+  const jsonLd = [
+    articleSchema({
+      title: resourceTitle,
+      description: seoDescription,
+      url: articleUrl,
+      datePublished: resource?.createdAt,
+      author: resource?.authorName,
+    }),
+    breadcrumbSchema([
+      { name: 'Resources', url: `${baseUrl}/resources` },
+      { name: resourceTitle, url: articleUrl },
+    ]),
+  ]
+
   return (
     <div className={styles.container}>
+      <Seo
+        title={`${resourceTitle} — LernChih`}
+        description={seoDescription}
+        canonicalPath={canonicalPath}
+        ogType="article"
+        jsonLd={jsonLd}
+        hreflang
+      />
       {/* Back button */}
       <div className={styles.backRow}>
         <Button appearance="subtle" icon={<ArrowLeft24Regular />} onClick={() => navigate('/resources')}>
@@ -158,7 +195,7 @@ export default function ResourceDetailPage() {
       <Card className={styles.infoCard}>
         <div className={styles.infoHeader}>
           <div>
-            <Title2>{resource?.title}</Title2>
+            <Title2 as="h1">{resource?.title}</Title2>
             <div className={styles.infoMeta}>
               <Badge appearance="tint">{resource?.category?.replace('_', ' ') || 'General'}</Badge>
               {resource?.subject && <Badge appearance="outline">{resource.subject}</Badge>}
@@ -227,7 +264,7 @@ export default function ResourceDetailPage() {
 
       {/* Thread / Discussion */}
       <div className={styles.threadSection}>
-        <Subtitle1>Discussion</Subtitle1>
+        <Subtitle1 as="h2">Discussion</Subtitle1>
 
         {/* New post */}
         <div className={styles.newPostRow}>

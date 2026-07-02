@@ -20,6 +20,7 @@ export interface ChannelThread {
   userName: string;
   authorName?: string;
   postCount: number;
+  slug?: string;
   createdAt: string;
 }
 
