@@ -4,6 +4,7 @@ import {
   makeStyles,
   tokens,
   Title2,
+  Title3,
   Subtitle1,
   Subtitle2,
   Body1,
@@ -30,6 +31,7 @@ import { Edit24Regular, Add24Regular, Dismiss24Regular } from '@fluentui/react-i
 import { useMyProfile, useUserProfile, useUpdateProfile, useUpdateSubjects, useAddSocial, useRemoveSocial } from '../hooks/useProfile'
 import type { UserProfile } from '../types'
 import Seo from '../components/Seo'
+import { SkeletonLine, SkeletonCard } from '../components/Skeleton'
 
 const useStyles = makeStyles({
   container: {
@@ -97,7 +99,7 @@ export default function ProfilePage() {
   const isOwnProfile = !id
 
   const profileQuery = isOwnProfile ? useMyProfile() : useUserProfile(id)
-  const { data: profile, isLoading, isError } = profileQuery
+  const { data: profile, isLoading, isError, refetch } = profileQuery
 
   const updateProfile = useUpdateProfile()
   const updateSubjects = useUpdateSubjects()
@@ -116,12 +118,26 @@ export default function ProfilePage() {
   const [socialLabel, setSocialLabel] = useState<string>('')
   const [socialUrl, setSocialUrl] = useState<string>('')
 
-  if (isLoading) return <Spinner label="Loading profile..." />
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <Card className={styles.profileHeader}>
+          <SkeletonLine width="20%" />
+          <SkeletonLine width="40%" />
+          <SkeletonLine width="30%" />
+        </Card>
+        <SkeletonCard />
+        <SkeletonCard />
+      </div>
+    )
+  }
   if (isError) {
     return (
-      <MessageBar intent="error" role="alert">
-        <MessageBarBody>Failed to load profile.</MessageBarBody>
-      </MessageBar>
+      <div role="alert" style={{ textAlign: 'center', padding: 48 }}>
+        <Title3 as="h3">Failed to load profile</Title3>
+        <p style={{ marginBottom: 12 }}>Something went wrong. Please try again.</p>
+        <Button appearance="primary" onClick={() => refetch()}>Retry</Button>
+      </div>
     )
   }
 

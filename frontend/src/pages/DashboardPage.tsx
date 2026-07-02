@@ -8,7 +8,6 @@ import {
   Card,
   Badge,
   Button,
-  Spinner,
   MessageBar,
   MessageBarBody,
 } from '@fluentui/react-components'
@@ -23,6 +22,7 @@ import { useMyProfile } from '../hooks/useProfile'
 import { useResources } from '../hooks/useResources'
 import type { UserProfile, Resource } from '../types'
 import Seo from '../components/Seo'
+import { SkeletonLine, SkeletonList } from '../components/Skeleton'
 
 const useStyles = makeStyles({
   container: {
@@ -87,11 +87,31 @@ export default function DashboardPage() {
   const styles = useStyles()
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
-  const { data: profile, isLoading: profileLoading } = useMyProfile()
-  const { data: resources, isLoading: resourcesLoading } = useResources({ page: '0', size: '6' })
+  const { data: profile, isLoading: profileLoading, isError: profileError, refetch: refetchProfile } = useMyProfile()
+  const { data: resources, isLoading: resourcesLoading, isError: resourcesError, refetch: refetchResources } = useResources({ page: '0', size: '6' })
 
   if (profileLoading || resourcesLoading) {
-    return <Spinner label="Loading dashboard..." />
+    return (
+      <div className={styles.container}>
+        <SkeletonLine width="40%" />
+        <div className={styles.statsRow}>
+          <Card className={styles.statCard}><SkeletonLine width="50%" /><SkeletonLine /></Card>
+          <Card className={styles.statCard}><SkeletonLine width="50%" /><SkeletonLine /></Card>
+          <Card className={styles.statCard}><SkeletonLine width="50%" /><SkeletonLine /></Card>
+        </div>
+        <SkeletonList count={3} />
+      </div>
+    )
+  }
+
+  if (profileError || resourcesError) {
+    return (
+      <div role="alert" style={{ textAlign: 'center', padding: 48 }}>
+        <Title3 as="h3">Failed to load dashboard</Title3>
+        <p style={{ marginBottom: 12 }}>Something went wrong. Please try again.</p>
+        <Button appearance="primary" onClick={() => { refetchProfile(); refetchResources() }}>Retry</Button>
+      </div>
+    )
   }
 
   const recentResources: Resource[] = Array.isArray(resources) ? resources.slice(0, 6) : (resources as any)?.content?.slice(0, 6) || []

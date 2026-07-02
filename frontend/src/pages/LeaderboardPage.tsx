@@ -2,16 +2,17 @@ import {
   makeStyles,
   tokens,
   Title2,
+  Title3,
   Subtitle2,
   Body1,
   Avatar,
   Badge,
+  Button,
   DataGrid,
   DataGridHeader,
   DataGridRow,
   DataGridCell,
   DataGridBody,
-  Spinner,
   MessageBar,
   MessageBarBody,
 } from '@fluentui/react-components'
@@ -19,6 +20,7 @@ import { Trophy24Regular } from '@fluentui/react-icons'
 import { useLeaderboard } from '../hooks/useResources'
 import type { LeaderboardEntry } from '../types'
 import Seo from '../components/Seo'
+import { SkeletonLine, SkeletonList } from '../components/Skeleton'
 
 const useStyles = makeStyles({
   container: {
@@ -42,14 +44,23 @@ const columns = [
 
 export default function LeaderboardPage() {
   const styles = useStyles()
-  const { data, isLoading, isError } = useLeaderboard()
+  const { data, isLoading, isError, refetch } = useLeaderboard()
 
-  if (isLoading) return <Spinner label="Loading leaderboard..." />
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <SkeletonLine width="40%" />
+        <SkeletonList count={5} />
+      </div>
+    )
+  }
   if (isError) {
     return (
-      <MessageBar intent="error">
-        <MessageBarBody>Failed to load leaderboard.</MessageBarBody>
-      </MessageBar>
+      <div role="alert" style={{ textAlign: 'center', padding: 48 }}>
+        <Title3 as="h3">Failed to load leaderboard</Title3>
+        <p style={{ marginBottom: 12 }}>Something went wrong. Please try again.</p>
+        <Button appearance="primary" onClick={() => refetch()}>Retry</Button>
+      </div>
     )
   }
 

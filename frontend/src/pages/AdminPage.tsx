@@ -3,6 +3,7 @@ import {
   makeStyles,
   tokens,
   Title2,
+  Title3,
   Subtitle2,
   Body1,
   Badge,
@@ -30,6 +31,7 @@ import { useReports, useResolveReport, useDeleteResourceAdmin, useDeletePostAdmi
 import useAuthStore from '../store/authStore'
 import type { Report } from '../types'
 import Seo from '../components/Seo'
+import { SkeletonList } from '../components/Skeleton'
 
 const useStyles = makeStyles({
   container: {
@@ -71,7 +73,7 @@ export default function AdminPage() {
   const params: Record<string, string> = {}
   if (statusFilter) params.status = statusFilter
 
-  const { data, isLoading, isError } = useReports(params)
+  const { data, isLoading, isError, refetch } = useReports(params)
   const resolveReport = useResolveReport()
   const deleteResource = useDeleteResourceAdmin()
   const deletePost = useDeletePostAdmin()
@@ -132,11 +134,13 @@ export default function AdminPage() {
         </Dropdown>
       </div>
 
-      {isLoading && <Spinner label="Loading reports..." />}
+      {isLoading && <SkeletonList count={4} />}
       {isError && (
-        <MessageBar intent="error">
-          <MessageBarBody>Failed to load reports.</MessageBarBody>
-        </MessageBar>
+        <div role="alert" style={{ textAlign: 'center', padding: 48 }}>
+          <Title3 as="h3">Failed to load reports</Title3>
+          <p style={{ marginBottom: 12 }}>Something went wrong. Please try again.</p>
+          <Button appearance="primary" onClick={() => refetch()}>Retry</Button>
+        </div>
       )}
 
       {!isLoading && reports.length === 0 && (
