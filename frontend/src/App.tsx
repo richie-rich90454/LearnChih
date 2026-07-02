@@ -20,6 +20,7 @@ const ChannelThreadPage = lazy(() => import('./pages/ChannelThreadPage'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const LeaderboardPage = lazy(() => import('./pages/LeaderboardPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 const useStyles = makeStyles({
   loadingContainer: {
@@ -67,6 +68,9 @@ export default function App() {
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/admin" element={<AdminPage />} />
           </Route>
+
+          {/* Public catch-all 404 (must be last) */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
       <Toaster position="top" />
