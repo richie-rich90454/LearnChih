@@ -34,6 +34,8 @@ public class ResourceService {
     private final SubjectRepository subjectRepository;
     private final TopicRepository topicRepository;
     private final CourseRepository courseRepository;
+    private final FileValidator fileValidator;
+    private final ContentSanitizer contentSanitizer;
 
     @Value("${app.upload.dir}")
     private String uploadDir;
@@ -44,7 +46,9 @@ public class ResourceService {
                            UpvoteRepository upvoteRepository,
                            SubjectRepository subjectRepository,
                            TopicRepository topicRepository,
-                           CourseRepository courseRepository) {
+                           CourseRepository courseRepository,
+                           FileValidator fileValidator,
+                           ContentSanitizer contentSanitizer) {
         this.resourceRepository = resourceRepository;
         this.resourceThreadRepository = resourceThreadRepository;
         this.resourcePostRepository = resourcePostRepository;
@@ -52,6 +56,8 @@ public class ResourceService {
         this.subjectRepository = subjectRepository;
         this.topicRepository = topicRepository;
         this.courseRepository = courseRepository;
+        this.fileValidator = fileValidator;
+        this.contentSanitizer = contentSanitizer;
     }
 
     @Transactional
@@ -77,8 +83,10 @@ public class ResourceService {
                 ? courseRepository.findById(request.getCourseId()).orElse(null) : null;
 
         Resource resource = Resource.builder()
-                .title(request.getTitle())
-                .description(request.getDescription())
+                // Sanitize user-supplied text: title is plain text, description
+                // may contain a safe subset of HTML markup.
+                .title(contentSanitizer.sanitizePlain(request.getTitle()))
+                .description(contentSanitizer.sanitize(request.getDescription()))
                 .category(request.getCategory())
                 .type(request.getType())
                 .filePath(filePath)
@@ -186,22 +194,28 @@ public class ResourceService {
     }
 
     private String saveFile(MultipartFile file) {
+        // Validate extension allowlist, declared MIME, and magic bytes.
+        // Returns the validated lowercase extension (without the dot).
+        String extension = fileValidator.validate(file);
+
         try {
-            Path uploadPath = Paths.get(uploadDir);
+            Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
             // Create upload directory if it doesn't exist
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            String originalFilename = file.getOriginalFilename();
-            String extension = "";
-            if (originalFilename != null && originalFilename.contains(".")) {
-                extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            }
-            // Use UUID to prevent filename collisions and path traversal
-            String uniqueFilename = UUID.randomUUID() + extension;
+            // Build a safe UUID-based filename, preserving the validated
+            // extension. The client-provided filename is never trusted.
+            String uniqueFilename = UUID.randomUUID() + "." + extension;
+            Path targetLocation = uploadPath.resolve(uniqueFilename).normalize();
 
-            Path targetLocation = uploadPath.resolve(uniqueFilename);
+            // Containment check: ensure the resolved target stays within the
+            // upload directory (defense against path traversal).
+            if (!targetLocation.startsWith(uploadPath)) {
+                throw new IllegalArgumentException("Invalid file path");
+            }
+
             Files.copy(file.getInputStream(), targetLocation);
 
             log.info("Saved uploaded file: {}", uniqueFilename);

@@ -25,19 +25,22 @@ public class ThreadService {
     private final ChannelPostRepository channelPostRepository;
     private final ChannelRepository channelRepository;
     private final SimpMessagingTemplate messagingTemplate;
+    private final ContentSanitizer contentSanitizer;
 
     public ThreadService(ResourcePostRepository resourcePostRepository,
                          ResourceThreadRepository resourceThreadRepository,
                          ChannelThreadRepository channelThreadRepository,
                          ChannelPostRepository channelPostRepository,
                          ChannelRepository channelRepository,
-                         SimpMessagingTemplate messagingTemplate) {
+                         SimpMessagingTemplate messagingTemplate,
+                         ContentSanitizer contentSanitizer) {
         this.resourcePostRepository = resourcePostRepository;
         this.resourceThreadRepository = resourceThreadRepository;
         this.channelThreadRepository = channelThreadRepository;
         this.channelPostRepository = channelPostRepository;
         this.channelRepository = channelRepository;
         this.messagingTemplate = messagingTemplate;
+        this.contentSanitizer = contentSanitizer;
     }
 
     @Transactional
@@ -48,7 +51,8 @@ public class ThreadService {
         ResourcePost post = ResourcePost.builder()
                 .thread(thread)
                 .user(user)
-                .content(request.content())
+                // Post body may contain a safe subset of HTML markup.
+                .content(contentSanitizer.sanitize(request.content()))
                 .build();
 
         post = resourcePostRepository.save(post);
@@ -76,7 +80,8 @@ public class ThreadService {
 
         ChannelThread thread = ChannelThread.builder()
                 .channel(channel)
-                .title(request.title())
+                // Thread titles are plain text.
+                .title(contentSanitizer.sanitizePlain(request.title()))
                 .user(user)
                 .build();
 
@@ -86,7 +91,8 @@ public class ThreadService {
         ChannelPost firstPost = ChannelPost.builder()
                 .thread(thread)
                 .user(user)
-                .content(request.content())
+                // Post body may contain a safe subset of HTML markup.
+                .content(contentSanitizer.sanitize(request.content()))
                 .build();
         channelPostRepository.save(firstPost);
 
@@ -109,7 +115,8 @@ public class ThreadService {
         ChannelPost post = ChannelPost.builder()
                 .thread(thread)
                 .user(user)
-                .content(request.content())
+                // Post body may contain a safe subset of HTML markup.
+                .content(contentSanitizer.sanitize(request.content()))
                 .build();
 
         post = channelPostRepository.save(post);
