@@ -23,6 +23,9 @@ import { useResources } from '../hooks/useResources'
 import type { UserProfile, Resource } from '../types'
 import Seo from '../components/Seo'
 import { SkeletonLine, SkeletonList } from '../components/Skeleton'
+import { AnimatedCounter } from '../components/AnimatedCounter'
+import { StaggerReveal } from '../components/StaggerReveal'
+import { HoverLift } from '../components/HoverLift'
 
 const useStyles = makeStyles({
   container: {
@@ -137,20 +140,20 @@ export default function DashboardPage() {
         <Card className={styles.statCard}>
           <Subtitle2>Credits</Subtitle2>
           <div className={styles.statValue}>
-            <Title3>{profile?.credits ?? 0}</Title3>
+            <Title3><AnimatedCounter value={profile?.credits ?? 0} /></Title3>
             <Badge appearance="filled" color="brand">pts</Badge>
           </div>
         </Card>
         <Card className={styles.statCard}>
           <Subtitle2>Resources Uploaded</Subtitle2>
           <div className={styles.statValue}>
-            <Title3>{profile?.resourceCount ?? 0}</Title3>
+            <Title3><AnimatedCounter value={profile?.resourceCount ?? 0} /></Title3>
           </div>
         </Card>
         <Card className={styles.statCard}>
           <Subtitle2>Upvotes Received</Subtitle2>
           <div className={styles.statValue}>
-            <Title3>{profile?.upvoteCount ?? 0}</Title3>
+            <Title3><AnimatedCounter value={profile?.upvoteCount ?? 0} /></Title3>
           </div>
         </Card>
       </div>
@@ -158,38 +161,44 @@ export default function DashboardPage() {
       {/* Quick links */}
       <div>
         <Title3 as="h2" style={{ marginBottom: '12px' }}>Quick Links</Title3>
-        <div className={styles.quickLinks}>
-          <Card
-            className={styles.quickLinkCard}
-            onClick={() => navigate('/resources')}
-          >
-            <div className={styles.quickLinkLeft}>
-              <Document24Regular />
-              <Subtitle2>Resources</Subtitle2>
-            </div>
-            <ArrowRight24Regular />
-          </Card>
-          <Card
-            className={styles.quickLinkCard}
-            onClick={() => navigate('/channels')}
-          >
-            <div className={styles.quickLinkLeft}>
-              <Chat24Regular />
-              <Subtitle2>Channels</Subtitle2>
-            </div>
-            <ArrowRight24Regular />
-          </Card>
-          <Card
-            className={styles.quickLinkCard}
-            onClick={() => navigate('/leaderboard')}
-          >
-            <div className={styles.quickLinkLeft}>
-              <Trophy24Regular />
-              <Subtitle2>Leaderboard</Subtitle2>
-            </div>
-            <ArrowRight24Regular />
-          </Card>
-        </div>
+        <StaggerReveal className={styles.quickLinks}>
+          <HoverLift>
+            <Card
+              className={styles.quickLinkCard}
+              onClick={() => navigate('/resources')}
+            >
+              <div className={styles.quickLinkLeft}>
+                <Document24Regular />
+                <Subtitle2>Resources</Subtitle2>
+              </div>
+              <ArrowRight24Regular />
+            </Card>
+          </HoverLift>
+          <HoverLift>
+            <Card
+              className={styles.quickLinkCard}
+              onClick={() => navigate('/channels')}
+            >
+              <div className={styles.quickLinkLeft}>
+                <Chat24Regular />
+                <Subtitle2>Channels</Subtitle2>
+              </div>
+              <ArrowRight24Regular />
+            </Card>
+          </HoverLift>
+          <HoverLift>
+            <Card
+              className={styles.quickLinkCard}
+              onClick={() => navigate('/leaderboard')}
+            >
+              <div className={styles.quickLinkLeft}>
+                <Trophy24Regular />
+                <Subtitle2>Leaderboard</Subtitle2>
+              </div>
+              <ArrowRight24Regular />
+            </Card>
+          </HoverLift>
+        </StaggerReveal>
       </div>
 
       {/* Recent resources */}
@@ -200,30 +209,31 @@ export default function DashboardPage() {
             <MessageBarBody>No resources yet. Be the first to upload!</MessageBarBody>
           </MessageBar>
         ) : (
-          <div className={styles.recentGrid}>
+          <StaggerReveal className={styles.recentGrid}>
             {recentResources.map((resource) => (
-              <Card
-                key={resource.id}
-                className={styles.resourceCard}
-                onClick={() => navigate(`/resources/${resource.id}`)}
-              >
-                <div className={styles.cardHeader}>
-                  <Subtitle2>{resource.title}</Subtitle2>
-                  <Badge appearance="tint" size="small">
-                    {resource.category || 'General'}
-                  </Badge>
-                </div>
-                <div className={styles.cardMeta}>
-                  <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
-                    by {resource.authorName || 'Unknown'}
-                  </span>
-                  <Badge appearance="outline" size="small">
-                    {resource.upvoteCount ?? 0} upvotes
-                  </Badge>
-                </div>
-              </Card>
+              <HoverLift key={resource.id}>
+                <Card
+                  className={styles.resourceCard}
+                  onClick={() => navigate(`/resources/${resource.id}`)}
+                >
+                  <div className={styles.cardHeader}>
+                    <Subtitle2>{resource.title}</Subtitle2>
+                    <Badge appearance="tint" size="small">
+                      {resource.category || 'General'}
+                    </Badge>
+                  </div>
+                  <div className={styles.cardMeta}>
+                    <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
+                      by {resource.authorName || 'Unknown'}
+                    </span>
+                    <Badge appearance="outline" size="small">
+                      <AnimatedCounter value={resource.upvoteCount ?? 0} suffix=" upvotes" />
+                    </Badge>
+                  </div>
+                </Card>
+              </HoverLift>
             ))}
-          </div>
+          </StaggerReveal>
         )}
       </div>
     </div>

@@ -38,6 +38,7 @@ import { useResourcePosts, useCreateResourcePost } from '../hooks/useThreads'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { reportResource, toggleUpvote as toggleUpvoteApi } from '../api/resources'
 import useAuthStore from '../store/authStore'
+import { AnimatedCounter } from '../components/AnimatedCounter'
 import { useBookmarkStore } from '../store/bookmarkStore'
 import useWebSocket from '../hooks/useWebSocket'
 import type { Post, ResourceDetail } from '../types'
@@ -285,7 +286,7 @@ export default function ResourceDetailPage() {
             icon={resource?.upvoted ? <ArrowUp24Filled /> : <ArrowUp24Regular />}
             onClick={handleUpvote}
           >
-            {resource?.upvoteCount ?? 0}
+            <AnimatedCounter value={resource?.upvoteCount ?? 0} />
           </Button>
 
           <Button
