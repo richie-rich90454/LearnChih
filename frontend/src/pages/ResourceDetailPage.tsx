@@ -31,12 +31,15 @@ import {
   Flag24Regular,
   ArrowLeft24Regular,
 } from '@fluentui/react-icons'
-import { useResource, useToggleUpvote } from '../hooks/useResources'
+import { useResource, useDeleteResource } from '../hooks/useResources'
 import { useResourcePosts, useCreateResourcePost } from '../hooks/useThreads'
-import { reportResource } from '../api/resources'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { reportResource, toggleUpvote as toggleUpvoteApi } from '../api/resources'
+import useAuthStore from '../store/authStore'
 import useWebSocket from '../hooks/useWebSocket'
-import type { Post } from '../types'
+import type { Post, ResourceDetail } from '../types'
 import Seo from '../components/Seo'
+import { ConfirmDialog } from '../components/ConfirmDialog'
 import { articleSchema, breadcrumbSchema } from '../components/jsonLd'
 
 const useStyles = makeStyles({
@@ -73,6 +76,7 @@ const useStyles = makeStyles({
     gap: tokens.spacingHorizontalM,
     alignItems: 'center',
     marginTop: tokens.spacingVerticalS,
+    flexWrap: 'wrap',
   },
   threadSection: {
     display: 'flex',
@@ -108,7 +112,33 @@ export default function ResourceDetailPage() {
   const navigate = useNavigate()
   const { data: resource, isLoading, isError } = useResource(id)
   const { data: posts, isLoading: postsLoading } = useResourcePosts(id)
-  const toggleUpvote = useToggleUpvote()
+  const queryClient = useQueryClient()
+  const deleteResource = useDeleteResource()
+  const user = useAuthStore((s) => s.user)
+
+  // Optimistic upvote: update the cache instantly and roll back on error.
+  const upvoteMutation = useMutation({
+    mutationFn: () => toggleUpvoteApi(id),
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ['resource', id] })
+      const previousData = queryClient.getQueryData<ResourceDetail>(['resource', id])
+      queryClient.setQueryData<ResourceDetail>(['resource', id], (old) => {
+        if (!old) return old
+        return {
+          ...old,
+          upvoteCount: old.upvoteCount + (old.upvoted ? -1 : 1),
+          upvoted: !old.upvoted,
+        }
+      })
+      return { previousData }
+    },
+    onError: (_err, _vars, context) => {
+      queryClient.setQueryData(['resource', id], context?.previousData)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['resources'] })
+    },
+  })
   const createPost = useCreateResourcePost(id)
   const { subscribeToThread } = useWebSocket()
 
@@ -126,7 +156,7 @@ export default function ResourceDetailPage() {
   }, [id, subscribeToThread])
 
   const handleUpvote = () => {
-    toggleUpvote.mutate(id)
+    upvoteMutation.mutate()
   }
 
   const handlePost = () => {
@@ -142,6 +172,17 @@ export default function ResourceDetailPage() {
       setReportReason('')
     })
   }
+
+  const handleDelete = () => {
+    if (!resource) return
+    deleteResource.mutate(resource.id, {
+      onSuccess: () => {
+        navigate('/resources')
+      },
+    })
+  }
+
+  const isOwner = !!user && !!resource && user.userId === resource.userId
 
   if (isLoading) return <Spinner label="Loading resource..." />
   if (isError) {
@@ -259,6 +300,17 @@ export default function ResourceDetailPage() {
               </DialogBody>
             </DialogSurface>
           </Dialog>
+
+          {isOwner && (
+            <ConfirmDialog
+              trigger={<Button appearance="subtle">Delete</Button>}
+              title="Delete resource?"
+              content="This action cannot be undone."
+              confirmLabel="Delete"
+              destructive
+              onConfirm={handleDelete}
+            />
+          )}
         </div>
       </Card>
 

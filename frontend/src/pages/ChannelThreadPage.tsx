@@ -21,6 +21,7 @@ import { useChannel, useChannelPosts, useCreateChannelPost } from '../hooks/useC
 import useWebSocket from '../hooks/useWebSocket'
 import type { Post } from '../types'
 import Seo from '../components/Seo'
+import { PresenceIndicator } from '../components/PresenceIndicator'
 import { discussionForumPostingSchema, breadcrumbSchema } from '../components/jsonLd'
 
 const useStyles = makeStyles({
@@ -53,6 +54,7 @@ const useStyles = makeStyles({
     display: 'flex',
     gap: tokens.spacingHorizontalM,
     alignItems: 'flex-end',
+    flexWrap: 'wrap',
   },
   postsList: {
     display: 'flex',
@@ -136,7 +138,10 @@ export default function ChannelThreadPage() {
 
       {/* Thread info */}
       <div className={styles.threadInfo}>
-        <Title2 as="h1">{thread?.title || 'Thread'}</Title2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalS, flexWrap: 'wrap' }}>
+          <Title2 as="h1">{thread?.title || 'Thread'}</Title2>
+          {threadId && <PresenceIndicator threadId={Number(threadId)} />}
+        </div>
         <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>
           in {channel?.name || 'Channel'}
         </Body1>
