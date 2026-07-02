@@ -8,6 +8,7 @@ import {
 import RequireAuth from './components/RequireAuth'
 import AppLayout from './components/AppLayout'
 import CookieConsent from './components/CookieConsent'
+import { UpdatePrompt } from './components/UpdatePrompt'
 import { prefetchRoute } from './hooks/useRoutePrefetch'
 import { useRouteAnnouncer } from './hooks/useRouteAnnouncer'
 
@@ -102,6 +103,7 @@ export default function App() {
       </Suspense>
       <Toaster position="top" />
       <CookieConsent />
+      <UpdatePrompt />
     </BrowserRouter>
   )
 }
