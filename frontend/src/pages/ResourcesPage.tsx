@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   makeStyles,
@@ -29,8 +29,10 @@ import {
 } from '@fluentui/react-components'
 import { Add24Regular, ArrowUpload24Regular, Link24Regular } from '@fluentui/react-icons'
 import { useResources, useCreateResource } from '../hooks/useResources'
+import { useDebounce } from '../hooks/useDebounce'
 import type { Resource } from '../types'
 import Seo from '../components/Seo'
+import { Pagination } from '../components/Pagination'
 
 const useStyles = makeStyles({
   container: {
@@ -111,6 +113,46 @@ export default function ResourcesPage() {
   const createMutation = useCreateResource()
 
   const resources: Resource[] = Array.isArray(data) ? data : (data as any)?.content || []
+
+  const [searchQuery, setSearchQuery] = useState<string>('')
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'upvoted'>('newest')
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const debouncedSearch = useDebounce(searchQuery, 250)
+  const PAGE_SIZE = 9
+
+  const filteredResources = useMemo(() => {
+    return resources.filter((r) => {
+      if (!debouncedSearch) return true
+      const q = debouncedSearch.toLowerCase()
+      return (
+        r.title?.toLowerCase().includes(q) ||
+        r.description?.toLowerCase().includes(q) ||
+        r.authorName?.toLowerCase().includes(q)
+      )
+    })
+  }, [resources, debouncedSearch])
+
+  const sortedResources = useMemo(() => {
+    const arr = [...filteredResources]
+    if (sortBy === 'newest') {
+      arr.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    } else if (sortBy === 'oldest') {
+      arr.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+    } else {
+      arr.sort((a, b) => (b.upvoteCount ?? 0) - (a.upvoteCount ?? 0))
+    }
+    return arr
+  }, [filteredResources, sortBy])
+
+  const totalPages = Math.ceil(sortedResources.length / PAGE_SIZE)
+  const paginatedResources = sortedResources.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  )
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [debouncedSearch, sortBy, categoryFilter, subjectFilter])
 
   const handleCreate = () => {
     const formData: Record<string, unknown> = {
@@ -240,6 +282,12 @@ export default function ResourcesPage() {
 
       {/* Filter bar */}
       <div className={styles.filterBar}>
+        <Input
+          placeholder="Search resources..."
+          value={searchQuery}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+          style={{ minWidth: '200px' }}
+        />
         <Dropdown
           placeholder="Category"
           value={categoryFilter || undefined}
@@ -262,6 +310,16 @@ export default function ResourcesPage() {
             <Option key={s} value={s}>{s}</Option>
           ))}
         </Dropdown>
+        <Dropdown
+          placeholder="Sort by"
+          value={sortBy === 'newest' ? 'Newest' : sortBy === 'oldest' ? 'Oldest' : 'Most Upvoted'}
+          selectedOptions={[sortBy]}
+          onOptionSelect={(_: unknown, data: { optionValue?: string }) => data.optionValue && setSortBy(data.optionValue as 'newest' | 'oldest' | 'upvoted')}
+        >
+          <Option value="newest">Newest</Option>
+          <Option value="oldest">Oldest</Option>
+          <Option value="upvoted">Most Upvoted</Option>
+        </Dropdown>
       </div>
 
       {/* Resources grid */}
@@ -281,7 +339,7 @@ export default function ResourcesPage() {
           rendering off-screen DOM nodes. Not added now to keep the change
           dependency-free. Keys are already stable (resource.id). */}
       <div className={styles.grid}>
-        {resources.map((resource) => (
+        {paginatedResources.map((resource) => (
           <Card
             key={resource.id}
             className={styles.resourceCard}
@@ -309,6 +367,12 @@ export default function ResourcesPage() {
           </Card>
         ))}
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   )
 }

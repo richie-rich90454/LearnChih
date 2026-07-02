@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   makeStyles,
@@ -11,6 +11,8 @@ import {
   Button,
   Input,
   Textarea,
+  Dropdown,
+  Option,
   Dialog,
   DialogTrigger,
   DialogSurface,
@@ -25,8 +27,10 @@ import {
 } from '@fluentui/react-components'
 import { Add24Regular } from '@fluentui/react-icons'
 import { useChannels, useChannel, useCreateChannelThread } from '../hooks/useChannels'
+import { useDebounce } from '../hooks/useDebounce'
 import type { Channel, ChannelThread } from '../types'
 import Seo from '../components/Seo'
+import { Pagination } from '../components/Pagination'
 
 const useStyles = makeStyles({
   container: {
@@ -38,6 +42,12 @@ const useStyles = makeStyles({
   headerRow: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  filterBar: {
+    display: 'flex',
+    gap: tokens.spacingHorizontalM,
+    flexWrap: 'wrap',
     alignItems: 'center',
   },
   channelList: {
@@ -94,6 +104,45 @@ export default function ChannelsPage() {
 
   const channelList: Channel[] = Array.isArray(channels) ? channels : (channels as any)?.content || []
   const threads: ChannelThread[] = channelDetail?.threads || []
+
+  const [threadSearch, setThreadSearch] = useState<string>('')
+  const [threadSort, setThreadSort] = useState<'newest' | 'oldest' | 'posts'>('newest')
+  const [threadPage, setThreadPage] = useState<number>(1)
+  const debouncedThreadSearch = useDebounce(threadSearch, 250)
+  const THREAD_PAGE_SIZE = 8
+
+  const filteredThreads = useMemo(() => {
+    return threads.filter((t) => {
+      if (!debouncedThreadSearch) return true
+      const q = debouncedThreadSearch.toLowerCase()
+      return (
+        t.title?.toLowerCase().includes(q) ||
+        t.authorName?.toLowerCase().includes(q)
+      )
+    })
+  }, [threads, debouncedThreadSearch])
+
+  const sortedThreads = useMemo(() => {
+    const arr = [...filteredThreads]
+    if (threadSort === 'newest') {
+      arr.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    } else if (threadSort === 'oldest') {
+      arr.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+    } else {
+      arr.sort((a, b) => (b.postCount ?? 0) - (a.postCount ?? 0))
+    }
+    return arr
+  }, [filteredThreads, threadSort])
+
+  const threadTotalPages = Math.ceil(sortedThreads.length / THREAD_PAGE_SIZE)
+  const paginatedThreads = sortedThreads.slice(
+    (threadPage - 1) * THREAD_PAGE_SIZE,
+    threadPage * THREAD_PAGE_SIZE
+  )
+
+  useEffect(() => {
+    setThreadPage(1)
+  }, [debouncedThreadSearch, threadSort, selectedChannelId])
 
   const handleCreateThread = () => {
     if (!threadTitle.trim()) return
@@ -162,7 +211,7 @@ export default function ChannelsPage() {
         </MessageBar>
       )}
 
-      <div style={{ display: 'flex', gap: '24px' }}>
+      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
         {/* Channel list */}
         <div className={styles.channelList} style={{ flex: 1, minWidth: '280px' }}>
           {channelList.length === 0 && !isLoading && (
@@ -200,15 +249,36 @@ export default function ChannelsPage() {
             <Subtitle2 as="h2" style={{ marginBottom: '12px' }}>
               {channelDetail?.name || 'Channel'} — Threads
             </Subtitle2>
+            <div className={styles.filterBar} style={{ marginBottom: '12px' }}>
+              <Input
+                placeholder="Search threads..."
+                value={threadSearch}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setThreadSearch(e.target.value)}
+                style={{ minWidth: '180px' }}
+              />
+              <Dropdown
+                placeholder="Sort by"
+                value={threadSort === 'newest' ? 'Newest' : threadSort === 'oldest' ? 'Oldest' : 'Most Posts'}
+                selectedOptions={[threadSort]}
+                onOptionSelect={(_: unknown, data: { optionValue?: string }) => data.optionValue && setThreadSort(data.optionValue as 'newest' | 'oldest' | 'posts')}
+              >
+                <Option value="newest">Newest</Option>
+                <Option value="oldest">Oldest</Option>
+                <Option value="posts">Most Posts</Option>
+              </Dropdown>
+            </div>
             <div className={styles.threadList}>
               {threads.length === 0 && (
                 <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>No threads yet. Start one!</Body1>
+              )}
+              {threads.length > 0 && sortedThreads.length === 0 && (
+                <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>No threads match your search.</Body1>
               )}
               {/* TODO(perf): When threads exceed ~100 items, add list
                   virtualization (e.g. react-window / react-virtual) to avoid
                   rendering off-screen cards. Not added now to keep the change
                   dependency-free. Keys are already stable (thread.id). */}
-              {threads.map((thread) => (
+              {paginatedThreads.map((thread) => (
                 <Card
                   key={thread.id}
                   className={styles.threadCard}
@@ -226,6 +296,11 @@ export default function ChannelsPage() {
                 </Card>
               ))}
             </div>
+            <Pagination
+              currentPage={threadPage}
+              totalPages={threadTotalPages}
+              onPageChange={setThreadPage}
+            />
           </div>
         )}
       </div>
