@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
   Card,
@@ -12,6 +13,10 @@ import {
 } from '@fluentui/react-components'
 import { Trophy24Regular } from '@fluentui/react-icons'
 import api from '../api/axios'
+import { useReducedMotion } from '../hooks/useReducedMotion'
+import { StaggerReveal } from './StaggerReveal'
+import { HoverLift } from './HoverLift'
+import { MilestoneConfetti } from './MilestoneConfetti'
 
 export interface BadgeItem {
   id: number
@@ -65,10 +70,22 @@ interface BadgesWidgetProps {
  */
 export function BadgesWidget({ userId }: BadgesWidgetProps) {
   const styles = useStyles()
+  const reduced = useReducedMotion()
+  const [confetti, setConfetti] = useState(false)
   const { data, isLoading, isError } = useQuery<BadgeItem[]>({
     queryKey: ['badges', userId],
     queryFn: fetchBadges,
   })
+
+  useEffect(() => {
+    if (!data || data.length === 0) return
+    const earned = data.filter((b) => b.earned).length
+    const previous = Number(sessionStorage.getItem('lernchih-earned-count'))
+    if (!Number.isNaN(previous) && earned > previous && !reduced) {
+      setConfetti(true)
+    }
+    sessionStorage.setItem('lernchih-earned-count', String(earned))
+  }, [data, reduced])
 
   if (isLoading) return <Spinner size="tiny" label="Loading badges..." />
   if (isError) {
@@ -86,24 +103,26 @@ export function BadgesWidget({ userId }: BadgesWidgetProps) {
 
   return (
     <div className={styles.root}>
+      <MilestoneConfetti active={confetti} onComplete={() => setConfetti(false)} />
       <Title3 as="h3">Badges</Title3>
-      <div className={styles.grid}>
+      <StaggerReveal className={styles.grid} staggerSeconds={0.04}>
         {badges.map((badge) => (
-          <Card
-            key={badge.id}
-            className={`${styles.badgeCard} ${badge.earned ? '' : styles.locked}`}
-          >
-            <div className={styles.icon}>{badge.icon || <Trophy24Regular />}</div>
-            <Badge appearance={badge.earned ? 'filled' : 'outline'} color={badge.earned ? 'brand' : 'subtle'}>
-              {badge.earned ? 'Earned' : 'Locked'}
-            </Badge>
-            <Body1>{badge.name}</Body1>
-            <Body1 style={{ color: tokens.colorNeutralForeground3, fontSize: 'var(--fontSizeBase200)' }}>
-              {badge.description}
-            </Body1>
-          </Card>
+          <HoverLift key={badge.id}>
+            <Card
+              className={`${styles.badgeCard} ${badge.earned ? '' : styles.locked}`}
+            >
+              <div className={styles.icon}>{badge.icon || <Trophy24Regular />}</div>
+              <Badge appearance={badge.earned ? 'filled' : 'outline'} color={badge.earned ? 'brand' : 'subtle'}>
+                {badge.earned ? 'Earned' : 'Locked'}
+              </Badge>
+              <Body1>{badge.name}</Body1>
+              <Body1 style={{ color: tokens.colorNeutralForeground3, fontSize: 'var(--fontSizeBase200)' }}>
+                {badge.description}
+              </Body1>
+            </Card>
+          </HoverLift>
         ))}
-      </div>
+      </StaggerReveal>
     </div>
   )
 }
