@@ -7,6 +7,7 @@ import com.richardjiang880.lernchih.model.User;
 import com.richardjiang880.lernchih.repository.ResourceRepository;
 import com.richardjiang880.lernchih.repository.UpvoteRepository;
 import com.richardjiang880.lernchih.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,10 @@ public class GamificationService {
         this.userRepository = userRepository;
     }
 
+    // Evict the cached resource detail on upvote toggle: upvoteCount is part of
+    // the cached ResourceDetailResponse and must not go stale for anonymous readers.
     @Transactional
+    @CacheEvict(value = "resources", key = "#resourceId")
     public boolean toggleUpvote(Long resourceId, User currentUser) {
         Resource resource = resourceRepository.findById(resourceId)
                 .orElseThrow(() -> new IllegalArgumentException("Resource not found"));

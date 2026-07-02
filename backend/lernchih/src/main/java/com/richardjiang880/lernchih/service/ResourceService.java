@@ -5,6 +5,8 @@ import com.richardjiang880.lernchih.model.*;
 import com.richardjiang880.lernchih.repository.*;
 import com.richardjiang880.lernchih.util.SlugUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -135,7 +137,10 @@ public class ResourceService {
         return resourceRepository.findAll(pageable);
     }
 
+    // Cache only public (anonymous) reads: the response carries a user-specific
+    // "upvotedByMe" flag, so authenticated requests must not share cache entries.
     @Transactional(readOnly = true)
+    @Cacheable(value = "resources", key = "#resourceId", condition = "#currentUserId == null")
     public ResourceDetailResponse getResourceDetail(Long resourceId, Long currentUserId) {
         Resource resource = resourceRepository.findById(resourceId)
                 .orElseThrow(() -> new IllegalArgumentException("Resource not found"));
@@ -181,6 +186,7 @@ public class ResourceService {
     }
 
     @Transactional
+    @CacheEvict(value = "resources", key = "#resourceId")
     public void deleteResource(Long resourceId, User currentUser) {
         Resource resource = resourceRepository.findById(resourceId)
                 .orElseThrow(() -> new IllegalArgumentException("Resource not found"));

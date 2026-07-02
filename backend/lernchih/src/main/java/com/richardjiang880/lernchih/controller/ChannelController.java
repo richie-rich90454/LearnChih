@@ -7,6 +7,7 @@ import com.richardjiang880.lernchih.model.User;
 import com.richardjiang880.lernchih.repository.ChannelRepository;
 import com.richardjiang880.lernchih.repository.ChannelThreadRepository;
 import com.richardjiang880.lernchih.repository.UserRepository;
+import com.richardjiang880.lernchih.service.ChannelService;
 import com.richardjiang880.lernchih.service.ThreadService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -29,15 +30,18 @@ public class ChannelController {
     private final ChannelRepository channelRepository;
     private final ChannelThreadRepository channelThreadRepository;
     private final ThreadService threadService;
+    private final ChannelService channelService;
     private final UserRepository userRepository;
 
     public ChannelController(ChannelRepository channelRepository,
                              ChannelThreadRepository channelThreadRepository,
                              ThreadService threadService,
+                             ChannelService channelService,
                              UserRepository userRepository) {
         this.channelRepository = channelRepository;
         this.channelThreadRepository = channelThreadRepository;
         this.threadService = threadService;
+        this.channelService = channelService;
         this.userRepository = userRepository;
     }
 
@@ -60,15 +64,8 @@ public class ChannelController {
     @GetMapping("/{id}")
     public ResponseEntity<ChannelResponse> getChannel(@PathVariable String id) {
         // Accept either a numeric id or a slug on public deep links.
-        Channel channel = resolveChannel(id);
-        ChannelResponse response = new ChannelResponse(
-                channel.getId(),
-                channel.getSlug(),
-                channel.getName(),
-                channel.getDescription(),
-                channel.getThreads().size(),
-                channel.getCreatedAt()
-        );
+        // Single-channel reads are cached in ChannelService to reduce TTFB.
+        ChannelResponse response = channelService.getChannel(id);
         return ResponseEntity.ok(response);
     }
 

@@ -1,5 +1,6 @@
 package com.richardjiang880.lernchih.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public record PostResponse(
@@ -9,4 +10,6 @@ public record PostResponse(
     String userName,
     String content,
     LocalDateTime createdAt
-) {}
+) implements Serializable {
+    private static final long serialVersionUID = 1L;
+}

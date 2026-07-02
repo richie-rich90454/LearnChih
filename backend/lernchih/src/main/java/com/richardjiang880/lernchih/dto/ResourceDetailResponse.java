@@ -1,5 +1,6 @@
 package com.richardjiang880.lernchih.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,4 +22,6 @@ public record ResourceDetailResponse(
     LocalDateTime createdAt,
     Long threadId,
     List<PostResponse> posts
-) {}
+) implements Serializable {
+    private static final long serialVersionUID = 1L;
+}
