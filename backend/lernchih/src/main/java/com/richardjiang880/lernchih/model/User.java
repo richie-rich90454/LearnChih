@@ -51,6 +51,13 @@ public class User {
     @Column(nullable = false)
     private Integer credits;
 
+    @Column(name = "push_subscription", columnDefinition = "TEXT")
+    private String pushSubscription;
+
+    @Column(name = "email_notifications_enabled", nullable = false)
+    @Builder.Default
+    private Boolean emailNotificationsEnabled = true;
+
     // LAZY fetch to avoid N+1 queries - subjects loaded only when accessed
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -64,6 +71,13 @@ public class User {
     // orphanRemoval ensures social links are deleted when removed from the list
     @Builder.Default
     private List<UserSocial> userSocials = new ArrayList<>();
+
+    @Column(name = "totp_secret")
+    private String totpSecret;
+
+    @Column(name = "totp_enabled", nullable = false)
+    @Builder.Default
+    private Boolean totpEnabled = false;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -81,6 +95,12 @@ public class User {
         }
         if (verified == null) {
             verified = false;
+        }
+        if (totpEnabled == null) {
+            totpEnabled = false;
+        }
+        if (emailNotificationsEnabled == null) {
+            emailNotificationsEnabled = true;
         }
     }
 
