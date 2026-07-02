@@ -6,12 +6,15 @@ import { HelmetProvider } from 'react-helmet-async'
 import './i18n'
 import App from './App'
 import { useThemeStore } from './hooks/useThemeStore'
+import { ThemeTransition } from './components/ThemeTransition'
 
 function ThemedApp() {
   const mode = useThemeStore((s) => s.mode)
+  const origin = useThemeStore((s) => s.origin)
   const theme = mode === 'dark' ? webDarkTheme : webLightTheme
   return (
     <FluentProvider theme={theme}>
+      <ThemeTransition mode={mode} originX={origin.x} originY={origin.y} />
       <App />
     </FluentProvider>
   )

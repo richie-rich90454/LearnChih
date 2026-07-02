@@ -253,7 +253,10 @@ export default function AppLayout() {
             </Button>
             <Button
               appearance="subtle"
-              onClick={toggle}
+              onClick={(e) => {
+                const rect = (e.currentTarget as HTMLButtonElement).getBoundingClientRect()
+                toggle({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 })
+              }}
               aria-label="Toggle dark mode"
             >
               {mode === 'light' ? '🌙' : '☀️'}
