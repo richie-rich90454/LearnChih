@@ -5,15 +5,22 @@ import { useQueryClient } from '@tanstack/react-query'
 import useAuthStore from '../store/authStore'
 import type { WebSocketPostMessage, Post } from '../types'
 
-interface SubscriptionEntry {
+export interface TypingEvent {
+  threadId: string
+  userId: number
+  userName: string
+  typing: boolean
+}
+
+interface SubscriptionEntry<T = unknown> {
   destination: string
-  callback: (body: WebSocketPostMessage) => void
+  callback: (body: T) => void
   stompSubscription?: { unsubscribe: () => void }
 }
 
 export default function useWebSocket() {
   const stompClient = useRef<Client | null>(null)
-  const subscriptions = useRef<Map<string, SubscriptionEntry>>(new Map())
+  const subscriptions = useRef<Map<string, SubscriptionEntry<unknown>>>(new Map())
   const queryClient = useQueryClient()
   const token = useAuthStore((s) => s.token)
 
@@ -82,10 +89,10 @@ export default function useWebSocket() {
         const body: WebSocketPostMessage = JSON.parse(message.body)
         wrappedCallback(body)
       })
-      subscriptions.current.set(key, { destination, callback: wrappedCallback, stompSubscription: stompSub })
+      subscriptions.current.set(key, { destination, callback: wrappedCallback as (body: unknown) => void, stompSubscription: stompSub })
     } else {
       // Store subscription for when client connects
-      subscriptions.current.set(key, { destination, callback: wrappedCallback })
+      subscriptions.current.set(key, { destination, callback: wrappedCallback as (body: unknown) => void })
     }
 
     return () => {
@@ -115,9 +122,9 @@ export default function useWebSocket() {
         const body: WebSocketPostMessage = JSON.parse(message.body)
         wrappedCallback(body)
       })
-      subscriptions.current.set(key, { destination, callback: wrappedCallback, stompSubscription: stompSub })
+      subscriptions.current.set(key, { destination, callback: wrappedCallback as (body: unknown) => void, stompSubscription: stompSub })
     } else {
-      subscriptions.current.set(key, { destination, callback: wrappedCallback })
+      subscriptions.current.set(key, { destination, callback: wrappedCallback as (body: unknown) => void })
     }
 
     return () => {
@@ -129,5 +136,44 @@ export default function useWebSocket() {
     }
   }, [queryClient])
 
-  return { subscribeToThread, subscribeToChannelThread, disconnect }
+  const subscribeToTyping = useCallback((threadId: string, callback: (event: TypingEvent) => void) => {
+    const key = `typing-${threadId}`
+    const destination = `/topic/channel-thread/${threadId}/typing`
+
+    if (stompClient.current?.active) {
+      const stompSub = stompClient.current.subscribe(destination, (message: IMessage) => {
+        const event: TypingEvent = JSON.parse(message.body)
+        callback(event)
+      })
+      subscriptions.current.set(key, { destination, callback: callback as (body: unknown) => void, stompSubscription: stompSub })
+    } else {
+      subscriptions.current.set(key, { destination, callback: callback as (body: unknown) => void })
+    }
+
+    return () => {
+      const sub = subscriptions.current.get(key)
+      if (sub?.stompSubscription) {
+        sub.stompSubscription.unsubscribe()
+      }
+      subscriptions.current.delete(key)
+    }
+  }, [])
+
+  const sendTypingIndicator = useCallback((threadId: string, typing: boolean) => {
+    if (!stompClient.current?.active) return
+    stompClient.current.publish({
+      destination: `/app/channel-thread/${threadId}/typing`,
+      body: JSON.stringify({ threadId, typing }),
+    })
+  }, [])
+
+  const sendChannelBroadcast = useCallback((threadId: string, content: string) => {
+    if (!stompClient.current?.active) return
+    stompClient.current.publish({
+      destination: `/app/channel-thread/${threadId}/broadcast`,
+      body: JSON.stringify({ threadId, content }),
+    })
+  }, [])
+
+  return { subscribeToThread, subscribeToChannelThread, subscribeToTyping, sendTypingIndicator, sendChannelBroadcast, disconnect }
 }
