@@ -9,6 +9,7 @@ import RequireAuth from './components/RequireAuth'
 import AppLayout from './components/AppLayout'
 import CookieConsent from './components/CookieConsent'
 import { prefetchRoute } from './hooks/useRoutePrefetch'
+import { useRouteAnnouncer } from './hooks/useRouteAnnouncer'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const RegisterPage = lazy(() => import('./pages/RegisterPage'))
@@ -41,6 +42,15 @@ function LoadingFallback() {
   )
 }
 
+function RouteAnnouncer() {
+  const announcement = useRouteAnnouncer()
+  return (
+    <div aria-live="polite" aria-atomic="true" style={{ position: 'absolute', left: '-9999px' }}>
+      {announcement}
+    </div>
+  )
+}
+
 export default function App() {
   // Warm primary nav route chunks on idle; hover/focus prefetch lives in AppLayout.
   useEffect(() => {
@@ -59,6 +69,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <RouteAnnouncer />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           {/* Public routes */}
