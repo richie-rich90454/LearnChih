@@ -28,6 +28,8 @@ import {
   SignOut24Regular,
 } from '@fluentui/react-icons'
 import useAuthStore from '../store/authStore'
+import { useDir } from '../hooks/useDir'
+import { useTranslation } from 'react-i18next'
 
 interface NavItem {
   path: string
@@ -116,6 +118,7 @@ export default function AppLayout() {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, logout } = useAuthStore()
+  const { t, i18n } = useTranslation()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const isAdmin = user?.role === 'ADMIN' || user?.role === 'MODERATOR'
@@ -164,7 +167,7 @@ export default function AppLayout() {
   )
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} dir={useDir()}>
       <a href="#main-content" className={styles.skipLink}>
         Skip to content
       </a>
@@ -213,7 +216,18 @@ export default function AppLayout() {
             <Title3 className={styles.desktopDrawer} style={{ display: 'none' }}>LernChih</Title3>
           </div>
 
-          <Menu>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Button
+              appearance="subtle"
+              onClick={() => {
+                const next = i18n.language === 'en' ? 'zh' : 'en'
+                i18n.changeLanguage(next)
+                localStorage.setItem('lernchih-lang', next)
+              }}
+            >
+              {t('language.toggle')}
+            </Button>
+            <Menu>
             <MenuTrigger disableButtonEnhancement>
               <Button appearance="subtle" style={{ gap: '8px' }}>
                 <Avatar name={user?.name || 'User'} size={28} />
@@ -231,6 +245,7 @@ export default function AppLayout() {
               </MenuList>
             </MenuPopover>
           </Menu>
+          </div>
         </header>
 
         <main id="main-content" tabIndex={-1} className={styles.content}>
