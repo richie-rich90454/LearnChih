@@ -71,7 +71,7 @@ export default function LoginPage() {
           <Title3 as="h1">Sign in to LernChih</Title3>
 
           {loginMutation.isError && (
-            <MessageBar intent="error">
+            <MessageBar intent="error" role="alert">
               <MessageBarBody>
                 <MessageBarTitle>Login failed</MessageBarTitle>
                 {(loginMutation.error as any)?.response?.data?.message || 'Invalid email or password'}

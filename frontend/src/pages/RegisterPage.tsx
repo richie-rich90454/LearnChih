@@ -88,13 +88,13 @@ export default function RegisterPage() {
           <Title3 as="h1">Create your account</Title3>
 
           {validationError && (
-            <MessageBar intent="error">
+            <MessageBar intent="error" role="alert">
               <MessageBarBody>{validationError}</MessageBarBody>
             </MessageBar>
           )}
 
           {registerMutation.isError && (
-            <MessageBar intent="error">
+            <MessageBar intent="error" role="alert">
               <MessageBarBody>
                 <MessageBarTitle>Registration failed</MessageBarTitle>
                 {(registerMutation.error as any)?.response?.data?.message || 'Something went wrong'}

@@ -119,7 +119,7 @@ export default function ProfilePage() {
   if (isLoading) return <Spinner label="Loading profile..." />
   if (isError) {
     return (
-      <MessageBar intent="error">
+      <MessageBar intent="error" role="alert">
         <MessageBarBody>Failed to load profile.</MessageBarBody>
       </MessageBar>
     )
@@ -253,7 +253,7 @@ export default function ProfilePage() {
             <DialogContent>
               <div className={styles.dialogForm}>
                 <Field label="Name">
-                  <Input value={editName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditName(e.target.value)} />
+                  <Input value={editName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditName(e.target.value)} aria-required="true" />
                 </Field>
                 <Field label="Bio">
                   <Textarea value={editBio} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEditBio(e.target.value)} />
@@ -325,7 +325,7 @@ export default function ProfilePage() {
                   <Input value={socialLabel} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSocialLabel(e.target.value)} placeholder="e.g. My GitHub" />
                 </Field>
                 <Field label="URL">
-                  <Input value={socialUrl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSocialUrl(e.target.value)} placeholder="https://..." />
+                  <Input value={socialUrl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSocialUrl(e.target.value)} placeholder="https://..." aria-required="true" />
                 </Field>
               </div>
             </DialogContent>

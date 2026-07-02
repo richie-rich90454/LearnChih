@@ -124,7 +124,7 @@ export default function VerifyEmailPage() {
           </p>
 
           {verifyMutation.isError && (
-            <MessageBar intent="error">
+            <MessageBar intent="error" role="alert">
               <MessageBarBody>
                 <MessageBarTitle>Verification failed</MessageBarTitle>
                 {(verifyMutation.error as any)?.response?.data?.message || 'Invalid or expired code'}
@@ -139,7 +139,7 @@ export default function VerifyEmailPage() {
           )}
 
           {resendStatus === 'error' && (
-            <MessageBar intent="error">
+            <MessageBar intent="error" role="alert">
               <MessageBarBody>Failed to resend code. Please try again.</MessageBarBody>
             </MessageBar>
           )}
