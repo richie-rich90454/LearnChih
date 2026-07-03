@@ -17,8 +17,8 @@ public class TotpService {
         return secretGenerator.generate();
     }
 
-    public boolean verifyCode(String secret, int code) {
+    public boolean verifyCode(String secret, String code) {
         DefaultCodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
-        return verifier.isValidCode(secret, String.valueOf(code));
+        return verifier.isValidCode(secret, code);
     }
 }

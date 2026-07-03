@@ -31,16 +31,16 @@ class TotpServiceTest {
     @Test
     void verifyCodeReturnsTrueForCurrentCode() throws Exception {
         String secret = totpService.generateSecret();
-        long timeSlot = timeProvider.getTime() / 30;
-        int currentCode = Integer.parseInt(codeGenerator.generate(secret, timeSlot));
+        long now = timeProvider.getTime();
+        String code = codeGenerator.generate(secret, now / 30);
 
-        assertThat(totpService.verifyCode(secret, currentCode)).isTrue();
+        assertThat(totpService.verifyCode(secret, code)).isTrue();
     }
 
     @Test
     void verifyCodeReturnsFalseForInvalidCode() {
         String secret = totpService.generateSecret();
 
-        assertThat(totpService.verifyCode(secret, 123456)).isFalse();
+        assertThat(totpService.verifyCode(secret, "123456")).isFalse();
     }
 }

@@ -283,10 +283,10 @@ class AuthServiceTest {
     @Test
     void verifyTotpEnablesTotpForValidCode() {
         User user = User.builder().id(1L).totpSecret("secret123").totpEnabled(false).build();
-        when(totpService.verifyCode("secret123", 123456)).thenReturn(true);
+        when(totpService.verifyCode("secret123", "123456")).thenReturn(true);
         when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        authService.verifyTotp(user, 123456);
+        authService.verifyTotp(user, "123456");
 
         assertThat(user.getTotpEnabled()).isTrue();
     }
@@ -295,7 +295,7 @@ class AuthServiceTest {
     void verifyTotpThrowsWhenNotSetUp() {
         User user = User.builder().id(1L).totpSecret(null).build();
 
-        assertThatThrownBy(() -> authService.verifyTotp(user, 123456))
+        assertThatThrownBy(() -> authService.verifyTotp(user, "123456"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("not set up");
     }

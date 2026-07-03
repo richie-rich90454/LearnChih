@@ -114,10 +114,10 @@ class AuthControllerTest {
     @Test
     void verifyTotpDelegatesToService() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-        TotpVerifyRequest request = new TotpVerifyRequest(123456);
+        TotpVerifyRequest request = new TotpVerifyRequest("123456");
 
         assertThat(controller.verifyTotp(userDetails(), request).getStatusCode().value()).isEqualTo(200);
-        verify(authService).verifyTotp(user, 123456);
+        verify(authService).verifyTotp(user, "123456");
     }
 
     @Test

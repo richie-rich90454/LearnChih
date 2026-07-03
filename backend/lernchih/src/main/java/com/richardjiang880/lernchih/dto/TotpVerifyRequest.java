@@ -4,5 +4,5 @@ import jakarta.validation.constraints.NotNull;
 
 public record TotpVerifyRequest(
     @NotNull(message = "TOTP code is required")
-    Integer code
+    String code
 ) {}

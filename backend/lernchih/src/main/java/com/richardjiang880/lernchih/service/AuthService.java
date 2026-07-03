@@ -236,7 +236,7 @@ public class AuthService {
     }
 
     @Transactional
-    public void verifyTotp(User user, int code) {
+    public void verifyTotp(User user, String code) {
         if (user.getTotpSecret() == null) {
             throw new IllegalArgumentException("TOTP not set up");
         }
