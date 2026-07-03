@@ -1,0 +1,43 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "analysis": {
+      "analyzer": {
+        "course_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase", "asciifolding"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": { "type": "long" },
+      "name": {
+        "type": "text",
+        "analyzer": "course_analyzer",
+        "fields": {
+          "keyword": { "type": "keyword", "ignore_above": 256 }
+        }
+      },
+      "description": { "type": "text", "analyzer": "course_analyzer" },
+      "level": { "type": "keyword" },
+      "durationHours": { "type": "integer" },
+      "category": { "type": "keyword" },
+      "subject": { "type": "keyword" },
+      "instructor": {
+        "type": "text",
+        "analyzer": "course_analyzer",
+        "fields": {
+          "keyword": { "type": "keyword", "ignore_above": 256 }
+        }
+      },
+      "tags": { "type": "keyword" },
+      "ratingAvg": { "type": "float" },
+      "enrollmentCount": { "type": "integer" },
+      "createdAt": { "type": "date" }
+    }
+  }
+}
