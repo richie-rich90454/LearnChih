@@ -17,15 +17,15 @@ import {
   Trophy24Regular,
   ArrowRight24Regular,
 } from '@fluentui/react-icons'
-import useAuthStore from '../store/authStore'
-import { useMyProfile } from '../hooks/useProfile'
-import { useResources } from '../hooks/useResources'
-import type { UserProfile, Resource } from '../types'
-import Seo from '../components/Seo'
-import { SkeletonLine, SkeletonList } from '../components/Skeleton'
-import { AnimatedCounter } from '../components/AnimatedCounter'
-import { StaggerReveal } from '../components/StaggerReveal'
-import { HoverLift } from '../components/HoverLift'
+import useAuthStore from '@/store/authStore'
+import { useMyProfile } from '@/hooks/useProfile'
+import { useResources } from '@/hooks/useResources'
+import type { UserProfile, Resource } from '@/types'
+import Seo from '@/components/Seo'
+import { SkeletonLine, SkeletonList } from '@/components/Skeleton'
+import { AnimatedCounter } from '@/components/AnimatedCounter'
+import { StaggerReveal } from '@/components/StaggerReveal'
+import { HoverLift } from '@/components/HoverLift'
 
 const useStyles = makeStyles({
   container: {

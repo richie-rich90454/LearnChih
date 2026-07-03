@@ -1,0 +1,13 @@
+{
+  "defaults": {
+    "timeout": 60000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+    },
+    "runners": ["axe"]
+  },
+  "urls": [
+    "http://localhost:4173/",
+    "http://localhost:4173/resources"
+  ]
+}

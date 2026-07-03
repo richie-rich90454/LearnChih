@@ -1,5 +1,8 @@
-export type ResourceCategory = 'ARTICLE' | 'VIDEO' | 'PDF' | 'GUIDE' | 'LECTURE_RECORDING' | 'OTHER';
-export type ResourceType = 'UPLOAD' | 'LINK';
+import type { components } from '@/generated/types.gen'
+import type { Post } from './thread'
+
+export type ResourceCategory = components['schemas']['ResourceCategory']
+export type ResourceType = components['schemas']['ResourceType']
 
 export interface ResourceTag {
   id: number;
@@ -35,17 +38,6 @@ export interface ResourceDetail extends Resource {
   upvoted?: boolean;
 }
 
-// Import Post from thread types — we'll use a forward reference
-import type { Post } from './thread';
-
-export interface CreateResourceRequest {
-  title: string;
-  description: string;
-  category: ResourceCategory;
-  type: ResourceType;
-  subjectId?: number;
-  topicId?: number;
-  courseId?: number;
-  externalUrl?: string;
+export type CreateResourceRequest = components['schemas']['CreateResourceRequest'] & {
   file?: File;
 }

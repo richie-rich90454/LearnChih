@@ -6,7 +6,15 @@ import eslintConfigPrettier from 'eslint-config-prettier'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'node_modules', 'vite.config.ts']),
+  globalIgnores([
+    'dist',
+    'node_modules',
+    'storybook-static',
+    'bundle-stats.html',
+    'tests-accessibility/reports',
+    'src/generated',
+    'vite.config.ts',
+  ]),
   {
     files: ['**/*.{js,jsx}'],
     extends: [

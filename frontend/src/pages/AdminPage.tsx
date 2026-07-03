@@ -27,11 +27,11 @@ import {
   MessageBarBody,
 } from '@fluentui/react-components'
 import { Shield24Regular, Checkmark24Regular, Delete24Regular } from '@fluentui/react-icons'
-import { useReports, useResolveReport, useDeleteResourceAdmin, useDeletePostAdmin } from '../hooks/useReports'
-import useAuthStore from '../store/authStore'
-import type { Report } from '../types'
-import Seo from '../components/Seo'
-import { SkeletonList } from '../components/Skeleton'
+import { useReports, useResolveReport, useDeleteResourceAdmin, useDeletePostAdmin } from '@/hooks/useReports'
+import useAuthStore from '@/store/authStore'
+import type { Report } from '@/types'
+import Seo from '@/components/Seo'
+import { SkeletonList } from '@/components/Skeleton'
 
 const useStyles = makeStyles({
   container: {

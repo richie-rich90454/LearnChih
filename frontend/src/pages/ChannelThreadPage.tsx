@@ -19,17 +19,17 @@ import {
   Option,
 } from '@fluentui/react-components'
 import { ArrowLeft24Regular, Mention24Regular } from '@fluentui/react-icons'
-import { useChannel, useChannelPosts, useCreateChannelPost } from '../hooks/useChannels'
-import useWebSocket from '../hooks/useWebSocket'
-import useAuthStore from '../store/authStore'
-import type { Post, PostFormat } from '../types'
-import Seo from '../components/Seo'
-import { PresenceIndicator } from '../components/PresenceIndicator'
-import { MarkdownPreview } from '../components/MarkdownPreview'
-import { ThreadBadges } from '../components/ThreadBadges'
-import { ReactionPicker } from '../components/ReactionPicker'
-import ReportButton from '../components/ReportButton'
-import { discussionForumPostingSchema, breadcrumbSchema } from '../components/jsonLd'
+import { useChannel, useChannelPosts, useCreateChannelPost } from '@/hooks/useChannels'
+import useWebSocket from '@/hooks/useWebSocket'
+import useAuthStore from '@/store/authStore'
+import type { Post, PostFormat } from '@/types'
+import Seo from '@/components/Seo'
+import { PresenceIndicator } from '@/components/PresenceIndicator'
+import { MarkdownPreview } from '@/components/MarkdownPreview'
+import { ThreadBadges } from '@/components/ThreadBadges'
+import { ReactionPicker } from '@/components/ReactionPicker'
+import ReportButton from '@/components/ReportButton'
+import { discussionForumPostingSchema, breadcrumbSchema } from '@/components/jsonLd'
 
 const useStyles = makeStyles({
   container: {

@@ -25,3 +25,10 @@ dist-ssr
 
 # Bundle analysis report
 bundle-stats.html
+
+# Storybook build output
+storybook-static
+
+# Accessibility test reports
+tests-accessibility/lighthouse-report.*
+tests-accessibility/axe-report.*

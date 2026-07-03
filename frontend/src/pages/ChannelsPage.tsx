@@ -26,13 +26,13 @@ import {
   Field,
 } from '@fluentui/react-components'
 import { Add24Regular } from '@fluentui/react-icons'
-import { useChannels, useChannel, useCreateChannelThread } from '../hooks/useChannels'
-import { useDebounce } from '../hooks/useDebounce'
-import type { Channel, ChannelThread } from '../types'
-import Seo from '../components/Seo'
-import { Pagination } from '../components/Pagination'
-import { StaggerReveal } from '../components/StaggerReveal'
-import { HoverLift } from '../components/HoverLift'
+import { useChannels, useChannel, useCreateChannelThread } from '@/hooks/useChannels'
+import { useDebounce } from '@/hooks/useDebounce'
+import type { Channel, ChannelThread } from '@/types'
+import Seo from '@/components/Seo'
+import { Pagination } from '@/components/Pagination'
+import { StaggerReveal } from '@/components/StaggerReveal'
+import { HoverLift } from '@/components/HoverLift'
 
 const useStyles = makeStyles({
   container: {

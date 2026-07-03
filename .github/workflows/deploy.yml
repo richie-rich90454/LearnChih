@@ -1,0 +1,87 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+concurrency:
+  group: deploy-${{ github.ref }}-${{ github.event.inputs.environment || 'staging' }}
+  cancel-in-progress: true
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/lernchih
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Build Spring Boot JAR
+        run: ./mvnw -B -ntp package -DskipTests
+
+      - name: Build backend Docker image
+        run: docker build -t lernchih/backend:${{ github.sha }} .
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Build frontend Docker image
+        run: docker build -t lernchih/frontend:${{ github.sha }} .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build-backend, build-frontend]
+    environment: ${{ github.event.inputs.environment || 'staging' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to container registry
+        run: echo "TODO: configure registry login"
+
+      - name: Push images
+        run: |
+          echo "TODO: docker push lernchih/backend:${{ github.sha }}"
+          echo "TODO: docker push lernchih/frontend:${{ github.sha }}"
+
+      - name: Deploy to target
+        run: |
+          echo "TODO: apply docker-compose.prod.yml or trigger platform deploy"

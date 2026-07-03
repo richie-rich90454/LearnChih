@@ -14,9 +14,9 @@ import {
 import { Checkmark24Regular, ArrowLeft24Regular } from '@fluentui/react-icons'
 import { useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getNotifications, markNotificationRead, markAllNotificationsRead } from '../api/notifications'
-import { useNotificationStore } from '../store/notificationStore'
-import Seo from '../components/Seo'
+import { getNotifications, markNotificationRead, markAllNotificationsRead } from '@/api/notifications'
+import { useNotificationStore } from '@/store/notificationStore'
+import Seo from '@/components/Seo'
 
 const useStyles = makeStyles({
   container: {

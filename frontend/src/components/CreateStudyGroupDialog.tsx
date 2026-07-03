@@ -18,7 +18,7 @@ import {
 } from '@fluentui/react-components'
 import { Add24Regular } from '@fluentui/react-icons'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createStudyGroup, type CreateStudyGroupRequest } from '../api/studyGroups'
+import { createStudyGroup, type CreateStudyGroupRequest } from '@/api/studyGroups'
 
 const useStyles = makeStyles({
   form: {

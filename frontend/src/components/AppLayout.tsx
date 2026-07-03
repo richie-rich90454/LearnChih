@@ -27,10 +27,10 @@ import {
   Shield24Regular,
   SignOut24Regular,
 } from '@fluentui/react-icons'
-import useAuthStore from '../store/authStore'
-import { useDir } from '../hooks/useDir'
+import useAuthStore from '@/store/authStore'
+import { useDir } from '@/hooks/useDir'
 import { useTranslation } from 'react-i18next'
-import { useThemeStore } from '../hooks/useThemeStore'
+import { useThemeStore } from '@/hooks/useThemeStore'
 import { SearchBar } from './SearchBar'
 import NotificationBell from './NotificationBell'
 import Footer from './Footer'

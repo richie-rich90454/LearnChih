@@ -14,9 +14,9 @@ import {
   Divider,
 } from '@fluentui/react-components'
 import { Search24Regular } from '@fluentui/react-icons'
-import { useDebounce } from '../hooks/useDebounce'
-import { useSearch } from '../hooks/useSearch'
-import type { SearchResult } from '../hooks/useSearch'
+import { useDebounce } from '@/hooks/useDebounce'
+import { useSearch } from '@/hooks/useSearch'
+import type { SearchResult } from '@/hooks/useSearch'
 
 const useStyles = makeStyles({
   surface: {
