@@ -1,14 +1,31 @@
 package com.richardjiang880.lernchih.config;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class EnvConfigTest {
 
     private final EnvConfig envConfig = new EnvConfig();
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "JWT_SECRET", matches = ".+")
+    @EnabledIfEnvironmentVariable(named = "DB_PASSWORD", matches = ".+")
+    void validateRequiredEnvVarsSucceedsWhenVariablesSet() {
+        envConfig.validateRequiredEnvVars();
+    }
+
+    @Test
+    void requireEnvThrowsForMissingVariable() {
+        assertThatThrownBy(() -> ReflectionTestUtils.invokeMethod(envConfig, "requireEnv", "LEARNCHIH_TEST_NONEXISTENT_VAR"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("LEARNCHIH_TEST_NONEXISTENT_VAR");
+    }
 
     @Test
     void corsAllowedOriginsSplitsCommaSeparatedString() {

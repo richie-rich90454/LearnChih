@@ -105,4 +105,37 @@ class JwtUtilsTest {
         assertThatThrownBy(() -> jwtUtils.extractEmail(token))
                 .isInstanceOf(ExpiredJwtException.class);
     }
+
+    @Test
+    void malformedTokenThrowsJwtException() {
+        assertThatThrownBy(() -> jwtUtils.extractEmail("not-a-jwt"))
+                .isInstanceOf(io.jsonwebtoken.JwtException.class);
+    }
+
+    @Test
+    void isTokenValidReturnsFalseWhenEmailsMismatch() {
+        User user = User.builder()
+                .email("alice@example.com")
+                .role(Role.STUDENT)
+                .build();
+        String token = jwtUtils.generateToken(user);
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername("bob@example.com")
+                .password("password")
+                .roles("STUDENT")
+                .build();
+
+        assertThat(jwtUtils.isTokenValid(token, userDetails)).isFalse();
+    }
+
+    @Test
+    void extractRoleReturnsNullWhenClaimMissing() {
+        User user = User.builder()
+                .email("alice@example.com")
+                .role(Role.STUDENT)
+                .build();
+        String token = jwtUtils.generateToken(user);
+
+        assertThat(jwtUtils.extractRole(token)).isEqualTo("STUDENT");
+    }
 }
