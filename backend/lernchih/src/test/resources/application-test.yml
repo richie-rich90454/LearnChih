@@ -1,0 +1,82 @@
+spring:
+  application:
+    name: lernchih-test
+
+  # Datasource defaults are overridden by AbstractIntegrationTest via @DynamicPropertySource.
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+  # Mail defaults are overridden by AbstractIntegrationTest via @DynamicPropertySource.
+  mail:
+    host: localhost
+    port: 1025
+    username: ""
+    password: ""
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+server:
+  port: 0
+  http2:
+    enabled: false
+
+app:
+  jwt:
+    secret: test-jwt-secret-with-at-least-32-characters-long
+    expiration: 86400000
+    refresh-expiration: 604800000
+
+  upload:
+    dir: ./uploads-test
+
+  security:
+    https-only: false
+
+  cors:
+    allowed-origins: "*"
+
+  seo:
+    base-url: http://localhost:5173
+    url-normalize: false
+
+  # Disable dev data seeding during tests
+  dev:
+    seed:
+      enabled: false
+
+  ratelimit:
+    auth:
+      capacity: 1000
+      refill-per-minute: 1000
+    write:
+      capacity: 1000
+      refill-per-minute: 1000
+
+logging:
+  level:
+    com.richardjiang880.lernchih: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: INFO
