@@ -72,16 +72,25 @@ referenced by `lernchih.service`).
 
 ## Production Build
 
+### Windows
+
 ```powershell
-# Build frontend into backend static resources
-./build.ps1
+# Build frontend into backend static resources and package the JAR
+.\build.ps1
 
-# Package single JAR
-cd backend/lernchih
-./mvnw package -DskipTests
+# Run from the repository root
+java -Xmx512m -jar backend\lernchih\target\lernchih-0.0.1-SNAPSHOT.jar
+```
 
-# Run
-java -Xmx512m -jar target/lernchih-0.0.1-SNAPSHOT.jar
+### Linux / macOS
+
+```bash
+# Build frontend into backend static resources and package the JAR
+chmod +x build.sh
+./build.sh
+
+# Run from the repository root
+java -Xmx512m -jar backend/lernchih/target/lernchih-0.0.1-SNAPSHOT.jar
 ```
 
 A systemd service file is provided at `lernchih.service`.
