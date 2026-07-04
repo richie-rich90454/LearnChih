@@ -122,12 +122,12 @@ const useStyles = makeStyles({
   },
 })
 
-const navItems: NavItem[] = [
-  { path: '/', label: 'Dashboard', icon: <Home24Regular /> },
-  { path: '/resources', label: 'Resources', icon: <Document24Regular /> },
-  { path: '/channels', label: 'Channels', icon: <Chat24Regular /> },
-  { path: '/leaderboard', label: 'Leaderboard', icon: <Trophy24Regular /> },
-  { path: '/profile', label: 'Profile', icon: <Person24Regular /> },
+const getNavItems = (t: (key: string) => string): NavItem[] => [
+  { path: '/', label: t('nav.dashboard'), icon: <Home24Regular /> },
+  { path: '/resources', label: t('nav.resources'), icon: <Document24Regular /> },
+  { path: '/channels', label: t('nav.channels'), icon: <Chat24Regular /> },
+  { path: '/leaderboard', label: t('nav.leaderboard'), icon: <Trophy24Regular /> },
+  { path: '/profile', label: t('nav.profile'), icon: <Person24Regular /> },
 ]
 
 export default function AppLayout() {
@@ -157,6 +157,8 @@ export default function AppLayout() {
     return location.pathname.startsWith(path)
   }
 
+  const navItems = getNavItems(t)
+
   const NavLinks = () => (
     <>
       {navItems.map((item) => (
@@ -179,7 +181,7 @@ export default function AppLayout() {
           style={{ justifyContent: 'flex-start', padding: '10px 16px' }}
         >
           <Shield24Regular />
-          <Text>Admin</Text>
+          <Text>{t('nav.admin')}</Text>
         </Button>
       )}
     </>
@@ -188,7 +190,7 @@ export default function AppLayout() {
   return (
     <div className={styles.root} dir={useDir()}>
       <a href="#main-content" className={styles.skipLink}>
-        Skip to content
+        {t('a11y.skipToContent')}
       </a>
 
       {/* Desktop sidebar */}
@@ -236,7 +238,7 @@ export default function AppLayout() {
           </div>
 
           <div className={styles.headerCenter}>
-            <SearchBar placeholder="Search..." />
+            <SearchBar placeholder={t('common.searchPlaceholder')} />
           </div>
 
           <div className={styles.headerRight}>
@@ -257,24 +259,24 @@ export default function AppLayout() {
                 const rect = (e.currentTarget as HTMLButtonElement).getBoundingClientRect()
                 toggle({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 })
               }}
-              aria-label="Toggle dark mode"
+              aria-label={t('theme.toggle')}
             >
               {mode === 'light' ? '🌙' : '☀️'}
             </Button>
             <Menu>
             <MenuTrigger disableButtonEnhancement>
               <Button appearance="subtle" style={{ gap: '8px' }}>
-                <Avatar name={user?.name || 'User'} size={28} />
-                <Text>{user?.name || 'User'}</Text>
+                <Avatar name={user?.name || t('common.user')} size={28} />
+                <Text>{user?.name || t('common.user')}</Text>
               </Button>
             </MenuTrigger>
             <MenuPopover>
               <MenuList>
                 <MenuItem icon={<Person24Regular />} onClick={() => navigate('/profile')}>
-                  Profile
+                  {t('nav.profile')}
                 </MenuItem>
                 <MenuItem icon={<SignOut24Regular />} onClick={handleLogout}>
-                  Sign Out
+                  {t('nav.logout')}
                 </MenuItem>
               </MenuList>
             </MenuPopover>

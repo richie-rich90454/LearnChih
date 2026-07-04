@@ -19,12 +19,20 @@
     "delete": "Delete",
     "edit": "Edit",
     "search": "Search",
+    "searchPlaceholder": "Search...",
+    "user": "User",
     "noResults": "No results found",
     "confirm": "Confirm",
     "close": "Close",
     "back": "Back",
     "next": "Next",
     "previous": "Previous"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
+  "theme": {
+    "toggle": "Toggle dark mode"
   },
   "auth": {
     "loginTitle": "Login",
