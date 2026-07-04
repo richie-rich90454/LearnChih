@@ -259,6 +259,9 @@
   },
   "leaderboard": {
     "title": "Leaderboard",
+    "description": "See the top contributors on the LernChih leaderboard, ranked by credits earned through sharing resources and helping the community.",
+    "loadError": "Failed to load leaderboard",
+    "empty": "No users on the leaderboard yet.",
     "rank": "Rank",
     "user": "User",
     "credits": "Credits"

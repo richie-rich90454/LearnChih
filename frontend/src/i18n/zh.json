@@ -245,6 +245,9 @@
   },
   "leaderboard": {
     "title": "排行榜",
+    "description": "查看 LernChih 排行榜上的顶级贡献者，按分享资源和帮助社区获得的积分排名。",
+    "loadError": "加载排行榜失败",
+    "empty": "排行榜上还没有用户。",
     "rank": "排名",
     "user": "用户",
     "credits": "积分"

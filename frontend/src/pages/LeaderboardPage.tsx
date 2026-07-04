@@ -17,6 +17,7 @@ import {
   MessageBarBody,
 } from '@fluentui/react-components'
 import { Trophy24Regular } from '@fluentui/react-icons'
+import { useTranslation } from 'react-i18next'
 import { useLeaderboard } from '../hooks/useResources'
 import type { LeaderboardEntry } from '../types'
 import Seo from '../components/Seo'
@@ -36,52 +37,53 @@ const useStyles = makeStyles({
   },
 })
 
-const columns = [
-  { columnId: 'rank', renderHeaderCell: () => 'Rank' as const, minWidth: 80 },
-  { columnId: 'user', renderHeaderCell: () => 'User' as const, minWidth: 250 },
-  { columnId: 'credits', renderHeaderCell: () => 'Credits' as const, minWidth: 120 },
-]
-
 export default function LeaderboardPage() {
   const styles = useStyles()
+  const { t } = useTranslation()
   const { data, isLoading, isError, refetch } = useLeaderboard()
+
+  const columns = [
+    { columnId: 'rank', renderHeaderCell: () => t('leaderboard.rank'), minWidth: 80 },
+    { columnId: 'user', renderHeaderCell: () => t('leaderboard.user'), minWidth: 250 },
+    { columnId: 'credits', renderHeaderCell: () => t('leaderboard.credits'), minWidth: 120 },
+  ]
 
   if (isLoading) {
     return (
-      <div className={styles.container}>
+      <main className={styles.container}>
         <SkeletonLine width="40%" />
         <SkeletonList count={5} />
-      </div>
+      </main>
     )
   }
   if (isError) {
     return (
-      <div role="alert" style={{ textAlign: 'center', padding: 48 }}>
-        <Title3 as="h3">Failed to load leaderboard</Title3>
-        <p style={{ marginBottom: 12 }}>Something went wrong. Please try again.</p>
-        <Button appearance="primary" onClick={() => refetch()}>Retry</Button>
-      </div>
+      <main role="alert" style={{ textAlign: 'center', padding: 48 }}>
+        <Title3 as="h3">{t('leaderboard.loadError')}</Title3>
+        <p style={{ marginBottom: 12 }}>{t('errors.generic')}</p>
+        <Button appearance="primary" onClick={() => refetch()}>{t('common.retry')}</Button>
+      </main>
     )
   }
 
   const users: LeaderboardEntry[] = Array.isArray(data) ? data : (data as any)?.content || []
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <Seo
-        title="Leaderboard — LernChih"
-        description="See the top contributors on the LernChih leaderboard, ranked by credits earned through sharing resources and helping the community."
+        title={`${t('leaderboard.title')} — LernChih`}
+        description={t('leaderboard.description')}
         canonicalPath="/leaderboard"
         hreflang
       />
       <div className={styles.headerRow}>
         <Trophy24Regular />
-        <Title2 as="h1">Leaderboard</Title2>
+        <Title2 as="h1">{t('leaderboard.title')}</Title2>
       </div>
 
       {users.length === 0 ? (
         <MessageBar>
-          <MessageBarBody>No users on the leaderboard yet.</MessageBarBody>
+          <MessageBarBody>{t('leaderboard.empty')}</MessageBarBody>
         </MessageBar>
       ) : (
         <DataGrid items={users.slice(0, 50)} columns={columns as any} style={{ minWidth: '500px' }}>
@@ -114,8 +116,8 @@ export default function LeaderboardPage() {
                     return (
                       <DataGridCell>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <Avatar name={item.name || 'User'} size={28} />
-                          <Subtitle2>{item.name || 'Unknown'}</Subtitle2>
+                          <Avatar name={item.name || t('common.user')} size={28} />
+                          <Subtitle2>{item.name || t('common.unknown')}</Subtitle2>
                         </div>
                       </DataGridCell>
                     )
@@ -136,6 +138,6 @@ export default function LeaderboardPage() {
           </DataGridBody>
         </DataGrid>
       )}
-    </div>
+    </main>
   )
 }
