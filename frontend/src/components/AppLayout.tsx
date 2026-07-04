@@ -194,13 +194,13 @@ export default function AppLayout() {
       </a>
 
       {/* Desktop sidebar */}
-      <aside className={styles.desktopDrawer} aria-label="Sidebar">
+      <aside className={styles.desktopDrawer} aria-label={t('a11y.sidebar')}>
         <InlineDrawer open position="start" size="small">
           <DrawerHeader>
             <Title3>LernChih</Title3>
           </DrawerHeader>
           <DrawerBody>
-            <nav aria-label="Main navigation" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <nav aria-label={t('a11y.mainNavigation')} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               <NavLinks />
             </nav>
           </DrawerBody>
@@ -218,7 +218,7 @@ export default function AppLayout() {
           <Title3>LernChih</Title3>
         </DrawerHeader>
         <DrawerBody>
-          <nav aria-label="Main navigation" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <nav aria-label={t('a11y.mainNavigation')} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <NavLinks />
           </nav>
         </DrawerBody>

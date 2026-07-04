@@ -48,7 +48,9 @@
     "content": "content"
   },
   "a11y": {
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "sidebar": "Sidebar",
+    "mainNavigation": "Main navigation"
   },
   "theme": {
     "toggle": "Toggle dark mode"
@@ -264,6 +266,28 @@
     "necessaryAriaLabel": "Necessary cookies, always on",
     "functionalAriaLabel": "Functional cookies",
     "analyticsAriaLabel": "Analytics cookies"
+  },
+  "footer": {
+    "feeds": "Feeds:",
+    "rss": "RSS",
+    "atom": "Atom",
+    "apiDocs": "API Docs"
+  },
+  "oauth": {
+    "or": "or",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithGitHub": "Continue with GitHub"
+  },
+  "pwa": {
+    "updateAvailable": "Update available",
+    "updateAvailableBody": "A new version of the app is available.",
+    "reload": "Reload",
+    "dismiss": "Dismiss"
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "unexpectedError": "An unexpected error occurred.",
+    "reload": "Reload page"
   },
   "language": {
     "toggle": "中文",

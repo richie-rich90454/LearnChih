@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { makeStyles, tokens, Link, Text } from '@fluentui/react-components'
 
 const useStyles = makeStyles({
@@ -16,17 +17,18 @@ const useStyles = makeStyles({
 
 export default function Footer() {
   const styles = useStyles()
+  const { t } = useTranslation()
 
   return (
     <footer className={styles.footer}>
-      <Text size={200}>Feeds:</Text>
+      <Text size={200}>{t('footer.feeds')}</Text>
       <Link href="/api/feeds/rss" target="_blank" rel="noopener noreferrer">
-        RSS
+        {t('footer.rss')}
       </Link>
       <Link href="/api/feeds/atom" target="_blank" rel="noopener noreferrer">
-        Atom
+        {t('footer.atom')}
       </Link>
-      <Link href="/api-docs">API Docs</Link>
+      <Link href="/api-docs">{t('footer.apiDocs')}</Link>
     </footer>
   )
 }

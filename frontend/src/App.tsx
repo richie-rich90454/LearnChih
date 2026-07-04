@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { BrowserRouter, Routes, Route, useLocation, useOutlet } from 'react-router-dom'
 import {
   Spinner,
@@ -50,9 +51,10 @@ const useStyles = makeStyles({
 
 function LoadingFallback() {
   const styles = useStyles()
+  const { t } = useTranslation()
   return (
     <div className={styles.loadingContainer}>
-      <Spinner size="large" label="Loading..." />
+      <Spinner size="large" label={t('common.loading')} />
     </div>
   )
 }

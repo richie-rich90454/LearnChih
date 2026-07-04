@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button, MessageBar, MessageBarActions, MessageBarBody, MessageBarTitle } from '@fluentui/react-components'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 
 export function UpdatePrompt() {
+  const { t } = useTranslation()
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
@@ -22,14 +23,14 @@ export function UpdatePrompt() {
   return (
     <MessageBar intent="info" style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000 }}>
       <MessageBarBody>
-        <MessageBarTitle>Update available</MessageBarTitle>
-        A new version of the app is available.
+        <MessageBarTitle>{t('pwa.updateAvailable')}</MessageBarTitle>
+        {t('pwa.updateAvailableBody')}
       </MessageBarBody>
       <MessageBarActions>
         <Button appearance="primary" onClick={() => updateServiceWorker(true)}>
-          Reload
+          {t('pwa.reload')}
         </Button>
-        <Button onClick={close}>Dismiss</Button>
+        <Button onClick={close}>{t('pwa.dismiss')}</Button>
       </MessageBarActions>
     </MessageBar>
   )

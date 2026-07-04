@@ -1,16 +1,19 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
+import { withTranslation, type WithTranslation } from 'react-i18next'
 
-interface ErrorBoundaryProps {
+interface ErrorBoundaryOwnProps {
   children: ReactNode
   fallback?: ReactNode
 }
+
+type ErrorBoundaryProps = ErrorBoundaryOwnProps & WithTranslation
 
 interface ErrorBoundaryState {
   hasError: boolean
   error: Error | null
 }
 
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+class ErrorBoundaryComponent extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props)
     this.state = { hasError: false, error: null }
@@ -25,21 +28,25 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   render(): ReactNode {
+    const { t, fallback, children } = this.props
     if (this.state.hasError) {
-      if (this.props.fallback) return this.props.fallback
+      if (fallback) return fallback
       return (
         <div role="alert" style={{ padding: 24, textAlign: 'center' }}>
-          <h2>Something went wrong</h2>
-          <p>{this.state.error?.message || 'An unexpected error occurred.'}</p>
+          <h2>{t('errorBoundary.title')}</h2>
+          <p>{this.state.error?.message || t('errorBoundary.unexpectedError')}</p>
           <button
             onClick={() => { this.setState({ hasError: false, error: null }); window.location.reload() }}
             style={{ marginTop: 12, padding: '8px 16px', cursor: 'pointer' }}
           >
-            Reload page
+            {t('errorBoundary.reload')}
           </button>
         </div>
       )
     }
-    return this.props.children
+    return children
   }
 }
+
+export const ErrorBoundary = withTranslation()(ErrorBoundaryComponent)
+export default ErrorBoundary

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { makeStyles, tokens, Button, Text } from '@fluentui/react-components'
 
 const useStyles = makeStyles({
@@ -30,11 +31,12 @@ function getOAuthUrl(provider: 'google' | 'github'): string {
 
 export default function OAuthButtons() {
   const styles = useStyles()
+  const { t } = useTranslation()
 
   return (
     <div className={styles.container}>
       <div className={styles.divider}>
-        <Text size={200}>or</Text>
+        <Text size={200}>{t('oauth.or')}</Text>
       </div>
       <Button
         as="a"
@@ -42,7 +44,7 @@ export default function OAuthButtons() {
         appearance="outline"
         className={styles.button}
       >
-        Continue with Google
+        {t('oauth.continueWithGoogle')}
       </Button>
       <Button
         as="a"
@@ -50,7 +52,7 @@ export default function OAuthButtons() {
         appearance="outline"
         className={styles.button}
       >
-        Continue with GitHub
+        {t('oauth.continueWithGitHub')}
       </Button>
     </div>
   )
