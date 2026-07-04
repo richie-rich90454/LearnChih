@@ -10,6 +10,8 @@ interface HoverLiftProps {
     shadow?: string;
 }
 
+const DEFAULT_SHADOW = "0 12px 28px rgba(0, 0, 0, 0.12)";
+
 /**
  * Adds a subtle lift + scale micro-interaction on hover/focus.
  * Safe to wrap any interactive element (cards, buttons, list rows).
@@ -17,9 +19,9 @@ interface HoverLiftProps {
 export function HoverLift({
     children,
     className,
-    scale = 1.02,
-    y = -2,
-    shadow: _shadow,
+    scale = 1.015,
+    y = -5,
+    shadow = DEFAULT_SHADOW,
 }: HoverLiftProps) {
     const reduced = useReducedMotion();
     const ref = useRef<HTMLDivElement>(null);
@@ -28,13 +30,30 @@ export function HoverLift({
         if (reduced || !ref.current) return;
 
         const el = ref.current;
+        const initialShadow = getComputedStyle(el).boxShadow;
 
         const ctx = gsap.context(() => {
             const enter = () => {
-                gsap.to(el, { scale, y, duration: 0.25, ease: "power2.out" });
+                gsap.to(el, {
+                    scale,
+                    y,
+                    boxShadow: shadow,
+                    filter: "brightness(1.02)",
+                    duration: 0.22,
+                    ease: "power2.out",
+                    overwrite: "auto",
+                });
             };
             const leave = () => {
-                gsap.to(el, { scale: 1, y: 0, duration: 0.25, ease: "power2.out" });
+                gsap.to(el, {
+                    scale: 1,
+                    y: 0,
+                    boxShadow: initialShadow,
+                    filter: "brightness(1)",
+                    duration: 0.35,
+                    ease: "power2.inOut",
+                    overwrite: "auto",
+                });
             };
 
             el.addEventListener("mouseenter", enter);
@@ -53,7 +72,7 @@ export function HoverLift({
         return () => {
             ctx.revert();
         };
-    }, [reduced, scale, y]);
+    }, [reduced, scale, y, shadow]);
 
     return (
         <div

@@ -9,30 +9,21 @@ interface MilestoneConfettiProps {
     onComplete?: () => void;
 }
 
-interface Particle {
-    x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    color: string;
-    rotation: number;
-    rotationSpeed: number;
-}
-
 /**
  * Renders a one-shot confetti burst on a fixed canvas overlay when `active`
- * becomes true. GSAP tweens particle physics; disabled for reduced motion.
+ * becomes true. Simulates gravity, drag, and rotation for a more genuine
+ * celebration feel. Disabled for reduced motion.
  */
 export function MilestoneConfetti({
     active = false,
-    particleCount = 40,
-    colors = ["#0F6CBD", "#5C2E91", "#107C10", "#D83B01", "#FFB900", "#00B7C3"],
+    particleCount = 28,
+    colors = ["#0F6CBD", "#5C2E91", "#107C10", "#D83B01", "#FFB900", "#00B7C3", "#8764B8"],
     onComplete,
 }: MilestoneConfettiProps) {
     const reduced = useReducedMotion();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const firedRef = useRef(false);
+    const tweensRef = useRef<gsap.core.Tween[]>([]);
 
     useEffect(() => {
         if (!active) {
@@ -58,21 +49,29 @@ export function MilestoneConfetti({
         const originX = width / 2;
         const originY = height / 2;
 
-        const particles: Particle[] = Array.from({ length: particleCount }, () => {
+        type Shape = "rect" | "circle" | "ribbon";
+
+        const particles = Array.from({ length: particleCount }, () => {
             const angle = Math.random() * Math.PI * 2;
-            const velocity = 4 + Math.random() * 10;
+            const velocity = 6 + Math.random() * 10;
+            const shapes: Shape[] = ["rect", "circle", "ribbon"];
             return {
                 x: originX,
                 y: originY,
                 vx: Math.cos(angle) * velocity,
-                vy: Math.sin(angle) * velocity - 4,
-                size: 6 + Math.random() * 8,
+                vy: Math.sin(angle) * velocity - 6,
+                size: 5 + Math.random() * 7,
                 color: colors[Math.floor(Math.random() * colors.length)],
                 rotation: Math.random() * 360,
-                rotationSpeed: (Math.random() - 0.5) * 20,
+                rotationSpeed: (Math.random() - 0.5) * 18,
+                shape: shapes[Math.floor(Math.random() * shapes.length)],
+                drag: 0.96 + Math.random() * 0.02,
+                gravity: 0.18 + Math.random() * 0.12,
+                opacity: 1,
             };
         });
 
+        let rafId = 0;
         let completed = 0;
 
         const draw = () => {
@@ -81,37 +80,74 @@ export function MilestoneConfetti({
                 ctx.save();
                 ctx.translate(p.x, p.y);
                 ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.globalAlpha = p.opacity;
                 ctx.fillStyle = p.color;
-                ctx.fillRect(-p.size / 2, -p.size / 3, p.size, p.size / 1.5);
+
+                if (p.shape === "circle") {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (p.shape === "ribbon") {
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, p.size, p.size / 3, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    const r = p.size / 3;
+                    ctx.beginPath();
+                    ctx.roundRect(-p.size / 2, -p.size / 3, p.size, p.size / 1.5, r);
+                    ctx.fill();
+                }
+
                 ctx.restore();
             });
         };
 
+        const activeTweens: gsap.core.Tween[] = [];
+
         const ctxGsap = gsap.context(() => {
+            tweensRef.current.forEach((t) => t.kill());
+            tweensRef.current = [];
+
             particles.forEach((p, i) => {
-                gsap.to(p, {
-                    x: p.x + p.vx * (18 + Math.random() * 20),
-                    y: p.y + p.vy * (14 + Math.random() * 16) + 180,
-                    rotation: p.rotation + p.rotationSpeed * 24,
-                    opacity: 0,
-                    duration: 0.9,
-                    ease: "power1.out",
-                    delay: i * 0.005,
-                    onUpdate: draw,
-                    onComplete: () => {
-                        completed += 1;
-                        if (completed === particles.length) {
-                            ctx.clearRect(0, 0, width, height);
-                            onComplete?.();
-                        }
-                    },
-                });
+                activeTweens.push(
+                    gsap.to(p, {
+                        opacity: 0,
+                        rotation: p.rotation + p.rotationSpeed * 18,
+                        duration: 1.1 + Math.random() * 0.5,
+                        ease: "power1.out",
+                        delay: i * 0.008,
+                        onComplete: () => {
+                            completed += 1;
+                            if (completed === particles.length) {
+                                cancelAnimationFrame(rafId);
+                                ctx.clearRect(0, 0, width, height);
+                                onComplete?.();
+                            }
+                        },
+                    }),
+                );
             });
+
+            const tick = () => {
+                particles.forEach((p) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vx *= p.drag;
+                    p.vy += p.gravity;
+                    p.rotation += p.rotationSpeed;
+                });
+                draw();
+                rafId = requestAnimationFrame(tick);
+            };
+            rafId = requestAnimationFrame(tick);
         });
 
-        draw();
+        tweensRef.current = activeTweens;
 
         return () => {
+            cancelAnimationFrame(rafId);
+            tweensRef.current.forEach((t) => t.kill());
+            tweensRef.current = [];
             ctxGsap.revert();
         };
     }, [active, reduced, particleCount, colors, onComplete]);

@@ -44,9 +44,10 @@ export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps
             el.style.clipPath = `circle(0px at ${cx}px ${cy}px)`;
 
             gsap.to(el, {
-                clipPath: `circle(${maxRadius * 1.2}px at ${cx}px ${cy}px)`,
-                duration: 0.35,
-                ease: "power2.inOut",
+                clipPath: `circle(${maxRadius * 1.25}px at ${cx}px ${cy}px)`,
+                duration: 0.45,
+                ease: "power3.inOut",
+                force3D: true,
                 onComplete: () => {
                     gsap.set(el, { clipPath: "none" });
                 },
