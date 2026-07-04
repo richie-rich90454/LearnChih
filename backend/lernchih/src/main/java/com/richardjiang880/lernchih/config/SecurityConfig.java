@@ -95,10 +95,14 @@ public class SecurityConfig {
                 .requestMatchers("/sitemap-resources.xml").permitAll()
                 .requestMatchers("/sitemap-channels.xml").permitAll()
                 .requestMatchers("/sitemap-static.xml").permitAll()
+                // Public actuator and API documentation endpoints
+                .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 // Static frontend assets produced by the production build
                 .requestMatchers("/", "/index.html", "/assets/**", "/favicon.svg",
                         "/icons.svg", "/manifest.webmanifest", "/sw.js", "/workbox-*.js").permitAll()
                 .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "MODERATOR")
+                .requestMatchers("/actuator/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(apiKeyAuthFilter, UsernamePasswordAuthenticationFilter.class)
