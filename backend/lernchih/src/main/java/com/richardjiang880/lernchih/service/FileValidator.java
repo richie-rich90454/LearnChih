@@ -1,5 +1,7 @@
 package com.richardjiang880.lernchih.service;
 
+import com.richardjiang880.lernchih.exception.FileUploadSizeExceededException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,16 +12,20 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Hardens file uploads by enforcing an extension allowlist, a matching
- * declared-MIME allowlist, and magic-byte verification of the file content.
+ * Hardens file uploads by enforcing a maximum size, an extension allowlist, a
+ * matching declared-MIME allowlist, and magic-byte verification of the file
+ * content.
  *
  * <p>{@link #validate(MultipartFile)} throws {@link IllegalArgumentException}
- * (mapped to HTTP 400 by the global exception handler) on any violation and
- * returns the validated, lowercased extension (without the dot) on success so
- * callers can build a safe UUID-based filename.
+ * (mapped to HTTP 400 by the global exception handler) for validation failures,
+ * {@link FileUploadSizeExceededException} (mapped to HTTP 413) for oversized
+ * uploads, and returns the validated, lowercased extension (without the dot)
+ * on success so callers can build a safe UUID-based filename.
  */
 @Component
 public class FileValidator {
+
+    private static final long DEFAULT_MAX_UPLOAD_SIZE = 50L * 1024 * 1024;
 
     private static final Set<String> ALLOWED_EXTENSIONS = Set.of(
             "png", "jpg", "jpeg", "gif", "webp", "svg", "pdf", "txt", "md", "docx", "pptx", "xlsx"
@@ -46,15 +52,27 @@ public class FileValidator {
 
     private static final int MAGIC_BYTE_READ_LENGTH = 12;
 
+    private final long maxUploadSizeBytes;
+
+    public FileValidator(@Value("${app.files.max-upload-size:52428800}") long maxUploadSizeBytes) {
+        this.maxUploadSizeBytes = maxUploadSizeBytes > 0 ? maxUploadSizeBytes : DEFAULT_MAX_UPLOAD_SIZE;
+    }
+
     /**
-     * Validate an uploaded file. Throws {@link IllegalArgumentException} on any
-     * violation.
+     * Validate an uploaded file. Throws {@link IllegalArgumentException} on
+     * validation failures and {@link FileUploadSizeExceededException} when the
+     * file is larger than the configured maximum upload size.
      *
      * @return the validated, lowercased extension (without the leading dot).
      */
     public String validate(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
+        }
+
+        if (file.getSize() > maxUploadSizeBytes) {
+            throw new FileUploadSizeExceededException(
+                    "File exceeds maximum upload size of " + maxUploadSizeBytes + " bytes");
         }
 
         String originalFilename = file.getOriginalFilename();

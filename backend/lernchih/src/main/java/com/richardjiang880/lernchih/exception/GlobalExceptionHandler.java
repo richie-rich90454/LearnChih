@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -56,6 +57,38 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ProblemDetail> handleAccessDenied(AccessDeniedException ex, WebRequest request) {
         return problem(HttpStatus.FORBIDDEN, "Forbidden", msg("error.general.access-denied", null, "Access denied"), request);
+    }
+
+    // Large anonymous file downloads require authentication
+    @ExceptionHandler(LargeAnonymousDownloadException.class)
+    public ResponseEntity<ProblemDetail> handleLargeAnonymousDownload(LargeAnonymousDownloadException ex, WebRequest request) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Large file downloads require login");
+        pd.setTitle("Authentication required");
+        pd.setType(URI.create("about:blank"));
+        pd.setInstance(requestUri(request));
+        return build(pd, HttpStatus.UNAUTHORIZED);
+    }
+
+    // Oversized file uploads return 413 Payload Too Large
+    @ExceptionHandler(FileUploadSizeExceededException.class)
+    public ResponseEntity<ProblemDetail> handleFileUploadSizeExceeded(FileUploadSizeExceededException ex, WebRequest request) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.PAYLOAD_TOO_LARGE,
+                "Uploaded file exceeds the maximum allowed size of 50 MB");
+        pd.setTitle("Payload Too Large");
+        pd.setType(URI.create("about:blank"));
+        pd.setInstance(requestUri(request));
+        return build(pd, HttpStatus.PAYLOAD_TOO_LARGE);
+    }
+
+    // Spring multipart size-limit breaches also map to 413 for consistency
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ProblemDetail> handleMaxUploadSizeExceeded(MaxUploadSizeExceededException ex, WebRequest request) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.PAYLOAD_TOO_LARGE,
+                "Uploaded file exceeds the maximum allowed size of 50 MB");
+        pd.setTitle("Payload Too Large");
+        pd.setType(URI.create("about:blank"));
+        pd.setInstance(requestUri(request));
+        return build(pd, HttpStatus.PAYLOAD_TOO_LARGE);
     }
 
     // Handle @Valid body validation errors with field-level detail (400)

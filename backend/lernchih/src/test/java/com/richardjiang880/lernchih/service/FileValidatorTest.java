@@ -1,5 +1,6 @@
 package com.richardjiang880.lernchih.service;
 
+import com.richardjiang880.lernchih.exception.FileUploadSizeExceededException;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class FileValidatorTest {
 
-    private final FileValidator validator = new FileValidator();
+    private final FileValidator validator = new FileValidator(1024);
 
     @Test
     void validateAcceptsValidPng() {
@@ -96,5 +97,15 @@ class FileValidatorTest {
         MultipartFile file = new MockMultipartFile("file", "IMAGE.PNG", "image/png", content);
 
         assertThat(validator.validate(file)).isEqualTo("png");
+    }
+
+    @Test
+    void validateThrowsWhenFileExceedsMaxUploadSize() {
+        byte[] content = new byte[1025];
+        MultipartFile file = new MockMultipartFile("file", "big.png", "image/png", content);
+
+        assertThatThrownBy(() -> validator.validate(file))
+                .isInstanceOf(FileUploadSizeExceededException.class)
+                .hasMessageContaining("maximum upload size");
     }
 }

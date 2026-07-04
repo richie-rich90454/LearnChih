@@ -1,5 +1,6 @@
 package com.richardjiang880.lernchih.controller;
 
+import com.richardjiang880.lernchih.exception.LargeAnonymousDownloadException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -7,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -20,8 +22,13 @@ public class FileController {
     @Value("${app.upload.dir}")
     private String uploadDir;
 
+    @Value("${app.files.large-download-threshold:10485760}")
+    private long largeDownloadThreshold;
+
     @GetMapping("/{filename}")
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+    public ResponseEntity<Resource> serveFile(
+            @PathVariable String filename,
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
         // Prevent path traversal attacks
         if (filename.contains("..")) {
             return ResponseEntity.badRequest().build();
@@ -33,6 +40,11 @@ public class FileController {
 
             if (!resource.exists() || !resource.isReadable()) {
                 return ResponseEntity.notFound().build();
+            }
+
+            long fileSize = Files.size(filePath);
+            if (!hasAuthorization(authorization) && fileSize > largeDownloadThreshold) {
+                throw new LargeAnonymousDownloadException();
             }
 
             // Determine content type from file extension
@@ -57,8 +69,12 @@ public class FileController {
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
                     .body(resource);
-        } catch (Exception e) {
+        } catch (java.io.IOException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private boolean hasAuthorization(String authorization) {
+        return authorization != null && !authorization.isBlank();
     }
 }
