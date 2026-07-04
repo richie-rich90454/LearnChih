@@ -1,6 +1,7 @@
 import { startPreviewServer, stopServer } from './lib/server.mjs'
 import { spawn } from 'node:child_process'
 import path from 'node:path'
+import puppeteer from 'puppeteer'
 
 const PORT = 4173
 
@@ -12,7 +13,15 @@ async function run() {
       const proc = spawn(
         'npx',
         ['pa11y-ci', '--config', path.join('tests-accessibility', '.pa11yci.json')],
-        { cwd: process.cwd(), stdio: 'inherit', shell: true },
+        {
+          cwd: process.cwd(),
+          stdio: 'inherit',
+          shell: true,
+          env: {
+            ...process.env,
+            PUPPETEER_EXECUTABLE_PATH: puppeteer.executablePath(),
+          },
+        },
       )
 
       proc.on('error', reject)
