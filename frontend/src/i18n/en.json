@@ -114,7 +114,11 @@
     "verifyEmailTitle": "Email Verification",
     "enterCode": "Enter verification code",
     "resendCode": "Resend code",
-    "codeResent": "Verification code resent"
+    "codeResent": "Verification code resent",
+    "loginToUpload": "Log in to upload",
+    "loginToInteract": "Log in to interact",
+    "loginToStartThread": "Log in to start a thread",
+    "loginToReply": "Log in to reply"
   },
   "resources": {
     "create": "Create Resource",
