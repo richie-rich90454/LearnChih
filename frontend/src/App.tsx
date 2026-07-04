@@ -8,6 +8,7 @@ import {
 import RequireAuth from './components/RequireAuth'
 import AppLayout from './components/AppLayout'
 import CookieConsent from './components/CookieConsent'
+import Preconnect from './components/Preconnect'
 import { UpdatePrompt } from './components/UpdatePrompt'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { CommandPalette, useCommandPaletteShortcut } from './components/CommandPalette'
@@ -148,6 +149,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <Preconnect />
       <RouteAnnouncer />
       <ErrorBoundary>
         <Suspense fallback={<LoadingFallback />}>

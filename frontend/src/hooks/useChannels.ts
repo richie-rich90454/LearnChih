@@ -15,7 +15,7 @@ export function useChannels() {
   })
 }
 
-export function useChannel(id: number | null | undefined) {
+export function useChannel(id: string | number | null | undefined) {
   return useQuery<Channel>({
     queryKey: ['channel', id],
     queryFn: () => getChannel(id).then((r) => r.data),
@@ -34,7 +34,7 @@ export function useCreateChannelThread(channelId: number | null | undefined) {
   })
 }
 
-export function useChannelPosts(channelId: number | null | undefined, threadId: string | undefined) {
+export function useChannelPosts(channelId: string | number | null | undefined, threadId: string | undefined) {
   return useQuery<Post[]>({
     queryKey: ['channelPosts', channelId, threadId],
     queryFn: () => getChannelPosts(channelId, threadId).then((r) => r.data),
@@ -42,7 +42,7 @@ export function useChannelPosts(channelId: number | null | undefined, threadId: 
   })
 }
 
-export function useCreateChannelPost(channelId: number | null | undefined, threadId: string | undefined) {
+export function useCreateChannelPost(channelId: string | number | null | undefined, threadId: string | undefined) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: CreatePostRequest) => createChannelPost(channelId, threadId, data),

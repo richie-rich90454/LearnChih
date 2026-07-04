@@ -348,7 +348,7 @@ export default function ResourcesPage() {
           <HoverLift key={resource.id}>
             <Card
               className={styles.resourceCard}
-              onClick={() => navigate(`/resources/${resource.id}`)}
+              onClick={() => navigate(`/resources/${resource.slug || resource.id}`)}
             >
               <div className={styles.cardHeader}>
                 <Subtitle2>{resource.title}</Subtitle2>

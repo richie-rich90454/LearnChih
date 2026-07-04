@@ -105,6 +105,7 @@ export default function ChannelsPage() {
   const [threadContent, setThreadContent] = useState<string>('')
 
   const channelList: Channel[] = Array.isArray(channels) ? channels : (channels as any)?.content || []
+  const selectedChannel = useMemo(() => channelList.find((c) => c.id === selectedChannelId), [channelList, selectedChannelId])
   const threads: ChannelThread[] = channelDetail?.threads || []
 
   const [threadSearch, setThreadSearch] = useState<string>('')
@@ -285,7 +286,7 @@ export default function ChannelsPage() {
                 <HoverLift key={thread.id}>
                   <Card
                     className={styles.threadCard}
-                    onClick={() => navigate(`/channels/${selectedChannelId}/threads/${thread.id}`)}
+                    onClick={() => navigate(`/channels/${selectedChannel?.slug || selectedChannelId}/threads/${thread.id}`)}
                   >
                     <Subtitle2>{thread.title}</Subtitle2>
                     <div className={styles.channelMeta}>

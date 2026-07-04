@@ -107,9 +107,9 @@ export default function ChannelThreadPage() {
   const styles = useStyles()
   const { channelId, threadId } = useParams<{ channelId: string; threadId: string }>()
   const navigate = useNavigate()
-  const { data: channel } = useChannel(channelId ? Number(channelId) : undefined)
-  const { data: posts, isLoading, isError } = useChannelPosts(channelId ? Number(channelId) : undefined, threadId)
-  const createPost = useCreateChannelPost(channelId ? Number(channelId) : undefined, threadId)
+  const { data: channel } = useChannel(channelId)
+  const { data: posts, isLoading, isError } = useChannelPosts(channelId, threadId)
+  const createPost = useCreateChannelPost(channelId, threadId)
   const { subscribeToChannelThread, subscribeToTyping, sendTypingIndicator, sendChannelBroadcast } = useWebSocket()
   const user = useAuthStore((s) => s.user)
 
@@ -216,8 +216,7 @@ export default function ChannelThreadPage() {
   }, [postList])
 
   const threadTitle = thread?.title || 'Thread'
-  const threadSlug = thread?.slug || threadId
-  const canonicalPath = `/channels/${channelId}/threads/${threadSlug}`
+  const canonicalPath = `/channels/${channel?.slug || channelId}/threads/${threadId}`
   const baseUrl = getBaseUrl()
   const threadUrl = `${baseUrl}${canonicalPath}`
   const jsonLd = [
