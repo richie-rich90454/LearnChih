@@ -11,33 +11,26 @@ import org.springframework.stereotype.Component;
 import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 
 /**
- * Loads development seed data when the {@code local} or {@code dev} Spring profile is active.
+ * Loads development seed data when the {@code dev} Spring profile is active.
  *
- * <p>Flyway is disabled in the local profile, so this seeder executes the SQL scripts
- * that would otherwise be applied by Flyway in dev mode. The scripts live under
- * {@code classpath:db/seed/} and are designed to be idempotent.
- *
- * <p>MySQL scripts use {@code INSERT IGNORE} and {@code NOW() - INTERVAL n DAY}; H2 scripts
- * use equivalent H2 syntax. The correct script is selected at runtime from the database
- * product name.
+ * <p>The {@code local} profile uses an in-memory H2 database and is seeded by
+ * {@link DemoDataSeeder} instead. This seeder only runs against MySQL/MariaDB
+ * in the {@code dev} profile, executing the Flyway-independent SQL script under
+ * {@code classpath:db/seed/}. The script is idempotent ({@code INSERT IGNORE}).
  *
  * <p>Execution is best-effort: any failure is logged but does not abort startup, because
  * local development should remain usable even if a seed row becomes invalid.
  */
 @Component
-@Profile({"local", "dev"})
+@Profile("dev")
 public class DevDataSeeder {
 
     private static final Logger log = LoggerFactory.getLogger(DevDataSeeder.class);
 
     @Value("classpath:db/seed/V999__dev_seed_data.sql")
     private Resource devSeedScript;
-
-    @Value("classpath:db/seed/V999__dev_seed_data_h2.sql")
-    private Resource devSeedScriptH2;
 
     private final DataSource dataSource;
 
@@ -47,20 +40,9 @@ public class DevDataSeeder {
 
     @PostConstruct
     public void seed() {
-        boolean h2 = isH2();
-        log.info("Running development data seeder for local/dev profile (database: {})...", h2 ? "h2" : "mysql");
-        execute(h2 ? devSeedScriptH2 : devSeedScript);
+        log.info("Running development data seeder for dev profile (MySQL)...");
+        execute(devSeedScript);
         log.info("Development data seeding complete.");
-    }
-
-    private boolean isH2() {
-        try (Connection connection = dataSource.getConnection()) {
-            DatabaseMetaData metaData = connection.getMetaData();
-            return metaData.getDatabaseProductName().toLowerCase().contains("h2");
-        } catch (Exception e) {
-            log.warn("Could not determine database product name, defaulting to MySQL seed scripts", e);
-            return false;
-        }
     }
 
     private void execute(Resource script) {
