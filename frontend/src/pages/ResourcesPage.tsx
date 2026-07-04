@@ -229,11 +229,11 @@ export default function ResourcesPage() {
                   </MessageBar>
                 )}
                 <div className={styles.dialogForm}>
-                  <Field label={t('resources.title')} required>
-                    <Input value={title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} placeholder={t('resources.title')} />
+                  <Field label={t('resources.titleLabel')} required>
+                    <Input value={title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} placeholder={t('resources.titleLabel')} />
                   </Field>
-                  <Field label={t('resources.description')}>
-                    <Textarea value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} placeholder={t('resources.description')} />
+                  <Field label={t('resources.descriptionLabel')}>
+                    <Textarea value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} placeholder={t('resources.descriptionLabel')} />
                   </Field>
                   <Field label={t('resources.category')}>
                     <Select value={category} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}>

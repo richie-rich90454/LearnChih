@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation, Trans } from 'react-i18next'
 import {
   makeStyles,
   tokens,
@@ -75,10 +76,14 @@ const useStyles = makeStyles({
     flexShrink: 0,
     marginTop: tokens.spacingVerticalXXS,
   },
+  privacyLink: {
+    textDecoration: 'underline',
+  },
 })
 
 export default function CookieConsent() {
   const styles = useStyles()
+  const { t } = useTranslation()
   const hasResponded = useCookieConsentStore((s) => s.hasResponded)
   const setConsent = useCookieConsentStore((s) => s.setConsent)
   const [customized, setCustomized] = useState(false)
@@ -98,20 +103,22 @@ export default function CookieConsent() {
     <Card
       className={styles.banner}
       role="region"
-      aria-label="Cookie consent"
+      aria-label={t('cookieConsent.ariaLabel')}
       size="small"
     >
       <div className={styles.content}>
         <div className={styles.header}>
-          <Subtitle2>Cookie preferences</Subtitle2>
+          <Subtitle2>{t('cookieConsent.title')}</Subtitle2>
           <Body1>
-            We use cookies to keep the site working (necessary), enable extra features
-            (functional), and understand how you use the site (analytics). Necessary cookies are
-            always on. See our{' '}
-            <Link href="#" target="_blank" rel="noreferrer">
-              privacy notice
-            </Link>
-            .
+            <Trans i18nKey="cookieConsent.body">
+              We use cookies to keep the site working (necessary), enable extra features
+              (functional), and understand how you use the site (analytics). Necessary cookies are
+              always on. See our{' '}
+              <Link href="#" target="_blank" rel="noreferrer" className={styles.privacyLink}>
+                privacy notice
+              </Link>
+              .
+            </Trans>
           </Body1>
         </div>
 
@@ -120,50 +127,50 @@ export default function CookieConsent() {
             id="cookie-customize"
             className={styles.customizeSection}
             role="group"
-            aria-label="Cookie categories"
+            aria-label={t('cookieConsent.categoriesAriaLabel')}
           >
             <div className={styles.switchRow}>
               <div className={styles.switchLabel}>
                 <Body1>
-                  <strong>Necessary</strong>
+                  <strong>{t('cookieConsent.necessary')}</strong>
                 </Body1>
-                <Body1>Required for the site to function. Always on.</Body1>
+                <Body1>{t('cookieConsent.necessaryDescription')}</Body1>
               </div>
               <Switch
                 className={styles.switchControl}
                 checked
                 disabled
-                aria-label="Necessary cookies, always on"
+                aria-label={t('cookieConsent.necessaryAriaLabel')}
               />
             </div>
 
             <div className={styles.switchRow}>
               <div className={styles.switchLabel}>
                 <Body1>
-                  <strong>Functional</strong>
+                  <strong>{t('cookieConsent.functional')}</strong>
                 </Body1>
-                <Body1>Remember your preferences and settings.</Body1>
+                <Body1>{t('cookieConsent.functionalDescription')}</Body1>
               </div>
               <Switch
                 className={styles.switchControl}
                 checked={functionalLocal}
                 onChange={(_, data) => setFunctionalLocal(data.checked)}
-                aria-label="Functional cookies"
+                aria-label={t('cookieConsent.functionalAriaLabel')}
               />
             </div>
 
             <div className={styles.switchRow}>
               <div className={styles.switchLabel}>
                 <Body1>
-                  <strong>Analytics</strong>
+                  <strong>{t('cookieConsent.analytics')}</strong>
                 </Body1>
-                <Body1>Help us improve by measuring usage.</Body1>
+                <Body1>{t('cookieConsent.analyticsDescription')}</Body1>
               </div>
               <Switch
                 className={styles.switchControl}
                 checked={analyticsLocal}
                 onChange={(_, data) => setAnalyticsLocal(data.checked)}
-                aria-label="Analytics cookies"
+                aria-label={t('cookieConsent.analyticsAriaLabel')}
               />
             </div>
           </div>
@@ -171,10 +178,10 @@ export default function CookieConsent() {
 
         <div className={styles.actions}>
           <Button appearance="primary" onClick={handleAcceptAll}>
-            Accept all
+            {t('cookieConsent.acceptAll')}
           </Button>
           <Button appearance="secondary" onClick={handleRejectAll}>
-            Reject all
+            {t('cookieConsent.rejectAll')}
           </Button>
           <Button
             appearance="subtle"
@@ -182,11 +189,11 @@ export default function CookieConsent() {
             aria-expanded={customized}
             aria-controls="cookie-customize"
           >
-            {customized ? 'Hide options' : 'Customize'}
+            {customized ? t('cookieConsent.hideOptions') : t('cookieConsent.customize')}
           </Button>
           {customized && (
             <Button appearance="primary" onClick={handleSaveCustomization}>
-              Save selection
+              {t('cookieConsent.saveSelection')}
             </Button>
           )}
         </div>

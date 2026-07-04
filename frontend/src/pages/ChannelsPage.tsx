@@ -194,11 +194,11 @@ export default function ChannelsPage() {
                     </MessageBar>
                   )}
                   <div className={styles.dialogForm}>
-                    <Field label={t('resources.title')} required>
-                      <Input value={threadTitle} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setThreadTitle(e.target.value)} placeholder={t('resources.title')} />
+                    <Field label={t('channels.threadTitle')} required>
+                      <Input value={threadTitle} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setThreadTitle(e.target.value)} placeholder={t('channels.threadTitle')} />
                     </Field>
-                    <Field label={t('resources.description')}>
-                      <Textarea value={threadContent} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setThreadContent(e.target.value)} placeholder={t('resources.description')} />
+                    <Field label={t('channels.threadContent')}>
+                      <Textarea value={threadContent} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setThreadContent(e.target.value)} placeholder={t('channels.threadContent')} />
                     </Field>
                   </div>
                 </DialogContent>
