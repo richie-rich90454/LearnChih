@@ -2,23 +2,32 @@
 <!--
     Logback configuration for LernChih.
 
-    Emits single-line logs that include the "requestId" MDC value (populated by
-    RequestIdFilter) so every log line can be correlated to a request. The
-    X-Request-ID response header carries the same value for client-side tracing.
-
-    A full structured-JSON encoder (e.g. LogstashEncoder) can be added later by
-    adding the net.logstash.logback:logstash-logback-encoder dependency and
-    replacing the <pattern> encoder below with:
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    - Production/default profiles emit structured JSON logs using the
+      LogstashEncoder. The encoder automatically includes the MDC, so the
+      "requestId" value populated by RequestIdFilter is included as the
+      "requestId" field, and the X-Request-ID response header carries the same
+      value for client-side tracing.
+    - Local/dev/test profiles keep a human-readable pattern for console output
+      during development and test runs.
 -->
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
+    <springProfile name="local,dev,test">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <springProfile name="!local,!dev,!test">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <includeMdcKeyName>requestId</includeMdcKeyName>
+            </encoder>
+        </appender>
+    </springProfile>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
