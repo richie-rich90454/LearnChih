@@ -6,7 +6,12 @@ interface StaggerRevealProps {
     children: ReactNode;
     className?: string;
     style?: CSSProperties;
-    staggerSeconds?: number;
+    /** Stagger delay between each child in seconds. */
+    stagger?: number;
+    /** Vertical distance each child travels in pixels. */
+    y?: number;
+    /** Duration of each child's reveal in seconds. */
+    duration?: number;
     childSelector?: string;
 }
 
@@ -18,7 +23,9 @@ export function StaggerReveal({
     children,
     className,
     style,
-    staggerSeconds = 0.03,
+    stagger = 0.05,
+    y = 18,
+    duration = 0.5,
     childSelector = "> *",
 }: StaggerRevealProps) {
     const reduced = useReducedMotion();
@@ -30,23 +37,24 @@ export function StaggerReveal({
         const ctx = gsap.context(() => {
             const targets = containerRef.current?.querySelectorAll(childSelector);
             if (!targets || targets.length === 0) return;
-            gsap.fromTo(
-                targets,
-                { opacity: 0, y: 20 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.25,
-                    stagger: targets.length > 50 ? 0 : staggerSeconds,
-                    ease: "power2.out",
-                },
-            );
+
+            gsap.set(targets, { opacity: 0, y, scale: 0.98 });
+
+            gsap.to(targets, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration,
+                stagger: targets.length > 40 ? 0.02 : stagger,
+                ease: "power2.out",
+                force3D: true,
+            });
         }, containerRef);
 
         return () => {
             ctx.revert();
         };
-    }, [reduced, staggerSeconds, childSelector]);
+    }, [reduced, stagger, y, duration, childSelector]);
 
     return (
         <div ref={containerRef} className={className} style={style}>

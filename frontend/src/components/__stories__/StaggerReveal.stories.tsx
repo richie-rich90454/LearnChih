@@ -35,7 +35,7 @@ export const Default: Story = {
 export const SlowStagger: Story = {
     render: () => (
         <StaggerReveal
-            staggerSeconds={0.2}
+            stagger={0.2}
             style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 400 }}
         >
             <Card style={{ padding: 16 }}>

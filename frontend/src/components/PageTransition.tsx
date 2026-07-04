@@ -23,8 +23,15 @@ export function PageTransition({ children, className }: PageTransitionProps) {
         const ctx = gsap.context(() => {
             gsap.fromTo(
                 containerRef.current,
-                { opacity: 0, y: 16 },
-                { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" },
+                { opacity: 0, y: 12, scale: 0.985 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.45,
+                    ease: "power3.out",
+                    force3D: true,
+                },
             );
         }, containerRef);
 
@@ -34,7 +41,11 @@ export function PageTransition({ children, className }: PageTransitionProps) {
     }, [reduced]);
 
     return (
-        <div ref={containerRef} className={className}>
+        <div
+            ref={containerRef}
+            className={className}
+            style={{ opacity: reduced ? undefined : 0 }}
+        >
             {children}
         </div>
     );
