@@ -1,74 +1,83 @@
-import { useState } from 'react'
-import { Popover, PopoverTrigger, PopoverSurface, Button, Badge } from '@fluentui/react-components'
-import { useReactions, useAddReaction, useRemoveReaction, type Reaction } from '../hooks/useSocial'
-import useAuthStore from '../store/authStore'
+import { useState } from "react";
+import { Popover, PopoverTrigger, PopoverSurface, Button, Badge } from "@fluentui/react-components";
+import { useReactions, useAddReaction, useRemoveReaction, type Reaction } from "../hooks/useSocial";
+import useAuthStore from "../store/authStore";
 
-const COMMON_EMOJIS = ['👍', '❤️', '🎉', '🔥', '👀', '💡', '🚀', '✅']
+const COMMON_EMOJIS = ["👍", "❤️", "🎉", "🔥", "👀", "💡", "🚀", "✅"];
 
 interface ReactionPickerProps {
-  postId: number
+    postId: number;
 }
 
 export function ReactionPicker({ postId }: ReactionPickerProps) {
-  const [open, setOpen] = useState(false)
-  const { data: reactions, isLoading } = useReactions(postId)
-  const addReaction = useAddReaction(postId)
-  const removeReaction = useRemoveReaction(postId)
-  const currentUser = useAuthStore((s) => s.user)
+    const [open, setOpen] = useState(false);
+    const { data: reactions, isLoading } = useReactions(postId);
+    const addReaction = useAddReaction(postId);
+    const removeReaction = useRemoveReaction(postId);
+    const currentUser = useAuthStore((s) => s.user);
 
-  const grouped = (reactions ?? []).reduce<Record<string, Reaction[]>>((acc, r) => {
-    ;(acc[r.emoji] ||= []).push(r)
-    return acc
-  }, {})
+    const grouped = (reactions ?? []).reduce<Record<string, Reaction[]>>((acc, r) => {
+        (acc[r.emoji] ||= []).push(r);
+        return acc;
+    }, {});
 
-  const handleReact = (emoji: string) => {
-    const mine = (reactions ?? []).find((r) => r.emoji === emoji && r.userId === currentUser?.userId)
-    if (mine) {
-      removeReaction.mutate(mine.id)
-    } else {
-      addReaction.mutate(emoji)
-    }
-    setOpen(false)
-  }
+    const handleReact = (emoji: string) => {
+        const mine = (reactions ?? []).find(
+            (r) => r.emoji === emoji && r.userId === currentUser?.userId,
+        );
+        if (mine) {
+            removeReaction.mutate(mine.id);
+        } else {
+            addReaction.mutate(emoji);
+        }
+        setOpen(false);
+    };
 
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap' }}>
-      {Object.entries(grouped).map(([emoji, list]) => {
-        const mine = list.some((r) => r.userId === currentUser?.userId)
-        return (
-          <Badge
-            key={emoji}
-            appearance={mine ? 'filled' : 'outline'}
-            color={mine ? 'brand' : 'informative'}
-            style={{ cursor: 'pointer' }}
-            onClick={() => handleReact(emoji)}
-            title={`${list.length} reaction(s)`}
-          >
-            {emoji} {list.length}
-          </Badge>
-        )
-      })}
+    return (
+        <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+            {Object.entries(grouped).map(([emoji, list]) => {
+                const mine = list.some((r) => r.userId === currentUser?.userId);
+                return (
+                    <Badge
+                        key={emoji}
+                        appearance={mine ? "filled" : "outline"}
+                        color={mine ? "brand" : "informative"}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleReact(emoji)}
+                        title={`${list.length} reaction(s)`}
+                    >
+                        {emoji} {list.length}
+                    </Badge>
+                );
+            })}
 
-      <Popover open={open} onOpenChange={(_, d) => setOpen(d.open)}>
-        <PopoverTrigger disableButtonEnhancement>
-          <Button appearance="subtle" size="small" aria-label="Add reaction" disabled={isLoading}>
-            😊 +
-          </Button>
-        </PopoverTrigger>
-        <PopoverSurface style={{ display: 'flex', gap: 4, flexWrap: 'wrap', maxWidth: 280 }}>
-          {COMMON_EMOJIS.map((emoji) => (
-            <Button
-              key={emoji}
-              appearance="subtle"
-              size="large"
-              onClick={() => handleReact(emoji)}
-              aria-label={`React with ${emoji}`}
-            >
-              {emoji}
-            </Button>
-          ))}
-        </PopoverSurface>
-      </Popover>
-    </div>
-  )
+            <Popover open={open} onOpenChange={(_, d) => setOpen(d.open)}>
+                <PopoverTrigger disableButtonEnhancement>
+                    <Button
+                        appearance="subtle"
+                        size="small"
+                        aria-label="Add reaction"
+                        disabled={isLoading}
+                    >
+                        😊 +
+                    </Button>
+                </PopoverTrigger>
+                <PopoverSurface
+                    style={{ display: "flex", gap: 4, flexWrap: "wrap", maxWidth: 280 }}
+                >
+                    {COMMON_EMOJIS.map((emoji) => (
+                        <Button
+                            key={emoji}
+                            appearance="subtle"
+                            size="large"
+                            onClick={() => handleReact(emoji)}
+                            aria-label={`React with ${emoji}`}
+                        >
+                            {emoji}
+                        </Button>
+                    ))}
+                </PopoverSurface>
+            </Popover>
+        </div>
+    );
 }

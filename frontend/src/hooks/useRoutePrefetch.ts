@@ -7,23 +7,23 @@
 // `usePrefetchOnHover` returns spreadable `onMouseEnter` / `onFocus` handlers
 // to prefetch a route when a user shows intent by hovering or focusing a link.
 
-const prefetched = new Map<string, Promise<unknown>>()
+const prefetched = new Map<string, Promise<unknown>>();
 
 export function prefetchRoute(key: string, importFn: () => Promise<unknown>): Promise<unknown> {
-  const cached = prefetched.get(key)
-  if (cached) return cached
-  const promise = importFn()
-  prefetched.set(key, promise)
-  // Allow a failed prefetch to be retried on the next hover/navigation.
-  promise.catch(() => {
-    prefetched.delete(key)
-  })
-  return promise
+    const cached = prefetched.get(key);
+    if (cached) return cached;
+    const promise = importFn();
+    prefetched.set(key, promise);
+    // Allow a failed prefetch to be retried on the next hover/navigation.
+    promise.catch(() => {
+        prefetched.delete(key);
+    });
+    return promise;
 }
 
 export function usePrefetchOnHover(key: string, importFn: () => Promise<unknown>) {
-  return {
-    onMouseEnter: () => prefetchRoute(key, importFn),
-    onFocus: () => prefetchRoute(key, importFn),
-  }
+    return {
+        onMouseEnter: () => prefetchRoute(key, importFn),
+        onFocus: () => prefetchRoute(key, importFn),
+    };
 }

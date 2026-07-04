@@ -1,22 +1,34 @@
-import type { AxiosResponse } from 'axios'
-import api from './axios'
-import type { Channel, ChannelThread, Post, CreateChannelThreadRequest, CreatePostRequest } from '../types'
+import type { AxiosResponse } from "axios";
+import api from "./axios";
+import type {
+    Channel,
+    ChannelThread,
+    Post,
+    CreateChannelThreadRequest,
+    CreatePostRequest,
+} from "../types";
 
-export const getChannels = (): Promise<AxiosResponse<Channel[]>> =>
-  api.get<Channel[]>('/channels')
+export const getChannels = (): Promise<AxiosResponse<Channel[]>> => api.get<Channel[]>("/channels");
 
-export const getChannel = (id: string | number | null | undefined): Promise<AxiosResponse<Channel>> =>
-  api.get<Channel>(`/channels/${id}`)
+export const getChannel = (
+    id: string | number | null | undefined,
+): Promise<AxiosResponse<Channel>> => api.get<Channel>(`/channels/${id}`);
 
-export const createChannelThread = (channelId: number | null | undefined, data: CreateChannelThreadRequest): Promise<AxiosResponse<ChannelThread>> =>
-  api.post<ChannelThread>(`/channels/${channelId}/threads`, data)
+export const createChannelThread = (
+    channelId: number | null | undefined,
+    data: CreateChannelThreadRequest,
+): Promise<AxiosResponse<ChannelThread>> =>
+    api.post<ChannelThread>(`/channels/${channelId}/threads`, data);
 
-export const getChannelPosts = (channelId: string | number | null | undefined, threadId: string | undefined): Promise<AxiosResponse<Post[]>> =>
-  api.get<Post[]>(`/channels/${channelId}/threads/${threadId}/posts`)
+export const getChannelPosts = (
+    channelId: string | number | null | undefined,
+    threadId: string | undefined,
+): Promise<AxiosResponse<Post[]>> =>
+    api.get<Post[]>(`/channels/${channelId}/threads/${threadId}/posts`);
 
 export const createChannelPost = (
-  channelId: string | number | null | undefined,
-  threadId: string | undefined,
-  data: CreatePostRequest
+    channelId: string | number | null | undefined,
+    threadId: string | undefined,
+    data: CreatePostRequest,
 ): Promise<AxiosResponse<Post>> =>
-  api.post<Post>(`/channels/${channelId}/threads/${threadId}/posts`, data)
+    api.post<Post>(`/channels/${channelId}/threads/${threadId}/posts`, data);

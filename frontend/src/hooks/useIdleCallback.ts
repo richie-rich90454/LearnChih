@@ -1,17 +1,20 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from "react";
 
 const hasRIC =
-  typeof window !== 'undefined' &&
-  typeof window.requestIdleCallback === 'function' &&
-  typeof window.cancelIdleCallback === 'function'
+    typeof window !== "undefined" &&
+    typeof window.requestIdleCallback === "function" &&
+    typeof window.cancelIdleCallback === "function";
 
 const requestIdle: (cb: () => void) => number = hasRIC
-  ? (cb) => window.requestIdleCallback(() => cb()) as unknown as number
-  : (cb) => window.setTimeout(cb, 1)
+    ? (cb) => window.requestIdleCallback(() => cb()) as unknown as number
+    : (cb) => window.setTimeout(cb, 1);
 
 const cancelIdle: (handle: number) => void = hasRIC
-  ? (handle) => window.cancelIdleCallback(handle as unknown as Parameters<typeof window.cancelIdleCallback>[0])
-  : (handle) => window.clearTimeout(handle)
+    ? (handle) =>
+          window.cancelIdleCallback(
+              handle as unknown as Parameters<typeof window.cancelIdleCallback>[0],
+          )
+    : (handle) => window.clearTimeout(handle);
 
 /**
  * Defers non-critical work to an idle period. Falls back to setTimeout
@@ -21,26 +24,26 @@ const cancelIdle: (handle: number) => void = hasRIC
  * Spec refs: E56–E65.
  */
 export function useIdleCallback() {
-  const handleRef = useRef<number | null>(null)
+    const handleRef = useRef<number | null>(null);
 
-  const cancel = useCallback(() => {
-    if (handleRef.current !== null) {
-      cancelIdle(handleRef.current)
-      handleRef.current = null
-    }
-  }, [])
+    const cancel = useCallback(() => {
+        if (handleRef.current !== null) {
+            cancelIdle(handleRef.current);
+            handleRef.current = null;
+        }
+    }, []);
 
-  const schedule = useCallback(
-    (fn: () => void) => {
-      cancel()
-      handleRef.current = requestIdle(fn)
-    },
-    [cancel]
-  )
+    const schedule = useCallback(
+        (fn: () => void) => {
+            cancel();
+            handleRef.current = requestIdle(fn);
+        },
+        [cancel],
+    );
 
-  useEffect(() => () => cancel(), [cancel])
+    useEffect(() => () => cancel(), [cancel]);
 
-  return schedule
+    return schedule;
 }
 
 /**
@@ -49,14 +52,13 @@ export function useIdleCallback() {
  * immediately. Keeps long tasks from monopolizing the main thread.
  */
 export function useSchedulerYield(): () => Promise<void> {
-  return useCallback(() => {
-    const scheduler =
-      typeof window !== 'undefined' ? (window as any).scheduler : undefined
-    if (scheduler && typeof scheduler.yield === 'function') {
-      return scheduler.yield() as Promise<void>
-    }
-    return Promise.resolve()
-  }, [])
+    return useCallback(() => {
+        const scheduler = typeof window !== "undefined" ? (window as any).scheduler : undefined;
+        if (scheduler && typeof scheduler.yield === "function") {
+            return scheduler.yield() as Promise<void>;
+        }
+        return Promise.resolve();
+    }, []);
 }
 
-export default useIdleCallback
+export default useIdleCallback;

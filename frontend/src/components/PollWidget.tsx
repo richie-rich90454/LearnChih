@@ -1,16 +1,16 @@
-import { Body1, makeStyles, tokens } from '@fluentui/react-components'
+import { Body1, makeStyles, tokens } from "@fluentui/react-components";
 
 const useStyles = makeStyles({
-  root: {
-    padding: tokens.spacingHorizontalM,
-    border: `1px solid ${tokens.colorNeutralStroke1}`,
-    borderRadius: tokens.borderRadiusMedium,
-    backgroundColor: tokens.colorNeutralBackground1,
-  },
-})
+    root: {
+        padding: tokens.spacingHorizontalM,
+        border: `1px solid ${tokens.colorNeutralStroke1}`,
+        borderRadius: tokens.borderRadiusMedium,
+        backgroundColor: tokens.colorNeutralBackground1,
+    },
+});
 
 interface PollWidgetProps {
-  pollId?: number
+    pollId?: number;
 }
 
 /**
@@ -21,12 +21,12 @@ interface PollWidgetProps {
  * Spec refs: F1.8–F1.12.
  */
 export function PollWidget({ pollId }: PollWidgetProps) {
-  const styles = useStyles()
-  return (
-    <div className={styles.root}>
-      <Body1>Poll #{pollId ?? 'new'} — TODO: embed PollDisplay here.</Body1>
-    </div>
-  )
+    const styles = useStyles();
+    return (
+        <div className={styles.root}>
+            <Body1>Poll #{pollId ?? "new"} — TODO: embed PollDisplay here.</Body1>
+        </div>
+    );
 }
 
-export default PollWidget
+export default PollWidget;

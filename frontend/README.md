@@ -4,13 +4,13 @@ React 18 + TypeScript + Vite + Fluent UI 2 frontend for the LernChih student for
 
 ## Development scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start the Vite dev server |
-| `npm run build` | Build the production bundle |
-| `npm run type-check` | Run TypeScript with `--noEmit` |
-| `npm run lint` | Run ESLint |
-| `npm run storybook` | Start Storybook on port 6006 |
+| Script                    | Description                       |
+| ------------------------- | --------------------------------- |
+| `npm run dev`             | Start the Vite dev server         |
+| `npm run build`           | Build the production bundle       |
+| `npm run type-check`      | Run TypeScript with `--noEmit`    |
+| `npm run lint`            | Run ESLint                        |
+| `npm run storybook`       | Start Storybook on port 6006      |
 | `npm run build-storybook` | Build the static Storybook bundle |
 
 ## OpenAPI code generation
@@ -42,4 +42,3 @@ npm run a11y         # Build and run all accessibility/performance checks
 ```
 
 > These scripts require a Chromium-based browser. They run in headless mode with `--no-sandbox` so they can execute in CI.
-

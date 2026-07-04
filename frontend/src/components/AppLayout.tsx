@@ -1,312 +1,337 @@
-import { useState } from 'react'
-import { Outlet, useNavigate, useLocation } from 'react-router-dom'
+import { useState } from "react";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import {
-  makeStyles,
-  tokens,
-  Avatar,
-  Button,
-  Drawer,
-  DrawerHeader,
-  DrawerBody,
-  InlineDrawer,
-  Menu,
-  MenuTrigger,
-  MenuPopover,
-  MenuList,
-  MenuItem,
-  Text,
-  Title3,
-} from '@fluentui/react-components'
+    makeStyles,
+    tokens,
+    Avatar,
+    Button,
+    Drawer,
+    DrawerHeader,
+    DrawerBody,
+    InlineDrawer,
+    Menu,
+    MenuTrigger,
+    MenuPopover,
+    MenuList,
+    MenuItem,
+    Text,
+    Title3,
+} from "@fluentui/react-components";
 import {
-  Navigation24Regular,
-  Home24Regular,
-  Document24Regular,
-  Chat24Regular,
-  Trophy24Regular,
-  Person24Regular,
-  Shield24Regular,
-  SignOut24Regular,
-} from '@fluentui/react-icons'
-import useAuthStore from '@/store/authStore'
-import { useDir } from '@/hooks/useDir'
-import { useTranslation } from 'react-i18next'
-import { useThemeStore } from '@/hooks/useThemeStore'
-import { SearchBar } from './SearchBar'
-import NotificationBell from './NotificationBell'
-import Footer from './Footer'
+    Navigation24Regular,
+    Home24Regular,
+    Document24Regular,
+    Chat24Regular,
+    Trophy24Regular,
+    Person24Regular,
+    Shield24Regular,
+    SignOut24Regular,
+} from "@fluentui/react-icons";
+import useAuthStore from "@/store/authStore";
+import { useDir } from "@/hooks/useDir";
+import { useTranslation } from "react-i18next";
+import { useThemeStore } from "@/hooks/useThemeStore";
+import { SearchBar } from "./SearchBar";
+import NotificationBell from "./NotificationBell";
+import Footer from "./Footer";
 
 interface NavItem {
-  path: string
-  label: string
-  icon: React.ReactNode
+    path: string;
+    label: string;
+    icon: React.ReactNode;
 }
 
 const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-    height: '100vh',
-    overflow: 'hidden',
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalL}`,
-    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-    backgroundColor: tokens.colorNeutralBackground1,
-    minHeight: '56px',
-  },
-  headerLeft: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: tokens.spacingHorizontalM,
-  },
-  headerCenter: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    padding: `0 ${tokens.spacingHorizontalL}`,
-    maxWidth: '520px',
-  },
-  headerRight: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: tokens.spacingHorizontalS,
-  },
-  mainArea: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-    overflow: 'hidden',
-  },
-  content: {
-    flex: 1,
-    overflow: 'auto',
-    padding: tokens.spacingHorizontalXL,
-    backgroundColor: tokens.colorNeutralBackground2,
-  },
-  navItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: tokens.spacingHorizontalM,
-    width: '100%',
-    textAlign: 'left',
-  },
-  navItemActive: {
-    backgroundColor: tokens.colorNeutralBackground1Selected,
-  },
-  mobileMenuButton: {
-    display: 'none',
-    '@media (max-width: 768px)': {
-      display: 'inline-flex',
+    root: {
+        display: "flex",
+        height: "100vh",
+        overflow: "hidden",
     },
-  },
-  desktopDrawer: {
-    '@media (max-width: 768px)': {
-      display: 'none',
+    header: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalL}`,
+        borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+        backgroundColor: tokens.colorNeutralBackground1,
+        minHeight: "56px",
     },
-  },
-  skipLink: {
-    position: 'absolute',
-    top: '-40px',
-    left: '0',
-    background: '#0078d4',
-    color: 'white',
-    padding: '8px 16px',
-    zIndex: '1000',
-    transition: 'top 0.2s',
-    '&:focus': {
-      top: '0',
+    headerLeft: {
+        display: "flex",
+        alignItems: "center",
+        gap: tokens.spacingHorizontalM,
     },
-  },
-})
+    headerCenter: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 1,
+        padding: `0 ${tokens.spacingHorizontalL}`,
+        maxWidth: "520px",
+    },
+    headerRight: {
+        display: "flex",
+        alignItems: "center",
+        gap: tokens.spacingHorizontalS,
+    },
+    mainArea: {
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+        overflow: "hidden",
+    },
+    content: {
+        flex: 1,
+        overflow: "auto",
+        padding: tokens.spacingHorizontalXL,
+        backgroundColor: tokens.colorNeutralBackground2,
+    },
+    navItem: {
+        display: "flex",
+        alignItems: "center",
+        gap: tokens.spacingHorizontalM,
+        width: "100%",
+        textAlign: "left",
+    },
+    navItemActive: {
+        backgroundColor: tokens.colorNeutralBackground1Selected,
+    },
+    mobileMenuButton: {
+        display: "none",
+        "@media (max-width: 768px)": {
+            display: "inline-flex",
+        },
+    },
+    desktopDrawer: {
+        "@media (max-width: 768px)": {
+            display: "none",
+        },
+    },
+    skipLink: {
+        position: "absolute",
+        top: "-40px",
+        left: "0",
+        background: "#0078d4",
+        color: "white",
+        padding: "8px 16px",
+        zIndex: "1000",
+        transition: "top 0.2s",
+        "&:focus": {
+            top: "0",
+        },
+    },
+});
 
-const PUBLIC_NAV_PATHS = new Set(['/resources', '/channels', '/leaderboard', '/search', '/api-docs'])
+const PUBLIC_NAV_PATHS = new Set([
+    "/resources",
+    "/channels",
+    "/leaderboard",
+    "/search",
+    "/api-docs",
+]);
 
 const getNavItems = (t: (key: string) => string, authenticated: boolean): NavItem[] => {
-  const all: NavItem[] = [
-    { path: '/', label: t('nav.dashboard'), icon: <Home24Regular /> },
-    { path: '/resources', label: t('nav.resources'), icon: <Document24Regular /> },
-    { path: '/channels', label: t('nav.channels'), icon: <Chat24Regular /> },
-    { path: '/leaderboard', label: t('nav.leaderboard'), icon: <Trophy24Regular /> },
-    { path: '/profile', label: t('nav.profile'), icon: <Person24Regular /> },
-  ]
-  return authenticated ? all : all.filter((item) => PUBLIC_NAV_PATHS.has(item.path))
-}
+    const all: NavItem[] = [
+        { path: "/", label: t("nav.dashboard"), icon: <Home24Regular /> },
+        { path: "/resources", label: t("nav.resources"), icon: <Document24Regular /> },
+        { path: "/channels", label: t("nav.channels"), icon: <Chat24Regular /> },
+        { path: "/leaderboard", label: t("nav.leaderboard"), icon: <Trophy24Regular /> },
+        { path: "/profile", label: t("nav.profile"), icon: <Person24Regular /> },
+    ];
+    return authenticated ? all : all.filter((item) => PUBLIC_NAV_PATHS.has(item.path));
+};
 
 export default function AppLayout() {
-  const styles = useStyles()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { user, logout, isAuthenticated } = useAuthStore()
-  const { t, i18n } = useTranslation()
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const mode = useThemeStore((s) => s.mode)
-  const toggle = useThemeStore((s) => s.toggle)
+    const styles = useStyles();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { user, logout, isAuthenticated } = useAuthStore();
+    const { t, i18n } = useTranslation();
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const mode = useThemeStore((s) => s.mode);
+    const toggle = useThemeStore((s) => s.toggle);
 
-  const authenticated = isAuthenticated()
-  const isAdmin = authenticated && (user?.role === 'ADMIN' || user?.role === 'MODERATOR')
+    const authenticated = isAuthenticated();
+    const isAdmin = authenticated && (user?.role === "ADMIN" || user?.role === "MODERATOR");
 
-  const handleNav = (path: string) => {
-    navigate(path)
-    setMobileOpen(false)
-  }
+    const handleNav = (path: string) => {
+        navigate(path);
+        setMobileOpen(false);
+    };
 
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
+    const handleLogout = () => {
+        logout();
+        navigate("/login");
+    };
 
-  const isActive = (path: string): boolean => {
-    if (path === '/') return location.pathname === '/'
-    return location.pathname.startsWith(path)
-  }
+    const isActive = (path: string): boolean => {
+        if (path === "/") return location.pathname === "/";
+        return location.pathname.startsWith(path);
+    };
 
-  const navItems = getNavItems(t, authenticated)
+    const navItems = getNavItems(t, authenticated);
 
-  const NavLinks = () => (
-    <>
-      {navItems.map((item) => (
-        <Button
-          key={item.path}
-          appearance="subtle"
-          className={`${styles.navItem} ${isActive(item.path) ? styles.navItemActive : ''}`}
-          onClick={() => handleNav(item.path)}
-          style={{ justifyContent: 'flex-start', padding: '10px 16px' }}
-        >
-          {item.icon}
-          <Text>{item.label}</Text>
-        </Button>
-      ))}
-      {isAdmin && (
-        <Button
-          appearance="subtle"
-          className={`${styles.navItem} ${isActive('/admin') ? styles.navItemActive : ''}`}
-          onClick={() => handleNav('/admin')}
-          style={{ justifyContent: 'flex-start', padding: '10px 16px' }}
-        >
-          <Shield24Regular />
-          <Text>{t('nav.admin')}</Text>
-        </Button>
-      )}
-    </>
-  )
-
-  return (
-    <div className={styles.root} dir={useDir()}>
-      <a href="#main-content" className={styles.skipLink}>
-        {t('a11y.skipToContent')}
-      </a>
-
-      {/* Desktop sidebar */}
-      <aside className={styles.desktopDrawer} aria-label={t('a11y.sidebar')}>
-        <InlineDrawer open position="start" size="small">
-          <DrawerHeader>
-            <Title3>LernChih</Title3>
-          </DrawerHeader>
-          <DrawerBody>
-            <nav aria-label={t('a11y.mainNavigation')} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <NavLinks />
-            </nav>
-          </DrawerBody>
-        </InlineDrawer>
-      </aside>
-
-      {/* Mobile drawer */}
-      <Drawer
-        open={mobileOpen}
-        position="start"
-        size="small"
-        onOpenChange={(_: unknown, data: { open: boolean }) => setMobileOpen(data.open)}
-      >
-        <DrawerHeader>
-          <Title3>LernChih</Title3>
-        </DrawerHeader>
-        <DrawerBody>
-          <nav aria-label={t('a11y.mainNavigation')} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <NavLinks />
-          </nav>
-        </DrawerBody>
-      </Drawer>
-
-      {/* Main area */}
-      <div className={styles.mainArea}>
-        <header className={styles.header}>
-          <div className={styles.headerLeft}>
-            <Button
-              appearance="subtle"
-              icon={<Navigation24Regular />}
-              className={styles.mobileMenuButton}
-              onClick={() => setMobileOpen(true)}
-            />
-            <Title3 className={styles.desktopDrawer} style={{ display: 'none' }}>LernChih</Title3>
-          </div>
-
-          <div className={styles.headerCenter}>
-            <SearchBar placeholder={t('common.searchPlaceholder')} />
-          </div>
-
-          <div className={styles.headerRight}>
-            {authenticated && <NotificationBell />}
-            <Button
-              appearance="subtle"
-              onClick={() => {
-                const next = i18n.language === 'en' ? 'zh' : 'en'
-                i18n.changeLanguage(next)
-                localStorage.setItem('lernchih-lang', next)
-              }}
-            >
-              {t('language.toggle')}
-            </Button>
-            <Button
-              appearance="subtle"
-              onClick={(e) => {
-                const rect = (e.currentTarget as HTMLButtonElement).getBoundingClientRect()
-                toggle({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 })
-              }}
-              aria-label={t('theme.toggle')}
-            >
-              {mode === 'light' ? '🌙' : '☀️'}
-            </Button>
-            {authenticated ? (
-              <Menu>
-                <MenuTrigger disableButtonEnhancement>
-                  <Button appearance="subtle" style={{ gap: '8px' }}>
-                    <Avatar name={user?.name || t('common.user')} size={28} />
-                    <Text>{user?.name || t('common.user')}</Text>
-                  </Button>
-                </MenuTrigger>
-                <MenuPopover>
-                  <MenuList>
-                    <MenuItem icon={<Person24Regular />} onClick={() => navigate('/profile')}>
-                      {t('nav.profile')}
-                    </MenuItem>
-                    <MenuItem icon={<SignOut24Regular />} onClick={handleLogout}>
-                      {t('nav.logout')}
-                    </MenuItem>
-                  </MenuList>
-                </MenuPopover>
-              </Menu>
-            ) : (
-              <>
-                <Button appearance="subtle" onClick={() => navigate('/login')}>
-                  {t('nav.login')}
+    const NavLinks = () => (
+        <>
+            {navItems.map((item) => (
+                <Button
+                    key={item.path}
+                    appearance="subtle"
+                    className={`${styles.navItem} ${isActive(item.path) ? styles.navItemActive : ""}`}
+                    onClick={() => handleNav(item.path)}
+                    style={{ justifyContent: "flex-start", padding: "10px 16px" }}
+                >
+                    {item.icon}
+                    <Text>{item.label}</Text>
                 </Button>
-                <Button appearance="primary" onClick={() => navigate('/register')}>
-                  {t('nav.register')}
+            ))}
+            {isAdmin && (
+                <Button
+                    appearance="subtle"
+                    className={`${styles.navItem} ${isActive("/admin") ? styles.navItemActive : ""}`}
+                    onClick={() => handleNav("/admin")}
+                    style={{ justifyContent: "flex-start", padding: "10px 16px" }}
+                >
+                    <Shield24Regular />
+                    <Text>{t("nav.admin")}</Text>
                 </Button>
-              </>
             )}
-          </div>
-        </header>
+        </>
+    );
 
-        <main id="main-content" tabIndex={-1} className={styles.content}>
-          <Outlet />
-        </main>
+    return (
+        <div className={styles.root} dir={useDir()}>
+            <a href="#main-content" className={styles.skipLink}>
+                {t("a11y.skipToContent")}
+            </a>
 
-        <Footer />
-      </div>
-    </div>
-  )
+            {/* Desktop sidebar */}
+            <aside className={styles.desktopDrawer} aria-label={t("a11y.sidebar")}>
+                <InlineDrawer open position="start" size="small">
+                    <DrawerHeader>
+                        <Title3>LernChih</Title3>
+                    </DrawerHeader>
+                    <DrawerBody>
+                        <nav
+                            aria-label={t("a11y.mainNavigation")}
+                            style={{ display: "flex", flexDirection: "column", gap: "4px" }}
+                        >
+                            <NavLinks />
+                        </nav>
+                    </DrawerBody>
+                </InlineDrawer>
+            </aside>
+
+            {/* Mobile drawer */}
+            <Drawer
+                open={mobileOpen}
+                position="start"
+                size="small"
+                onOpenChange={(_: unknown, data: { open: boolean }) => setMobileOpen(data.open)}
+            >
+                <DrawerHeader>
+                    <Title3>LernChih</Title3>
+                </DrawerHeader>
+                <DrawerBody>
+                    <nav
+                        aria-label={t("a11y.mainNavigation")}
+                        style={{ display: "flex", flexDirection: "column", gap: "4px" }}
+                    >
+                        <NavLinks />
+                    </nav>
+                </DrawerBody>
+            </Drawer>
+
+            {/* Main area */}
+            <div className={styles.mainArea}>
+                <header className={styles.header}>
+                    <div className={styles.headerLeft}>
+                        <Button
+                            appearance="subtle"
+                            icon={<Navigation24Regular />}
+                            className={styles.mobileMenuButton}
+                            onClick={() => setMobileOpen(true)}
+                        />
+                        <Title3 className={styles.desktopDrawer} style={{ display: "none" }}>
+                            LernChih
+                        </Title3>
+                    </div>
+
+                    <div className={styles.headerCenter}>
+                        <SearchBar placeholder={t("common.searchPlaceholder")} />
+                    </div>
+
+                    <div className={styles.headerRight}>
+                        {authenticated && <NotificationBell />}
+                        <Button
+                            appearance="subtle"
+                            onClick={() => {
+                                const next = i18n.language === "en" ? "zh" : "en";
+                                i18n.changeLanguage(next);
+                                localStorage.setItem("lernchih-lang", next);
+                            }}
+                        >
+                            {t("language.toggle")}
+                        </Button>
+                        <Button
+                            appearance="subtle"
+                            onClick={(e) => {
+                                const rect = (
+                                    e.currentTarget as HTMLButtonElement
+                                ).getBoundingClientRect();
+                                toggle({
+                                    x: rect.left + rect.width / 2,
+                                    y: rect.top + rect.height / 2,
+                                });
+                            }}
+                            aria-label={t("theme.toggle")}
+                        >
+                            {mode === "light" ? "🌙" : "☀️"}
+                        </Button>
+                        {authenticated ? (
+                            <Menu>
+                                <MenuTrigger disableButtonEnhancement>
+                                    <Button appearance="subtle" style={{ gap: "8px" }}>
+                                        <Avatar name={user?.name || t("common.user")} size={28} />
+                                        <Text>{user?.name || t("common.user")}</Text>
+                                    </Button>
+                                </MenuTrigger>
+                                <MenuPopover>
+                                    <MenuList>
+                                        <MenuItem
+                                            icon={<Person24Regular />}
+                                            onClick={() => navigate("/profile")}
+                                        >
+                                            {t("nav.profile")}
+                                        </MenuItem>
+                                        <MenuItem
+                                            icon={<SignOut24Regular />}
+                                            onClick={handleLogout}
+                                        >
+                                            {t("nav.logout")}
+                                        </MenuItem>
+                                    </MenuList>
+                                </MenuPopover>
+                            </Menu>
+                        ) : (
+                            <>
+                                <Button appearance="subtle" onClick={() => navigate("/login")}>
+                                    {t("nav.login")}
+                                </Button>
+                                <Button appearance="primary" onClick={() => navigate("/register")}>
+                                    {t("nav.register")}
+                                </Button>
+                            </>
+                        )}
+                    </div>
+                </header>
+
+                <main id="main-content" tabIndex={-1} className={styles.content}>
+                    <Outlet />
+                </main>
+
+                <Footer />
+            </div>
+        </div>
+    );
 }

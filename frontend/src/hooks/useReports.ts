@@ -1,53 +1,53 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  getReports,
-  createReport,
-  resolveReport,
-  deleteResourceAdmin,
-  deletePostAdmin,
-} from '../api/reports'
-import type { Report, CreateReportRequest } from '../types'
+    getReports,
+    createReport,
+    resolveReport,
+    deleteResourceAdmin,
+    deletePostAdmin,
+} from "../api/reports";
+import type { Report, CreateReportRequest } from "../types";
 
 export function useReports(params?: Record<string, string>) {
-  return useQuery<Report[]>({
-    queryKey: ['reports', params],
-    queryFn: () => getReports(params).then((r) => r.data),
-  })
+    return useQuery<Report[]>({
+        queryKey: ["reports", params],
+        queryFn: () => getReports(params).then((r) => r.data),
+    });
 }
 
 export function useCreateReport() {
-  return useMutation({
-    mutationFn: (data: CreateReportRequest) => createReport(data),
-  })
+    return useMutation({
+        mutationFn: (data: CreateReportRequest) => createReport(data),
+    });
 }
 
 export function useResolveReport() {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: (id: number) => resolveReport(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reports'] })
-    },
-  })
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id: number) => resolveReport(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reports"] });
+        },
+    });
 }
 
 export function useDeleteResourceAdmin() {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: (id: number) => deleteResourceAdmin(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reports'] })
-      queryClient.invalidateQueries({ queryKey: ['resources'] })
-    },
-  })
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id: number) => deleteResourceAdmin(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reports"] });
+            queryClient.invalidateQueries({ queryKey: ["resources"] });
+        },
+    });
 }
 
 export function useDeletePostAdmin() {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: (id: number) => deletePostAdmin(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reports'] })
-    },
-  })
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id: number) => deletePostAdmin(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reports"] });
+        },
+    });
 }

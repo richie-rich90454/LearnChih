@@ -1,10 +1,10 @@
-import { useRef, useEffect, type DependencyList } from 'react'
-import gsap from 'gsap'
-import { useReducedMotion } from './useReducedMotion'
+import { useRef, useEffect, type DependencyList } from "react";
+import gsap from "gsap";
+import { useReducedMotion } from "./useReducedMotion";
 
 interface GsapSetupContext {
-  gsap: typeof gsap
-  tl: gsap.core.Timeline
+    gsap: typeof gsap;
+    tl: gsap.core.Timeline;
 }
 
 /**
@@ -20,28 +20,28 @@ interface GsapSetupContext {
  * @returns ref to attach to a container element, plus the reduced-motion flag.
  */
 export function useGsap<T extends HTMLElement = HTMLDivElement>(
-  animation?: (ctx: GsapSetupContext) => void,
-  deps: DependencyList = []
+    animation?: (ctx: GsapSetupContext) => void,
+    deps: DependencyList = [],
 ) {
-  const reduced = useReducedMotion()
-  const containerRef = useRef<T>(null)
-  const animationRef = useRef(animation)
+    const reduced = useReducedMotion();
+    const containerRef = useRef<T>(null);
+    const animationRef = useRef(animation);
 
-  // Keep the latest callback available without re-triggering the effect.
-  animationRef.current = animation
+    // Keep the latest callback available without re-triggering the effect.
+    animationRef.current = animation;
 
-  useEffect(() => {
-    if (reduced || !containerRef.current || !animationRef.current) return
+    useEffect(() => {
+        if (reduced || !containerRef.current || !animationRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline()
-      animationRef.current?.({ gsap, tl })
-    }, containerRef)
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline();
+            animationRef.current?.({ gsap, tl });
+        }, containerRef);
 
-    return () => {
-      ctx.revert()
-    }
-  }, [reduced, ...deps])
+        return () => {
+            ctx.revert();
+        };
+    }, [reduced, ...deps]);
 
-  return { ref: containerRef, reduced }
+    return { ref: containerRef, reduced };
 }
