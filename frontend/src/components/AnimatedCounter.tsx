@@ -17,7 +17,7 @@ interface AnimatedCounterProps {
  */
 export function AnimatedCounter({
   value,
-  duration = 0.6,
+  duration = 0.4,
   className,
   prefix,
   suffix,
@@ -26,6 +26,8 @@ export function AnimatedCounter({
   const reduced = useReducedMotion()
   const displayRef = useRef<HTMLSpanElement>(null)
   const valueRef = useRef(value)
+  const tweenRef = useRef<gsap.core.Tween | null>(null)
+  const isFirstMountRef = useRef(true)
 
   useEffect(() => {
     if (!displayRef.current) return
@@ -36,14 +38,26 @@ export function AnimatedCounter({
 
     if (reduced) {
       displayRef.current.textContent = formatter(to)
+      isFirstMountRef.current = false
       return
     }
 
+    if (isFirstMountRef.current && to === 0) {
+      displayRef.current.textContent = formatter(to)
+      isFirstMountRef.current = false
+      return
+    }
+
+    isFirstMountRef.current = false
+
+    tweenRef.current?.kill()
+
     const obj = { value: from }
-    const tween = gsap.to(obj, {
+    tweenRef.current = gsap.to(obj, {
       value: to,
       duration,
       ease: 'power2.out',
+      overwrite: true,
       onUpdate: () => {
         if (displayRef.current) {
           displayRef.current.textContent = formatter(obj.value)
@@ -52,7 +66,7 @@ export function AnimatedCounter({
     })
 
     return () => {
-      tween.kill()
+      tweenRef.current?.kill()
     }
   }, [value, duration, reduced, formatter])
 

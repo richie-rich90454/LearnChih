@@ -1,6 +1,5 @@
-import { useRef, type DependencyList } from 'react'
+import { useRef, useEffect, type DependencyList } from 'react'
 import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useReducedMotion } from './useReducedMotion'
 
 interface GsapSetupContext {
@@ -16,7 +15,7 @@ interface GsapSetupContext {
  *  - disables animation when the user prefers reduced motion
  *
  * @param animation callback receiving gsap and a timeline. Run animations here.
- * @param deps dependencies that should re-run the animation (defaults to []).\
+ * @param deps dependencies that should re-run the animation (defaults to []).
  *   `reduced` is always included.
  * @returns ref to attach to a container element, plus the reduced-motion flag.
  */
@@ -26,18 +25,23 @@ export function useGsap<T extends HTMLElement = HTMLDivElement>(
 ) {
   const reduced = useReducedMotion()
   const containerRef = useRef<T>(null)
+  const animationRef = useRef(animation)
 
-  useGSAP(
-    () => {
-      if (reduced) return
+  // Keep the latest callback available without re-triggering the effect.
+  animationRef.current = animation
+
+  useEffect(() => {
+    if (reduced || !containerRef.current || !animationRef.current) return
+
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline()
-      animation?.({ gsap, tl })
-    },
-    {
-      scope: containerRef,
-      dependencies: [reduced, ...deps],
+      animationRef.current?.({ gsap, tl })
+    }, containerRef)
+
+    return () => {
+      ctx.revert()
     }
-  )
+  }, [reduced, ...deps])
 
   return { ref: containerRef, reduced }
 }

@@ -29,29 +29,32 @@ export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps
     if (reduced || !ref.current) return
 
     const el = ref.current
-    const rect = el.getBoundingClientRect()
-    const cx = originX ?? rect.width / 2
-    const cy = originY ?? rect.height / 2
-    const maxRadius = Math.max(
-      Math.hypot(cx, cy),
-      Math.hypot(rect.width - cx, cy),
-      Math.hypot(cx, rect.height - cy),
-      Math.hypot(rect.width - cx, rect.height - cy)
-    )
 
-    el.style.clipPath = `circle(0px at ${cx}px ${cy}px)`
+    const ctx = gsap.context(() => {
+      const rect = el.getBoundingClientRect()
+      const cx = originX ?? rect.width / 2
+      const cy = originY ?? rect.height / 2
+      const maxRadius = Math.max(
+        Math.hypot(cx, cy),
+        Math.hypot(rect.width - cx, cy),
+        Math.hypot(cx, rect.height - cy),
+        Math.hypot(rect.width - cx, rect.height - cy)
+      )
 
-    const tween = gsap.to(el, {
-      clipPath: `circle(${maxRadius * 1.2}px at ${cx}px ${cy}px)`,
-      duration: 0.55,
-      ease: 'power2.inOut',
-      onComplete: () => {
-        gsap.set(el, { clipPath: 'none' })
-      },
-    })
+      el.style.clipPath = `circle(0px at ${cx}px ${cy}px)`
+
+      gsap.to(el, {
+        clipPath: `circle(${maxRadius * 1.2}px at ${cx}px ${cy}px)`,
+        duration: 0.35,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          gsap.set(el, { clipPath: 'none' })
+        },
+      })
+    }, ref)
 
     return () => {
-      tween.kill()
+      ctx.revert()
     }
   }, [key, reduced, originX, originY])
 

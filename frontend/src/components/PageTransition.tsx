@@ -1,6 +1,5 @@
-import { useRef, type ReactNode } from 'react'
+import { useRef, type ReactNode, useEffect } from 'react'
 import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 interface PageTransitionProps {
@@ -18,17 +17,21 @@ export function PageTransition({ children, className }: PageTransitionProps) {
   const reduced = useReducedMotion()
   const containerRef = useRef<HTMLDivElement>(null)
 
-  useGSAP(
-    () => {
-      if (reduced) return
+  useEffect(() => {
+    if (reduced || !containerRef.current) return
+
+    const ctx = gsap.context(() => {
       gsap.fromTo(
         containerRef.current,
         { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }
+        { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' }
       )
-    },
-    { scope: containerRef, dependencies: [reduced] }
-  )
+    }, containerRef)
+
+    return () => {
+      ctx.revert()
+    }
+  }, [reduced])
 
   return (
     <div ref={containerRef} className={className}>

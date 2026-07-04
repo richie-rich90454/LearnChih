@@ -1,6 +1,5 @@
-import { useRef, type ReactNode } from 'react'
+import { useRef, type ReactNode, useEffect } from 'react'
 import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 interface HoverLiftProps {
@@ -19,22 +18,23 @@ export function HoverLift({
   children,
   className,
   scale = 1.02,
-  y = -4,
-  shadow = '0 8px 24px rgba(0,0,0,0.12)',
+  y = -2,
+  shadow: _shadow,
 }: HoverLiftProps) {
   const reduced = useReducedMotion()
   const ref = useRef<HTMLDivElement>(null)
 
-  useGSAP(
-    () => {
-      if (reduced || !ref.current) return
-      const el = ref.current
+  useEffect(() => {
+    if (reduced || !ref.current) return
 
+    const el = ref.current
+
+    const ctx = gsap.context(() => {
       const enter = () => {
-        gsap.to(el, { scale, y, boxShadow: shadow, duration: 0.25, ease: 'power2.out' })
+        gsap.to(el, { scale, y, duration: 0.25, ease: 'power2.out' })
       }
       const leave = () => {
-        gsap.to(el, { scale: 1, y: 0, boxShadow: 'none', duration: 0.25, ease: 'power2.out' })
+        gsap.to(el, { scale: 1, y: 0, duration: 0.25, ease: 'power2.out' })
       }
 
       el.addEventListener('mouseenter', enter)
@@ -48,9 +48,12 @@ export function HoverLift({
         el.removeEventListener('focusin', enter)
         el.removeEventListener('focusout', leave)
       }
-    },
-    { scope: ref, dependencies: [reduced, scale, y, shadow] }
-  )
+    }, ref)
+
+    return () => {
+      ctx.revert()
+    }
+  }, [reduced, scale, y])
 
   return (
     <div ref={ref} className={className} style={{ willChange: reduced ? undefined : 'transform' }}>

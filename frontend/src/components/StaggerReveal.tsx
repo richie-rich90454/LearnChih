@@ -1,6 +1,5 @@
-import { useRef, type ReactNode, type CSSProperties } from 'react'
+import { useRef, type ReactNode, type CSSProperties, useEffect } from 'react'
 import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 interface StaggerRevealProps {
@@ -19,15 +18,16 @@ export function StaggerReveal({
   children,
   className,
   style,
-  staggerSeconds = 0.05,
+  staggerSeconds = 0.03,
   childSelector = '> *',
 }: StaggerRevealProps) {
   const reduced = useReducedMotion()
   const containerRef = useRef<HTMLDivElement>(null)
 
-  useGSAP(
-    () => {
-      if (reduced) return
+  useEffect(() => {
+    if (reduced || !containerRef.current) return
+
+    const ctx = gsap.context(() => {
       const targets = containerRef.current?.querySelectorAll(childSelector)
       if (!targets || targets.length === 0) return
       gsap.fromTo(
@@ -36,14 +36,17 @@ export function StaggerReveal({
         {
           opacity: 1,
           y: 0,
-          duration: 0.4,
-          stagger: staggerSeconds,
+          duration: 0.25,
+          stagger: targets.length > 50 ? 0 : staggerSeconds,
           ease: 'power2.out',
         }
       )
-    },
-    { scope: containerRef, dependencies: [reduced, staggerSeconds, childSelector] }
-  )
+    }, containerRef)
+
+    return () => {
+      ctx.revert()
+    }
+  }, [reduced, staggerSeconds, childSelector])
 
   return (
     <div ref={containerRef} className={className} style={style}>

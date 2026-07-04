@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
@@ -26,7 +26,7 @@ interface Particle {
  */
 export function MilestoneConfetti({
   active = false,
-  particleCount = 80,
+  particleCount = 40,
   colors = ['#0F6CBD', '#5C2E91', '#107C10', '#D83B01', '#FFB900', '#00B7C3'],
   onComplete,
 }: MilestoneConfettiProps) {
@@ -34,8 +34,14 @@ export function MilestoneConfetti({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const firedRef = useRef(false)
 
-  const burst = useCallback(() => {
-    if (reduced || !canvasRef.current) return
+  useEffect(() => {
+    if (!active) {
+      firedRef.current = false
+      return
+    }
+    if (reduced || !canvasRef.current || firedRef.current) return
+    firedRef.current = true
+
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     if (!ctx) return
@@ -67,7 +73,6 @@ export function MilestoneConfetti({
       }
     })
 
-    const tweens: gsap.core.Tween[] = []
     let completed = 0
 
     const draw = () => {
@@ -82,14 +87,14 @@ export function MilestoneConfetti({
       })
     }
 
-    particles.forEach((p, i) => {
-      tweens.push(
+    const ctxGsap = gsap.context(() => {
+      particles.forEach((p, i) => {
         gsap.to(p, {
           x: p.x + p.vx * (18 + Math.random() * 20),
           y: p.y + p.vy * (14 + Math.random() * 16) + 180,
           rotation: p.rotation + p.rotationSpeed * 24,
           opacity: 0,
-          duration: 1.2 + Math.random() * 0.6,
+          duration: 0.9,
           ease: 'power1.out',
           delay: i * 0.005,
           onUpdate: draw,
@@ -101,26 +106,15 @@ export function MilestoneConfetti({
             }
           },
         })
-      )
+      })
     })
 
     draw()
 
     return () => {
-      tweens.forEach((t) => t.kill())
+      ctxGsap.revert()
     }
-  }, [reduced, particleCount, colors, onComplete])
-
-  useEffect(() => {
-    if (active && !firedRef.current) {
-      firedRef.current = true
-      const cleanup = burst()
-      return cleanup
-    }
-    if (!active) {
-      firedRef.current = false
-    }
-  }, [active, burst])
+  }, [active, reduced, particleCount, colors, onComplete])
 
   if (reduced) return null
 
