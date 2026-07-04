@@ -1,20 +1,49 @@
 name: CI
 
 on:
-  pull_request:
   push:
-    branches: [main, master]
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+  workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+      workflows: ${{ steps.filter.outputs.workflows }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+              - 'infrastructure/**'
+            frontend:
+              - 'frontend/**'
+            workflows:
+              - '.github/workflows/**'
+
   backend:
     runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ github.event_name != 'pull_request' && needs.changes.outputs.backend == 'true' }} || ${{ needs.changes.outputs.workflows == 'true' }} || ${{ github.event_name == 'pull_request' }}
+    timeout-minutes: 25
     defaults:
       run:
         working-directory: backend/lernchih
+    env:
+      JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci-jwt-secret-must-be-at-least-32-characters-long' }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD || 'ci-test-password' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -26,13 +55,38 @@ jobs:
           java-version: '25'
           cache: maven
 
+      - name: Validate Maven wrapper
+        run: ./mvnw -v
+
       - name: Run backend tests
         run: ./mvnw -B -ntp verify
-        # Surefire runs unit tests; Failsafe runs *IT integration tests with
-        # Testcontainers MySQL and Mailpit (Docker is available on ubuntu-latest).
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-reports
+          path: |
+            backend/lernchih/target/surefire-reports/
+            backend/lernchih/target/failsafe-reports/
+
+      - name: Upload JaCoCo coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage-report
+          path: backend/lernchih/target/site/jacoco/
+
+      - name: Run OWASP dependency check
+        if: always()
+        continue-on-error: true
+        run: ./mvnw -B -ntp org.owasp:dependency-check-maven:check -DfailBuildOnCVSS=11
 
   frontend:
     runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ github.event_name != 'pull_request' && needs.changes.outputs.frontend == 'true' }} || ${{ needs.changes.outputs.workflows == 'true' }} || ${{ github.event_name == 'pull_request' }}
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: frontend
@@ -50,6 +104,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
       - name: Type check
         run: npm run type-check
 
@@ -59,12 +117,28 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+
       - name: Build Storybook
         run: npm run build-storybook
+
+      - name: Upload Storybook
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          path: frontend/storybook-static/
 
   accessibility:
     runs-on: ubuntu-latest
     needs: frontend
+    if: always() && needs.frontend.result == 'success'
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: frontend
@@ -103,3 +177,23 @@ jobs:
         with:
           name: lighthouse-report
           path: frontend/tests-accessibility/lighthouse-report.*
+
+      - name: Upload axe report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: axe-report
+          path: frontend/tests-accessibility/axe-report.*
+
+  dependency-review:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          comment-summary-in-pr: true
