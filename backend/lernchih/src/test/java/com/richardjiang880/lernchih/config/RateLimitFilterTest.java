@@ -1,6 +1,6 @@
 package com.richardjiang880.lernchih.config;
 
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class RateLimitFilterTest {
 
-    private final RateLimitFilter filter = new RateLimitFilter(new ObjectMapper(), 2, 2, 2, 2);
+    private final RateLimitFilter filter = new RateLimitFilter(new ObjectMapper(), 2, 2, 2, 2, 2, 2);
 
     @Mock
     private FilterChain filterChain;
@@ -67,8 +67,36 @@ class RateLimitFilterTest {
     }
 
     @Test
-    void readRequestsAreNotRateLimited() throws Exception {
+    void readRequestsOnNonPublicPathsAreNotRateLimited() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/threads");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        filter.doFilterInternal(request, response, filterChain);
+
+        assertThat(response.getStatus()).isEqualTo(200);
+        verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    void publicReadRequestsAreRateLimited() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/resources");
+
+        for (int i = 0; i < 2; i++) {
+            MockHttpServletResponse response = new MockHttpServletResponse();
+            filter.doFilterInternal(request, response, filterChain);
+        }
+
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        filter.doFilterInternal(request, response, filterChain);
+
+        assertThat(response.getStatus()).isEqualTo(429);
+        assertThat(response.getContentType()).contains("application/problem+json");
+    }
+
+    @Test
+    void authenticatedPublicReadRequestsAreNotRateLimited() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/resources");
+        request.addHeader("Authorization", "Bearer token");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         filter.doFilterInternal(request, response, filterChain);

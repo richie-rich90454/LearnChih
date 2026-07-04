@@ -1,6 +1,6 @@
 package com.richardjiang880.lernchih.config;
 
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bucket4j.Bucket;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,15 +27,18 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Token-bucket rate limiter (Bucket4j 8.x) applied per client IP.
  *
- * <p>Two bucket profiles are supported, selected by request path/method:
+ * <p>Three bucket profiles are supported, selected by request path/method:
  * <ul>
  *   <li>{@code /api/auth/**} - all methods - uses the stricter "auth" bucket
  *       ({@code app.ratelimit.auth.*}).</li>
  *   <li>{@code /api/**} write methods (POST/PUT/DELETE/PATCH) - uses the
  *       "write" bucket ({@code app.ratelimit.write.*}).</li>
+ *   <li>Anonymous GET requests on public read paths ({@code /api/resources/**},
+ *       {@code /api/channels/**}, {@code /api/feeds/**}, {@code /api/search/**},
+ *       {@code /api/leaderboard/**}, {@code /api/files/**}) - uses the "public"
+ *       bucket ({@code app.ratelimit.public.*}).</li>
  * </ul>
- * Other requests (GET reads, static, swagger, actuator) are not rate limited
- * by this filter.
+ * Authenticated GET requests and other unlisted paths are not rate limited.
  *
  * <p>Buckets are keyed by {@code "<profile>:<clientIp>"} and stored in a
  * process-local {@link ConcurrentHashMap}. Capacity and refill rates are
@@ -56,17 +59,23 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private final int authRefillPerMinute;
     private final int writeCapacity;
     private final int writeRefillPerMinute;
+    private final int publicCapacity;
+    private final int publicRefillPerMinute;
 
     public RateLimitFilter(ObjectMapper objectMapper,
                            @Value("${app.ratelimit.auth.capacity:10}") int authCapacity,
                            @Value("${app.ratelimit.auth.refill-per-minute:10}") int authRefillPerMinute,
                            @Value("${app.ratelimit.write.capacity:60}") int writeCapacity,
-                           @Value("${app.ratelimit.write.refill-per-minute:60}") int writeRefillPerMinute) {
+                           @Value("${app.ratelimit.write.refill-per-minute:60}") int writeRefillPerMinute,
+                           @Value("${app.ratelimit.public.capacity:120}") int publicCapacity,
+                           @Value("${app.ratelimit.public.refill-per-minute:120}") int publicRefillPerMinute) {
         this.objectMapper = objectMapper;
         this.authCapacity = authCapacity;
         this.authRefillPerMinute = authRefillPerMinute;
         this.writeCapacity = writeCapacity;
         this.writeRefillPerMinute = writeRefillPerMinute;
+        this.publicCapacity = publicCapacity;
+        this.publicRefillPerMinute = publicRefillPerMinute;
     }
 
     @Override
@@ -96,7 +105,31 @@ public class RateLimitFilter extends OncePerRequestFilter {
             return buckets.computeIfAbsent("write:" + clientIp,
                     k -> newBucket(writeCapacity, writeRefillPerMinute));
         }
+        if ("GET".equalsIgnoreCase(request.getMethod())
+                && isPublicReadPath(uri)
+                && !hasAuthorization(request)) {
+            return buckets.computeIfAbsent("public:" + clientIp,
+                    k -> newBucket(publicCapacity, publicRefillPerMinute));
+        }
         return null;
+    }
+
+    private boolean isPublicReadPath(String uri) {
+        return isPathOrSubPath(uri, "/api/resources")
+                || isPathOrSubPath(uri, "/api/channels")
+                || isPathOrSubPath(uri, "/api/feeds")
+                || isPathOrSubPath(uri, "/api/search")
+                || isPathOrSubPath(uri, "/api/leaderboard")
+                || isPathOrSubPath(uri, "/api/files");
+    }
+
+    private boolean isPathOrSubPath(String uri, String base) {
+        return uri.equals(base) || uri.startsWith(base + "/");
+    }
+
+    private boolean hasAuthorization(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        return header != null && !header.isBlank();
     }
 
     private boolean isWriteMethod(String method) {
