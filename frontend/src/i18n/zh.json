@@ -69,6 +69,23 @@
     "backToSignIn": "返回登录",
     "noAccount": "还没有账户？",
     "alreadyHaveAccount": "已有账户？",
+    "resetPasswordTitle": "创建新密码",
+    "invalidResetLink": "重置链接无效或已过期。",
+    "newPassword": "新密码",
+    "confirmNewPassword": "确认新密码",
+    "resetPasswordFailed": "重置密码失败，链接可能已过期。",
+    "resetPasswordButton": "重置密码",
+    "verifyEmailHeading": "验证您的邮箱",
+    "codeSentTo": "我们已向 <1>{{email}}</1> 发送 6 位验证码",
+    "yourEmailFallback": "您的邮箱",
+    "verificationFailedTitle": "验证失败",
+    "invalidOrExpiredCode": "验证码无效或已过期",
+    "newCodeSent": "新验证码已发送至您的邮箱。",
+    "resendCodeFailed": "重新发送验证码失败，请重试。",
+    "verifyButton": "验证邮箱",
+    "didntReceiveCode": "没有收到验证码？",
+    "resend": "重新发送",
+    "digitLabel": "第 {{index}} 位数字",
     "allFieldsRequired": "所有字段均为必填",
     "passwordsDoNotMatch": "两次输入的密码不一致",
     "passwordMinLength": "密码长度至少为 6 个字符",
@@ -274,6 +291,17 @@
     "title": "出错了",
     "unexpectedError": "发生了意外错误。",
     "reload": "重新加载页面"
+  },
+  "errorPage": {
+    "title": "出错了",
+    "message": "加载页面时发生意外错误，请重试。",
+    "retry": "重试"
+  },
+  "notFound": {
+    "title": "页面未找到",
+    "message": "抱歉，我们找不到您要访问的页面。该页面可能已被移动或不再存在。",
+    "backToDashboard": "返回仪表板",
+    "searchResources": "搜索资源"
   },
   "language": {
     "toggle": "English",

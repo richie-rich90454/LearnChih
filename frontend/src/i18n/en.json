@@ -83,6 +83,23 @@
     "backToSignIn": "Back to sign in",
     "noAccount": "Don't have an account?",
     "alreadyHaveAccount": "Already have an account?",
+    "resetPasswordTitle": "Create new password",
+    "invalidResetLink": "Invalid or expired reset link.",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "resetPasswordFailed": "Failed to reset password. The link may have expired.",
+    "resetPasswordButton": "Reset password",
+    "verifyEmailHeading": "Verify your email",
+    "codeSentTo": "We sent a 6-digit code to <1>{{email}}</1>",
+    "yourEmailFallback": "your email",
+    "verificationFailedTitle": "Verification failed",
+    "invalidOrExpiredCode": "Invalid or expired code",
+    "newCodeSent": "A new code has been sent to your email.",
+    "resendCodeFailed": "Failed to resend code. Please try again.",
+    "verifyButton": "Verify Email",
+    "didntReceiveCode": "Didn't receive the code?",
+    "resend": "Resend",
+    "digitLabel": "Digit {{index}}",
     "allFieldsRequired": "All fields are required",
     "passwordsDoNotMatch": "Passwords do not match",
     "passwordMinLength": "Password must be at least 6 characters",
@@ -288,6 +305,17 @@
     "title": "Something went wrong",
     "unexpectedError": "An unexpected error occurred.",
     "reload": "Reload page"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "message": "An unexpected error occurred while loading this page. Please try again.",
+    "retry": "Try again"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "Sorry, we couldn't find the page you were looking for. It may have been moved or no longer exists.",
+    "backToDashboard": "Back to Dashboard",
+    "searchResources": "Search resources"
   },
   "language": {
     "toggle": "中文",

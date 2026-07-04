@@ -13,6 +13,7 @@ import {
   Spinner,
 } from '@fluentui/react-components'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { resetPassword } from '../api/password'
 import Seo from '../components/Seo'
 
@@ -44,6 +45,7 @@ const useStyles = makeStyles({
 
 export default function ResetPasswordPage() {
   const styles = useStyles()
+  const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const token = searchParams.get('token') || ''
@@ -62,26 +64,26 @@ export default function ResetPasswordPage() {
     e.preventDefault()
     setValidationError('')
     if (password.length < 6) {
-      setValidationError('Password must be at least 6 characters')
+      setValidationError(t('auth.passwordMinLength'))
       return
     }
     if (password !== confirmPassword) {
-      setValidationError('Passwords do not match')
+      setValidationError(t('auth.passwordsDoNotMatch'))
       return
     }
     mutation.mutate()
   }
 
   return (
-    <div className={styles.pageContainer}>
-      <Seo title="Reset password — LernChih" canonicalPath="/reset-password" robots="noindex, follow" />
+    <main className={styles.pageContainer}>
+      <Seo title={t('auth.resetPasswordTitle')} canonicalPath="/reset-password" robots="noindex, follow" />
       <Card className={styles.card}>
         <div className={styles.cardBody}>
-          <Title3 as="h1">Create new password</Title3>
+          <Title3 as="h1">{t('auth.resetPasswordTitle')}</Title3>
 
           {!token && (
             <MessageBar intent="error">
-              <MessageBarBody>Invalid or expired reset link.</MessageBarBody>
+              <MessageBarBody>{t('auth.invalidResetLink')}</MessageBarBody>
             </MessageBar>
           )}
 
@@ -93,43 +95,43 @@ export default function ResetPasswordPage() {
 
           {mutation.isError && (
             <MessageBar intent="error">
-              <MessageBarBody>Failed to reset password. The link may have expired.</MessageBarBody>
+              <MessageBarBody>{t('auth.resetPasswordFailed')}</MessageBarBody>
             </MessageBar>
           )}
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div className={styles.formGroup}>
-              <Label htmlFor="password" required>New password</Label>
+              <Label htmlFor="password" required>{t('auth.newPassword')}</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                placeholder="At least 6 characters"
+                placeholder={t('auth.passwordPlaceholder')}
                 required
               />
             </div>
             <div className={styles.formGroup}>
-              <Label htmlFor="confirmPassword" required>Confirm new password</Label>
+              <Label htmlFor="confirmPassword" required>{t('auth.confirmNewPassword')}</Label>
               <Input
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
-                placeholder="Re-enter your password"
+                placeholder={t('auth.confirmPasswordPlaceholder')}
                 required
               />
             </div>
             <Button type="submit" appearance="primary" disabled={!token || mutation.isPending}>
-              {mutation.isPending ? <Spinner size="tiny" /> : 'Reset password'}
+              {mutation.isPending ? <Spinner size="tiny" /> : t('auth.resetPasswordButton')}
             </Button>
           </form>
 
           <div style={{ textAlign: 'center' }}>
-            <Link to="/login" style={{ fontSize: 'var(--fontSizeBase300)' }}>Back to sign in</Link>
+            <Link to="/login" style={{ fontSize: 'var(--fontSizeBase300)' }}>{t('auth.backToSignIn')}</Link>
           </div>
         </div>
       </Card>
-    </div>
+    </main>
   )
 }

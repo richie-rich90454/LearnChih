@@ -15,6 +15,7 @@ import {
 } from '@fluentui/react-components'
 import { useVerifyEmail } from '../hooks/useAuth'
 import { resendVerification } from '../api/auth'
+import { useTranslation, Trans } from 'react-i18next'
 import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
@@ -57,6 +58,7 @@ const useStyles = makeStyles({
 
 export default function VerifyEmailPage() {
   const styles = useStyles()
+  const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const email = searchParams.get('email') || ''
   const [code, setCode] = useState<string[]>(['', '', '', '', '', ''])
@@ -114,33 +116,33 @@ export default function VerifyEmailPage() {
   }
 
   return (
-    <div className={styles.pageContainer}>
-      <Seo title="Verify your email — LernChih" canonicalPath="/verify" robots="noindex, nofollow" />
+    <main className={styles.pageContainer}>
+      <Seo title={t('auth.verifyEmailHeading')} canonicalPath="/verify" robots="noindex, nofollow" />
       <Card className={styles.verifyCard}>
         <div className={styles.cardBody}>
-          <Title3 as="h1">Verify your email</Title3>
+          <Title3 as="h1">{t('auth.verifyEmailHeading')}</Title3>
           <p style={{ margin: 0, color: 'var(--colorNeutralForeground2)' }}>
-            We sent a 6-digit code to <strong>{email || 'your email'}</strong>
+            <Trans i18nKey="auth.codeSentTo" values={{ email: email || t('auth.yourEmailFallback') }} components={{ 1: <strong /> }} />
           </p>
 
           {verifyMutation.isError && (
             <MessageBar intent="error" role="alert">
               <MessageBarBody>
-                <MessageBarTitle>Verification failed</MessageBarTitle>
-                {(verifyMutation.error as any)?.response?.data?.message || 'Invalid or expired code'}
+                <MessageBarTitle>{t('auth.verificationFailedTitle')}</MessageBarTitle>
+                {(verifyMutation.error as any)?.response?.data?.message || t('auth.invalidOrExpiredCode')}
               </MessageBarBody>
             </MessageBar>
           )}
 
           {resendStatus === 'sent' && (
             <MessageBar intent="success">
-              <MessageBarBody>A new code has been sent to your email.</MessageBarBody>
+              <MessageBarBody>{t('auth.newCodeSent')}</MessageBarBody>
             </MessageBar>
           )}
 
           {resendStatus === 'error' && (
             <MessageBar intent="error" role="alert">
-              <MessageBarBody>Failed to resend code. Please try again.</MessageBarBody>
+              <MessageBarBody>{t('auth.resendCodeFailed')}</MessageBarBody>
             </MessageBar>
           )}
 
@@ -155,7 +157,7 @@ export default function VerifyEmailPage() {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(i, e.target.value)}
                   onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(i, e)}
                   maxLength={1}
-                  aria-label={`Digit ${i + 1}`}
+                  aria-label={t('auth.digitLabel', { index: i + 1 })}
                 />
               ))}
             </div>
@@ -166,22 +168,22 @@ export default function VerifyEmailPage() {
               className={styles.submitButton}
               disabled={verifyMutation.isPending || code.join('').length !== 6}
             >
-              {verifyMutation.isPending ? <Spinner size="tiny" /> : 'Verify Email'}
+              {verifyMutation.isPending ? <Spinner size="tiny" /> : t('auth.verifyButton')}
             </Button>
           </form>
 
           <div className={styles.resendRow}>
-            <span style={{ fontSize: 'var(--fontSizeBase300)' }}>Didn&apos;t receive the code?</span>
+            <span style={{ fontSize: 'var(--fontSizeBase300)' }}>{t('auth.didntReceiveCode')}</span>
             <Button appearance="transparent" size="small" onClick={handleResend}>
-              Resend
+              {t('auth.resend')}
             </Button>
           </div>
 
           <div className={styles.resendRow}>
-            <Link to="/login" style={{ fontSize: 'var(--fontSizeBase300)' }}>Back to Sign In</Link>
+            <Link to="/login" style={{ fontSize: 'var(--fontSizeBase300)' }}>{t('auth.backToSignIn')}</Link>
           </div>
         </div>
       </Card>
-    </div>
+    </main>
   )
 }

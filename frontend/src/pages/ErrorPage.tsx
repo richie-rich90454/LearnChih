@@ -7,6 +7,7 @@ import {
   Card,
 } from '@fluentui/react-components'
 import { ArrowCounterclockwise24Regular } from '@fluentui/react-icons'
+import { useTranslation } from 'react-i18next'
 import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
@@ -33,25 +34,26 @@ const useStyles = makeStyles({
 
 export default function ErrorPage() {
   const styles = useStyles()
+  const { t } = useTranslation()
 
   const handleRetry = () => {
     window.location.reload()
   }
 
   return (
-    <div className={styles.pageContainer}>
-      <Seo title="Something went wrong — LernChih" canonicalPath="/error" robots="noindex, nofollow" />
+    <main className={styles.pageContainer}>
+      <Seo title={t('errorPage.title')} canonicalPath="/error" robots="noindex, nofollow" />
       <Card className={styles.card}>
-        <Title1 as="h1">Something went wrong</Title1>
+        <Title1 as="h1">{t('errorPage.title')}</Title1>
         <Body1 style={{ marginTop: '8px', display: 'block', color: 'var(--colorNeutralForeground2)' }}>
-          An unexpected error occurred while loading this page. Please try again.
+          {t('errorPage.message')}
         </Body1>
         <div className={styles.actions}>
           <Button appearance="primary" icon={<ArrowCounterclockwise24Regular />} onClick={handleRetry}>
-            Try again
+            {t('errorPage.retry')}
           </Button>
         </div>
       </Card>
-    </div>
+    </main>
   )
 }

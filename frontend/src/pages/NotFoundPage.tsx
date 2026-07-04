@@ -9,6 +9,7 @@ import {
   Card,
 } from '@fluentui/react-components'
 import { ArrowLeft24Regular, Search24Regular } from '@fluentui/react-icons'
+import { useTranslation } from 'react-i18next'
 import Seo from '../components/Seo'
 
 const useStyles = makeStyles({
@@ -44,25 +45,26 @@ const useStyles = makeStyles({
 
 export default function NotFoundPage() {
   const styles = useStyles()
+  const { t } = useTranslation()
 
   return (
-    <div className={styles.pageContainer}>
-      <Seo title="Page not found — LernChih" canonicalPath="/404" robots="noindex, follow" />
+    <main className={styles.pageContainer}>
+      <Seo title={t('notFound.title')} canonicalPath="/404" robots="noindex, follow" />
       <Card className={styles.card}>
         <div className={styles.code}>404</div>
-        <Title1 as="h1">Page not found</Title1>
+        <Title1 as="h1">{t('notFound.title')}</Title1>
         <Body1 style={{ marginTop: '8px', display: 'block', color: 'var(--colorNeutralForeground2)' }}>
-          Sorry, we couldn&apos;t find the page you were looking for. It may have been moved or no longer exists.
+          {t('notFound.message')}
         </Body1>
         <div className={styles.actions}>
           <Link to="/">
-            <Button appearance="primary" icon={<ArrowLeft24Regular />}>Back to Dashboard</Button>
+            <Button appearance="primary" icon={<ArrowLeft24Regular />}>{t('notFound.backToDashboard')}</Button>
           </Link>
           <Link to="/resources">
-            <Button appearance="outline" icon={<Search24Regular />}>Search resources</Button>
+            <Button appearance="outline" icon={<Search24Regular />}>{t('notFound.searchResources')}</Button>
           </Link>
         </div>
       </Card>
-    </div>
+    </main>
   )
 }
