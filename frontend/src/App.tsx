@@ -147,6 +147,28 @@ export default function App() {
     }
   }, [])
 
+  // Fluent UI Tabster creates off-screen dummy inputs with aria-hidden="true"
+  // and tabindex="0" for focus management. They remain programmatically
+  // focusable with tabindex="-1" and no longer violate aria-hidden-focus.
+  useEffect(() => {
+    const fixTabsterDummies = () => {
+      document.querySelectorAll<HTMLElement>('[data-tabster-dummy][tabindex="0"]').forEach((el) => {
+        el.setAttribute('tabindex', '-1')
+      })
+    }
+    fixTabsterDummies()
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') {
+          fixTabsterDummies()
+          break
+        }
+      }
+    })
+    observer.observe(document.body, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <BrowserRouter>
       <Preconnect />
