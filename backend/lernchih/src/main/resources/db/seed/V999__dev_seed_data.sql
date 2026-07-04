@@ -162,16 +162,16 @@ INSERT IGNORE INTO tags (id, name) VALUES
 -- 10. Post Tags (channel posts and resource posts)
 -- ------------------------------------------------------------
 INSERT IGNORE INTO post_tags (post_id, post_type, tag_id) VALUES
-(3, 'CHANNEL_POST', 1),
-(3, 'CHANNEL_POST', 7),
-(5, 'CHANNEL_POST', 1),
-(5, 'CHANNEL_POST', 10),
-(6, 'CHANNEL_POST', 8),
-(1, 'RESOURCE_POST', 6),
-(1, 'RESOURCE_POST', 1),
-(3, 'RESOURCE_POST', 7),
-(4, 'RESOURCE_POST', 10),
-(6, 'RESOURCE_POST', 7);
+(3, 'CHANNEL', 1),
+(3, 'CHANNEL', 7),
+(5, 'CHANNEL', 1),
+(5, 'CHANNEL', 10),
+(6, 'CHANNEL', 8),
+(1, 'RESOURCE', 6),
+(1, 'RESOURCE', 1),
+(3, 'RESOURCE', 7),
+(4, 'RESOURCE', 10),
+(6, 'RESOURCE', 7);
 
 -- ------------------------------------------------------------
 -- 11. Upvotes
@@ -242,12 +242,12 @@ INSERT IGNORE INTO notifications (user_id, type, title, body, action_url, is_rea
 -- ------------------------------------------------------------
 -- 14. Badges & User Badges
 -- ------------------------------------------------------------
-INSERT IGNORE INTO badges (id, name, description, icon, required_credits) VALUES
-(4, 'Early Adopter', 'One of the first members of the community.', '🚀', 0),
-(5, 'Helpful Hand', 'Received 10 upvotes on a single resource.', '👏', 100),
-(6, 'Knowledge Seeker', 'Bookmarked 5 resources.', '🔖', 50),
-(7, 'Thread Starter', 'Started 3 channel threads.', '💬', 75),
-(8, 'Influencer', 'Reached 500 credits.', '⭐', 500);
+INSERT IGNORE INTO badges (id, name, description, icon, required_credits, created_at) VALUES
+(4, 'Early Adopter', 'One of the first members of the community.', '🚀', 0, NOW() - INTERVAL 60 DAY),
+(5, 'Helpful Hand', 'Received 10 upvotes on a single resource.', '👏', 100, NOW() - INTERVAL 50 DAY),
+(6, 'Knowledge Seeker', 'Bookmarked 5 resources.', '🔖', 50, NOW() - INTERVAL 40 DAY),
+(7, 'Thread Starter', 'Started 3 channel threads.', '💬', 75, NOW() - INTERVAL 30 DAY),
+(8, 'Influencer', 'Reached 500 credits.', '⭐', 500, NOW() - INTERVAL 20 DAY);
 
 INSERT IGNORE INTO user_badges (user_id, badge_id, earned_at) VALUES
 (1, 4, NOW() - INTERVAL 50 DAY),
@@ -278,12 +278,12 @@ INSERT IGNORE INTO follows (follower_id, following_id, created_at) VALUES
 -- 16. Reactions
 -- ------------------------------------------------------------
 INSERT IGNORE INTO reactions (post_id, post_type, user_id, emoji, created_at) VALUES
-(1, 'CHANNEL_POST', 3, '👍', NOW() - INTERVAL 2 DAY),
-(1, 'CHANNEL_POST', 4, '❤️', NOW() - INTERVAL 2 DAY),
-(3, 'CHANNEL_POST', 5, '👍', NOW() - INTERVAL 3 DAY),
-(6, 'CHANNEL_POST', 2, '🎉', NOW() - INTERVAL 4 DAY),
-(1, 'RESOURCE_POST', 4, '👍', NOW() - INTERVAL 5 DAY),
-(3, 'RESOURCE_POST', 6, '🔥', NOW() - INTERVAL 6 DAY);
+(1, 'CHANNEL', 3, '👍', NOW() - INTERVAL 2 DAY),
+(1, 'CHANNEL', 4, '❤️', NOW() - INTERVAL 2 DAY),
+(3, 'CHANNEL', 5, '👍', NOW() - INTERVAL 3 DAY),
+(6, 'CHANNEL', 2, '🎉', NOW() - INTERVAL 4 DAY),
+(1, 'RESOURCE', 4, '👍', NOW() - INTERVAL 5 DAY),
+(3, 'RESOURCE', 6, '🔥', NOW() - INTERVAL 6 DAY);
 
 -- ------------------------------------------------------------
 -- 17. User Subjects
