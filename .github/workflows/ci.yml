@@ -26,10 +26,10 @@ jobs:
           java-version: '25'
           cache: maven
 
-      - name: Run backend unit tests
-        run: ./mvnw -B -ntp test
-        # Integration tests are executed by the deploy workflow once the DB
-        # service container is available.
+      - name: Run backend tests
+        run: ./mvnw -B -ntp verify
+        # Surefire runs unit tests; Failsafe runs *IT integration tests with
+        # Testcontainers MySQL and Mailpit (Docker is available on ubuntu-latest).
 
   frontend:
     runs-on: ubuntu-latest
