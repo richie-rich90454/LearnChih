@@ -22,6 +22,7 @@ import { ArrowLeft24Regular, Mention24Regular } from '@fluentui/react-icons'
 import { useChannel, useChannelPosts, useCreateChannelPost } from '@/hooks/useChannels'
 import useWebSocket from '@/hooks/useWebSocket'
 import useAuthStore from '@/store/authStore'
+import { useTranslation } from 'react-i18next'
 import type { Post, PostFormat } from '@/types'
 import Seo from '@/components/Seo'
 import { PresenceIndicator } from '@/components/PresenceIndicator'
@@ -104,6 +105,7 @@ function getBaseUrl(): string {
 }
 
 export default function ChannelThreadPage() {
+  const { t } = useTranslation()
   const styles = useStyles()
   const { channelId, threadId } = useParams<{ channelId: string; threadId: string }>()
   const navigate = useNavigate()
@@ -246,18 +248,18 @@ export default function ChannelThreadPage() {
       {/* Back */}
       <div className={styles.backRow}>
         <Button appearance="subtle" icon={<ArrowLeft24Regular />} onClick={() => navigate('/channels')}>
-          Back to Channels
+          {t('channels.backToChannels')}
         </Button>
       </div>
 
       {/* Thread info */}
       <div className={styles.threadInfo}>
         <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalS, flexWrap: 'wrap' }}>
-          <Title2 as="h1">{thread?.title || 'Thread'}</Title2>
+          <Title2 as="h1">{thread?.title || t('channels.threads')}</Title2>
           {threadId && <PresenceIndicator threadId={Number(threadId)} />}
         </div>
         <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>
-          in {channel?.name || 'Channel'}
+          {t('channels.inChannel', { channel: channel?.name || t('channels.title') })}
         </Body1>
         <ThreadBadges status={{ pinned: thread?.pinned, locked: thread?.locked, qaMode: thread?.qaMode }} />
       </div>
@@ -267,20 +269,20 @@ export default function ChannelThreadPage() {
         <Textarea
           value={newPost}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handlePostInputChange(e.target.value)}
-          placeholder={thread?.locked ? 'This thread is locked.' : 'Write a reply...'}
+          placeholder={thread?.locked ? t('channels.lockedPlaceholder') : t('channels.writeReply')}
           style={{ flex: 1 }}
           disabled={thread?.locked}
         />
         <Dropdown
-          value={postFormat === 'MARKDOWN' ? 'Markdown' : 'Plain'}
+          value={postFormat === 'MARKDOWN' ? t('channels.markdown') : t('channels.plain')}
           selectedOptions={[postFormat]}
           onOptionSelect={(_: unknown, data: { optionValue?: string }) =>
             setPostFormat((data.optionValue as PostFormat) || 'PLAIN')
           }
           disabled={thread?.locked}
         >
-          <Option value="PLAIN">Plain</Option>
-          <Option value="MARKDOWN">Markdown</Option>
+          <Option value="PLAIN">{t('channels.plain')}</Option>
+          <Option value="MARKDOWN">{t('channels.markdown')}</Option>
         </Dropdown>
         {isAdmin && (
           <Button
@@ -288,7 +290,7 @@ export default function ChannelThreadPage() {
             icon={<Mention24Regular />}
             onClick={handleAtChannel}
             disabled={thread?.locked}
-            title="Mention everyone in this channel"
+            title={t('channels.mentionChannel')}
           >
             @channel
           </Button>
@@ -298,7 +300,7 @@ export default function ChannelThreadPage() {
           onClick={handlePost}
           disabled={createPost.isPending || !newPost.trim() || thread?.locked}
         >
-          {createPost.isPending ? <Spinner size="tiny" /> : 'Reply'}
+          {createPost.isPending ? <Spinner size="tiny" /> : t('channels.reply')}
         </Button>
       </div>
 
@@ -308,83 +310,87 @@ export default function ChannelThreadPage() {
           <>
             <Spinner size="tiny" />
             <span>
-              {Object.values(typingUsers).join(', ')} {Object.keys(typingUsers).length === 1 ? 'is' : 'are'} typing...
+              {Object.values(typingUsers).join(', ')} {Object.keys(typingUsers).length === 1 ? t('thread.typing', { users: Object.values(typingUsers).join(', ') }) : t('thread.typingPlural', { users: Object.values(typingUsers).join(', ') })}
             </span>
           </>
         )}
       </div>
 
       {/* Posts */}
-      {isLoading && <Spinner label="Loading posts..." />}
+      {isLoading && <Spinner label={t('common.loading')} />}
       {isError && (
         <MessageBar intent="error">
-          <MessageBarBody>Failed to load posts.</MessageBarBody>
+          <MessageBarBody>{t('channels.threadLoadError')}</MessageBarBody>
         </MessageBar>
       )}
-      <div className={styles.postsList}>
+      <section className={styles.postsList} aria-label={t('channels.threads')}>
         {postList.length === 0 && !isLoading && (
-          <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>No posts yet. Start the conversation!</Body1>
+          <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>{t('thread.noPosts')}</Body1>
         )}
         {postList.map((post) => (
-          <Card key={post.id} className={styles.postCard}>
-            <div className={styles.postHeader}>
-              <Avatar name={post.authorName || 'User'} size={32} />
-              <div>
-                <Subtitle2>{post.authorName || 'Unknown'}</Subtitle2>
-                <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)', marginLeft: '8px' }}>
-                  {post.createdAt ? new Date(post.createdAt).toLocaleString() : ''}
-                </span>
-              </div>
-            </div>
-            {post.format === 'MARKDOWN' ? (
-              <MarkdownPreview content={post.content} />
-            ) : (
-              <Body1>{post.content}</Body1>
-            )}
-            <div className={styles.postActions}>
-              <ReactionPicker postId={post.id} />
-              {!thread?.locked && (
-                <Button
-                  appearance="subtle"
-                  size="small"
-                  onClick={() => {
-                    setReplyToPostId(post.id)
-                    setReplyContent('')
-                  }}
-                >
-                  Reply
-                </Button>
-              )}
-              <ReportButton targetType="CHANNEL_POST" targetId={post.id} />
-              {readPostIds.has(post.id) && post.userId === user?.userId && (
-                <span className={styles.readReceipt}>Read</span>
-              )}
-            </div>
-            {replyToPostId === post.id && !thread?.locked && (
-              <div className={styles.replyForm}>
-                <Textarea
-                  value={replyContent}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReplyContent(e.target.value)}
-                  placeholder="Write a reply..."
-                />
-                <div style={{ display: 'flex', gap: tokens.spacingHorizontalS, justifyContent: 'flex-end' }}>
-                  <Button appearance="secondary" size="small" onClick={() => setReplyToPostId(null)}>
-                    Cancel
-                  </Button>
-                  <Button
-                    appearance="primary"
-                    size="small"
-                    disabled={!replyContent.trim() || createPost.isPending}
-                    onClick={() => handleReply(post.id)}
-                  >
-                    {createPost.isPending ? <Spinner size="tiny" /> : 'Post reply'}
-                  </Button>
+          <article key={post.id}>
+            <Card className={styles.postCard}>
+              <div className={styles.postHeader}>
+                <Avatar name={post.authorName || t('common.user')} size={32} />
+                <div>
+                  <Subtitle2>{post.authorName || t('common.unknown')}</Subtitle2>
+                  {post.createdAt && (
+                    <time dateTime={new Date(post.createdAt).toISOString()} style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)', marginLeft: '8px' }}>
+                      {new Date(post.createdAt).toLocaleString()}
+                    </time>
+                  )}
                 </div>
               </div>
-            )}
-          </Card>
+              {post.format === 'MARKDOWN' ? (
+                <MarkdownPreview content={post.content} />
+              ) : (
+                <Body1>{post.content}</Body1>
+              )}
+              <div className={styles.postActions}>
+                <ReactionPicker postId={post.id} />
+                {!thread?.locked && (
+                  <Button
+                    appearance="subtle"
+                    size="small"
+                    onClick={() => {
+                      setReplyToPostId(post.id)
+                      setReplyContent('')
+                    }}
+                  >
+                    {t('channels.reply')}
+                  </Button>
+                )}
+                <ReportButton targetType="CHANNEL_POST" targetId={post.id} />
+                {readPostIds.has(post.id) && post.userId === user?.userId && (
+                  <span className={styles.readReceipt}>{t('thread.read')}</span>
+                )}
+              </div>
+              {replyToPostId === post.id && !thread?.locked && (
+                <div className={styles.replyForm}>
+                  <Textarea
+                    value={replyContent}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReplyContent(e.target.value)}
+                    placeholder={t('channels.writeReply')}
+                  />
+                  <div style={{ display: 'flex', gap: tokens.spacingHorizontalS, justifyContent: 'flex-end' }}>
+                    <Button appearance="secondary" size="small" onClick={() => setReplyToPostId(null)}>
+                      {t('common.cancel')}
+                    </Button>
+                    <Button
+                      appearance="primary"
+                      size="small"
+                      disabled={!replyContent.trim() || createPost.isPending}
+                      onClick={() => handleReply(post.id)}
+                    >
+                      {createPost.isPending ? <Spinner size="tiny" /> : t('channels.postReply')}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </Card>
+          </article>
         ))}
-      </div>
+      </section>
     </div>
   )
 }

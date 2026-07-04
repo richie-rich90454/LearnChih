@@ -28,6 +28,7 @@ import {
 import { Add24Regular } from '@fluentui/react-icons'
 import { useChannels, useChannel, useCreateChannelThread } from '@/hooks/useChannels'
 import { useDebounce } from '@/hooks/useDebounce'
+import { useTranslation } from 'react-i18next'
 import type { Channel, ChannelThread } from '@/types'
 import Seo from '@/components/Seo'
 import { Pagination } from '@/components/Pagination'
@@ -91,6 +92,7 @@ const useStyles = makeStyles({
 })
 
 export default function ChannelsPage() {
+  const { t } = useTranslation()
   const styles = useStyles()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -143,6 +145,9 @@ export default function ChannelsPage() {
     threadPage * THREAD_PAGE_SIZE
   )
 
+  const prevPath = threadPage > 1 && threadTotalPages > 1 ? `/channels?page=${threadPage - 1}` : undefined
+  const nextPath = threadPage < threadTotalPages && threadTotalPages > 1 ? `/channels?page=${threadPage + 1}` : undefined
+
   useEffect(() => {
     setThreadPage(1)
   }, [debouncedThreadSearch, threadSort, selectedChannelId])
@@ -164,41 +169,43 @@ export default function ChannelsPage() {
   return (
     <div className={styles.container}>
       <Seo
-        title="Channels — LernChih"
-        description="Join subject-specific discussion channels on LernChih. Ask questions, share insights, and collaborate with your academic community."
+        title={`${t('channels.title')} — LernChih`}
+        description={t('channels.description')}
         canonicalPath="/channels"
+        prevPath={prevPath}
+        nextPath={nextPath}
         robots={hasQueryParams ? 'noindex, follow' : 'index, follow'}
         hreflang
       />
       <div className={styles.headerRow}>
-        <Title2 as="h1">Channels</Title2>
+        <Title2 as="h1">{t('channels.title')}</Title2>
         {selectedChannelId && (
           <Dialog open={dialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setDialogOpen(d.open)}>
             <DialogTrigger disableButtonEnhancement>
-              <Button appearance="primary" icon={<Add24Regular />}>New Thread</Button>
+              <Button appearance="primary" icon={<Add24Regular />}>{t('channels.newThread')}</Button>
             </DialogTrigger>
             <DialogSurface>
               <DialogBody>
-                <DialogTitle>Create Thread</DialogTitle>
+                <DialogTitle>{t('channels.createThread')}</DialogTitle>
                 <DialogContent>
                   {createThread.isError && (
                     <MessageBar intent="error">
-                      <MessageBarBody>Failed to create thread.</MessageBarBody>
+                      <MessageBarBody>{t('channels.threadLoadError')}</MessageBarBody>
                     </MessageBar>
                   )}
                   <div className={styles.dialogForm}>
-                    <Field label="Title" required>
-                      <Input value={threadTitle} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setThreadTitle(e.target.value)} placeholder="Thread title" />
+                    <Field label={t('resources.title')} required>
+                      <Input value={threadTitle} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setThreadTitle(e.target.value)} placeholder={t('resources.title')} />
                     </Field>
-                    <Field label="Content">
-                      <Textarea value={threadContent} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setThreadContent(e.target.value)} placeholder="First post content" />
+                    <Field label={t('resources.description')}>
+                      <Textarea value={threadContent} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setThreadContent(e.target.value)} placeholder={t('resources.description')} />
                     </Field>
                   </div>
                 </DialogContent>
                 <DialogActions>
-                  <Button appearance="secondary" onClick={() => setDialogOpen(false)}>Cancel</Button>
+                  <Button appearance="secondary" onClick={() => setDialogOpen(false)}>{t('common.cancel')}</Button>
                   <Button appearance="primary" onClick={handleCreateThread} disabled={createThread.isPending || !threadTitle.trim()}>
-                    {createThread.isPending ? <Spinner size="tiny" /> : 'Create'}
+                    {createThread.isPending ? <Spinner size="tiny" /> : t('common.create')}
                   </Button>
                 </DialogActions>
               </DialogBody>
@@ -207,10 +214,10 @@ export default function ChannelsPage() {
         )}
       </div>
 
-      {isLoading && <Spinner label="Loading channels..." />}
+      {isLoading && <Spinner label={t('common.loading')} />}
       {isError && (
         <MessageBar intent="error">
-          <MessageBarBody>Failed to load channels.</MessageBarBody>
+          <MessageBarBody>{t('channels.loadError')}</MessageBarBody>
         </MessageBar>
       )}
 
@@ -219,64 +226,67 @@ export default function ChannelsPage() {
         <StaggerReveal className={styles.channelList} style={{ flex: 1, minWidth: '280px' }}>
           {channelList.length === 0 && !isLoading && (
             <MessageBar>
-              <MessageBarBody>No channels available.</MessageBarBody>
+              <MessageBarBody>{t('channels.noChannels')}</MessageBarBody>
             </MessageBar>
           )}
           {channelList.map((channel) => (
             <HoverLift key={channel.id}>
-              <Card
-                className={styles.channelCard}
-                style={{
-                  backgroundColor: selectedChannelId === channel.id ? 'var(--colorNeutralBackground1Selected)' : undefined,
-                }}
-                onClick={() => setSelectedChannelId(channel.id)}
-              >
-                <div className={styles.channelHeader}>
-                  <Subtitle2>{channel.name}</Subtitle2>
-                  <Badge appearance="outline" size="small">
-                    {channel.threadCount ?? 0} threads
-                  </Badge>
-                </div>
-                {channel.description && (
-                  <Body1 style={{ color: 'var(--colorNeutralForeground3)', marginTop: '4px', display: 'block' }}>
-                    {channel.description}
-                  </Body1>
-                )}
-              </Card>
+              <article>
+                <Card
+                  className={styles.channelCard}
+                  style={{
+                    backgroundColor: selectedChannelId === channel.id ? 'var(--colorNeutralBackground1Selected)' : undefined,
+                  }}
+                  onClick={() => setSelectedChannelId(channel.id)}
+                >
+                  <div className={styles.channelHeader}>
+                    <Subtitle2>{channel.name}</Subtitle2>
+                    <Badge appearance="outline" size="small">
+                      {channel.threadCount ?? 0} {t('channels.threads')}
+                    </Badge>
+                  </div>
+                  {channel.description && (
+                    <Body1 style={{ color: 'var(--colorNeutralForeground3)', marginTop: '4px', display: 'block' }}>
+                      {channel.description}
+                    </Body1>
+                  )}
+                </Card>
+              </article>
             </HoverLift>
           ))}
         </StaggerReveal>
 
         {/* Threads for selected channel */}
         {selectedChannelId && (
-          <div className={styles.threadsSection} style={{ flex: 2 }}>
+          <section className={styles.threadsSection} style={{ flex: 2 }} aria-label={t('channels.threads')}>
             <Subtitle2 as="h2" style={{ marginBottom: '12px' }}>
-              {channelDetail?.name || 'Channel'} — Threads
+              {channelDetail?.name || t('channels.title')} — {t('channels.threads')}
             </Subtitle2>
             <div className={styles.filterBar} style={{ marginBottom: '12px' }}>
               <Input
-                placeholder="Search threads..."
+                placeholder={t('channels.searchThreads')}
                 value={threadSearch}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setThreadSearch(e.target.value)}
                 style={{ minWidth: '180px' }}
+                aria-label={t('channels.searchThreads')}
               />
               <Dropdown
-                placeholder="Sort by"
-                value={threadSort === 'newest' ? 'Newest' : threadSort === 'oldest' ? 'Oldest' : 'Most Posts'}
+                placeholder={t('common.sortBy')}
+                value={threadSort === 'newest' ? t('resources.newest') : threadSort === 'oldest' ? t('resources.oldest') : t('channels.mostPosts')}
                 selectedOptions={[threadSort]}
                 onOptionSelect={(_: unknown, data: { optionValue?: string }) => data.optionValue && setThreadSort(data.optionValue as 'newest' | 'oldest' | 'posts')}
               >
-                <Option value="newest">Newest</Option>
-                <Option value="oldest">Oldest</Option>
-                <Option value="posts">Most Posts</Option>
+                <Option value="newest">{t('resources.newest')}</Option>
+                <Option value="oldest">{t('resources.oldest')}</Option>
+                <Option value="posts">{t('channels.mostPosts')}</Option>
               </Dropdown>
             </div>
             <StaggerReveal className={styles.threadList}>
               {threads.length === 0 && (
-                <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>No threads yet. Start one!</Body1>
+                <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>{t('channels.noThreads')}</Body1>
               )}
               {threads.length > 0 && sortedThreads.length === 0 && (
-                <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>No threads match your search.</Body1>
+                <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>{t('channels.noMatches')}</Body1>
               )}
               {/* TODO(perf): When threads exceed ~100 items, add list
                   virtualization (e.g. react-window / react-virtual) to avoid
@@ -284,20 +294,22 @@ export default function ChannelsPage() {
                   dependency-free. Keys are already stable (thread.id). */}
               {paginatedThreads.map((thread) => (
                 <HoverLift key={thread.id}>
-                  <Card
-                    className={styles.threadCard}
-                    onClick={() => navigate(`/channels/${selectedChannel?.slug || selectedChannelId}/threads/${thread.id}`)}
-                  >
-                    <Subtitle2>{thread.title}</Subtitle2>
-                    <div className={styles.channelMeta}>
-                      <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
-                        by {thread.authorName || 'Unknown'}
-                      </span>
-                      <Badge appearance="outline" size="small">
-                        {thread.postCount ?? 0} posts
-                      </Badge>
-                    </div>
-                  </Card>
+                  <article>
+                    <Card
+                      className={styles.threadCard}
+                      onClick={() => navigate(`/channels/${selectedChannel?.slug || selectedChannelId}/threads/${thread.id}`)}
+                    >
+                      <Subtitle2>{thread.title}</Subtitle2>
+                      <div className={styles.channelMeta}>
+                        <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
+                          {t('common.byAuthor', { author: thread.authorName || t('common.unknown') })}
+                        </span>
+                        <Badge appearance="outline" size="small">
+                          {thread.postCount ?? 0} {t('channels.posts')}
+                        </Badge>
+                      </div>
+                    </Card>
+                  </article>
                 </HoverLift>
               ))}
             </StaggerReveal>
@@ -306,7 +318,7 @@ export default function ChannelsPage() {
               totalPages={threadTotalPages}
               onPageChange={setThreadPage}
             />
-          </div>
+          </section>
         )}
       </div>
     </div>

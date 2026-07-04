@@ -20,6 +20,7 @@ import {
 import useAuthStore from '@/store/authStore'
 import { useMyProfile } from '@/hooks/useProfile'
 import { useResources } from '@/hooks/useResources'
+import { useTranslation } from 'react-i18next'
 import type { UserProfile, Resource } from '@/types'
 import Seo from '@/components/Seo'
 import { SkeletonLine, SkeletonList } from '@/components/Skeleton'
@@ -87,6 +88,7 @@ const useStyles = makeStyles({
 })
 
 export default function DashboardPage() {
+  const { t } = useTranslation()
   const styles = useStyles()
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
@@ -110,9 +112,9 @@ export default function DashboardPage() {
   if (profileError || resourcesError) {
     return (
       <div role="alert" style={{ textAlign: 'center', padding: 48 }}>
-        <Title3 as="h3">Failed to load dashboard</Title3>
-        <p style={{ marginBottom: 12 }}>Something went wrong. Please try again.</p>
-        <Button appearance="primary" onClick={() => { refetchProfile(); refetchResources() }}>Retry</Button>
+        <Title3 as="h3">{t('dashboard.loadError')}</Title3>
+        <p style={{ marginBottom: 12 }}>{t('errors.generic')}</p>
+        <Button appearance="primary" onClick={() => { refetchProfile(); refetchResources() }}>{t('errors.retry')}</Button>
       </div>
     )
   }
@@ -122,36 +124,36 @@ export default function DashboardPage() {
   return (
     <div className={styles.container}>
       <Seo
-        title="Dashboard — LernChih"
-        description="Your LernChih dashboard: track your credits, jump to resources and channels, and see recent learning materials."
+        title={`${t('nav.dashboard')} — LernChih`}
+        description={t('dashboard.description')}
         canonicalPath="/"
         hreflang
       />
       {/* Welcome */}
       <div>
-        <Title1 as="h1">Welcome back, {user?.name || 'Student'}</Title1>
+        <Title1 as="h1">{t('dashboard.welcome', { name: user?.name || t('common.student') })}</Title1>
         <Subtitle2 style={{ color: 'var(--colorNeutralForeground2)', marginTop: '4px' }}>
-          Here&apos;s what&apos;s happening in your academic community
+          {t('dashboard.subtitle')}
         </Subtitle2>
       </div>
 
       {/* Quick stats */}
       <div className={styles.statsRow}>
         <Card className={styles.statCard}>
-          <Subtitle2>Credits</Subtitle2>
+          <Subtitle2>{t('dashboard.credits')}</Subtitle2>
           <div className={styles.statValue}>
             <Title3><AnimatedCounter value={profile?.credits ?? 0} /></Title3>
-            <Badge appearance="filled" color="brand">pts</Badge>
+            <Badge appearance="filled" color="brand">{t('dashboard.points')}</Badge>
           </div>
         </Card>
         <Card className={styles.statCard}>
-          <Subtitle2>Resources Uploaded</Subtitle2>
+          <Subtitle2>{t('dashboard.resourcesUploaded')}</Subtitle2>
           <div className={styles.statValue}>
             <Title3><AnimatedCounter value={profile?.resourceCount ?? 0} /></Title3>
           </div>
         </Card>
         <Card className={styles.statCard}>
-          <Subtitle2>Upvotes Received</Subtitle2>
+          <Subtitle2>{t('dashboard.upvotesReceived')}</Subtitle2>
           <div className={styles.statValue}>
             <Title3><AnimatedCounter value={profile?.upvoteCount ?? 0} /></Title3>
           </div>
@@ -160,7 +162,7 @@ export default function DashboardPage() {
 
       {/* Quick links */}
       <div>
-        <Title3 as="h2" style={{ marginBottom: '12px' }}>Quick Links</Title3>
+        <Title3 as="h2" style={{ marginBottom: '12px' }}>{t('dashboard.quickLinks')}</Title3>
         <StaggerReveal className={styles.quickLinks}>
           <HoverLift>
             <Card
@@ -169,7 +171,7 @@ export default function DashboardPage() {
             >
               <div className={styles.quickLinkLeft}>
                 <Document24Regular />
-                <Subtitle2>Resources</Subtitle2>
+                <Subtitle2>{t('nav.resources')}</Subtitle2>
               </div>
               <ArrowRight24Regular />
             </Card>
@@ -181,7 +183,7 @@ export default function DashboardPage() {
             >
               <div className={styles.quickLinkLeft}>
                 <Chat24Regular />
-                <Subtitle2>Channels</Subtitle2>
+                <Subtitle2>{t('nav.channels')}</Subtitle2>
               </div>
               <ArrowRight24Regular />
             </Card>
@@ -193,7 +195,7 @@ export default function DashboardPage() {
             >
               <div className={styles.quickLinkLeft}>
                 <Trophy24Regular />
-                <Subtitle2>Leaderboard</Subtitle2>
+                <Subtitle2>{t('nav.leaderboard')}</Subtitle2>
               </div>
               <ArrowRight24Regular />
             </Card>
@@ -203,10 +205,10 @@ export default function DashboardPage() {
 
       {/* Recent resources */}
       <div>
-        <Title3 as="h2" style={{ marginBottom: '12px' }}>Recent Resources</Title3>
+        <Title3 as="h2" style={{ marginBottom: '12px' }}>{t('dashboard.recentResources')}</Title3>
         {recentResources.length === 0 ? (
           <MessageBar>
-            <MessageBarBody>No resources yet. Be the first to upload!</MessageBarBody>
+            <MessageBarBody>{t('dashboard.noResources')}</MessageBarBody>
           </MessageBar>
         ) : (
           <StaggerReveal className={styles.recentGrid}>
@@ -219,15 +221,15 @@ export default function DashboardPage() {
                   <div className={styles.cardHeader}>
                     <Subtitle2>{resource.title}</Subtitle2>
                     <Badge appearance="tint" size="small">
-                      {resource.category || 'General'}
+                      {resource.category || t('resources.general')}
                     </Badge>
                   </div>
                   <div className={styles.cardMeta}>
                     <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
-                      by {resource.authorName || 'Unknown'}
+                      {t('common.byAuthor', { author: resource.authorName || t('common.unknown') })}
                     </span>
                     <Badge appearance="outline" size="small">
-                      <AnimatedCounter value={resource.upvoteCount ?? 0} suffix=" upvotes" />
+                      <AnimatedCounter value={resource.upvoteCount ?? 0} suffix={` ${t('resources.upvotes')}`} />
                     </Badge>
                   </div>
                 </Card>

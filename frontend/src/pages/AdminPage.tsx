@@ -26,9 +26,10 @@ import {
   MessageBar,
   MessageBarBody,
 } from '@fluentui/react-components'
-import { Shield24Regular, Checkmark24Regular, Delete24Regular } from '@fluentui/react-icons'
+import { Shield24Regular, Checkmark24Regular, Delete24Regular, Clock24Regular, Dismiss24Regular } from '@fluentui/react-icons'
 import { useReports, useResolveReport, useDeleteResourceAdmin, useDeletePostAdmin } from '@/hooks/useReports'
 import useAuthStore from '@/store/authStore'
+import { useTranslation } from 'react-i18next'
 import type { Report } from '@/types'
 import Seo from '@/components/Seo'
 import { SkeletonList } from '@/components/Skeleton'
@@ -54,16 +55,8 @@ const useStyles = makeStyles({
 
 const STATUS_OPTIONS = ['PENDING', 'RESOLVED', 'DISMISSED']
 
-const columns = [
-  { columnId: 'id', renderHeaderCell: () => 'ID' as const, minWidth: 60 },
-  { columnId: 'reporter', renderHeaderCell: () => 'Reporter' as const, minWidth: 120 },
-  { columnId: 'target', renderHeaderCell: () => 'Target' as const, minWidth: 150 },
-  { columnId: 'reason', renderHeaderCell: () => 'Reason' as const, minWidth: 200 },
-  { columnId: 'status', renderHeaderCell: () => 'Status' as const, minWidth: 100 },
-  { columnId: 'actions', renderHeaderCell: () => 'Actions' as const, minWidth: 200 },
-]
-
 export default function AdminPage() {
+  const { t } = useTranslation()
   const styles = useStyles()
   const user = useAuthStore((s) => s.user)
   const [statusFilter, setStatusFilter] = useState<string>('')
@@ -82,6 +75,26 @@ export default function AdminPage() {
   const isAdmin = user?.role === 'ADMIN' || user?.role === 'MODERATOR'
 
   const reports: Report[] = Array.isArray(data) ? data : (data as any)?.content || []
+
+  const columns = [
+    { columnId: 'id', renderHeaderCell: () => t('admin.id') as string, minWidth: 60 },
+    { columnId: 'reporter', renderHeaderCell: () => t('admin.reporter') as string, minWidth: 120 },
+    { columnId: 'target', renderHeaderCell: () => t('admin.target') as string, minWidth: 150 },
+    { columnId: 'reason', renderHeaderCell: () => t('admin.reason') as string, minWidth: 200 },
+    { columnId: 'status', renderHeaderCell: () => t('admin.status') as string, minWidth: 100 },
+    { columnId: 'actions', renderHeaderCell: () => t('admin.actions') as string, minWidth: 200 },
+  ]
+
+  const statusIcon = (status: string) => {
+    switch (status) {
+      case 'RESOLVED':
+        return <Checkmark24Regular />
+      case 'DISMISSED':
+        return <Dismiss24Regular />
+      default:
+        return <Clock24Regular />
+    }
+  }
 
   const handleResolve = (id: number) => {
     resolveReport.mutate(id)
@@ -103,9 +116,9 @@ export default function AdminPage() {
   if (!isAdmin) {
     return (
       <>
-        <Seo title="Admin — LernChih" canonicalPath="/admin" robots="noindex, nofollow" />
+        <Seo title={`${t('admin.title')} — LernChih`} canonicalPath="/admin" robots="noindex, nofollow" />
         <MessageBar intent="error">
-          <MessageBarBody>You don&apos;t have permission to access this page.</MessageBarBody>
+          <MessageBarBody>{t('admin.permissionDenied')}</MessageBarBody>
         </MessageBar>
       </>
     )
@@ -113,23 +126,23 @@ export default function AdminPage() {
 
   return (
     <div className={styles.container}>
-      <Seo title="Admin — LernChih" canonicalPath="/admin" robots="noindex, nofollow" />
+      <Seo title={`${t('admin.title')} — LernChih`} canonicalPath="/admin" robots="noindex, nofollow" />
       <div className={styles.headerRow}>
         <Shield24Regular />
-        <Title2 as="h1">Admin Panel</Title2>
+        <Title2 as="h1">{t('admin.title')}</Title2>
       </div>
 
       {/* Filter */}
       <div className={styles.filterRow}>
         <Dropdown
-          placeholder="Filter by status"
+          placeholder={t('admin.filterByStatus')}
           value={statusFilter || undefined}
           selectedOptions={statusFilter ? [statusFilter] : []}
           onOptionSelect={(_: unknown, d: { optionValue?: string }) => setStatusFilter(d.optionValue || '')}
           clearable
         >
           {STATUS_OPTIONS.map((s) => (
-            <Option key={s} value={s}>{s}</Option>
+            <Option key={s} value={s}>{t(`status.${s.toLowerCase()}`)}</Option>
           ))}
         </Dropdown>
       </div>
@@ -137,15 +150,15 @@ export default function AdminPage() {
       {isLoading && <SkeletonList count={4} />}
       {isError && (
         <div role="alert" style={{ textAlign: 'center', padding: 48 }}>
-          <Title3 as="h3">Failed to load reports</Title3>
-          <p style={{ marginBottom: 12 }}>Something went wrong. Please try again.</p>
-          <Button appearance="primary" onClick={() => refetch()}>Retry</Button>
+          <Title3 as="h3">{t('admin.loadError')}</Title3>
+          <p style={{ marginBottom: 12 }}>{t('errors.generic')}</p>
+          <Button appearance="primary" onClick={() => refetch()}>{t('errors.retry')}</Button>
         </div>
       )}
 
       {!isLoading && reports.length === 0 && (
         <MessageBar>
-          <MessageBarBody>No reports found.</MessageBarBody>
+          <MessageBarBody>{t('admin.noReports')}</MessageBarBody>
         </MessageBar>
       )}
 
@@ -166,26 +179,28 @@ export default function AdminPage() {
                     return <DataGridCell><Body1>{item.id}</Body1></DataGridCell>
                   }
                   if (columnId === 'reporter') {
-                    return <DataGridCell><Body1>{item.reporterName || 'Unknown'}</Body1></DataGridCell>
+                    return <DataGridCell><Body1>{item.reporterName || t('common.unknown')}</Body1></DataGridCell>
                   }
                   if (columnId === 'target') {
                     return (
                       <DataGridCell>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <Badge appearance="outline" size="small">{item.targetType || 'N/A'}</Badge>
-                          <Body1>{item.targetTitle || item.targetId || 'N/A'}</Body1>
+                          <Badge appearance="outline" size="small">{item.targetType || t('common.notApplicable')}</Badge>
+                          <Body1>{item.targetTitle || item.targetId || t('common.notApplicable')}</Body1>
                         </div>
                       </DataGridCell>
                     )
                   }
                   if (columnId === 'reason') {
-                    return <DataGridCell><Body1>{item.reason || 'No reason provided'}</Body1></DataGridCell>
+                    return <DataGridCell><Body1>{item.reason || t('common.noReason')}</Body1></DataGridCell>
                   }
                   if (columnId === 'status') {
                     const color = item.status === 'RESOLVED' ? 'success' : item.status === 'PENDING' ? 'warning' : 'informative'
                     return (
                       <DataGridCell>
-                        <Badge appearance="tint" color={color}>{item.status}</Badge>
+                        <Badge appearance="tint" color={color} icon={statusIcon(item.status)}>
+                          {t(`status.${item.status.toLowerCase()}`)}
+                        </Badge>
                       </DataGridCell>
                     )
                   }
@@ -200,7 +215,7 @@ export default function AdminPage() {
                               size="small"
                               onClick={() => handleResolve(item.id)}
                             >
-                              Resolve
+                              {t('admin.resolve')}
                             </Button>
                           )}
                           <Button
@@ -213,7 +228,7 @@ export default function AdminPage() {
                               setDeleteDialogOpen(true)
                             }}
                           >
-                            Delete
+                            {t('admin.delete')}
                           </Button>
                         </div>
                       </DataGridCell>
@@ -231,19 +246,19 @@ export default function AdminPage() {
       <Dialog open={deleteDialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setDeleteDialogOpen(d.open)}>
         <DialogSurface>
           <DialogBody>
-            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogTitle>{t('admin.confirmDeleteTitle')}</DialogTitle>
             <DialogContent>
-              <Body1>Are you sure you want to delete this {deleteTarget?.type?.toLowerCase() || 'content'}? This action cannot be undone.</Body1>
+              <Body1>{t('admin.confirmDeleteContent', { type: deleteTarget?.type?.toLowerCase() || t('common.content') })}</Body1>
             </DialogContent>
             <DialogActions>
-              <Button appearance="secondary" onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+              <Button appearance="secondary" onClick={() => setDeleteDialogOpen(false)}>{t('common.cancel')}</Button>
               <Button
                 appearance="primary"
                 color="danger"
                 onClick={handleDelete}
                 disabled={deleteResource.isPending || deletePost.isPending}
               >
-                {deleteResource.isPending || deletePost.isPending ? <Spinner size="tiny" /> : 'Delete'}
+                {deleteResource.isPending || deletePost.isPending ? <Spinner size="tiny" /> : t('admin.delete')}
               </Button>
             </DialogActions>
           </DialogBody>

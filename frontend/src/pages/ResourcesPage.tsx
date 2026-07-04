@@ -30,6 +30,7 @@ import {
 import { Add24Regular, ArrowUpload24Regular, Link24Regular, Bookmark24Regular, Bookmark24Filled } from '@fluentui/react-icons'
 import { useResources, useCreateResource } from '@/hooks/useResources'
 import { useDebounce } from '@/hooks/useDebounce'
+import { useTranslation } from 'react-i18next'
 import type { Resource } from '@/types'
 import Seo from '@/components/Seo'
 import { Pagination } from '@/components/Pagination'
@@ -90,6 +91,7 @@ const CATEGORIES = ['NOTES', 'PAST_PAPER', 'TEXTBOOK', 'TUTORIAL', 'OTHER']
 const SUBJECTS = ['Mathematics', 'Physics', 'Computer Science', 'Chemistry', 'Biology', 'Economics', 'English', 'History', 'Other']
 
 export default function ResourcesPage() {
+  const { t } = useTranslation()
   const styles = useStyles()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -155,6 +157,9 @@ export default function ResourcesPage() {
     currentPage * PAGE_SIZE
   )
 
+  const prevPath = currentPage > 1 && totalPages > 1 ? `/resources?page=${currentPage - 1}` : undefined
+  const nextPath = currentPage < totalPages && totalPages > 1 ? `/resources?page=${currentPage + 1}` : undefined
+
   useEffect(() => {
     setCurrentPage(1)
   }, [debouncedSearch, sortBy, categoryFilter, subjectFilter])
@@ -198,51 +203,53 @@ export default function ResourcesPage() {
   return (
     <div className={styles.container}>
       <Seo
-        title="Learning Resources — LernChih"
-        description="Browse and share learning resources — notes, past papers, textbooks, and tutorials — contributed by the LernChih academic community."
+        title={`${t('resources.title')} — LernChih`}
+        description={t('resources.description')}
         canonicalPath="/resources"
+        prevPath={prevPath}
+        nextPath={nextPath}
         robots={hasQueryParams ? 'noindex, follow' : 'index, follow'}
         hreflang
       />
       <div className={styles.headerRow}>
-        <Title2 as="h1">Resources</Title2>
+        <Title2 as="h1">{t('resources.title')}</Title2>
         <Dialog open={dialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setDialogOpen(d.open)}>
           <DialogTrigger disableButtonEnhancement>
-            <Button appearance="primary" icon={<Add24Regular />}>Upload Resource</Button>
+            <Button appearance="primary" icon={<Add24Regular />}>{t('resources.uploadResource')}</Button>
           </DialogTrigger>
           <DialogSurface>
             <DialogBody>
-              <DialogTitle>Upload Resource</DialogTitle>
+              <DialogTitle>{t('resources.uploadResource')}</DialogTitle>
               <DialogContent>
                 {createMutation.isError && (
                   <MessageBar intent="error">
                     <MessageBarBody>
-                      {(createMutation.error as any)?.response?.data?.message || 'Failed to create resource'}
+                      {(createMutation.error as any)?.response?.data?.message || t('resources.loadError')}
                     </MessageBarBody>
                   </MessageBar>
                 )}
                 <div className={styles.dialogForm}>
-                  <Field label="Title" required>
-                    <Input value={title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} placeholder="Resource title" />
+                  <Field label={t('resources.title')} required>
+                    <Input value={title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} placeholder={t('resources.title')} />
                   </Field>
-                  <Field label="Description">
-                    <Textarea value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} placeholder="Brief description" />
+                  <Field label={t('resources.description')}>
+                    <Textarea value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} placeholder={t('resources.description')} />
                   </Field>
-                  <Field label="Category">
+                  <Field label={t('resources.category')}>
                     <Select value={category} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}>
                       {CATEGORIES.map((c) => (
                         <option key={c} value={c}>{c.replace('_', ' ')}</option>
                       ))}
                     </Select>
                   </Field>
-                  <Field label="Type">
+                  <Field label={t('resources.type')}>
                     <Select value={resourceType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setResourceType(e.target.value)}>
-                      <option value="UPLOAD">File Upload</option>
-                      <option value="LINK">External Link</option>
+                      <option value="UPLOAD">{t('resources.file')}</option>
+                      <option value="LINK">{t('resources.url')}</option>
                     </Select>
                   </Field>
                   {resourceType === 'UPLOAD' ? (
-                    <Field label="File">
+                    <Field label={t('resources.file')}>
                       <input
                         type="file"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFile(e.target.files?.[0] ?? null)}
@@ -250,34 +257,34 @@ export default function ResourcesPage() {
                       />
                     </Field>
                   ) : (
-                    <Field label="URL">
+                    <Field label={t('resources.url')}>
                       <Input value={url} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)} placeholder="https://..." />
                     </Field>
                   )}
-                  <Field label="Subject">
+                  <Field label={t('resources.subject')}>
                     <Select value={subject} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSubject(e.target.value)}>
-                      <option value="">Select subject</option>
+                      <option value="">{t('common.select') || 'Select subject'}</option>
                       {SUBJECTS.map((s) => (
                         <option key={s} value={s}>{s}</option>
                       ))}
                     </Select>
                   </Field>
-                  <Field label="Topic">
+                  <Field label={t('resources.topic')}>
                     <Input value={topic} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTopic(e.target.value)} placeholder="e.g. Calculus" />
                   </Field>
-                  <Field label="Course">
+                  <Field label={t('resources.course')}>
                     <Input value={course} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCourse(e.target.value)} placeholder="e.g. MATH101" />
                   </Field>
                 </div>
               </DialogContent>
               <DialogActions>
-                <Button appearance="secondary" onClick={() => setDialogOpen(false)}>Cancel</Button>
+                <Button appearance="secondary" onClick={() => setDialogOpen(false)}>{t('common.cancel')}</Button>
                 <Button
                   appearance="primary"
                   onClick={handleCreate}
                   disabled={createMutation.isPending || !title}
                 >
-                  {createMutation.isPending ? <Spinner size="tiny" /> : 'Upload'}
+                  {createMutation.isPending ? <Spinner size="tiny" /> : t('common.upload')}
                 </Button>
               </DialogActions>
             </DialogBody>
@@ -288,13 +295,14 @@ export default function ResourcesPage() {
       {/* Filter bar */}
       <div className={styles.filterBar}>
         <Input
-          placeholder="Search resources..."
+          placeholder={t('resources.searchPlaceholder')}
           value={searchQuery}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
           style={{ minWidth: '200px' }}
+          aria-label={t('resources.searchPlaceholder')}
         />
         <Dropdown
-          placeholder="Category"
+          placeholder={t('resources.category')}
           value={categoryFilter || undefined}
           selectedOptions={categoryFilter ? [categoryFilter] : []}
           onOptionSelect={(_: unknown, data: { optionValue?: string }) => setCategoryFilter(data.optionValue || '')}
@@ -305,7 +313,7 @@ export default function ResourcesPage() {
           ))}
         </Dropdown>
         <Dropdown
-          placeholder="Subject"
+          placeholder={t('resources.subject')}
           value={subjectFilter || undefined}
           selectedOptions={subjectFilter ? [subjectFilter] : []}
           onOptionSelect={(_: unknown, data: { optionValue?: string }) => setSubjectFilter(data.optionValue || '')}
@@ -316,27 +324,27 @@ export default function ResourcesPage() {
           ))}
         </Dropdown>
         <Dropdown
-          placeholder="Sort by"
-          value={sortBy === 'newest' ? 'Newest' : sortBy === 'oldest' ? 'Oldest' : 'Most Upvoted'}
+          placeholder={t('common.sortBy')}
+          value={sortBy === 'newest' ? t('resources.newest') : sortBy === 'oldest' ? t('resources.oldest') : t('resources.mostUpvoted')}
           selectedOptions={[sortBy]}
           onOptionSelect={(_: unknown, data: { optionValue?: string }) => data.optionValue && setSortBy(data.optionValue as 'newest' | 'oldest' | 'upvoted')}
         >
-          <Option value="newest">Newest</Option>
-          <Option value="oldest">Oldest</Option>
-          <Option value="upvoted">Most Upvoted</Option>
+          <Option value="newest">{t('resources.newest')}</Option>
+          <Option value="oldest">{t('resources.oldest')}</Option>
+          <Option value="upvoted">{t('resources.mostUpvoted')}</Option>
         </Dropdown>
       </div>
 
       {/* Resources grid */}
-      {isLoading && <Spinner label="Loading resources..." />}
+      {isLoading && <Spinner label={t('common.loading')} />}
       {isError && (
         <MessageBar intent="error">
-          <MessageBarBody>Failed to load resources. Please try again.</MessageBarBody>
+          <MessageBarBody>{t('resources.loadError')}</MessageBarBody>
         </MessageBar>
       )}
       {!isLoading && resources.length === 0 && (
         <MessageBar>
-          <MessageBarBody>No resources found. Upload the first one!</MessageBarBody>
+          <MessageBarBody>{t('resources.noResources')}</MessageBarBody>
         </MessageBar>
       )}
       {/* TODO(perf): When resource counts exceed ~100 items, introduce list
@@ -346,43 +354,45 @@ export default function ResourcesPage() {
       <StaggerReveal className={styles.grid}>
         {paginatedResources.map((resource) => (
           <HoverLift key={resource.id}>
-            <Card
-              className={styles.resourceCard}
-              onClick={() => navigate(`/resources/${resource.slug || resource.id}`)}
-            >
-              <div className={styles.cardHeader}>
-                <Subtitle2>{resource.title}</Subtitle2>
-                <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                  <Button
-                    appearance="subtle"
-                    size="small"
-                    icon={isBookmarked(resource.id) ? <Bookmark24Filled /> : <Bookmark24Regular />}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      toggleBookmark(resource.id, resource.title)
-                    }}
-                    aria-label={isBookmarked(resource.id) ? 'Remove bookmark' : 'Add bookmark'}
-                  />
-                  <Badge appearance="tint" size="small">
-                    {resource.category?.replace('_', ' ') || 'General'}
+            <article>
+              <Card
+                className={styles.resourceCard}
+                onClick={() => navigate(`/resources/${resource.slug || resource.id}`)}
+              >
+                <div className={styles.cardHeader}>
+                  <Subtitle2>{resource.title}</Subtitle2>
+                  <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                    <Button
+                      appearance="subtle"
+                      size="small"
+                      icon={isBookmarked(resource.id) ? <Bookmark24Filled /> : <Bookmark24Regular />}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        toggleBookmark(resource.id, resource.title)
+                      }}
+                      aria-label={isBookmarked(resource.id) ? t('common.removeBookmark') : t('common.addBookmark')}
+                    />
+                    <Badge appearance="tint" size="small">
+                      {resource.category?.replace('_', ' ') || t('resources.general')}
+                    </Badge>
+                  </div>
+                </div>
+                <div className={styles.cardMeta}>
+                  <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
+                    {t('common.byAuthor', { author: resource.authorName || t('common.unknown') })}
+                  </span>
+                  <Badge appearance="outline" size="small">
+                    {resource.upvoteCount ?? 0} {t('resources.upvotes')}
                   </Badge>
                 </div>
-              </div>
-              <div className={styles.cardMeta}>
-                <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
-                  by {resource.authorName || 'Unknown'}
-                </span>
-                <Badge appearance="outline" size="small">
-                  {resource.upvoteCount ?? 0} upvotes
-                </Badge>
-              </div>
-              {resource.subject && (
-                <Badge appearance="outline" size="small" style={{ marginTop: '4px' }}>
-                  {resource.subject}
-                </Badge>
-              )}
-              {resource.tags && <TagList tags={resource.tags} />}
-            </Card>
+                {resource.subject && (
+                  <Badge appearance="outline" size="small" style={{ marginTop: '4px' }}>
+                    {resource.subject}
+                  </Badge>
+                )}
+                {resource.tags && <TagList tags={resource.tags} />}
+              </Card>
+            </article>
           </HoverLift>
         ))}
       </StaggerReveal>

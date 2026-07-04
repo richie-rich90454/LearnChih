@@ -5,6 +5,8 @@ export interface SeoProps {
   description?: string
   robots?: string
   canonicalPath: string
+  prevPath?: string
+  nextPath?: string
   ogType?: string
   ogImage?: string
   jsonLd?: object | object[]
@@ -25,6 +27,8 @@ export default function Seo({
   description,
   robots = 'index, follow',
   canonicalPath,
+  prevPath,
+  nextPath,
   ogType = 'website',
   ogImage,
   jsonLd,
@@ -32,6 +36,8 @@ export default function Seo({
 }: SeoProps) {
   const baseUrl = getBaseUrl()
   const canonicalUrl = `${baseUrl}${canonicalPath}`
+  const prevUrl = prevPath ? `${baseUrl}${prevPath}` : undefined
+  const nextUrl = nextPath ? `${baseUrl}${nextPath}` : undefined
   const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
 
   return (
@@ -40,6 +46,8 @@ export default function Seo({
       {description ? <meta name="description" content={description} /> : null}
       <meta name="robots" content={robots} />
       <link rel="canonical" href={canonicalUrl} />
+      {prevUrl ? <link rel="prev" href={prevUrl} /> : null}
+      {nextUrl ? <link rel="next" href={nextUrl} /> : null}
 
       {/* Open Graph */}
       <meta property="og:title" content={title} />

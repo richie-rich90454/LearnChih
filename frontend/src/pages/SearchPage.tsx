@@ -15,6 +15,7 @@ import {
 import { Search24Regular } from '@fluentui/react-icons'
 import { useDebounce } from '../hooks/useDebounce'
 import { useSearch } from '../hooks/useSearch'
+import { useTranslation } from 'react-i18next'
 import Seo from '../components/Seo'
 import type { SearchResult } from '../hooks/useSearch'
 
@@ -47,6 +48,7 @@ const useStyles = makeStyles({
 })
 
 export default function SearchPage() {
+  const { t } = useTranslation()
   const styles = useStyles()
   const [searchParams, setSearchParams] = useSearchParams()
   const [query, setQuery] = useState<string>(searchParams.get('q') || '')
@@ -63,32 +65,33 @@ export default function SearchPage() {
   return (
     <div className={styles.container}>
       <Seo
-        title={`${query ? `${query} — ` : ''}Search — LernChih`}
-        description="Search resources, channels, people, and posts on LernChih."
+        title={`${query ? `${query} — ` : ''}${t('search.title')} — LernChih`}
+        description={t('search.description')}
         canonicalPath="/search"
+        robots="noindex, follow"
       />
-      <Title2 as="h1">Search</Title2>
+      <Title2 as="h1">{t('search.title')}</Title2>
       <div className={styles.searchRow}>
         <Input
           value={query}
           onChange={(_e, data) => handleChange(data.value)}
-          placeholder="Search resources, channels, people..."
+          placeholder={t('search.placeholder')}
           contentBefore={<Search24Regular />}
           style={{ flex: 1 }}
-          aria-label="Search query"
+          aria-label={t('search.placeholder')}
         />
       </div>
 
-      {isFetching && <Spinner label="Searching..." />}
+      {isFetching && <Spinner label={t('search.searching')} />}
       {isError && (
         <MessageBar intent="error">
-          <MessageBarBody>Failed to load search results.</MessageBarBody>
+          <MessageBarBody>{t('search.loadError')}</MessageBarBody>
         </MessageBar>
       )}
 
       {!isFetching && debouncedQuery && results.length === 0 && (
         <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>
-          No results for “{debouncedQuery}”.
+          {t('search.noResults', { query: debouncedQuery })}
         </Body1>
       )}
 

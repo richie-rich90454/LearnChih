@@ -41,6 +41,7 @@ import useAuthStore from '@/store/authStore'
 import { AnimatedCounter } from '@/components/AnimatedCounter'
 import { useBookmarkStore } from '@/store/bookmarkStore'
 import useWebSocket from '@/hooks/useWebSocket'
+import { useTranslation } from 'react-i18next'
 import type { Post, ResourceDetail } from '@/types'
 import Seo from '@/components/Seo'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
@@ -120,6 +121,7 @@ function getBaseUrl(): string {
 }
 
 export default function ResourceDetailPage() {
+  const { t } = useTranslation()
   const styles = useStyles()
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -198,18 +200,18 @@ export default function ResourceDetailPage() {
 
   const isOwner = !!user && !!resource && user.userId === resource.userId
 
-  if (isLoading) return <Spinner label="Loading resource..." />
+  if (isLoading) return <Spinner label={t('common.loading')} />
   if (isError) {
     return (
       <MessageBar intent="error">
-        <MessageBarBody>Failed to load resource. It may not exist or you don&apos;t have access.</MessageBarBody>
+        <MessageBarBody>{t('errors.loadResource')}</MessageBarBody>
       </MessageBar>
     )
   }
 
   const postList: Post[] = Array.isArray(posts) ? posts : (posts as any)?.content || []
 
-  const resourceTitle = resource?.title || 'Resource'
+  const resourceTitle = resource?.title || t('resources.title')
   const resourceSlug = resource?.slug || id
   const canonicalPath = `/resources/${resourceSlug}`
   const baseUrl = getBaseUrl()
@@ -242,7 +244,7 @@ export default function ResourceDetailPage() {
       {/* Back button */}
       <div className={styles.backRow}>
         <Button appearance="subtle" icon={<ArrowLeft24Regular />} onClick={() => navigate('/resources')}>
-          Back to Resources
+          {t('resources.backToResources') || t('resources.title')}
         </Button>
       </div>
 
@@ -252,7 +254,7 @@ export default function ResourceDetailPage() {
           <div>
             <Title2 as="h1">{resource?.title}</Title2>
             <div className={styles.infoMeta}>
-              <Badge appearance="tint">{resource?.category?.replace('_', ' ') || 'General'}</Badge>
+              <Badge appearance="tint">{resource?.category?.replace('_', ' ') || t('resources.general')}</Badge>
               {resource?.subject && <Badge appearance="outline">{resource.subject}</Badge>}
               {resource?.type && <Badge appearance="outline">{resource.type}</Badge>}
             </div>
@@ -265,12 +267,15 @@ export default function ResourceDetailPage() {
 
         <div className={styles.infoMeta}>
           <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
-            Uploaded by {resource?.authorName || 'Unknown'}
+            {t('common.byAuthor', { author: resource?.authorName || t('common.unknown') })}
           </span>
           {resource?.createdAt && (
-            <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
-              on {new Date(resource.createdAt).toLocaleDateString()}
-            </span>
+            <time
+              dateTime={new Date(resource.createdAt).toISOString()}
+              style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}
+            >
+              {t('common.onDate', { date: new Date(resource.createdAt).toLocaleDateString() })}
+            </time>
           )}
         </div>
 
@@ -285,6 +290,7 @@ export default function ResourceDetailPage() {
             appearance={resource?.upvoted ? 'primary' : 'outline'}
             icon={resource?.upvoted ? <ArrowUp24Filled /> : <ArrowUp24Regular />}
             onClick={handleUpvote}
+            aria-label={t('resources.upvotes')}
           >
             <AnimatedCounter value={resource?.upvoteCount ?? 0} />
           </Button>
@@ -295,35 +301,35 @@ export default function ResourceDetailPage() {
             onClick={() => resource && toggleBookmark(resource.id, resource.title)}
             aria-pressed={isBookmarked(resource?.id ?? 0)}
           >
-            {isBookmarked(resource?.id ?? 0) ? 'Saved' : 'Save'}
+            {isBookmarked(resource?.id ?? 0) ? t('common.saved') : t('resources.save')}
           </Button>
 
           {resource?.url && (
             <Button appearance="outline" onClick={() => window.open(resource.url, '_blank')}>
-              Open Link
+              {t('resources.openLink')}
             </Button>
           )}
 
           <Dialog open={reportDialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setReportDialogOpen(d.open)}>
             <DialogTrigger disableButtonEnhancement>
-              <Button appearance="subtle" icon={<Flag24Regular />}>Report</Button>
+              <Button appearance="subtle" icon={<Flag24Regular />}>{t('common.report')}</Button>
             </DialogTrigger>
             <DialogSurface>
               <DialogBody>
-                <DialogTitle>Report Resource</DialogTitle>
+                <DialogTitle>{t('resources.reportResource')}</DialogTitle>
                 <DialogContent>
-                  <Field label="Reason">
+                  <Field label={t('admin.reason')}>
                     <Textarea
                       value={reportReason}
                       onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReportReason(e.target.value)}
-                      placeholder="Why are you reporting this resource?"
+                      placeholder={t('resources.reportReason')}
                     />
                   </Field>
                 </DialogContent>
                 <DialogActions>
-                  <Button appearance="secondary" onClick={() => setReportDialogOpen(false)}>Cancel</Button>
+                  <Button appearance="secondary" onClick={() => setReportDialogOpen(false)}>{t('common.cancel')}</Button>
                   <Button appearance="primary" onClick={handleReport} disabled={!reportReason.trim()}>
-                    Submit Report
+                    {t('common.submit')}
                   </Button>
                 </DialogActions>
               </DialogBody>
@@ -332,10 +338,10 @@ export default function ResourceDetailPage() {
 
           {isOwner && (
             <ConfirmDialog
-              trigger={<Button appearance="subtle">Delete</Button>}
-              title="Delete resource?"
-              content="This action cannot be undone."
-              confirmLabel="Delete"
+              trigger={<Button appearance="subtle">{t('common.delete')}</Button>}
+              title={t('resources.deleteConfirmTitle')}
+              content={t('resources.deleteConfirmContent')}
+              confirmLabel={t('common.delete')}
               destructive
               onConfirm={handleDelete}
             />
@@ -344,15 +350,15 @@ export default function ResourceDetailPage() {
       </Card>
 
       {/* Thread / Discussion */}
-      <div className={styles.threadSection}>
-        <Subtitle1 as="h2">Discussion</Subtitle1>
+      <section className={styles.threadSection} aria-label={t('resources.discussion')}>
+        <Subtitle1 as="h2">{t('resources.discussion')}</Subtitle1>
 
         {/* New post */}
         <div className={styles.newPostRow}>
           <Textarea
             value={newPost}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewPost(e.target.value)}
-            placeholder="Write a comment..."
+            placeholder={t('resources.writeComment')}
             style={{ flex: 1 }}
           />
           <Button
@@ -360,31 +366,38 @@ export default function ResourceDetailPage() {
             onClick={handlePost}
             disabled={createPost.isPending || !newPost.trim()}
           >
-            {createPost.isPending ? <Spinner size="tiny" /> : 'Post'}
+            {createPost.isPending ? <Spinner size="tiny" /> : t('resources.post')}
           </Button>
         </div>
 
         {/* Posts list */}
         {postsLoading && <Spinner size="small" />}
         {postList.length === 0 && !postsLoading && (
-          <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>No comments yet. Start the discussion!</Body1>
+          <Body1 style={{ color: 'var(--colorNeutralForeground3)' }}>{t('resources.noComments')}</Body1>
         )}
         {postList.map((post) => (
-          <Card key={post.id} className={styles.postCard}>
-            <div className={styles.postHeader}>
-              <Avatar name={post.authorName || 'User'} size={28} />
-              <Subtitle2>{post.authorName || 'Unknown'}</Subtitle2>
-              <span style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}>
-                {post.createdAt ? new Date(post.createdAt).toLocaleString() : ''}
-              </span>
-            </div>
-            <Body1>{post.content}</Body1>
-            <div className={styles.postActions}>
-              <ReportButton targetType="RESOURCE_POST" targetId={post.id} />
-            </div>
-          </Card>
+          <article key={post.id}>
+            <Card className={styles.postCard}>
+              <div className={styles.postHeader}>
+                <Avatar name={post.authorName || t('common.user')} size={28} />
+                <Subtitle2>{post.authorName || t('common.unknown')}</Subtitle2>
+                {post.createdAt && (
+                  <time
+                    dateTime={new Date(post.createdAt).toISOString()}
+                    style={{ fontSize: 'var(--fontSizeBase200)', color: 'var(--colorNeutralForeground3)' }}
+                  >
+                    {new Date(post.createdAt).toLocaleString()}
+                  </time>
+                )}
+              </div>
+              <Body1>{post.content}</Body1>
+              <div className={styles.postActions}>
+                <ReportButton targetType="RESOURCE_POST" targetId={post.id} />
+              </div>
+            </Card>
+          </article>
         ))}
-      </div>
+      </section>
 
       {id && <RelatedResources resourceId={id} />}
     </div>

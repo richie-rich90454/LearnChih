@@ -12,6 +12,7 @@ import {
   Title3,
 } from '@fluentui/react-components'
 import { Trophy24Regular } from '@fluentui/react-icons'
+import { useTranslation } from 'react-i18next'
 import api from '../api/axios'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { StaggerReveal } from './StaggerReveal'
@@ -69,6 +70,7 @@ interface BadgesWidgetProps {
  * Spec refs: F5.41–F5.48.
  */
 export function BadgesWidget({ userId }: BadgesWidgetProps) {
+  const { t } = useTranslation()
   const styles = useStyles()
   const reduced = useReducedMotion()
   const [confetti, setConfetti] = useState(false)
@@ -87,24 +89,24 @@ export function BadgesWidget({ userId }: BadgesWidgetProps) {
     sessionStorage.setItem('lernchih-earned-count', String(earned))
   }, [data, reduced])
 
-  if (isLoading) return <Spinner size="tiny" label="Loading badges..." />
+  if (isLoading) return <Spinner size="tiny" label={t('badges.loading')} />
   if (isError) {
     return (
       <MessageBar intent="error">
-        <MessageBarBody>Failed to load badges.</MessageBarBody>
+        <MessageBarBody>{t('badges.loadError')}</MessageBarBody>
       </MessageBar>
     )
   }
 
   const badges = data ?? []
   if (badges.length === 0) {
-    return <Body1 style={{ color: tokens.colorNeutralForeground3 }}>No badges yet.</Body1>
+    return <Body1 style={{ color: tokens.colorNeutralForeground3 }}>{t('badges.noBadges')}</Body1>
   }
 
   return (
     <div className={styles.root}>
       <MilestoneConfetti active={confetti} onComplete={() => setConfetti(false)} />
-      <Title3 as="h3">Badges</Title3>
+      <Title3 as="h3">{t('badges.title')}</Title3>
       <StaggerReveal className={styles.grid} staggerSeconds={0.04}>
         {badges.map((badge) => (
           <HoverLift key={badge.id}>
@@ -113,7 +115,7 @@ export function BadgesWidget({ userId }: BadgesWidgetProps) {
             >
               <div className={styles.icon}>{badge.icon || <Trophy24Regular />}</div>
               <Badge appearance={badge.earned ? 'filled' : 'outline'} color={badge.earned ? 'brand' : 'subtle'}>
-                {badge.earned ? 'Earned' : 'Locked'}
+                {badge.earned ? t('badges.earned') : t('badges.locked')}
               </Badge>
               <Body1>{badge.name}</Body1>
               <Body1 style={{ color: tokens.colorNeutralForeground3, fontSize: 'var(--fontSizeBase200)' }}>

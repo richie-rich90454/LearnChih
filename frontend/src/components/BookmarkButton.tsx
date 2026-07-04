@@ -1,5 +1,6 @@
 import { Button, makeStyles, tokens } from '@fluentui/react-components'
 import { Bookmark24Regular, Bookmark24Filled } from '@fluentui/react-icons'
+import { useTranslation } from 'react-i18next'
 import { useBookmarks, useToggleBookmark } from '../hooks/useBookmarks'
 
 const useStyles = makeStyles({
@@ -28,6 +29,7 @@ export function BookmarkButton({
   appearance = 'subtle',
   size = 'medium',
 }: BookmarkButtonProps) {
+  const { t } = useTranslation()
   const styles = useStyles()
   const { data: bookmarks } = useBookmarks()
   const toggle = useToggleBookmark()
@@ -47,9 +49,9 @@ export function BookmarkButton({
       }
       disabled={toggle.isPending}
       aria-pressed={isBookmarked}
-      aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
+      aria-label={isBookmarked ? t('common.removeBookmark') : t('common.addBookmark')}
     >
-      {isBookmarked ? 'Saved' : 'Save'}
+      {isBookmarked ? t('common.saved') : t('common.save')}
     </Button>
   )
 }

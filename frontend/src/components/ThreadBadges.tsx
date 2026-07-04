@@ -1,5 +1,6 @@
 import { Badge, makeStyles, tokens } from '@fluentui/react-components'
 import { Pin24Regular, LockClosed24Regular, QuestionCircle24Regular } from '@fluentui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles({
   root: {
@@ -21,22 +22,23 @@ interface ThreadBadgesProps {
 }
 
 export function ThreadBadges({ status }: ThreadBadgesProps) {
+  const { t } = useTranslation()
   const styles = useStyles()
   return (
     <div className={styles.root}>
       {status.pinned && (
         <Badge appearance="filled" color="brand" icon={<Pin24Regular />}>
-          Pinned
+          {t('thread.pinned')}
         </Badge>
       )}
       {status.locked && (
         <Badge appearance="filled" color="severe" icon={<LockClosed24Regular />}>
-          Locked
+          {t('thread.locked')}
         </Badge>
       )}
       {status.qaMode && (
         <Badge appearance="filled" color="success" icon={<QuestionCircle24Regular />}>
-          Q&A
+          {t('thread.qaMode')}
         </Badge>
       )}
     </div>
