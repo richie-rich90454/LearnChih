@@ -11,19 +11,50 @@ LernChih is a full-stack web application where students share resources, discuss
 ## Stack
 
 - **Backend**: Spring Boot 4.1 / Java 25 / MySQL / Flyway / JWT
-- **Frontend**: React 18 / TypeScript / Vite / Fluent UI 2 / TanStack Query / Zustand
+- **Frontend**: React 19 / TypeScript / Vite / Fluent UI 2 / TanStack Query / Zustand
 
 ## Requirements
 
 - JDK 25+
 - Node.js 20+
-- MySQL 8+
-- Mailpit (for email verification in dev)
+- For Docker-backed mode: MySQL 8+, OpenSearch, Mailpit (see `docker-compose.yml`)
+- For local quick-start mode: nothing extra (uses embedded H2)
 
 ## Quick Start
 
+### Local quick start (no Docker)
+
+The `local` Spring profile uses an embedded H2 database and disables external
+service dependencies, so the backend starts without MySQL or Mailpit.
+
 ```bash
 # Backend
+cd backend/lernchih
+./mvnw spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=local"
+
+# Frontend (in another terminal)
+cd frontend
+npm install
+npm run dev
+```
+
+Or run the packaged JAR from the repository root:
+
+```bash
+java -Xmx512m -jar backend/lernchih/target/lernchih-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
+```
+
+The frontend dev server proxies API requests to `localhost:8080`.
+
+### Docker-backed mode (MySQL + OpenSearch + Mailpit)
+
+```bash
+# Start infrastructure
+docker compose up -d
+
+# Backend (requires JWT_SECRET and DB_PASSWORD environment variables)
+export JWT_SECRET="your-long-random-secret"
+export DB_PASSWORD="your-db-password"
 cd backend/lernchih
 ./mvnw spring-boot:run
 
@@ -33,8 +64,6 @@ npm install
 npm run dev
 ```
 
-The frontend dev server proxies API requests to `localhost:8080`.
-
 ## Configuration
 
 Backend configuration lives in `backend/lernchih/src/main/resources/application.properties`.
@@ -43,14 +72,17 @@ sensible defaults for local development where noted).
 
 ### Required environment variables
 
-These must be set or the application will fail to start:
+These must be set or the application will fail to start in Docker-backed mode:
 
 - `JWT_SECRET` — JWT signing key (long, random string)
 - `DB_PASSWORD` — MySQL database password
 
+When the `local` Spring profile is active, no environment variables are required;
+H2 is used in-memory and a development JWT secret is provided by the profile.
+
 ### Optional environment variables (with defaults)
 
-- `DB_URL` — JDBC URL (default: `jdbc:mysql://localhost:3306/lernchih_db?useSSL=false&serverTimezone=UTC&characterEncoding=utf8mb4`)
+- `DB_URL` — JDBC URL (default: `jdbc:mysql://localhost:3306/lernchih_db?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8`)
 - `DB_USERNAME` — MySQL username (default: `root`)
 - `MAIL_HOST` — SMTP host (default: `localhost`)
 - `MAIL_PORT` — SMTP port (default: `1025`)
@@ -58,7 +90,7 @@ These must be set or the application will fail to start:
 - `MAIL_STARTTLS` — enable STARTTLS (default: `false`)
 - `CORS_ORIGINS` — comma-separated list of allowed CORS origins (default: `http://localhost:5173,http://localhost:3000`)
 
-For local development, set at least `JWT_SECRET` and `DB_PASSWORD`:
+For Docker-backed local development, set at least `JWT_SECRET` and `DB_PASSWORD`:
 
 ```bash
 export JWT_SECRET="your-long-random-secret"
@@ -78,7 +110,10 @@ referenced by `lernchih.service`).
 # Build frontend into backend static resources and package the JAR
 .\build.ps1
 
-# Run from the repository root
+# Run from the repository root with the local (H2) profile
+java -Xmx512m -jar backend\lernchih\target\lernchih-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
+
+# Or run with Docker infrastructure (MySQL + OpenSearch) and env vars set
 java -Xmx512m -jar backend\lernchih\target\lernchih-0.0.1-SNAPSHOT.jar
 ```
 
@@ -89,7 +124,10 @@ java -Xmx512m -jar backend\lernchih\target\lernchih-0.0.1-SNAPSHOT.jar
 chmod +x build.sh
 ./build.sh
 
-# Run from the repository root
+# Run from the repository root with the local (H2) profile
+java -Xmx512m -jar backend/lernchih/target/lernchih-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
+
+# Or run with Docker infrastructure (MySQL + OpenSearch) and env vars set
 java -Xmx512m -jar backend/lernchih/target/lernchih-0.0.1-SNAPSHOT.jar
 ```
 

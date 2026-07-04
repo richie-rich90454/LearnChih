@@ -30,7 +30,9 @@ try {
     Write-Host "Backend build complete."
 
     Write-Host "All builds finished successfully!"
-    Write-Host "Deploy from the repository root with:"
+    Write-Host "Deploy from the repository root with the local (H2) profile:"
+    Write-Host "  java -Xmx512m -jar backend\lernchih\target\lernchih-0.0.1-SNAPSHOT.jar --spring.profiles.active=local"
+    Write-Host "Or with Docker infra (MySQL + OpenSearch) and env vars set:"
     Write-Host "  java -Xmx512m -jar backend\lernchih\target\lernchih-0.0.1-SNAPSHOT.jar"
 }
 finally {

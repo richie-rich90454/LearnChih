@@ -29,5 +29,7 @@ echo "Backend build complete."
 
 echo ""
 echo "All builds finished successfully!"
-echo "Deploy from the repository root with:"
+echo "Deploy from the repository root with the local (H2) profile:"
+echo "  java -Xmx512m -jar backend/lernchih/target/lernchih-0.0.1-SNAPSHOT.jar --spring.profiles.active=local"
+echo "Or with Docker infra (MySQL + OpenSearch) and env vars set:"
 echo "  java -Xmx512m -jar backend/lernchih/target/lernchih-0.0.1-SNAPSHOT.jar"
