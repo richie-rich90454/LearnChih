@@ -95,6 +95,9 @@ public class SecurityConfig {
                 .requestMatchers("/sitemap-resources.xml").permitAll()
                 .requestMatchers("/sitemap-channels.xml").permitAll()
                 .requestMatchers("/sitemap-static.xml").permitAll()
+                // Static frontend assets produced by the production build
+                .requestMatchers("/", "/index.html", "/assets/**", "/favicon.svg",
+                        "/icons.svg", "/manifest.webmanifest", "/sw.js", "/workbox-*.js").permitAll()
                 .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "MODERATOR")
                 .anyRequest().authenticated()
             )
