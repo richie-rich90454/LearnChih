@@ -44,6 +44,7 @@ import useWebSocket from '@/hooks/useWebSocket'
 import { useTranslation } from 'react-i18next'
 import type { Post, ResourceDetail } from '@/types'
 import Seo from '@/components/Seo'
+import { useBackgroundSync } from '@/hooks/useBackgroundSync'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import ReportButton from '@/components/ReportButton'
 import { RelatedResources } from '@/components/RelatedResources'
@@ -157,6 +158,7 @@ export default function ResourceDetailPage() {
   })
   const createPost = useCreateResourcePost(id)
   const { subscribeToThread } = useWebSocket()
+  const { queueWrite, isOnline } = useBackgroundSync()
 
   const [newPost, setNewPost] = useState<string>('')
   const [reportDialogOpen, setReportDialogOpen] = useState<boolean>(false)
@@ -171,15 +173,50 @@ export default function ResourceDetailPage() {
     return unsubscribe
   }, [id, subscribeToThread])
 
+  const applyOptimisticUpvote = async () => {
+    await queryClient.cancelQueries({ queryKey: ['resource', id] })
+    queryClient.setQueryData<ResourceDetail>(['resource', id], (old) => {
+      if (!old) return old
+      return {
+        ...old,
+        upvoteCount: old.upvoteCount + (old.upvoted ? -1 : 1),
+        upvoted: !old.upvoted,
+      }
+    })
+  }
+
   const handleUpvote = () => {
-    upvoteMutation.mutate()
+    if (isOnline) {
+      upvoteMutation.mutate()
+      return
+    }
+    // Offline: apply optimistic update and queue for replay.
+    applyOptimisticUpvote()
+    queueWrite(`${window.location.origin}/api/resources/${id}/upvote`, 'POST', undefined, () => {
+      queryClient.invalidateQueries({ queryKey: ['resource', id] })
+      queryClient.invalidateQueries({ queryKey: ['resources'] })
+    })
   }
 
   const handlePost = () => {
     if (!newPost.trim()) return
-    createPost.mutate(newPost, {
-      onSuccess: () => setNewPost(''),
-    })
+    if (isOnline) {
+      createPost.mutate(newPost, {
+        onSuccess: () => setNewPost(''),
+      })
+      return
+    }
+    // Offline: queue the write and clear the input. The list will refresh on reconnect.
+    queueWrite(
+      `${window.location.origin}/api/resources/${id}/posts`,
+      'POST',
+      { content: newPost },
+      () => {
+        queryClient.invalidateQueries({ queryKey: ['resourcePosts', id] })
+        queryClient.invalidateQueries({ queryKey: ['resources'] })
+      },
+    )
+    setNewPost('')
   }
 
   const handleReport = () => {

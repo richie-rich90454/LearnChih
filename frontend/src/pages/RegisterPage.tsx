@@ -13,6 +13,7 @@ import {
   MessageBarTitle,
   Spinner,
 } from '@fluentui/react-components'
+import { useTranslation } from 'react-i18next'
 import { useRegister } from '../hooks/useAuth'
 import Seo from '../components/Seo'
 import OAuthButtons from '../components/OAuthButtons'
@@ -48,11 +49,17 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     gap: tokens.spacingHorizontalS,
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  link: {
+    color: tokens.colorBrandForeground1,
   },
 })
 
 export default function RegisterPage() {
   const styles = useStyles()
+  const { t } = useTranslation()
   const [name, setName] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -66,15 +73,15 @@ export default function RegisterPage() {
     setValidationError('')
 
     if (!name || !email || !password || !confirmPassword) {
-      setValidationError('All fields are required')
+      setValidationError(t('auth.allFieldsRequired'))
       return
     }
     if (password !== confirmPassword) {
-      setValidationError('Passwords do not match')
+      setValidationError(t('auth.passwordsDoNotMatch'))
       return
     }
     if (password.length < 6) {
-      setValidationError('Password must be at least 6 characters')
+      setValidationError(t('auth.passwordMinLength'))
       return
     }
 
@@ -82,11 +89,11 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className={styles.pageContainer}>
-      <Seo title="Create your account — LernChih" canonicalPath="/register" robots="noindex, follow" />
+    <main className={styles.pageContainer}>
+      <Seo title={t('auth.registerTitle')} canonicalPath="/register" robots="noindex, follow" />
       <Card className={styles.registerCard}>
         <div className={styles.cardBody}>
-          <Title3 as="h1">Create your account</Title3>
+          <Title3 as="h1">{t('auth.registerTitle')}</Title3>
 
           {validationError && (
             <MessageBar intent="error" role="alert">
@@ -97,56 +104,56 @@ export default function RegisterPage() {
           {registerMutation.isError && (
             <MessageBar intent="error" role="alert">
               <MessageBarBody>
-                <MessageBarTitle>Registration failed</MessageBarTitle>
-                {(registerMutation.error as any)?.response?.data?.message || 'Something went wrong'}
+                <MessageBarTitle>{t('auth.registrationFailed')}</MessageBarTitle>
+                {(registerMutation.error as any)?.response?.data?.message || t('errors.generic')}
               </MessageBarBody>
             </MessageBar>
           )}
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div className={styles.formGroup}>
-              <Label htmlFor="name" required>Full Name</Label>
+              <Label htmlFor="name" required>{t('auth.username')}</Label>
               <Input
                 id="name"
                 value={name}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                placeholder="Your name"
+                placeholder={t('auth.namePlaceholder')}
                 required
               />
             </div>
 
             <div className={styles.formGroup}>
-              <Label htmlFor="email" required>Email</Label>
+              <Label htmlFor="email" required>{t('auth.email')}</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                placeholder="you@university.edu"
+                placeholder={t('auth.emailPlaceholder')}
                 required
               />
             </div>
 
             <div className={styles.formGroup}>
-              <Label htmlFor="password" required>Password</Label>
+              <Label htmlFor="password" required>{t('auth.password')}</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                placeholder="At least 6 characters"
+                placeholder={t('auth.passwordPlaceholder')}
                 required
               />
             </div>
 
             <div className={styles.formGroup}>
-              <Label htmlFor="confirmPassword" required>Confirm Password</Label>
+              <Label htmlFor="confirmPassword" required>{t('auth.confirmPassword')}</Label>
               <Input
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
-                placeholder="Re-enter your password"
+                placeholder={t('auth.confirmPasswordPlaceholder')}
                 required
               />
             </div>
@@ -157,18 +164,20 @@ export default function RegisterPage() {
               className={styles.submitButton}
               disabled={registerMutation.isPending}
             >
-              {registerMutation.isPending ? <Spinner size="tiny" /> : 'Create Account'}
+              {registerMutation.isPending ? <Spinner size="tiny" /> : t('auth.registerButton')}
             </Button>
           </form>
 
           <OAuthButtons />
 
           <div className={styles.linkRow}>
-            <span style={{ fontSize: 'var(--fontSizeBase300)' }}>Already have an account?</span>
-            <Link to="/login" style={{ fontSize: 'var(--fontSizeBase300)' }}>Sign In</Link>
+            <span style={{ fontSize: 'var(--fontSizeBase300)' }}>{t('auth.alreadyHaveAccount')}</span>
+            <Link to="/login" className={styles.link} style={{ fontSize: 'var(--fontSizeBase300)' }}>
+              {t('auth.signInButton')}
+            </Link>
           </div>
         </div>
       </Card>
-    </div>
+    </main>
   )
 }

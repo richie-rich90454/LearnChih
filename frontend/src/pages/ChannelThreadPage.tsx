@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   makeStyles,
@@ -31,6 +32,7 @@ import { ThreadBadges } from '@/components/ThreadBadges'
 import { ReactionPicker } from '@/components/ReactionPicker'
 import ReportButton from '@/components/ReportButton'
 import { discussionForumPostingSchema, breadcrumbSchema } from '@/components/jsonLd'
+import { useBackgroundSync } from '@/hooks/useBackgroundSync'
 
 const useStyles = makeStyles({
   container: {
@@ -112,7 +114,9 @@ export default function ChannelThreadPage() {
   const { data: channel } = useChannel(channelId)
   const { data: posts, isLoading, isError } = useChannelPosts(channelId, threadId)
   const createPost = useCreateChannelPost(channelId, threadId)
+  const queryClient = useQueryClient()
   const { subscribeToChannelThread, subscribeToTyping, sendTypingIndicator, sendChannelBroadcast } = useWebSocket()
+  const { queueWrite, isOnline } = useBackgroundSync()
   const user = useAuthStore((s) => s.user)
 
   const [newPost, setNewPost] = useState<string>('')
@@ -165,25 +169,48 @@ export default function ChannelThreadPage() {
 
   const handlePost = () => {
     if (!newPost.trim()) return
-    createPost.mutate(
-      { content: newPost, format: postFormat },
-      {
+    const body = { content: newPost, format: postFormat }
+    if (isOnline) {
+      createPost.mutate(body, {
         onSuccess: () => setNewPost(''),
-      }
+      })
+      return
+    }
+    // Offline: queue the write and clear the input. The list will refresh on reconnect.
+    queueWrite(
+      `${window.location.origin}/api/channels/${channelId}/threads/${threadId}/posts`,
+      'POST',
+      body,
+      () => {
+        queryClient.invalidateQueries({ queryKey: ['channelPosts', channelId, threadId] })
+      },
     )
+    setNewPost('')
   }
 
   const handleReply = (postId: number) => {
     if (!replyContent.trim()) return
-    createPost.mutate(
-      { content: replyContent, format: postFormat, parentPostId: postId },
-      {
+    const body = { content: replyContent, format: postFormat, parentPostId: postId }
+    if (isOnline) {
+      createPost.mutate(body, {
         onSuccess: () => {
           setReplyContent('')
           setReplyToPostId(null)
         },
-      }
+      })
+      return
+    }
+    // Offline: queue the reply and close the form. The list will refresh on reconnect.
+    queueWrite(
+      `${window.location.origin}/api/channels/${channelId}/threads/${threadId}/posts`,
+      'POST',
+      body,
+      () => {
+        queryClient.invalidateQueries({ queryKey: ['channelPosts', channelId, threadId] })
+      },
     )
+    setReplyContent('')
+    setReplyToPostId(null)
   }
 
   const handlePostInputChange = useCallback(

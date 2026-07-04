@@ -6,7 +6,7 @@ import path from 'node:path'
 
 const PORT = 4173
 const BASE = `http://localhost:${PORT}`
-const PAGES = ['/', '/resources']
+const PAGES = ['/', '/login', '/register', '/forgot-password', '/resources']
 
 const axeSource = readFileSync(
   path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'node_modules', 'axe-core', 'axe.min.js'),

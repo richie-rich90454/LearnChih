@@ -1,13 +1,24 @@
 import { useEffect, useState } from 'react'
+import useAuthStore from '../store/authStore'
 
 interface PendingWrite {
   url: string
   method: string
   body: unknown
   timestamp: number
+  onSuccess?: () => void
 }
 
 const QUEUE_KEY = 'lernchih-pending-writes'
+
+function getAuthHeaders(): Record<string, string> {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+  const token = useAuthStore.getState().token
+  if (token) {
+    headers.Authorization = `Bearer ${token}`
+  }
+  return headers
+}
 
 export function useBackgroundSync() {
   const [pendingCount, setPendingCount] = useState(0)
@@ -39,9 +50,9 @@ export function useBackgroundSync() {
     }
   }
 
-  function queueWrite(url: string, method: string, body: unknown) {
+  function queueWrite(url: string, method: string, body: unknown, onSuccess?: () => void) {
     const queue: PendingWrite[] = JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]')
-    queue.push({ url, method, body, timestamp: Date.now() })
+    queue.push({ url, method, body, timestamp: Date.now(), onSuccess })
     localStorage.setItem(QUEUE_KEY, JSON.stringify(queue))
     updatePendingCount()
   }
@@ -54,11 +65,15 @@ export function useBackgroundSync() {
       try {
         const response = await fetch(write.url, {
           method: write.method,
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAuthHeaders(),
           body: JSON.stringify(write.body),
           credentials: 'include',
         })
-        if (!response.ok) failed.push(write)
+        if (!response.ok) {
+          failed.push(write)
+        } else {
+          write.onSuccess?.()
+        }
       } catch {
         failed.push(write)
       }
