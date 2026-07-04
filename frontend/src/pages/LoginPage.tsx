@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import {
   makeStyles,
   tokens,
@@ -14,6 +13,8 @@ import {
   MessageBarTitle,
   Spinner,
 } from '@fluentui/react-components'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { useLogin } from '../hooks/useAuth'
 import Seo from '../components/Seo'
 import OAuthButtons from '../components/OAuthButtons'
@@ -49,11 +50,17 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     gap: tokens.spacingHorizontalS,
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  link: {
+    color: tokens.colorBrandForeground1,
   },
 })
 
 export default function LoginPage() {
   const styles = useStyles()
+  const { t } = useTranslation()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const loginMutation = useLogin()
@@ -65,17 +72,17 @@ export default function LoginPage() {
   }
 
   return (
-    <div className={styles.pageContainer}>
-      <Seo title="Log in — LernChih" canonicalPath="/login" robots="noindex, follow" />
+    <main className={styles.pageContainer}>
+      <Seo title={t('auth.signInTitle')} canonicalPath="/login" robots="noindex, follow" />
       <Card className={styles.loginCard}>
         <div className={styles.cardBody}>
-          <Title3 as="h1">Sign in to LernChih</Title3>
+          <Title3 as="h1">{t('auth.signInTitle')}</Title3>
 
           {loginMutation.isError && (
             <MessageBar intent="error" role="alert">
               <MessageBarBody>
-                <MessageBarTitle>Login failed</MessageBarTitle>
-                {(loginMutation.error as any)?.response?.data?.message || 'Invalid email or password'}
+                <MessageBarTitle>{t('auth.loginFailed')}</MessageBarTitle>
+                {(loginMutation.error as any)?.response?.data?.message || t('auth.invalidCredentials')}
               </MessageBarBody>
             </MessageBar>
           )}
@@ -83,28 +90,28 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div className={styles.formGroup}>
               <Label htmlFor="email" required>
-                Email
+                {t('auth.email')}
               </Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                placeholder="you@university.edu"
+                placeholder={t('auth.emailPlaceholder')}
                 required
               />
             </div>
 
             <div className={styles.formGroup}>
               <Label htmlFor="password" required>
-                Password
+                {t('auth.password')}
               </Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder={t('auth.passwordPlaceholder')}
                 required
               />
             </div>
@@ -115,23 +122,23 @@ export default function LoginPage() {
               className={styles.submitButton}
               disabled={loginMutation.isPending}
             >
-              {loginMutation.isPending ? <Spinner size="tiny" /> : 'Sign In'}
+              {loginMutation.isPending ? <Spinner size="tiny" /> : t('auth.signInButton')}
             </Button>
           </form>
 
           <OAuthButtons />
 
           <div className={styles.linkRow}>
-            <Link to="/forgot-password" style={{ fontSize: 'var(--fontSizeBase300)' }}>
-              Forgot password?
+            <Link to="/forgot-password" className={styles.link} style={{ fontSize: 'var(--fontSizeBase300)' }}>
+              {t('auth.forgotPassword')}
             </Link>
-            <Text size={300}>Don&apos;t have an account?</Text>
-            <Link to="/register" style={{ fontSize: 'var(--fontSizeBase300)' }}>
-              Register
+            <Text size={300}>{t('auth.noAccount')}</Text>
+            <Link to="/register" className={styles.link} style={{ fontSize: 'var(--fontSizeBase300)' }}>
+              {t('auth.register')}
             </Link>
           </div>
         </div>
       </Card>
-    </div>
+    </main>
   )
 }
