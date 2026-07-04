@@ -4,7 +4,7 @@ import { login, register, verifyEmail } from '../api/auth'
 import useAuthStore from '../store/authStore'
 import type { AuthResponse } from '../types'
 
-export function useLogin() {
+export function useLogin(redirect?: string) {
   const setAuth = useAuthStore((s) => s.setAuth)
   const navigate = useNavigate()
 
@@ -14,7 +14,7 @@ export function useLogin() {
     onSuccess: (response) => {
       const { token, ...user } = response.data
       setAuth(token, user as any)
-      navigate('/')
+      navigate(redirect || '/')
     },
   })
 }

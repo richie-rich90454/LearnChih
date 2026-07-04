@@ -14,7 +14,7 @@ import {
   Spinner,
 } from '@fluentui/react-components'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useLogin } from '../hooks/useAuth'
 import Seo from '../components/Seo'
 import OAuthButtons from '../components/OAuthButtons'
@@ -59,11 +59,13 @@ const useStyles = makeStyles({
 })
 
 export default function LoginPage() {
-  const styles = useStyles()
   const { t } = useTranslation()
+  const styles = useStyles()
+  const [searchParams] = useSearchParams()
+  const redirect = searchParams.get('redirect') || undefined
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const loginMutation = useLogin()
+  const loginMutation = useLogin(redirect)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

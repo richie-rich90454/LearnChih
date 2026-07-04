@@ -10,7 +10,8 @@ export default function RequireAuth({ children }: RequireAuthProps) {
   const location = useLocation()
 
   if (!isAuthenticated()) {
-    return <Navigate to="/login" state={{ from: location }} replace />
+    const redirect = encodeURIComponent(location.pathname + location.search)
+    return <Navigate to={`/login?redirect=${redirect}`} replace />
   }
 
   return <>{children}</>

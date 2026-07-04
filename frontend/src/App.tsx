@@ -92,32 +92,29 @@ function AppShell() {
         <Route path="/forgot-password" element={<PageTransition><ForgotPasswordPage /></PageTransition>} />
         <Route path="/reset-password" element={<PageTransition><ResetPasswordPage /></PageTransition>} />
 
-        {/* Protected routes */}
-        <Route
-          element={
-            <RequireAuth>
-              <AppLayout />
-            </RequireAuth>
-          }
-        >
-          <Route element={<AnimatedOutlet />}>
+        {/* Shared layout: public routes + protected branch */}
+        <Route element={<AppLayout />}>
+          {/* Public routes */}
+          <Route path="/resources" element={<PageTransition><ResourcesPage /></PageTransition>} />
+          <Route path="/resources/:id" element={<PageTransition><ResourceDetailPage /></PageTransition>} />
+          <Route path="/channels" element={<PageTransition><ChannelsPage /></PageTransition>} />
+          <Route path="/channels/:channelId/threads/:threadId" element={<PageTransition><ChannelThreadPage /></PageTransition>} />
+          <Route path="/search" element={<PageTransition><SearchPage /></PageTransition>} />
+          <Route path="/leaderboard" element={<PageTransition><LeaderboardPage /></PageTransition>} />
+          <Route path="/api-docs" element={<PageTransition><ApiDocsPage /></PageTransition>} />
+
+          {/* Protected routes */}
+          <Route element={<RequireAuth><AnimatedOutlet /></RequireAuth>}>
             <Route path="/" element={<DashboardPage />} />
-            <Route path="/resources" element={<ResourcesPage />} />
-          <Route path="/resources/:id" element={<ResourceDetailPage />} />
-          <Route path="/channels" element={<ChannelsPage />} />
-          <Route path="/channels/:channelId/threads/:threadId" element={<ChannelThreadPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/:id" element={<ProfilePage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/flashcards" element={<FlashcardsPage />} />
-          <Route path="/quizzes" element={<QuizPage />} />
-          <Route path="/leaderboard" element={<LeaderboardPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/moderation" element={<ModerationPage />} />
-          <Route path="/api-docs" element={<ApiDocsPage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/bookmarks" element={<BookmarksPage />} />
-          <Route path="/study-groups" element={<StudyGroupsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/:id" element={<ProfilePage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/flashcards" element={<FlashcardsPage />} />
+            <Route path="/quizzes" element={<QuizPage />} />
+            <Route path="/bookmarks" element={<BookmarksPage />} />
+            <Route path="/study-groups" element={<StudyGroupsPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/moderation" element={<ModerationPage />} />
           </Route>
         </Route>
 
