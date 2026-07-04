@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import {
   makeStyles,
   tokens,
@@ -117,7 +117,8 @@ export default function ChannelThreadPage() {
   const queryClient = useQueryClient()
   const { subscribeToChannelThread, subscribeToTyping, sendTypingIndicator, sendChannelBroadcast } = useWebSocket()
   const { queueWrite, isOnline } = useBackgroundSync()
-  const user = useAuthStore((s) => s.user)
+  const { user, isAuthenticated } = useAuthStore()
+  const authenticated = isAuthenticated()
 
   const [newPost, setNewPost] = useState<string>('')
   const [postFormat, setPostFormat] = useState<PostFormat>('PLAIN')
@@ -292,44 +293,50 @@ export default function ChannelThreadPage() {
       </div>
 
       {/* New post */}
-      <div className={styles.newPostRow}>
-        <Textarea
-          value={newPost}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handlePostInputChange(e.target.value)}
-          placeholder={thread?.locked ? t('channels.lockedPlaceholder') : t('channels.writeReply')}
-          style={{ flex: 1 }}
-          disabled={thread?.locked}
-        />
-        <Dropdown
-          value={postFormat === 'MARKDOWN' ? t('channels.markdown') : t('channels.plain')}
-          selectedOptions={[postFormat]}
-          onOptionSelect={(_: unknown, data: { optionValue?: string }) =>
-            setPostFormat((data.optionValue as PostFormat) || 'PLAIN')
-          }
-          disabled={thread?.locked}
-        >
-          <Option value="PLAIN">{t('channels.plain')}</Option>
-          <Option value="MARKDOWN">{t('channels.markdown')}</Option>
-        </Dropdown>
-        {isAdmin && (
-          <Button
-            appearance="outline"
-            icon={<Mention24Regular />}
-            onClick={handleAtChannel}
+      {authenticated ? (
+        <div className={styles.newPostRow}>
+          <Textarea
+            value={newPost}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handlePostInputChange(e.target.value)}
+            placeholder={thread?.locked ? t('channels.lockedPlaceholder') : t('channels.writeReply')}
+            style={{ flex: 1 }}
             disabled={thread?.locked}
-            title={t('channels.mentionChannel')}
+          />
+          <Dropdown
+            value={postFormat === 'MARKDOWN' ? t('channels.markdown') : t('channels.plain')}
+            selectedOptions={[postFormat]}
+            onOptionSelect={(_: unknown, data: { optionValue?: string }) =>
+              setPostFormat((data.optionValue as PostFormat) || 'PLAIN')
+            }
+            disabled={thread?.locked}
           >
-            @channel
+            <Option value="PLAIN">{t('channels.plain')}</Option>
+            <Option value="MARKDOWN">{t('channels.markdown')}</Option>
+          </Dropdown>
+          {isAdmin && (
+            <Button
+              appearance="outline"
+              icon={<Mention24Regular />}
+              onClick={handleAtChannel}
+              disabled={thread?.locked}
+              title={t('channels.mentionChannel')}
+            >
+              @channel
+            </Button>
+          )}
+          <Button
+            appearance="primary"
+            onClick={handlePost}
+            disabled={createPost.isPending || !newPost.trim() || thread?.locked}
+          >
+            {createPost.isPending ? <Spinner size="tiny" /> : t('channels.reply')}
           </Button>
-        )}
-        <Button
-          appearance="primary"
-          onClick={handlePost}
-          disabled={createPost.isPending || !newPost.trim() || thread?.locked}
-        >
-          {createPost.isPending ? <Spinner size="tiny" /> : t('channels.reply')}
-        </Button>
-      </div>
+        </div>
+      ) : (
+        <Link to={`/login?redirect=/channels/${channelId}/threads/${threadId}`} style={{ color: tokens.colorBrandForeground1 }}>
+          {t('auth.loginToReply')}
+        </Link>
+      )}
 
       {/* Typing indicator */}
       <div className={styles.typingRow} aria-live="polite">
@@ -374,8 +381,8 @@ export default function ChannelThreadPage() {
                 <Body1>{post.content}</Body1>
               )}
               <div className={styles.postActions}>
-                <ReactionPicker postId={post.id} />
-                {!thread?.locked && (
+                {authenticated && <ReactionPicker postId={post.id} />}
+                {authenticated && !thread?.locked && (
                   <Button
                     appearance="subtle"
                     size="small"
@@ -387,12 +394,12 @@ export default function ChannelThreadPage() {
                     {t('channels.reply')}
                   </Button>
                 )}
-                <ReportButton targetType="CHANNEL_POST" targetId={post.id} />
+                {authenticated && <ReportButton targetType="CHANNEL_POST" targetId={post.id} />}
                 {readPostIds.has(post.id) && post.userId === user?.userId && (
                   <span className={styles.readReceipt}>{t('thread.read')}</span>
                 )}
               </div>
-              {replyToPostId === post.id && !thread?.locked && (
+              {authenticated && replyToPostId === post.id && !thread?.locked && (
                 <div className={styles.replyForm}>
                   <Textarea
                     value={replyContent}

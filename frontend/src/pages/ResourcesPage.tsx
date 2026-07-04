@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import {
   makeStyles,
   tokens,
@@ -38,6 +38,7 @@ import { TagList } from '@/components/TagBadge'
 import { StaggerReveal } from '@/components/StaggerReveal'
 import { HoverLift } from '@/components/HoverLift'
 import { useBookmarkStore } from '@/store/bookmarkStore'
+import useAuthStore from '@/store/authStore'
 
 const useStyles = makeStyles({
   container: {
@@ -85,6 +86,11 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: tokens.spacingVerticalM,
   },
+  loginLink: {
+    color: tokens.colorBrandForeground1,
+    textDecoration: 'none',
+    fontSize: tokens.fontSizeBase300,
+  },
 })
 
 const CATEGORIES = ['NOTES', 'PAST_PAPER', 'TEXTBOOK', 'TUTORIAL', 'OTHER']
@@ -117,6 +123,8 @@ export default function ResourcesPage() {
 
   const { data, isLoading, isError } = useResources(params)
   const createMutation = useCreateResource()
+  const { isAuthenticated } = useAuthStore()
+  const authenticated = isAuthenticated()
 
   const resources: Resource[] = Array.isArray(data) ? data : (data as any)?.content || []
   const { toggleBookmark, isBookmarked } = useBookmarkStore()
@@ -213,83 +221,89 @@ export default function ResourcesPage() {
       />
       <div className={styles.headerRow}>
         <Title2 as="h1">{t('resources.title')}</Title2>
-        <Dialog open={dialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setDialogOpen(d.open)}>
-          <DialogTrigger disableButtonEnhancement>
-            <Button appearance="primary" icon={<Add24Regular />}>{t('resources.uploadResource')}</Button>
-          </DialogTrigger>
-          <DialogSurface>
-            <DialogBody>
-              <DialogTitle>{t('resources.uploadResource')}</DialogTitle>
-              <DialogContent>
-                {createMutation.isError && (
-                  <MessageBar intent="error">
-                    <MessageBarBody>
-                      {(createMutation.error as any)?.response?.data?.message || t('resources.loadError')}
-                    </MessageBarBody>
-                  </MessageBar>
-                )}
-                <div className={styles.dialogForm}>
-                  <Field label={t('resources.titleLabel')} required>
-                    <Input value={title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} placeholder={t('resources.titleLabel')} />
-                  </Field>
-                  <Field label={t('resources.descriptionLabel')}>
-                    <Textarea value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} placeholder={t('resources.descriptionLabel')} />
-                  </Field>
-                  <Field label={t('resources.category')}>
-                    <Select value={category} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}>
-                      {CATEGORIES.map((c) => (
-                        <option key={c} value={c}>{c.replace('_', ' ')}</option>
-                      ))}
-                    </Select>
-                  </Field>
-                  <Field label={t('resources.type')}>
-                    <Select value={resourceType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setResourceType(e.target.value)}>
-                      <option value="UPLOAD">{t('resources.file')}</option>
-                      <option value="LINK">{t('resources.url')}</option>
-                    </Select>
-                  </Field>
-                  {resourceType === 'UPLOAD' ? (
-                    <Field label={t('resources.file')}>
-                      <input
-                        type="file"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFile(e.target.files?.[0] ?? null)}
-                        style={{ marginTop: '4px' }}
-                      />
-                    </Field>
-                  ) : (
-                    <Field label={t('resources.url')}>
-                      <Input value={url} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)} placeholder="https://..." />
-                    </Field>
+        {authenticated ? (
+          <Dialog open={dialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setDialogOpen(d.open)}>
+            <DialogTrigger disableButtonEnhancement>
+              <Button appearance="primary" icon={<Add24Regular />}>{t('resources.uploadResource')}</Button>
+            </DialogTrigger>
+            <DialogSurface>
+              <DialogBody>
+                <DialogTitle>{t('resources.uploadResource')}</DialogTitle>
+                <DialogContent>
+                  {createMutation.isError && (
+                    <MessageBar intent="error">
+                      <MessageBarBody>
+                        {(createMutation.error as any)?.response?.data?.message || t('resources.loadError')}
+                      </MessageBarBody>
+                    </MessageBar>
                   )}
-                  <Field label={t('resources.subject')}>
-                    <Select value={subject} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSubject(e.target.value)}>
-                      <option value="">{t('common.select') || 'Select subject'}</option>
-                      {SUBJECTS.map((s) => (
-                        <option key={s} value={s}>{s}</option>
-                      ))}
-                    </Select>
-                  </Field>
-                  <Field label={t('resources.topic')}>
-                    <Input value={topic} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTopic(e.target.value)} placeholder="e.g. Calculus" />
-                  </Field>
-                  <Field label={t('resources.course')}>
-                    <Input value={course} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCourse(e.target.value)} placeholder="e.g. MATH101" />
-                  </Field>
-                </div>
-              </DialogContent>
-              <DialogActions>
-                <Button appearance="secondary" onClick={() => setDialogOpen(false)}>{t('common.cancel')}</Button>
-                <Button
-                  appearance="primary"
-                  onClick={handleCreate}
-                  disabled={createMutation.isPending || !title}
-                >
-                  {createMutation.isPending ? <Spinner size="tiny" /> : t('common.upload')}
-                </Button>
-              </DialogActions>
-            </DialogBody>
-          </DialogSurface>
-        </Dialog>
+                  <div className={styles.dialogForm}>
+                    <Field label={t('resources.titleLabel')} required>
+                      <Input value={title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} placeholder={t('resources.titleLabel')} />
+                    </Field>
+                    <Field label={t('resources.descriptionLabel')}>
+                      <Textarea value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} placeholder={t('resources.descriptionLabel')} />
+                    </Field>
+                    <Field label={t('resources.category')}>
+                      <Select value={category} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}>
+                        {CATEGORIES.map((c) => (
+                          <option key={c} value={c}>{c.replace('_', ' ')}</option>
+                        ))}
+                      </Select>
+                    </Field>
+                    <Field label={t('resources.type')}>
+                      <Select value={resourceType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setResourceType(e.target.value)}>
+                        <option value="UPLOAD">{t('resources.file')}</option>
+                        <option value="LINK">{t('resources.url')}</option>
+                      </Select>
+                    </Field>
+                    {resourceType === 'UPLOAD' ? (
+                      <Field label={t('resources.file')}>
+                        <input
+                          type="file"
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFile(e.target.files?.[0] ?? null)}
+                          style={{ marginTop: '4px' }}
+                        />
+                      </Field>
+                    ) : (
+                      <Field label={t('resources.url')}>
+                        <Input value={url} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)} placeholder="https://..." />
+                      </Field>
+                    )}
+                    <Field label={t('resources.subject')}>
+                      <Select value={subject} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSubject(e.target.value)}>
+                        <option value="">{t('common.select') || 'Select subject'}</option>
+                        {SUBJECTS.map((s) => (
+                          <option key={s} value={s}>{s}</option>
+                        ))}
+                      </Select>
+                    </Field>
+                    <Field label={t('resources.topic')}>
+                      <Input value={topic} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTopic(e.target.value)} placeholder="e.g. Calculus" />
+                    </Field>
+                    <Field label={t('resources.course')}>
+                      <Input value={course} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCourse(e.target.value)} placeholder="e.g. MATH101" />
+                    </Field>
+                  </div>
+                </DialogContent>
+                <DialogActions>
+                  <Button appearance="secondary" onClick={() => setDialogOpen(false)}>{t('common.cancel')}</Button>
+                  <Button
+                    appearance="primary"
+                    onClick={handleCreate}
+                    disabled={createMutation.isPending || !title}
+                  >
+                    {createMutation.isPending ? <Spinner size="tiny" /> : t('common.upload')}
+                  </Button>
+                </DialogActions>
+              </DialogBody>
+            </DialogSurface>
+          </Dialog>
+        ) : (
+          <Link to="/login?redirect=/resources" className={styles.loginLink}>
+            {t('auth.loginToUpload')}
+          </Link>
+        )}
       </div>
 
       {/* Filter bar */}
@@ -362,16 +376,18 @@ export default function ResourcesPage() {
                 <div className={styles.cardHeader}>
                   <Subtitle2>{resource.title}</Subtitle2>
                   <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                    <Button
-                      appearance="subtle"
-                      size="small"
-                      icon={isBookmarked(resource.id) ? <Bookmark24Filled /> : <Bookmark24Regular />}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        toggleBookmark(resource.id, resource.title)
-                      }}
-                      aria-label={isBookmarked(resource.id) ? t('common.removeBookmark') : t('common.addBookmark')}
-                    />
+                    {authenticated && (
+                      <Button
+                        appearance="subtle"
+                        size="small"
+                        icon={isBookmarked(resource.id) ? <Bookmark24Filled /> : <Bookmark24Regular />}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          toggleBookmark(resource.id, resource.title)
+                        }}
+                        aria-label={isBookmarked(resource.id) ? t('common.removeBookmark') : t('common.addBookmark')}
+                      />
+                    )}
                     <Badge appearance="tint" size="small">
                       {resource.category?.replace('_', ' ') || t('resources.general')}
                     </Badge>

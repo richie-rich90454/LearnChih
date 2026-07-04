@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import {
   makeStyles,
   tokens,
@@ -34,6 +34,7 @@ import Seo from '@/components/Seo'
 import { Pagination } from '@/components/Pagination'
 import { StaggerReveal } from '@/components/StaggerReveal'
 import { HoverLift } from '@/components/HoverLift'
+import useAuthStore from '@/store/authStore'
 
 const useStyles = makeStyles({
   container: {
@@ -89,6 +90,11 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: tokens.spacingVerticalM,
   },
+  loginLink: {
+    color: tokens.colorBrandForeground1,
+    textDecoration: 'none',
+    fontSize: tokens.fontSizeBase300,
+  },
 })
 
 export default function ChannelsPage() {
@@ -101,6 +107,8 @@ export default function ChannelsPage() {
   const [selectedChannelId, setSelectedChannelId] = useState<number | null>(null)
   const { data: channelDetail } = useChannel(selectedChannelId)
   const createThread = useCreateChannelThread(selectedChannelId)
+  const { isAuthenticated } = useAuthStore()
+  const authenticated = isAuthenticated()
 
   const [dialogOpen, setDialogOpen] = useState<boolean>(false)
   const [threadTitle, setThreadTitle] = useState<string>('')
@@ -180,37 +188,43 @@ export default function ChannelsPage() {
       <div className={styles.headerRow}>
         <Title2 as="h1">{t('channels.title')}</Title2>
         {selectedChannelId && (
-          <Dialog open={dialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setDialogOpen(d.open)}>
-            <DialogTrigger disableButtonEnhancement>
-              <Button appearance="primary" icon={<Add24Regular />}>{t('channels.newThread')}</Button>
-            </DialogTrigger>
-            <DialogSurface>
-              <DialogBody>
-                <DialogTitle>{t('channels.createThread')}</DialogTitle>
-                <DialogContent>
-                  {createThread.isError && (
-                    <MessageBar intent="error">
-                      <MessageBarBody>{t('channels.threadLoadError')}</MessageBarBody>
-                    </MessageBar>
-                  )}
-                  <div className={styles.dialogForm}>
-                    <Field label={t('channels.threadTitle')} required>
-                      <Input value={threadTitle} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setThreadTitle(e.target.value)} placeholder={t('channels.threadTitle')} />
-                    </Field>
-                    <Field label={t('channels.threadContent')}>
-                      <Textarea value={threadContent} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setThreadContent(e.target.value)} placeholder={t('channels.threadContent')} />
-                    </Field>
-                  </div>
-                </DialogContent>
-                <DialogActions>
-                  <Button appearance="secondary" onClick={() => setDialogOpen(false)}>{t('common.cancel')}</Button>
-                  <Button appearance="primary" onClick={handleCreateThread} disabled={createThread.isPending || !threadTitle.trim()}>
-                    {createThread.isPending ? <Spinner size="tiny" /> : t('common.create')}
-                  </Button>
-                </DialogActions>
-              </DialogBody>
-            </DialogSurface>
-          </Dialog>
+          authenticated ? (
+            <Dialog open={dialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setDialogOpen(d.open)}>
+              <DialogTrigger disableButtonEnhancement>
+                <Button appearance="primary" icon={<Add24Regular />}>{t('channels.newThread')}</Button>
+              </DialogTrigger>
+              <DialogSurface>
+                <DialogBody>
+                  <DialogTitle>{t('channels.createThread')}</DialogTitle>
+                  <DialogContent>
+                    {createThread.isError && (
+                      <MessageBar intent="error">
+                        <MessageBarBody>{t('channels.threadLoadError')}</MessageBarBody>
+                      </MessageBar>
+                    )}
+                    <div className={styles.dialogForm}>
+                      <Field label={t('channels.threadTitle')} required>
+                        <Input value={threadTitle} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setThreadTitle(e.target.value)} placeholder={t('channels.threadTitle')} />
+                      </Field>
+                      <Field label={t('channels.threadContent')}>
+                        <Textarea value={threadContent} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setThreadContent(e.target.value)} placeholder={t('channels.threadContent')} />
+                      </Field>
+                    </div>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button appearance="secondary" onClick={() => setDialogOpen(false)}>{t('common.cancel')}</Button>
+                    <Button appearance="primary" onClick={handleCreateThread} disabled={createThread.isPending || !threadTitle.trim()}>
+                      {createThread.isPending ? <Spinner size="tiny" /> : t('common.create')}
+                    </Button>
+                  </DialogActions>
+                </DialogBody>
+              </DialogSurface>
+            </Dialog>
+          ) : (
+            <Link to="/login?redirect=/channels" className={styles.loginLink}>
+              {t('auth.loginToStartThread')}
+            </Link>
+          )
         )}
       </div>
 

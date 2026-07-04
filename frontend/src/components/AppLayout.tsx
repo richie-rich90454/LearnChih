@@ -122,25 +122,31 @@ const useStyles = makeStyles({
   },
 })
 
-const getNavItems = (t: (key: string) => string): NavItem[] => [
-  { path: '/', label: t('nav.dashboard'), icon: <Home24Regular /> },
-  { path: '/resources', label: t('nav.resources'), icon: <Document24Regular /> },
-  { path: '/channels', label: t('nav.channels'), icon: <Chat24Regular /> },
-  { path: '/leaderboard', label: t('nav.leaderboard'), icon: <Trophy24Regular /> },
-  { path: '/profile', label: t('nav.profile'), icon: <Person24Regular /> },
-]
+const PUBLIC_NAV_PATHS = new Set(['/resources', '/channels', '/leaderboard', '/search', '/api-docs'])
+
+const getNavItems = (t: (key: string) => string, authenticated: boolean): NavItem[] => {
+  const all: NavItem[] = [
+    { path: '/', label: t('nav.dashboard'), icon: <Home24Regular /> },
+    { path: '/resources', label: t('nav.resources'), icon: <Document24Regular /> },
+    { path: '/channels', label: t('nav.channels'), icon: <Chat24Regular /> },
+    { path: '/leaderboard', label: t('nav.leaderboard'), icon: <Trophy24Regular /> },
+    { path: '/profile', label: t('nav.profile'), icon: <Person24Regular /> },
+  ]
+  return authenticated ? all : all.filter((item) => PUBLIC_NAV_PATHS.has(item.path))
+}
 
 export default function AppLayout() {
   const styles = useStyles()
   const navigate = useNavigate()
   const location = useLocation()
-  const { user, logout } = useAuthStore()
+  const { user, logout, isAuthenticated } = useAuthStore()
   const { t, i18n } = useTranslation()
   const [mobileOpen, setMobileOpen] = useState(false)
   const mode = useThemeStore((s) => s.mode)
   const toggle = useThemeStore((s) => s.toggle)
 
-  const isAdmin = user?.role === 'ADMIN' || user?.role === 'MODERATOR'
+  const authenticated = isAuthenticated()
+  const isAdmin = authenticated && (user?.role === 'ADMIN' || user?.role === 'MODERATOR')
 
   const handleNav = (path: string) => {
     navigate(path)
@@ -157,7 +163,7 @@ export default function AppLayout() {
     return location.pathname.startsWith(path)
   }
 
-  const navItems = getNavItems(t)
+  const navItems = getNavItems(t, authenticated)
 
   const NavLinks = () => (
     <>
@@ -242,7 +248,7 @@ export default function AppLayout() {
           </div>
 
           <div className={styles.headerRight}>
-            <NotificationBell />
+            {authenticated && <NotificationBell />}
             <Button
               appearance="subtle"
               onClick={() => {
@@ -263,24 +269,35 @@ export default function AppLayout() {
             >
               {mode === 'light' ? '🌙' : '☀️'}
             </Button>
-            <Menu>
-            <MenuTrigger disableButtonEnhancement>
-              <Button appearance="subtle" style={{ gap: '8px' }}>
-                <Avatar name={user?.name || t('common.user')} size={28} />
-                <Text>{user?.name || t('common.user')}</Text>
-              </Button>
-            </MenuTrigger>
-            <MenuPopover>
-              <MenuList>
-                <MenuItem icon={<Person24Regular />} onClick={() => navigate('/profile')}>
-                  {t('nav.profile')}
-                </MenuItem>
-                <MenuItem icon={<SignOut24Regular />} onClick={handleLogout}>
-                  {t('nav.logout')}
-                </MenuItem>
-              </MenuList>
-            </MenuPopover>
-          </Menu>
+            {authenticated ? (
+              <Menu>
+                <MenuTrigger disableButtonEnhancement>
+                  <Button appearance="subtle" style={{ gap: '8px' }}>
+                    <Avatar name={user?.name || t('common.user')} size={28} />
+                    <Text>{user?.name || t('common.user')}</Text>
+                  </Button>
+                </MenuTrigger>
+                <MenuPopover>
+                  <MenuList>
+                    <MenuItem icon={<Person24Regular />} onClick={() => navigate('/profile')}>
+                      {t('nav.profile')}
+                    </MenuItem>
+                    <MenuItem icon={<SignOut24Regular />} onClick={handleLogout}>
+                      {t('nav.logout')}
+                    </MenuItem>
+                  </MenuList>
+                </MenuPopover>
+              </Menu>
+            ) : (
+              <>
+                <Button appearance="subtle" onClick={() => navigate('/login')}>
+                  {t('nav.login')}
+                </Button>
+                <Button appearance="primary" onClick={() => navigate('/register')}>
+                  {t('nav.register')}
+                </Button>
+              </>
+            )}
           </div>
         </header>
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import {
   makeStyles,
   tokens,
@@ -130,7 +130,8 @@ export default function ResourceDetailPage() {
   const { data: posts, isLoading: postsLoading } = useResourcePosts(id)
   const queryClient = useQueryClient()
   const deleteResource = useDeleteResource()
-  const user = useAuthStore((s) => s.user)
+  const { user, isAuthenticated } = useAuthStore()
+  const authenticated = isAuthenticated()
   const { toggleBookmark, isBookmarked } = useBookmarkStore()
 
   // Optimistic upvote: update the cache instantly and roll back on error.
@@ -323,65 +324,73 @@ export default function ResourceDetailPage() {
         )}
 
         <div className={styles.actionRow}>
-          <Button
-            appearance={resource?.upvoted ? 'primary' : 'outline'}
-            icon={resource?.upvoted ? <ArrowUp24Filled /> : <ArrowUp24Regular />}
-            onClick={handleUpvote}
-            aria-label={t('resources.upvotes')}
-          >
-            <AnimatedCounter value={resource?.upvoteCount ?? 0} />
-          </Button>
+          {authenticated ? (
+            <>
+              <Button
+                appearance={resource?.upvoted ? 'primary' : 'outline'}
+                icon={resource?.upvoted ? <ArrowUp24Filled /> : <ArrowUp24Regular />}
+                onClick={handleUpvote}
+                aria-label={t('resources.upvotes')}
+              >
+                <AnimatedCounter value={resource?.upvoteCount ?? 0} />
+              </Button>
 
-          <Button
-            appearance={isBookmarked(resource?.id ?? 0) ? 'primary' : 'outline'}
-            icon={isBookmarked(resource?.id ?? 0) ? <Bookmark24Filled /> : <Bookmark24Regular />}
-            onClick={() => resource && toggleBookmark(resource.id, resource.title)}
-            aria-pressed={isBookmarked(resource?.id ?? 0)}
-          >
-            {isBookmarked(resource?.id ?? 0) ? t('common.saved') : t('resources.save')}
-          </Button>
+              <Button
+                appearance={isBookmarked(resource?.id ?? 0) ? 'primary' : 'outline'}
+                icon={isBookmarked(resource?.id ?? 0) ? <Bookmark24Filled /> : <Bookmark24Regular />}
+                onClick={() => resource && toggleBookmark(resource.id, resource.title)}
+                aria-pressed={isBookmarked(resource?.id ?? 0)}
+              >
+                {isBookmarked(resource?.id ?? 0) ? t('common.saved') : t('resources.save')}
+              </Button>
+
+              <Dialog open={reportDialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setReportDialogOpen(d.open)}>
+                <DialogTrigger disableButtonEnhancement>
+                  <Button appearance="subtle" icon={<Flag24Regular />}>{t('common.report')}</Button>
+                </DialogTrigger>
+                <DialogSurface>
+                  <DialogBody>
+                    <DialogTitle>{t('resources.reportResource')}</DialogTitle>
+                    <DialogContent>
+                      <Field label={t('admin.reason')}>
+                        <Textarea
+                          value={reportReason}
+                          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReportReason(e.target.value)}
+                          placeholder={t('resources.reportReason')}
+                        />
+                      </Field>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button appearance="secondary" onClick={() => setReportDialogOpen(false)}>{t('common.cancel')}</Button>
+                      <Button appearance="primary" onClick={handleReport} disabled={!reportReason.trim()}>
+                        {t('common.submit')}
+                      </Button>
+                    </DialogActions>
+                  </DialogBody>
+                </DialogSurface>
+              </Dialog>
+
+              {isOwner && (
+                <ConfirmDialog
+                  trigger={<Button appearance="subtle">{t('common.delete')}</Button>}
+                  title={t('resources.deleteConfirmTitle')}
+                  content={t('resources.deleteConfirmContent')}
+                  confirmLabel={t('common.delete')}
+                  destructive
+                  onConfirm={handleDelete}
+                />
+              )}
+            </>
+          ) : (
+            <Link to={`/login?redirect=/resources/${id}`} style={{ color: tokens.colorBrandForeground1 }}>
+              {t('auth.loginToInteract')}
+            </Link>
+          )}
 
           {resource?.url && (
             <Button appearance="outline" onClick={() => window.open(resource.url, '_blank')}>
               {t('resources.openLink')}
             </Button>
-          )}
-
-          <Dialog open={reportDialogOpen} onOpenChange={(_: unknown, d: { open: boolean }) => setReportDialogOpen(d.open)}>
-            <DialogTrigger disableButtonEnhancement>
-              <Button appearance="subtle" icon={<Flag24Regular />}>{t('common.report')}</Button>
-            </DialogTrigger>
-            <DialogSurface>
-              <DialogBody>
-                <DialogTitle>{t('resources.reportResource')}</DialogTitle>
-                <DialogContent>
-                  <Field label={t('admin.reason')}>
-                    <Textarea
-                      value={reportReason}
-                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReportReason(e.target.value)}
-                      placeholder={t('resources.reportReason')}
-                    />
-                  </Field>
-                </DialogContent>
-                <DialogActions>
-                  <Button appearance="secondary" onClick={() => setReportDialogOpen(false)}>{t('common.cancel')}</Button>
-                  <Button appearance="primary" onClick={handleReport} disabled={!reportReason.trim()}>
-                    {t('common.submit')}
-                  </Button>
-                </DialogActions>
-              </DialogBody>
-            </DialogSurface>
-          </Dialog>
-
-          {isOwner && (
-            <ConfirmDialog
-              trigger={<Button appearance="subtle">{t('common.delete')}</Button>}
-              title={t('resources.deleteConfirmTitle')}
-              content={t('resources.deleteConfirmContent')}
-              confirmLabel={t('common.delete')}
-              destructive
-              onConfirm={handleDelete}
-            />
           )}
         </div>
       </Card>
@@ -391,21 +400,27 @@ export default function ResourceDetailPage() {
         <Subtitle1 as="h2">{t('resources.discussion')}</Subtitle1>
 
         {/* New post */}
-        <div className={styles.newPostRow}>
-          <Textarea
-            value={newPost}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewPost(e.target.value)}
-            placeholder={t('resources.writeComment')}
-            style={{ flex: 1 }}
-          />
-          <Button
-            appearance="primary"
-            onClick={handlePost}
-            disabled={createPost.isPending || !newPost.trim()}
-          >
-            {createPost.isPending ? <Spinner size="tiny" /> : t('resources.post')}
-          </Button>
-        </div>
+        {authenticated ? (
+          <div className={styles.newPostRow}>
+            <Textarea
+              value={newPost}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewPost(e.target.value)}
+              placeholder={t('resources.writeComment')}
+              style={{ flex: 1 }}
+            />
+            <Button
+              appearance="primary"
+              onClick={handlePost}
+              disabled={createPost.isPending || !newPost.trim()}
+            >
+              {createPost.isPending ? <Spinner size="tiny" /> : t('resources.post')}
+            </Button>
+          </div>
+        ) : (
+          <Link to={`/login?redirect=/resources/${id}`} style={{ color: tokens.colorBrandForeground1 }}>
+            {t('auth.loginToInteract')}
+          </Link>
+        )}
 
         {/* Posts list */}
         {postsLoading && <Spinner size="small" />}
@@ -429,7 +444,7 @@ export default function ResourceDetailPage() {
               </div>
               <Body1>{post.content}</Body1>
               <div className={styles.postActions}>
-                <ReportButton targetType="RESOURCE_POST" targetId={post.id} />
+                {authenticated && <ReportButton targetType="RESOURCE_POST" targetId={post.id} />}
               </div>
             </Card>
           </article>
