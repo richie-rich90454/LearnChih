@@ -109,7 +109,7 @@ export function BadgesWidget({ userId }: BadgesWidgetProps) {
         <div className={styles.root}>
             <MilestoneConfetti active={confetti} onComplete={() => setConfetti(false)} />
             <Title3 as="h3">{t("badges.title")}</Title3>
-            <StaggerReveal className={styles.grid} staggerSeconds={0.04}>
+            <StaggerReveal className={styles.grid} stagger={0.04}>
                 {badges.map((badge) => (
                     <HoverLift key={badge.id}>
                         <Card

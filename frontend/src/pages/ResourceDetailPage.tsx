@@ -48,6 +48,7 @@ import { useBackgroundSync } from "@/hooks/useBackgroundSync";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import ReportButton from "@/components/ReportButton";
 import { RelatedResources } from "@/components/RelatedResources";
+import { StaggerReveal } from "@/components/StaggerReveal";
 import { TagList } from "@/components/TagBadge";
 import { articleSchema, breadcrumbSchema } from "@/components/jsonLd";
 
@@ -88,6 +89,11 @@ const useStyles = makeStyles({
         flexWrap: "wrap",
     },
     threadSection: {
+        display: "flex",
+        flexDirection: "column",
+        gap: tokens.spacingVerticalM,
+    },
+    postsList: {
         display: "flex",
         flexDirection: "column",
         gap: tokens.spacingVerticalM,
@@ -494,14 +500,15 @@ export default function ResourceDetailPage() {
 
                 {/* Posts list */}
                 {postsLoading && <Spinner size="small" />}
-                {postList.length === 0 && !postsLoading && (
-                    <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                        {t("resources.noComments")}
-                    </Body1>
-                )}
-                {postList.map((post) => (
-                    <article key={post.id}>
-                        <Card className={styles.postCard}>
+                <StaggerReveal className={styles.postsList}>
+                    {postList.length === 0 && !postsLoading && (
+                        <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
+                            {t("resources.noComments")}
+                        </Body1>
+                    )}
+                    {postList.map((post) => (
+                        <article key={post.id}>
+                            <Card className={styles.postCard}>
                             <div className={styles.postHeader}>
                                 <Avatar name={post.authorName || t("common.user")} size={28} />
                                 <Subtitle2>{post.authorName || t("common.unknown")}</Subtitle2>
@@ -526,6 +533,7 @@ export default function ResourceDetailPage() {
                         </Card>
                     </article>
                 ))}
+                </StaggerReveal>
             </section>
 
             {id && <RelatedResources resourceId={id} />}

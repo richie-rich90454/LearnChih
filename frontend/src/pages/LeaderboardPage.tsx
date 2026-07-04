@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { useLeaderboard } from "../hooks/useResources";
 import type { LeaderboardEntry } from "../types";
 import Seo from "../components/Seo";
+import { StaggerReveal } from "../components/StaggerReveal";
 import { SkeletonLine, SkeletonList } from "../components/Skeleton";
 
 const useStyles = makeStyles({
@@ -88,76 +89,78 @@ export default function LeaderboardPage() {
                     <MessageBarBody>{t("leaderboard.empty")}</MessageBarBody>
                 </MessageBar>
             ) : (
-                <DataGrid
-                    items={users.slice(0, 50)}
-                    columns={columns as any}
-                    style={{ minWidth: "500px" }}
-                >
-                    <DataGridHeader>
-                        <DataGridRow>
-                            {({ renderHeaderCell }) => (
-                                <DataGridCell>{renderHeaderCell()}</DataGridCell>
-                            )}
-                        </DataGridRow>
-                    </DataGridHeader>
-                    <DataGridBody>
-                        {({ item, rowId }: { item: LeaderboardEntry; rowId: any }) => (
-                            <DataGridRow key={rowId}>
-                                {({ columnId }) => {
-                                    const rank = users.indexOf(item) + 1;
-                                    if (columnId === "rank") {
-                                        return (
-                                            <DataGridCell>
-                                                {rank <= 3 ? (
-                                                    <Badge
-                                                        appearance="filled"
-                                                        color="brand"
-                                                        size="large"
-                                                    >
-                                                        #{rank}
-                                                    </Badge>
-                                                ) : (
-                                                    <Body1>#{rank}</Body1>
-                                                )}
-                                            </DataGridCell>
-                                        );
-                                    }
-                                    if (columnId === "user") {
-                                        return (
-                                            <DataGridCell>
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        gap: "8px",
-                                                    }}
-                                                >
-                                                    <Avatar
-                                                        name={item.name || t("common.user")}
-                                                        size={28}
-                                                    />
-                                                    <Subtitle2>
-                                                        {item.name || t("common.unknown")}
-                                                    </Subtitle2>
-                                                </div>
-                                            </DataGridCell>
-                                        );
-                                    }
-                                    if (columnId === "credits") {
-                                        return (
-                                            <DataGridCell>
-                                                <Badge appearance="tint" color="brand">
-                                                    {item.credits ?? 0}
-                                                </Badge>
-                                            </DataGridCell>
-                                        );
-                                    }
-                                    return <DataGridCell>-</DataGridCell>;
-                                }}
+                <StaggerReveal>
+                    <DataGrid
+                        items={users.slice(0, 50)}
+                        columns={columns as any}
+                        style={{ minWidth: "500px" }}
+                    >
+                        <DataGridHeader>
+                            <DataGridRow>
+                                {({ renderHeaderCell }) => (
+                                    <DataGridCell>{renderHeaderCell()}</DataGridCell>
+                                )}
                             </DataGridRow>
-                        )}
-                    </DataGridBody>
-                </DataGrid>
+                        </DataGridHeader>
+                        <DataGridBody>
+                            {({ item, rowId }: { item: LeaderboardEntry; rowId: any }) => (
+                                <DataGridRow key={rowId}>
+                                    {({ columnId }) => {
+                                        const rank = users.indexOf(item) + 1;
+                                        if (columnId === "rank") {
+                                            return (
+                                                <DataGridCell>
+                                                    {rank <= 3 ? (
+                                                        <Badge
+                                                            appearance="filled"
+                                                            color="brand"
+                                                            size="large"
+                                                        >
+                                                            #{rank}
+                                                        </Badge>
+                                                    ) : (
+                                                        <Body1>#{rank}</Body1>
+                                                    )}
+                                                </DataGridCell>
+                                            );
+                                        }
+                                        if (columnId === "user") {
+                                            return (
+                                                <DataGridCell>
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            gap: "8px",
+                                                        }}
+                                                    >
+                                                        <Avatar
+                                                            name={item.name || t("common.user")}
+                                                            size={28}
+                                                        />
+                                                        <Subtitle2>
+                                                            {item.name || t("common.unknown")}
+                                                        </Subtitle2>
+                                                    </div>
+                                                </DataGridCell>
+                                            );
+                                        }
+                                        if (columnId === "credits") {
+                                            return (
+                                                <DataGridCell>
+                                                    <Badge appearance="tint" color="brand">
+                                                        {item.credits ?? 0}
+                                                    </Badge>
+                                                </DataGridCell>
+                                            );
+                                        }
+                                        return <DataGridCell>-</DataGridCell>;
+                                    }}
+                                </DataGridRow>
+                            )}
+                        </DataGridBody>
+                    </DataGrid>
+                </StaggerReveal>
             )}
         </main>
     );
