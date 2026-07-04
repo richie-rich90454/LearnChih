@@ -17,6 +17,7 @@ class EnvConfigTest {
     @EnabledIfEnvironmentVariable(named = "JWT_SECRET", matches = ".+")
     @EnabledIfEnvironmentVariable(named = "DB_PASSWORD", matches = ".+")
     void validateRequiredEnvVarsSucceedsWhenVariablesSet() {
+        ReflectionTestUtils.setField(envConfig, "requiredVars", "JWT_SECRET,DB_PASSWORD");
         envConfig.validateRequiredEnvVars();
     }
 
