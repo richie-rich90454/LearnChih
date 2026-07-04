@@ -242,6 +242,13 @@
     "noResources": "No resources yet. Be the first to upload!",
     "loadError": "Failed to load dashboard"
   },
+  "bookmarks": {
+    "title": "Bookmarks",
+    "description": "Your saved learning resources on LernChih.",
+    "empty": "No bookmarks yet. Save resources from the resource cards or detail page.",
+    "remove": "Remove bookmark",
+    "resource": "Resource #{{id}}"
+  },
   "badges": {
     "title": "Badges",
     "loading": "Loading badges...",

@@ -228,6 +228,13 @@
     "noResources": "暂无资源，来上传第一个吧！",
     "loadError": "加载仪表板失败"
   },
+  "bookmarks": {
+    "title": "书签",
+    "description": "您在 LernChih 上保存的学习资源。",
+    "empty": "暂无书签。从资源卡片或详情页保存资源。",
+    "remove": "移除书签",
+    "resource": "资源 #{{id}}"
+  },
   "badges": {
     "title": "徽章",
     "loading": "加载徽章中...",

@@ -9,6 +9,7 @@ import {
   Badge,
 } from '@fluentui/react-components'
 import { Dismiss24Regular } from '@fluentui/react-icons'
+import { useTranslation } from 'react-i18next'
 import { useBookmarkStore } from '../store/bookmarkStore'
 import Seo from '../components/Seo'
 
@@ -39,6 +40,7 @@ const useStyles = makeStyles({
 
 export default function BookmarksPage() {
   const styles = useStyles()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const bookmarks = useBookmarkStore((s) => s.bookmarks)
   const removeBookmark = useBookmarkStore((s) => s.removeBookmark)
@@ -48,16 +50,16 @@ export default function BookmarksPage() {
   )
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <Seo
-        title="Bookmarks — LernChih"
-        description="Your saved learning resources on LernChih."
+        title={`${t('bookmarks.title')} — LernChih`}
+        description={t('bookmarks.description')}
         canonicalPath="/bookmarks"
       />
-      <Title2 as="h1">Bookmarks</Title2>
+      <Title2 as="h1">{t('bookmarks.title')}</Title2>
       {items.length === 0 && (
         <Body1 className={styles.empty}>
-          No bookmarks yet. Save resources from the resource cards or detail page.
+          {t('bookmarks.empty')}
         </Body1>
       )}
       <div className={styles.list}>
@@ -70,7 +72,7 @@ export default function BookmarksPage() {
             <div>
               <Body1>{item.title}</Body1>
               <Badge appearance="outline" size="small" style={{ marginTop: '4px' }}>
-                Resource #{item.resourceId}
+                {t('bookmarks.resource', { id: item.resourceId })}
               </Badge>
             </div>
             <Button
@@ -80,11 +82,11 @@ export default function BookmarksPage() {
                 e.stopPropagation()
                 removeBookmark(item.resourceId)
               }}
-              aria-label="Remove bookmark"
+              aria-label={t('bookmarks.remove')}
             />
           </Card>
         ))}
       </div>
-    </div>
+    </main>
   )
 }
