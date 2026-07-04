@@ -12,6 +12,7 @@ import {
   Option,
 } from '@fluentui/react-components'
 import { ArrowLeft24Regular } from '@fluentui/react-icons'
+import { useTranslation } from 'react-i18next'
 import { useDecks } from '../hooks/useFlashcards'
 import FlashcardDeck from '../components/FlashcardDeck'
 import Seo from '../components/Seo'
@@ -41,6 +42,7 @@ const useStyles = makeStyles({
 
 export default function FlashcardsPage() {
   const styles = useStyles()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { data: decks, isLoading } = useDecks()
   const [selectedDeckId, setSelectedDeckId] = useState<string | undefined>()
@@ -48,18 +50,22 @@ export default function FlashcardsPage() {
   const deckOptions = decks?.map((d) => ({ value: String(d.id), label: d.name })) || []
 
   return (
-    <div className={styles.container}>
-      <Seo title="Flashcards — LernChih" canonicalPath="/flashcards" />
+    <main className={styles.container}>
+      <Seo
+        title={`${t('flashcards.title')} — LernChih`}
+        description={t('flashcards.description')}
+        canonicalPath="/flashcards"
+      />
       <div className={styles.headerRow}>
         <Button appearance="subtle" icon={<ArrowLeft24Regular />} onClick={() => navigate('/')}>
-          Back
+          {t('common.back')}
         </Button>
-        <Title2 as="h1">Flashcards</Title2>
+        <Title2 as="h1">{t('flashcards.title')}</Title2>
       </div>
 
       <div className={styles.deckSelector}>
         <Dropdown
-          placeholder="Select a deck"
+          placeholder={t('flashcards.selectDeck')}
           value={deckOptions.find((d) => d.value === selectedDeckId)?.label || ''}
           selectedOptions={selectedDeckId ? [selectedDeckId] : []}
           onOptionSelect={(_, data) => setSelectedDeckId(data.optionValue)}
@@ -71,7 +77,7 @@ export default function FlashcardsPage() {
         </Dropdown>
       </div>
 
-      {isLoading && <Spinner label="Loading decks..." />}
+      {isLoading && <Spinner label={t('flashcards.loadingDecks')} />}
 
       {!isLoading && !selectedDeckId && decks?.map((deck) => (
         <Card
@@ -81,12 +87,12 @@ export default function FlashcardsPage() {
         >
           <Text weight="semibold">{deck.name}</Text>
           <Text style={{ color: 'var(--colorNeutralForeground3)' }}>
-            {deck.cardCount} cards · {deck.dueCount ?? 0} due
+            {t('flashcards.cardsDue', { cards: deck.cardCount, due: deck.dueCount ?? 0 })}
           </Text>
         </Card>
       ))}
 
       {selectedDeckId && <FlashcardDeck deckId={selectedDeckId} />}
-    </div>
+    </main>
   )
 }

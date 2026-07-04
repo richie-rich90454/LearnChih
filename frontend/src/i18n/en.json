@@ -257,6 +257,20 @@
     "earned": "Earned",
     "locked": "Locked"
   },
+  "flashcards": {
+    "title": "Flashcards",
+    "description": "Review your flashcard decks on LernChih using spaced repetition.",
+    "selectDeck": "Select a deck",
+    "loadingDecks": "Loading decks...",
+    "cardsDue": "{{cards}} cards · {{due}} due"
+  },
+  "quizzes": {
+    "title": "Quizzes",
+    "description": "Take quizzes on LernChih to test your knowledge.",
+    "selectQuiz": "Select a quiz",
+    "loadingQuizzes": "Loading quizzes...",
+    "questionCount": "{{count}} questions"
+  },
   "leaderboard": {
     "title": "Leaderboard",
     "description": "See the top contributors on the LernChih leaderboard, ranked by credits earned through sharing resources and helping the community.",

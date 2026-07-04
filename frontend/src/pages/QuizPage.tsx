@@ -12,6 +12,7 @@ import {
   Option,
 } from '@fluentui/react-components'
 import { ArrowLeft24Regular } from '@fluentui/react-icons'
+import { useTranslation } from 'react-i18next'
 import { useQuizzes } from '../hooks/useQuizzes'
 import QuizWidget from '../components/QuizWidget'
 import Seo from '../components/Seo'
@@ -36,6 +37,7 @@ const useStyles = makeStyles({
 
 export default function QuizPage() {
   const styles = useStyles()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { data: quizzes, isLoading } = useQuizzes()
   const [selectedQuizId, setSelectedQuizId] = useState<string | undefined>()
@@ -43,17 +45,21 @@ export default function QuizPage() {
   const quizOptions = quizzes?.map((q) => ({ value: String(q.id), label: q.title })) || []
 
   return (
-    <div className={styles.container}>
-      <Seo title="Quizzes — LernChih" canonicalPath="/quizzes" />
+    <main className={styles.container}>
+      <Seo
+        title={`${t('quizzes.title')} — LernChih`}
+        description={t('quizzes.description')}
+        canonicalPath="/quizzes"
+      />
       <div className={styles.headerRow}>
         <Button appearance="subtle" icon={<ArrowLeft24Regular />} onClick={() => navigate('/')}>
-          Back
+          {t('common.back')}
         </Button>
-        <Title2 as="h1">Quizzes</Title2>
+        <Title2 as="h1">{t('quizzes.title')}</Title2>
       </div>
 
       <Dropdown
-        placeholder="Select a quiz"
+        placeholder={t('quizzes.selectQuiz')}
         value={quizOptions.find((q) => q.value === selectedQuizId)?.label || ''}
         selectedOptions={selectedQuizId ? [selectedQuizId] : []}
         onOptionSelect={(_, data) => setSelectedQuizId(data.optionValue)}
@@ -64,7 +70,7 @@ export default function QuizPage() {
         ))}
       </Dropdown>
 
-      {isLoading && <Spinner label="Loading quizzes..." />}
+      {isLoading && <Spinner label={t('quizzes.loadingQuizzes')} />}
 
       {!isLoading && !selectedQuizId && quizzes?.map((quiz) => (
         <Card
@@ -77,12 +83,12 @@ export default function QuizPage() {
             <Text style={{ color: 'var(--colorNeutralForeground3)' }}>{quiz.description}</Text>
           )}
           <Text style={{ color: 'var(--colorNeutralForeground3)' }}>
-            {quiz.questions.length} questions
+            {t('quizzes.questionCount', { count: quiz.questions.length })}
           </Text>
         </Card>
       ))}
 
       {selectedQuizId && <QuizWidget quizId={selectedQuizId} />}
-    </div>
+    </main>
   )
 }
