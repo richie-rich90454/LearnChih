@@ -82,6 +82,17 @@ try {
     process.exit(0)
   }
 
+  try {
+    await fs.access(SEED_FILE)
+  } catch {
+    console.log(
+      `Seed SQL file not found: ${SEED_FILE}\n` +
+        `The Java demo seeder is the supported path for local seeding. ` +
+        `Start the backend with app.seed.enabled=true (e.g. --spring.profiles.active=local).`
+    )
+    process.exit(0)
+  }
+
   const sql = await fs.readFile(SEED_FILE, 'utf8')
   await connection.query(sql)
 
