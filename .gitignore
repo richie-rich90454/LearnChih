@@ -36,5 +36,6 @@ Thumbs.db
 # Uploads
 uploads/
 
-# Trae specs (internal)
+# Trae specs and agent context (internal)
 .trae/
+AGENTS.md
