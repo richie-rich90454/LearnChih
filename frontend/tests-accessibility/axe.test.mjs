@@ -9,7 +9,7 @@ const BASE = `http://localhost:${PORT}`
 const PAGES = ['/', '/resources']
 
 const axeSource = readFileSync(
-  path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'node_modules', 'axe-core', 'axe.min.js'),
+  path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'node_modules', 'axe-core', 'axe.min.js'),
   'utf8',
 )
 
@@ -19,6 +19,8 @@ async function run() {
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   })
+
+  let hasCriticalOrSerious = false
 
   try {
     for (const route of PAGES) {
@@ -40,6 +42,13 @@ async function run() {
       console.log(`  ${results.violations.length} violation(s)`)
       for (const violation of results.violations) {
         console.log(`  [${violation.impact}] ${violation.help} (${violation.nodes.length} node(s))`)
+        for (const node of violation.nodes) {
+          console.log(`    target: ${JSON.stringify(node.target)}`)
+          console.log(`    html: ${node.html.slice(0, 200)}`)
+        }
+        if (violation.impact === 'critical' || violation.impact === 'serious') {
+          hasCriticalOrSerious = true
+        }
       }
 
       await page.close()
@@ -47,6 +56,10 @@ async function run() {
   } finally {
     await browser.close()
     await stopServer(server)
+  }
+
+  if (hasCriticalOrSerious) {
+    throw new Error(' axe-core detected critical or serious accessibility violations')
   }
 }
 
