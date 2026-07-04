@@ -15,14 +15,21 @@ import java.util.List;
  */
 public class EnvConfig {
 
+    @Value("${app.env.required-vars:JWT_SECRET,DB_PASSWORD}")
+    private String requiredVars;
+
     /**
      * Validates that mandatory environment variables are present at startup.
      * Fails fast with a clear message naming the missing variable.
+     * The list of required variables can be overridden per profile; the local
+     * profile only requires JWT_SECRET because H2 does not need a password.
      */
     @PostConstruct
     void validateRequiredEnvVars() {
-        requireEnv("JWT_SECRET");
-        requireEnv("DB_PASSWORD");
+        Arrays.stream(requiredVars.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .forEach(this::requireEnv);
     }
 
     private void requireEnv(String name) {
