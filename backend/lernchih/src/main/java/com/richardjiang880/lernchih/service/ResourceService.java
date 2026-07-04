@@ -2,6 +2,7 @@ package com.richardjiang880.lernchih.service;
 
 import com.richardjiang880.lernchih.dto.*;
 import com.richardjiang880.lernchih.model.*;
+import com.richardjiang880.lernchih.model.Role;
 import com.richardjiang880.lernchih.repository.*;
 import com.richardjiang880.lernchih.util.SlugUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -191,9 +193,8 @@ public class ResourceService {
         Resource resource = resourceRepository.findById(resourceId)
                 .orElseThrow(() -> new IllegalArgumentException("Resource not found"));
 
-        // Only admins and moderators can delete resources
-        if (!isAdminOrModerator(currentUser)) {
-            throw new IllegalArgumentException("Only admins and moderators can delete resources");
+        if (!isOwnerOrAdminOrModerator(resource.getUser(), currentUser)) {
+            throw new AccessDeniedException("Only the owner or an admin/moderator can delete this resource");
         }
 
         resourceRepository.delete(resource);
@@ -211,8 +212,11 @@ public class ResourceService {
         resourceRepository.save(resource);
     }
 
-    private boolean isAdminOrModerator(User user) {
-        return user.getRole() == Role.ADMIN || user.getRole() == Role.MODERATOR;
+    private boolean isOwnerOrAdminOrModerator(User owner, User currentUser) {
+        if (currentUser.getId() != null && currentUser.getId().equals(owner.getId())) {
+            return true;
+        }
+        return currentUser.getRole() == Role.ADMIN || currentUser.getRole() == Role.MODERATOR;
     }
 
     private String saveFile(MultipartFile file) {

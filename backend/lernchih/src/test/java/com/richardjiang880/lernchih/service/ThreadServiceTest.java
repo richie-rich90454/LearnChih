@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -137,6 +138,9 @@ class ThreadServiceTest {
     @Test
     void deletePostAllowsAdminForResourcePost() {
         User admin = User.builder().id(1L).role(Role.ADMIN).build();
+        User owner = User.builder().id(2L).role(Role.STUDENT).build();
+        ResourcePost post = ResourcePost.builder().id(1L).user(owner).build();
+        when(resourcePostRepository.findById(1L)).thenReturn(Optional.of(post));
 
         threadService.deletePost(1L, "resource", admin);
 
@@ -146,6 +150,9 @@ class ThreadServiceTest {
     @Test
     void deletePostAllowsModeratorForChannelPost() {
         User moderator = User.builder().id(1L).role(Role.MODERATOR).build();
+        User owner = User.builder().id(2L).role(Role.STUDENT).build();
+        ChannelPost post = ChannelPost.builder().id(2L).user(owner).build();
+        when(channelPostRepository.findById(2L)).thenReturn(Optional.of(post));
 
         threadService.deletePost(2L, "channel", moderator);
 
@@ -153,12 +160,26 @@ class ThreadServiceTest {
     }
 
     @Test
-    void deletePostRejectsStudent() {
+    void deletePostAllowsOwner() {
+        User owner = User.builder().id(1L).role(Role.STUDENT).build();
+        ResourcePost post = ResourcePost.builder().id(1L).user(owner).build();
+        when(resourcePostRepository.findById(1L)).thenReturn(Optional.of(post));
+
+        threadService.deletePost(1L, "resource", owner);
+
+        verify(resourcePostRepository).deleteById(1L);
+    }
+
+    @Test
+    void deletePostRejectsNonOwnerStudent() {
+        User owner = User.builder().id(2L).role(Role.STUDENT).build();
         User student = User.builder().id(1L).role(Role.STUDENT).build();
+        ResourcePost post = ResourcePost.builder().id(1L).user(owner).build();
+        when(resourcePostRepository.findById(1L)).thenReturn(Optional.of(post));
 
         assertThatThrownBy(() -> threadService.deletePost(1L, "resource", student))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Only admins and moderators");
+                .isInstanceOf(AccessDeniedException.class)
+                .hasMessageContaining("Only the owner or an admin/moderator");
     }
 
     @Test

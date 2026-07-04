@@ -2,13 +2,16 @@ package com.richardjiang880.lernchih.service;
 
 import com.richardjiang880.lernchih.dto.*;
 import com.richardjiang880.lernchih.model.*;
+import com.richardjiang880.lernchih.model.Role;
 import com.richardjiang880.lernchih.model.enums.ContentFormat;
 import com.richardjiang880.lernchih.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -169,21 +172,37 @@ public class ThreadService {
 
     @Transactional
     public void deletePost(Long postId, String type, User currentUser) {
-        if (!isAdminOrModerator(currentUser)) {
-            throw new IllegalArgumentException("Only admins and moderators can delete posts");
-        }
+        Long ownerId;
 
-        // Route deletion to the correct repository based on post type
+        // Resolve the post and its owner before deleting.
         if ("resource".equalsIgnoreCase(type)) {
-            resourcePostRepository.deleteById(postId);
+            ResourcePost post = resourcePostRepository.findById(postId)
+                    .orElseThrow(() -> new EntityNotFoundException("Resource post not found"));
+            ownerId = post.getUser().getId();
         } else if ("channel".equalsIgnoreCase(type)) {
-            channelPostRepository.deleteById(postId);
+            ChannelPost post = channelPostRepository.findById(postId)
+                    .orElseThrow(() -> new EntityNotFoundException("Channel post not found"));
+            ownerId = post.getUser().getId();
         } else {
             throw new IllegalArgumentException("Invalid post type: " + type);
         }
+
+        if (!isOwnerOrAdminOrModerator(ownerId, currentUser)) {
+            throw new AccessDeniedException("Only the owner or an admin/moderator can delete this post");
+        }
+
+        // Owner or privileged user: route deletion to the correct repository.
+        if ("resource".equalsIgnoreCase(type)) {
+            resourcePostRepository.deleteById(postId);
+        } else {
+            channelPostRepository.deleteById(postId);
+        }
     }
 
-    private boolean isAdminOrModerator(User user) {
-        return user.getRole() == Role.ADMIN || user.getRole() == Role.MODERATOR;
+    private boolean isOwnerOrAdminOrModerator(Long ownerId, User currentUser) {
+        if (currentUser.getId() != null && currentUser.getId().equals(ownerId)) {
+            return true;
+        }
+        return currentUser.getRole() == Role.ADMIN || currentUser.getRole() == Role.MODERATOR;
     }
 }

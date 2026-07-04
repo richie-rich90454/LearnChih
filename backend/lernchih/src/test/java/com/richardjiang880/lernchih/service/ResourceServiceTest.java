@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -216,7 +217,8 @@ class ResourceServiceTest {
     @Test
     void deleteResourceAllowsAdmin() {
         User admin = User.builder().id(1L).role(Role.ADMIN).build();
-        Resource resource = Resource.builder().id(1L).build();
+        User owner = User.builder().id(2L).role(Role.STUDENT).build();
+        Resource resource = Resource.builder().id(1L).user(owner).build();
         when(resourceRepository.findById(1L)).thenReturn(Optional.of(resource));
 
         resourceService.deleteResource(1L, admin);
@@ -227,7 +229,8 @@ class ResourceServiceTest {
     @Test
     void deleteResourceAllowsModerator() {
         User moderator = User.builder().id(1L).role(Role.MODERATOR).build();
-        Resource resource = Resource.builder().id(1L).build();
+        User owner = User.builder().id(2L).role(Role.STUDENT).build();
+        Resource resource = Resource.builder().id(1L).user(owner).build();
         when(resourceRepository.findById(1L)).thenReturn(Optional.of(resource));
 
         resourceService.deleteResource(1L, moderator);
@@ -236,14 +239,26 @@ class ResourceServiceTest {
     }
 
     @Test
-    void deleteResourceRejectsStudent() {
+    void deleteResourceAllowsOwner() {
+        User owner = User.builder().id(1L).role(Role.STUDENT).build();
+        Resource resource = Resource.builder().id(1L).user(owner).build();
+        when(resourceRepository.findById(1L)).thenReturn(Optional.of(resource));
+
+        resourceService.deleteResource(1L, owner);
+
+        verify(resourceRepository).delete(resource);
+    }
+
+    @Test
+    void deleteResourceRejectsNonOwnerStudent() {
+        User owner = User.builder().id(2L).role(Role.STUDENT).build();
         User student = User.builder().id(1L).role(Role.STUDENT).build();
-        Resource resource = Resource.builder().id(1L).build();
+        Resource resource = Resource.builder().id(1L).user(owner).build();
         when(resourceRepository.findById(1L)).thenReturn(Optional.of(resource));
 
         assertThatThrownBy(() -> resourceService.deleteResource(1L, student))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Only admins and moderators");
+                .isInstanceOf(AccessDeniedException.class)
+                .hasMessageContaining("Only the owner or an admin/moderator");
     }
 
     @Test
