@@ -100,7 +100,7 @@ public class SecurityConfig {
                 .requestMatchers("/sitemap-channels.xml").permitAll()
                 .requestMatchers("/sitemap-static.xml").permitAll()
                 // Public actuator and API documentation endpoints
-                .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                .requestMatchers("/actuator/health", "/actuator/health/liveness", "/actuator/health/readiness", "/actuator/info").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 // Static frontend assets produced by the production build
                 .requestMatchers("/", "/index.html", "/assets/**", "/favicon.svg",

@@ -37,8 +37,9 @@ public class EnvConfig {
         if (value == null || value.isBlank()) {
             throw new IllegalStateException(
                     "Required environment variable '" + name
-                            + "' is not set. Please define it (e.g. in /etc/lernchih/lernchih.env "
-                            + "or your shell environment) before starting the application.");
+                            + "' is not set. See .env.example in the repository root "
+                            + "and define the variable (e.g. by copying .env.example to .env) "
+                            + "before starting the application.");
         }
     }
 
