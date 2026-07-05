@@ -1,12 +1,10 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { withTranslation, type WithTranslation } from "react-i18next";
+import i18n from "../i18n";
 
-interface ErrorBoundaryOwnProps {
+interface ErrorBoundaryProps {
     children: ReactNode;
     fallback?: ReactNode;
 }
-
-type ErrorBoundaryProps = ErrorBoundaryOwnProps & WithTranslation;
 
 interface ErrorBoundaryState {
     hasError: boolean;
@@ -24,17 +22,18 @@ class ErrorBoundaryComponent extends Component<ErrorBoundaryProps, ErrorBoundary
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+        // eslint-disable-next-line no-console
         console.error("ErrorBoundary caught:", error, errorInfo);
     }
 
     render(): ReactNode {
-        const { t, fallback, children } = this.props;
+        const { fallback, children } = this.props;
         if (this.state.hasError) {
             if (fallback) return fallback;
             return (
                 <div role="alert" style={{ padding: 24, textAlign: "center" }}>
-                    <h2>{t("errorBoundary.title")}</h2>
-                    <p>{this.state.error?.message || t("errorBoundary.unexpectedError")}</p>
+                    <h2>{i18n.t("errorBoundary.title")}</h2>
+                    <p>{this.state.error?.message || i18n.t("errorBoundary.unexpectedError")}</p>
                     <button
                         onClick={() => {
                             this.setState({ hasError: false, error: null });
@@ -42,7 +41,7 @@ class ErrorBoundaryComponent extends Component<ErrorBoundaryProps, ErrorBoundary
                         }}
                         style={{ marginTop: 12, padding: "8px 16px", cursor: "pointer" }}
                     >
-                        {t("errorBoundary.reload")}
+                        {i18n.t("errorBoundary.reload")}
                     </button>
                 </div>
             );
@@ -51,5 +50,5 @@ class ErrorBoundaryComponent extends Component<ErrorBoundaryProps, ErrorBoundary
     }
 }
 
-export const ErrorBoundary = withTranslation()(ErrorBoundaryComponent);
+export const ErrorBoundary = ErrorBoundaryComponent;
 export default ErrorBoundary;
