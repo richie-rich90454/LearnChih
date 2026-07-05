@@ -34,3 +34,10 @@ build/
 
 ### Frontend build artifacts (served by backend in prod, built by CI) ###
 src/main/resources/static/
+
+# Env & secrets
+.env
+.env.local
+.env.docker
+.env.production
+!.env*.example

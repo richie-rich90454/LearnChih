@@ -31,7 +31,9 @@ Thumbs.db
 # Env & secrets
 .env
 .env.local
+.env.docker
 .env.production
+!.env*.example
 
 # Uploads
 uploads/

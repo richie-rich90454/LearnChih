@@ -32,3 +32,10 @@ storybook-static
 # Accessibility test reports
 tests-accessibility/lighthouse-report.*
 tests-accessibility/axe-report.*
+
+# Env & secrets
+.env
+.env.local
+.env.docker
+.env.production
+!.env*.example
