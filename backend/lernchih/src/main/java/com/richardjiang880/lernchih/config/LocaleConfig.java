@@ -18,7 +18,11 @@ public class LocaleConfig {
         ResourceBundleMessageSource source = new ResourceBundleMessageSource();
         source.setBasenames("messages");
         source.setDefaultEncoding("UTF-8");
-        source.setUseCodeAsDefaultMessage(true);
+        // Do not use the message code as the default message. Missing keys must
+        // surface as NoSuchMessageException so callers can supply a human-readable
+        // fallback instead of leaking raw translation keys like "error.badrequest"
+        // to the frontend.
+        source.setUseCodeAsDefaultMessage(false);
         return source;
     }
 
