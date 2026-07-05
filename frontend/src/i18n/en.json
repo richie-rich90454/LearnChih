@@ -358,11 +358,24 @@
     "notFound": {
         "title": "Page not found",
         "message": "Sorry, we couldn't find the page you were looking for. It may have been moved or no longer exists.",
-        "backToDashboard": "Back to Dashboard",
+        "backToHome": "Back to home",
         "searchResources": "Search resources"
     },
     "language": {
         "toggle": "中文",
         "label": "Language"
+    },
+    "landing": {
+        "title": "LernChih — Learn together",
+        "description": "A student-driven platform for sharing learning resources, discussing courses, and collaborating on academic content.",
+        "headline": "Learn smarter, together",
+        "subheadline": "Discover notes, past papers, and tutorials shared by your academic community. Join discussions, earn credits, and help others learn.",
+        "browseResources": "Browse resources",
+        "getStarted": "Get started",
+        "goToDashboard": "Go to dashboard",
+        "explore": "Explore",
+        "resourcesDescription": "Find notes, past papers, textbooks, and tutorials contributed by students like you.",
+        "channelsDescription": "Join subject-specific discussions, ask questions, and collaborate with peers.",
+        "leaderboardDescription": "See top contributors and earn credits by sharing resources and helping the community."
     }
 }
