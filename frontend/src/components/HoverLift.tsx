@@ -67,7 +67,7 @@ export function HoverLift({
                 el.removeEventListener("focusin", enter);
                 el.removeEventListener("focusout", leave);
             };
-        }, ref);
+        }, el);
 
         return () => {
             ctx.revert();
