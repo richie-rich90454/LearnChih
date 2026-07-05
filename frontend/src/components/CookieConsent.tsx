@@ -83,7 +83,9 @@ const useStyles = makeStyles({
 
 export default function CookieConsent() {
     const styles = useStyles();
-    const { t } = useTranslation();
+    // useSuspense: false keeps this component (rendered outside Suspense) from
+    // throwing if i18n is not yet ready.
+    const { t } = useTranslation("translation", { useSuspense: false });
     const hasResponded = useCookieConsentStore((s) => s.hasResponded);
     const setConsent = useCookieConsentStore((s) => s.setConsent);
     const [customized, setCustomized] = useState(false);
