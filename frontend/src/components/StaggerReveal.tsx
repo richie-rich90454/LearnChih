@@ -1,4 +1,4 @@
-import { useRef, type ReactNode, type CSSProperties, useEffect } from "react";
+import { useRef, type ReactNode, type CSSProperties, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -26,16 +26,23 @@ export function StaggerReveal({
     stagger = 0.05,
     y = 18,
     duration = 0.5,
-    childSelector = "> *",
+    childSelector = ":scope > *",
 }: StaggerRevealProps) {
     const reduced = useReducedMotion();
     const containerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
+    // `querySelectorAll` requires a valid selector; a leading `>` combinator is
+    // invalid on its own. Normalize direct-child selectors to the scoped form.
+    const normalizedSelector = childSelector.startsWith(">")
+        ? `:scope ${childSelector}`
+        : childSelector;
+
+    useLayoutEffect(() => {
         if (reduced || !containerRef.current) return;
 
+        const container = containerRef.current;
         const ctx = gsap.context(() => {
-            const targets = containerRef.current?.querySelectorAll(childSelector);
+            const targets = container.querySelectorAll(normalizedSelector);
             if (!targets || targets.length === 0) return;
 
             gsap.set(targets, { opacity: 0, y, scale: 0.98 });
@@ -49,12 +56,12 @@ export function StaggerReveal({
                 ease: "power2.out",
                 force3D: true,
             });
-        }, containerRef);
+        }, container);
 
         return () => {
             ctx.revert();
         };
-    }, [reduced, stagger, y, duration, childSelector]);
+    }, [reduced, stagger, y, duration, normalizedSelector]);
 
     return (
         <div ref={containerRef} className={className} style={style}>
