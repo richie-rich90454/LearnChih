@@ -14,10 +14,29 @@ interface ThemeState {
     setMode: (mode: ThemeMode, origin?: ThemeOrigin) => void;
 }
 
-const savedMode =
-    typeof localStorage !== "undefined"
-        ? (localStorage.getItem("lernchih-theme") as ThemeMode) || null
-        : null;
+const THEME_KEY = "lernchih-theme";
+const VALID_MODES: ThemeMode[] = ["light", "dark"];
+
+function safeGetTheme(): ThemeMode | null {
+    if (typeof localStorage === "undefined") return null;
+    try {
+        const raw = localStorage.getItem(THEME_KEY);
+        return VALID_MODES.includes(raw as ThemeMode) ? (raw as ThemeMode) : null;
+    } catch {
+        return null;
+    }
+}
+
+function safeSetTheme(mode: ThemeMode): void {
+    if (typeof localStorage === "undefined") return;
+    try {
+        localStorage.setItem(THEME_KEY, mode);
+    } catch {
+        // Ignore storage errors (e.g. private mode quota).
+    }
+}
+
+const savedMode = safeGetTheme();
 
 const prefersDark =
     typeof window !== "undefined" && window.matchMedia
@@ -32,11 +51,11 @@ export const useThemeStore = create<ThemeState>((set) => ({
     toggle: (origin) =>
         set((state) => {
             const next = state.mode === "light" ? "dark" : "light";
-            localStorage.setItem("lernchih-theme", next);
+            safeSetTheme(next);
             return { mode: next, origin: origin ?? {} };
         }),
     setMode: (mode, origin) => {
-        localStorage.setItem("lernchih-theme", mode);
+        safeSetTheme(mode);
         set({ mode, origin: origin ?? {} });
     },
 }));
