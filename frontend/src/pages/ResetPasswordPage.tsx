@@ -29,6 +29,9 @@ const useStyles = makeStyles({
     card: {
         width: "100%",
         maxWidth: "420px",
+        backgroundColor: tokens.colorNeutralBackground2,
+        border: "none",
+        boxShadow: "none",
     },
     cardBody: {
         padding: tokens.spacingHorizontalXL,
