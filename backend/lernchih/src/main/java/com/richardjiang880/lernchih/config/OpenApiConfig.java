@@ -23,7 +23,7 @@ public class OpenApiConfig {
                         .title("LernChih API")
                         .version("1.0")
                         .description("REST API for the LernChih student learning resource and discussion platform."))
-                .servers(List.of(new Server().url("http://localhost:8080")))
+                .servers(List.of(new Server().url("http://localhost:38517")))
                 .components(new Components()
                         .addSecuritySchemes("bearer-jwt",
                                 new SecurityScheme()
