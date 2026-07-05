@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class SpaFallbackFilter extends OncePerRequestFilter {
 
-    private static final List<String> EXCLUDED_PREFIXES = List.of("/api/", "/actuator/");
+    private static final List<String> EXCLUDED_PREFIXES = List.of("/api/", "/actuator/", "/ws/");
     private static final List<String> STATIC_PREFIXES = List.of("/assets/", "/sw.js", "/workbox-");
     private static final List<String> STATIC_EXACTS = List.of(
             "/robots.txt",
