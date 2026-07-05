@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogSurface,
@@ -93,6 +94,7 @@ interface CommandPaletteProps {
 export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
     const styles = useStyles();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [query, setQuery] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
     const debouncedQuery = useDebounce(query, 200);
@@ -131,14 +133,14 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                         ref={inputRef}
                         value={query}
                         onChange={(_e, data) => setQuery(data.value)}
-                        placeholder="Type a command or search..."
+                        placeholder={t("commandPalette.placeholder")}
                         contentBefore={<Search24Regular />}
-                        aria-label="Command palette"
+                        aria-label={t("commandPalette.title")}
                     />
                     <DialogContent className={styles.list}>
                         {!showSearch && (
                             <>
-                                <div className={styles.sectionLabel}>Quick navigation</div>
+                                <div className={styles.sectionLabel}>{t("commandPalette.quickNavigation")}</div>
                                 {NAV_SHORTCUTS.map((shortcut) => (
                                     <div
                                         key={shortcut.path}
@@ -162,11 +164,11 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                         {showSearch && (
                             <>
                                 <div className={styles.sectionLabel}>
-                                    {isFetching ? "Searching..." : `Search results`}
+                                    {isFetching ? t("commandPalette.searching") : t("commandPalette.searchResults")}
                                 </div>
                                 {!isFetching && results.length === 0 && (
                                     <div className={styles.empty}>
-                                        No results for “{debouncedQuery}”.
+                                        {t("commandPalette.noResults", { query: debouncedQuery })}
                                     </div>
                                 )}
                                 {results.map((result) => (
@@ -191,7 +193,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                 {results.length > 0 && (
                                     <>
                                         <Divider />
-                                        <div className={styles.sectionLabel}>Quick navigation</div>
+                                        <div className={styles.sectionLabel}>{t("commandPalette.quickNavigation")}</div>
                                         {NAV_SHORTCUTS.map((shortcut) => (
                                             <div
                                                 key={shortcut.path}
