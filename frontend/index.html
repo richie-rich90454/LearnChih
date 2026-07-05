@@ -7,6 +7,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <meta name="theme-color" content="#0078d4" />
         <title>LernChih</title>
+        <script>
+            // Polyfill for dependencies that assume a Node-like `global` object.
+            // This must run before the app bundle loads.
+            if (typeof global === "undefined") {
+                window.global = window;
+            }
+        </script>
     </head>
     <body>
         <div id="root"></div>
