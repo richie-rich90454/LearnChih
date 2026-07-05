@@ -74,6 +74,7 @@
         "loginButton": "Login",
         "signInButton": "Sign In",
         "registerButton": "Register",
+        "register": "Register",
         "logoutButton": "Logout",
         "forgotPassword": "Forgot password?",
         "forgotPasswordTitle": "Reset your password",
@@ -199,9 +200,24 @@
         "title": "Search",
         "description": "Search resources, channels, people, and posts on LernChih.",
         "placeholder": "Search resources, channels, people...",
+        "ariaLabel": "Global search",
         "searching": "Searching...",
         "loadError": "Failed to load search results.",
-        "noResults": "No results for “{{query}}”."
+        "noResults": "No results for \"{{query}}\"."
+    },
+    "commandPalette": {
+        "title": "Command palette",
+        "placeholder": "Type a command or search...",
+        "quickNavigation": "Quick navigation",
+        "searchResults": "Search results",
+        "searching": "Searching...",
+        "noResults": "No results for \"{{query}}\"."
+    },
+    "notifications": {
+        "title": "Notifications",
+        "markAllRead": "Mark all read",
+        "noNotifications": "No notifications yet.",
+        "viewAll": "View all"
     },
     "admin": {
         "title": "Admin Panel",
