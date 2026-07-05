@@ -17,6 +17,7 @@ const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const VerifyEmailPage = lazy(() => import("./pages/VerifyEmailPage"));
 const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const LandingPage = lazy(() => import("./pages/LandingPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const ResourcesPage = lazy(() => import("./pages/ResourcesPage"));
 const ResourceDetailPage = lazy(() => import("./pages/ResourceDetailPage"));
@@ -127,6 +128,14 @@ function AppShell() {
                 <Route element={<AppLayout />}>
                     {/* Public routes */}
                     <Route
+                        path="/"
+                        element={
+                            <PageTransition>
+                                <LandingPage />
+                            </PageTransition>
+                        }
+                    />
+                    <Route
                         path="/resources"
                         element={
                             <PageTransition>
@@ -191,7 +200,7 @@ function AppShell() {
                             </RequireAuth>
                         }
                     >
-                        <Route path="/" element={<DashboardPage />} />
+                        <Route path="/dashboard" element={<DashboardPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/profile/:id" element={<ProfilePage />} />
                         <Route path="/notifications" element={<NotificationsPage />} />
