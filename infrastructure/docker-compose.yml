@@ -59,7 +59,7 @@ services:
     image: eclipse-temurin:25-jdk
     container_name: lernchih-backend
     ports:
-      - "${SERVER_PORT:-8080}:8080"
+      - "${SERVER_PORT:-38517}:${SERVER_PORT:-38517}"
     volumes:
       - ../backend/lernchih/target/lernchih-0.0.1-SNAPSHOT.jar:/opt/lernchih/lernchih.jar:ro
     working_dir: /opt/lernchih
