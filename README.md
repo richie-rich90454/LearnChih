@@ -37,9 +37,11 @@ cp .env.local.example .env
 ./start-local.sh
 ```
 
-The script loads `.env`, validates that required variables are set, builds the frontend, copies it into `backend/lernchih/src/main/resources/static`, and starts Spring Boot with the `local` profile.
+The script loads `.env`, validates that required variables are set, and starts Spring Boot with the `local` profile using the frontend assets already in `backend/lernchih/src/main/resources/static`.
 
-Open `http://localhost:8080` (or the `SERVER_PORT` from `.env`) to use the application. API requests and browser refreshes on nested routes (for example `/channels/general/threads/123`) are handled by the backend SPA fallback.
+To build or rebuild the frontend first, run `start-local.ps1 -Build` (Windows) or `start-local.sh --build` (Linux / macOS). For repeated backend-only restarts, use `serve-local.ps1` / `serve-local.sh`.
+
+Open `http://localhost:38517` (or the `SERVER_PORT` from `.env`) to use the application. API requests and browser refreshes on nested routes (for example `/channels/general/threads/123`) are handled by the backend SPA fallback.
 
 ### Docker-backed development (MySQL + OpenSearch + Mailpit)
 
@@ -77,7 +79,7 @@ npm install
 npm run dev
 ```
 
-The frontend dev server runs on `http://localhost:5173` and proxies API calls to `http://localhost:8080` via Vite's proxy configuration.
+The frontend dev server runs on `http://localhost:5173` and proxies API calls to `http://localhost:38517` via Vite's proxy configuration.
 
 ## Configuration
 
@@ -100,7 +102,7 @@ When the `local` Spring profile is active, only `JWT_SECRET` is required; H2 is 
 
 ### Optional environment variables (with defaults)
 
-- `SERVER_PORT` — Spring Boot port (default: `8080`)
+- `SERVER_PORT` — Spring Boot port (default: `38517`)
 - `DB_URL` — JDBC URL (default: `jdbc:mysql://localhost:3306/lernchih_db?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8`)
 - `DB_USERNAME` — MySQL username (default: `root`)
 - `MAIL_HOST` — SMTP host (default: `localhost`)
