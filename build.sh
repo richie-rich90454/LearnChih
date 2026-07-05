@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Build script for LernChih (Linux / macOS)
-# Builds the frontend, copies the dist into the backend static resources,
-# then packages the backend into a single runnable JAR.
+# Loads .env, validates required variables, builds the frontend, copies the dist
+# into the backend static resources, then packages the backend into a single
+# runnable JAR.
 # Usage: ./build.sh  (run from the repository root)
 
 set -euo pipefail
@@ -10,6 +11,20 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FRONTEND_DIR="${REPO_ROOT}/frontend"
 BACKEND_DIR="${REPO_ROOT}/backend/lernchih"
 STATIC_DIR="${BACKEND_DIR}/src/main/resources/static"
+
+cd "${REPO_ROOT}"
+
+echo "Loading environment from .env..."
+# shellcheck source=scripts/load-env.sh
+. "${REPO_ROOT}/scripts/load-env.sh"
+load_env .env JWT_SECRET
+if [[ "${DB_URL:-}" != jdbc:h2* ]]; then
+    if [[ -z "${DB_PASSWORD:-}" ]]; then
+        echo "Missing required environment variable: DB_PASSWORD. See .env.example." >&2
+        exit 1
+    fi
+fi
+echo "Environment loaded."
 
 echo "Building LernChih frontend..."
 cd "${FRONTEND_DIR}"
