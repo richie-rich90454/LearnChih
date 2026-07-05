@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { BrowserRouter, Routes, Route, useLocation, useOutlet } from "react-router-dom";
 import { Spinner, Toaster, makeStyles } from "@fluentui/react-components";
 import RequireAuth from "./components/RequireAuth";
@@ -47,10 +46,11 @@ const useStyles = makeStyles({
 
 function LoadingFallback() {
     const styles = useStyles();
-    const { t } = useTranslation();
+    // Do not call useTranslation here: this component is a Suspense fallback,
+    // so it must render synchronously without suspending itself.
     return (
         <div className={styles.loadingContainer}>
-            <Spinner size="large" label={t("common.loading")} />
+            <Spinner size="large" label="Loading..." />
         </div>
     );
 }
