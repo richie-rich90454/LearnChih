@@ -26,6 +26,9 @@ const useStyles = makeStyles({
         maxWidth: "520px",
         padding: tokens.spacingHorizontalXL,
         textAlign: "center",
+        backgroundColor: tokens.colorNeutralBackground2,
+        border: "none",
+        boxShadow: "none",
     },
     code: {
         fontSize: "64px",
@@ -65,7 +68,7 @@ export default function NotFoundPage() {
                 <div className={styles.actions}>
                     <Link to="/">
                         <Button appearance="primary" icon={<ArrowLeft24Regular />}>
-                            {t("notFound.backToDashboard")}
+                            {t("notFound.backToHome")}
                         </Button>
                     </Link>
                     <Link to="/resources">
