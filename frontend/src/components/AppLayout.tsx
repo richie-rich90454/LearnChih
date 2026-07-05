@@ -132,7 +132,7 @@ const PUBLIC_NAV_PATHS = new Set([
 
 const getNavItems = (t: (key: string) => string, authenticated: boolean): NavItem[] => {
     const all: NavItem[] = [
-        { path: "/", label: t("nav.dashboard"), icon: <Home24Regular /> },
+        { path: "/dashboard", label: t("nav.dashboard"), icon: <Home24Regular /> },
         { path: "/resources", label: t("nav.resources"), icon: <Document24Regular /> },
         { path: "/channels", label: t("nav.channels"), icon: <Chat24Regular /> },
         { path: "/leaderboard", label: t("nav.leaderboard"), icon: <Trophy24Regular /> },
