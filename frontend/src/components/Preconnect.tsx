@@ -8,7 +8,7 @@ import { env } from "@/env";
  */
 export default function Preconnect() {
     const raw = env.VITE_API_BASE_URL?.trim();
-    const apiOrigin = raw ? raw.replace(/\/$/, "") : "http://localhost:8080";
+    const apiOrigin = raw ? raw.replace(/\/$/, "") : "http://localhost:38517";
 
     return (
         <Helmet>
