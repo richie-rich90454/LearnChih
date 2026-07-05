@@ -17,16 +17,18 @@ export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps
     const reduced = useReducedMotion();
     const ref = useRef<HTMLDivElement>(null);
     const [key, setKey] = useState(0);
+    const [hasChanged, setHasChanged] = useState(false);
     const prevModeRef = useRef(mode);
 
     useEffect(() => {
         if (prevModeRef.current === mode) return;
         prevModeRef.current = mode;
+        setHasChanged(true);
         setKey((k) => k + 1);
     }, [mode]);
 
     useEffect(() => {
-        if (reduced || !ref.current) return;
+        if (reduced || !ref.current || !hasChanged) return;
 
         const el = ref.current;
 
@@ -52,14 +54,14 @@ export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps
                     gsap.set(el, { clipPath: "none" });
                 },
             });
-        }, ref);
+        }, el);
 
         return () => {
             ctx.revert();
         };
-    }, [key, reduced, originX, originY]);
+    }, [key, reduced, originX, originY, hasChanged]);
 
-    if (reduced) return null;
+    if (reduced || !hasChanged) return null;
 
     return (
         <div
