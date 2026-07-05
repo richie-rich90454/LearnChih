@@ -16,6 +16,7 @@ import {
 } from "@fluentui/react-components";
 import { Alert24Regular, Checkmark24Regular } from "@fluentui/react-icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import {
     getNotifications,
     markNotificationRead,
@@ -53,6 +54,7 @@ const useStyles = makeStyles({
 });
 
 export default function NotificationBell() {
+    const { t } = useTranslation();
     const styles = useStyles();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -104,7 +106,7 @@ export default function NotificationBell() {
                 <Button
                     appearance="subtle"
                     icon={<Alert24Regular />}
-                    aria-label={`Notifications ${unreadCount > 0 ? `(${unreadCount} unread)` : ""}`}
+                    aria-label={`${t("notifications.title")}${unreadCount > 0 ? ` (${unreadCount})` : ""}`}
                 >
                     {unreadCount > 0 && (
                         <Badge
@@ -120,7 +122,7 @@ export default function NotificationBell() {
             </PopoverTrigger>
             <PopoverSurface className={styles.popoverSurface}>
                 <div className={styles.header}>
-                    <Text weight="semibold">Notifications</Text>
+                    <Text weight="semibold">{t("notifications.title")}</Text>
                     {unreadCount > 0 && (
                         <Button
                             appearance="transparent"
@@ -129,7 +131,7 @@ export default function NotificationBell() {
                             onClick={() => markAllMutation.mutate()}
                             disabled={markAllMutation.isPending}
                         >
-                            Mark all read
+                            {t("notifications.markAllRead")}
                         </Button>
                     )}
                 </div>
@@ -141,7 +143,7 @@ export default function NotificationBell() {
                 )}
 
                 {!isLoading && notifications.length === 0 && (
-                    <div className={styles.empty}>No notifications yet.</div>
+                    <div className={styles.empty}>{t("notifications.noNotifications")}</div>
                 )}
 
                 <MenuList>
@@ -183,7 +185,7 @@ export default function NotificationBell() {
                                 navigate("/notifications");
                             }}
                         >
-                            View all
+                            {t("notifications.viewAll")}
                         </Button>
                     </div>
                 )}
