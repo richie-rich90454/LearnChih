@@ -9,20 +9,60 @@ interface AuthState {
     isAuthenticated: () => boolean;
 }
 
+const TOKEN_KEY = "token";
+const USER_KEY = "user";
+
+function safeGetItem(key: string): string | null {
+    try {
+        return localStorage.getItem(key);
+    } catch {
+        // localStorage may be unavailable in private mode or with cookies blocked.
+        return null;
+    }
+}
+
+function safeSetItem(key: string, value: string): void {
+    try {
+        localStorage.setItem(key, value);
+    } catch {
+        // Ignore storage errors (e.g. private mode quota).
+    }
+}
+
+function safeRemoveItem(key: string): void {
+    try {
+        localStorage.removeItem(key);
+    } catch {
+        // Ignore storage errors.
+    }
+}
+
+function loadUser(): AuthUser | null {
+    const raw = safeGetItem(USER_KEY);
+    if (!raw) return null;
+    try {
+        const parsed = JSON.parse(raw) as AuthUser;
+        return parsed && typeof parsed === "object" ? parsed : null;
+    } catch {
+        safeRemoveItem(USER_KEY);
+        return null;
+    }
+}
+
 const useAuthStore = create<AuthState>((set) => ({
-    token: localStorage.getItem("token"),
-    user: JSON.parse(localStorage.getItem("user") || "null") as AuthUser | null,
+    token: safeGetItem(TOKEN_KEY),
+    user: loadUser(),
     setAuth: (token: string, user: AuthUser) => {
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
+        safeSetItem(TOKEN_KEY, token);
+        safeSetItem(USER_KEY, JSON.stringify(user));
         set({ token, user });
     },
     logout: () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        safeRemoveItem(TOKEN_KEY);
+        safeRemoveItem(USER_KEY);
         set({ token: null, user: null });
     },
-    isAuthenticated: () => !!localStorage.getItem("token"),
+    isAuthenticated: () => !!safeGetItem(TOKEN_KEY),
 }));
 
 export default useAuthStore;
