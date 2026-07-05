@@ -60,6 +60,7 @@
         "loginButton": "登录",
         "signInButton": "登录",
         "registerButton": "注册",
+        "register": "注册",
         "logoutButton": "退出登录",
         "forgotPassword": "忘记密码？",
         "forgotPasswordTitle": "重置密码",
@@ -185,9 +186,24 @@
         "title": "搜索",
         "description": "在 LernChih 上搜索资源、频道、用户和帖子。",
         "placeholder": "搜索资源、频道、用户...",
+        "ariaLabel": "全局搜索",
         "searching": "搜索中...",
         "loadError": "加载搜索结果失败。",
         "noResults": "未找到与“{{query}}”相关的结果。"
+    },
+    "commandPalette": {
+        "title": "命令面板",
+        "placeholder": "输入命令或搜索...",
+        "quickNavigation": "快速导航",
+        "searchResults": "搜索结果",
+        "searching": "搜索中...",
+        "noResults": "未找到与“{{query}}”相关的结果。"
+    },
+    "notifications": {
+        "title": "通知",
+        "markAllRead": "全部标记为已读",
+        "noNotifications": "暂无通知。",
+        "viewAll": "查看全部"
     },
     "admin": {
         "title": "管理面板",
@@ -246,6 +262,20 @@
         "noBadges": "暂无徽章。",
         "earned": "已获得",
         "locked": "未解锁"
+    },
+    "flashcards": {
+        "title": "抽认卡",
+        "description": "在 LernChih 上使用间隔重复复习您的抽认卡组。",
+        "selectDeck": "选择卡组",
+        "loadingDecks": "加载卡组中...",
+        "cardsDue": "{{cards}} 张卡片 · {{due}} 张到期"
+    },
+    "quizzes": {
+        "title": "测验",
+        "description": "在 LernChih 上参加测验以检验您的知识。",
+        "selectQuiz": "选择测验",
+        "loadingQuizzes": "加载测验中...",
+        "questionCount": "{{count}} 道题"
     },
     "leaderboard": {
         "title": "排行榜",
