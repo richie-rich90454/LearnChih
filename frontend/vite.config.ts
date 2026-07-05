@@ -17,8 +17,11 @@ export default defineConfig({
         react(),
         visualizer({ open: false, filename: "bundle-stats.html", gzipSize: true }),
         VitePWA({
-            registerType: "prompt",
+            registerType: "autoUpdate",
             workbox: {
+                skipWaiting: true,
+                clientsClaim: true,
+                cleanupOutdatedCaches: true,
                 globPatterns: ["**/*.{js,css,html,svg,png,ico,woff,woff2}"],
                 runtimeCaching: [
                     {
@@ -80,11 +83,11 @@ export default defineConfig({
     server: {
         proxy: {
             "/api": {
-                target: "http://localhost:8080",
+                target: "http://localhost:38517",
                 changeOrigin: true,
             },
             "/ws": {
-                target: "http://localhost:8080",
+                target: "http://localhost:38517",
                 changeOrigin: true,
                 ws: true,
             },
