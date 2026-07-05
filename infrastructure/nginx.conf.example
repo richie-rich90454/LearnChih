@@ -4,9 +4,9 @@
 # and does NOT require nginx. Use this file only when you need TLS termination,
 # load balancing, rate limiting, or an additional caching layer in production.
 #
-# Replace ${SERVER_PORT} with the backend port from your .env file (default 8080)
+# Replace ${SERVER_PORT} with the backend port from your .env file (default 38517)
 # before using this configuration. On Linux you can render it with envsubst, e.g.:
-#   export SERVER_PORT=8080
+#   export SERVER_PORT=38517
 #   envsubst '${SERVER_PORT}' < infrastructure/nginx.conf.example > /etc/nginx/sites-available/lernchih
 
 upstream lernchih_backend {
