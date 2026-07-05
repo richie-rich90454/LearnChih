@@ -33,10 +33,11 @@ export function useGsap<T extends HTMLElement = HTMLDivElement>(
     useEffect(() => {
         if (reduced || !containerRef.current || !animationRef.current) return;
 
+        const container = containerRef.current;
         const ctx = gsap.context(() => {
             const tl = gsap.timeline();
             animationRef.current?.({ gsap, tl });
-        }, containerRef);
+        }, container);
 
         return () => {
             ctx.revert();
