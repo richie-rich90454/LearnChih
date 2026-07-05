@@ -150,6 +150,7 @@ export default function AppLayout() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const mode = useThemeStore((s) => s.mode);
     const toggle = useThemeStore((s) => s.toggle);
+    const dir = useDir();
 
     const authenticated = isAuthenticated();
     const isAdmin = authenticated && (user?.role === "ADMIN" || user?.role === "MODERATOR");
@@ -200,7 +201,7 @@ export default function AppLayout() {
     );
 
     return (
-        <div className={styles.root} dir={useDir()}>
+        <div className={styles.root} dir={dir}>
             <a href="#main-content" className={styles.skipLink}>
                 {t("a11y.skipToContent")}
             </a>
@@ -268,7 +269,8 @@ export default function AppLayout() {
                             onClick={() => {
                                 const next = i18n.language === "en" ? "zh" : "en";
                                 i18n.changeLanguage(next);
-                                localStorage.setItem("lernchih-lang", next);
+                                // syncDocumentLang in i18n/index.ts already persists
+                                // the choice to localStorage; no need to duplicate here.
                             }}
                         >
                             {t("language.toggle")}
