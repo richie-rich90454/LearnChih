@@ -17,71 +17,90 @@ LernChih is a full-stack web application where students share resources, discuss
 
 - JDK 25+
 - Node.js 20+
-- For Docker-backed mode: MySQL 8+, OpenSearch, Mailpit (see `docker-compose.yml`)
+- For Docker-backed mode: Docker Engine 24+ and Docker Compose v2+
 - For local quick-start mode: nothing extra (uses embedded H2)
 
 ## Quick Start
 
-### Local quick start (no Docker)
+The fastest way to run LernChih is the single-port local mode. Copy one of the example `.env` files to `.env` and run the platform-specific `start-local` script.
 
-The `local` Spring profile uses an embedded H2 database and disables external
-service dependencies, so the backend starts without MySQL or Mailpit.
+### Local quick start (single port, embedded H2)
 
 ```bash
-# Backend
+# Copy the local example environment file to .env.
+cp .env.local.example .env
+
+# Start the backend and the built frontend on one port.
+# Windows:
+.\start-local.ps1
+# Linux / macOS:
+./start-local.sh
+```
+
+The script loads `.env`, validates that required variables are set, builds the frontend, copies it into `backend/lernchih/src/main/resources/static`, and starts Spring Boot with the `local` profile.
+
+Open `http://localhost:8080` (or the `SERVER_PORT` from `.env`) to use the application. API requests and browser refreshes on nested routes (for example `/channels/general/threads/123`) are handled by the backend SPA fallback.
+
+### Docker-backed development (MySQL + OpenSearch + Mailpit)
+
+For development that matches production data stores, copy the Docker example and start the infrastructure compose stack:
+
+```bash
+# Copy the Docker example environment file to .env.
+cp .env.docker.example .env
+
+# Build the application JAR first.
+# Windows:
+.\build.ps1
+# Linux / macOS:
+./build.sh
+
+# Start the data stores and backend.
+docker compose -f infrastructure/docker-compose.yml up -d
+```
+
+The backend container waits for MySQL and OpenSearch health checks to pass before it starts. The compose stack reads `.env` from the repository root, so ports and credentials stay in one place.
+
+### Optional Vite HMR development path
+
+For active UI work with fast hot-module replacement, you can still run the Vite dev server separately. It proxies API requests to the Spring Boot backend.
+
+```bash
+# Terminal 1: backend (H2 local profile)
+cp .env.local.example .env
 cd backend/lernchih
 ./mvnw spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=local"
 
-# Frontend (in another terminal)
+# Terminal 2: frontend dev server
 cd frontend
 npm install
 npm run dev
 ```
 
-Or run the packaged JAR from the repository root:
-
-```bash
-java -Xmx512m -jar backend/lernchih/target/lernchih-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
-```
-
-The frontend dev server proxies API requests to `localhost:8080`.
-
-### Docker-backed mode (MySQL + OpenSearch + Mailpit)
-
-```bash
-# Start infrastructure
-docker compose up -d
-
-# Backend (requires JWT_SECRET and DB_PASSWORD environment variables)
-export JWT_SECRET="your-long-random-secret"
-export DB_PASSWORD="your-db-password"
-cd backend/lernchih
-./mvnw spring-boot:run
-
-# Frontend
-cd frontend
-npm install
-npm run dev
-```
+The frontend dev server runs on `http://localhost:5173` and proxies API calls to `http://localhost:8080` via Vite's proxy configuration.
 
 ## Configuration
 
-Backend configuration lives in `backend/lernchih/src/main/resources/application.properties`.
-Secrets and environment-specific values are externalized via environment variables (with
-sensible defaults for local development where noted).
+Runtime configuration is centralized in a repository-root `.env` file. Secrets and environment-specific values are read from `.env`; `application.properties` provides sensible defaults for non-secret values.
+
+### Example files
+
+- `.env.example` — full template with all required and optional variables, documentation, and production defaults.
+- `.env.local.example` — minimal overrides for the single-port H2 quick start. Copy to `.env` before running `start-local`.
+- `.env.docker.example` — overrides for the Docker-backed development stack. Copy to `.env` before running `docker compose`.
 
 ### Required environment variables
 
-These must be set or the application will fail to start in Docker-backed mode:
+These must be set or the application will fail to start in Docker-backed or packaged-JAR mode:
 
-- `JWT_SECRET` — JWT signing key (long, random string)
+- `JWT_SECRET` — JWT signing key (long, random string, at least 32 characters)
 - `DB_PASSWORD` — MySQL database password
 
-When the `local` Spring profile is active, no environment variables are required;
-H2 is used in-memory and a development JWT secret is provided by the profile.
+When the `local` Spring profile is active, only `JWT_SECRET` is required; H2 is used in-memory and a development JWT secret is provided by `.env.local.example`.
 
 ### Optional environment variables (with defaults)
 
+- `SERVER_PORT` — Spring Boot port (default: `8080`)
 - `DB_URL` — JDBC URL (default: `jdbc:mysql://localhost:3306/lernchih_db?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8`)
 - `DB_USERNAME` — MySQL username (default: `root`)
 - `MAIL_HOST` — SMTP host (default: `localhost`)
@@ -89,49 +108,42 @@ H2 is used in-memory and a development JWT secret is provided by the profile.
 - `MAIL_AUTH` — enable SMTP auth (default: `false`)
 - `MAIL_STARTTLS` — enable STARTTLS (default: `false`)
 - `CORS_ORIGINS` — comma-separated list of allowed CORS origins (default: `http://localhost:5173,http://localhost:3000`)
+- `SEO_BASE_URL` — public base URL for SEO metadata (default: `http://localhost:5173`)
 
-For Docker-backed local development, set at least `JWT_SECRET` and `DB_PASSWORD`:
+For a full list see `.env.example`.
 
-```bash
-export JWT_SECRET="your-long-random-secret"
-export DB_PASSWORD="your-db-password"
-cd backend/lernchih
-./mvnw spring-boot:run
-```
+### Production environment file
 
-In production, provide these via the systemd environment file (`/etc/lernchih/lernchih.env`,
-referenced by `lernchih.service`).
+In production, provide the environment file via the systemd service (`/etc/lernchih/lernchih.env`, referenced by `lernchih.service`).
 
 ## Production Build
 
 ### Windows
 
 ```powershell
-# Build frontend into backend static resources and package the JAR
+# Build frontend into backend static resources and package the JAR.
 .\build.ps1
 
-# Run from the repository root with the local (H2) profile
-java -Xmx512m -jar backend\lernchih\target\lernchih-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
-
-# Or run with Docker infrastructure (MySQL + OpenSearch) and env vars set
+# Run from the repository root with the environment file loaded.
 java -Xmx512m -jar backend\lernchih\target\lernchih-0.0.1-SNAPSHOT.jar
 ```
 
 ### Linux / macOS
 
 ```bash
-# Build frontend into backend static resources and package the JAR
+# Build frontend into backend static resources and package the JAR.
 chmod +x build.sh
 ./build.sh
 
-# Run from the repository root with the local (H2) profile
-java -Xmx512m -jar backend/lernchih/target/lernchih-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
-
-# Or run with Docker infrastructure (MySQL + OpenSearch) and env vars set
+# Run from the repository root with the environment file loaded.
 java -Xmx512m -jar backend/lernchih/target/lernchih-0.0.1-SNAPSHOT.jar
 ```
 
-A systemd service file is provided at `lernchih.service`.
+A systemd service file is provided at `lernchih.service`. It loads `/etc/lernchih/lernchih.env` before starting the JAR.
+
+### Optional nginx reverse proxy
+
+The default single-port deployment runs Spring Boot embedded Tomcat directly and does not require nginx. If you need TLS termination, load balancing, or caching, see `infrastructure/nginx.conf.example` for a sample reverse-proxy configuration.
 
 ## Project Structure
 

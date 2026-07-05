@@ -41,6 +41,8 @@ jobs:
     defaults:
       run:
         working-directory: backend/lernchih
+    # Required environment variables for Docker-backed / packaged-JAR mode.
+    # Values fall back to CI-only defaults when repository secrets are not set.
     env:
       JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci-jwt-secret-must-be-at-least-32-characters-long' }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD || 'ci-test-password' }}
