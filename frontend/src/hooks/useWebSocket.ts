@@ -85,7 +85,10 @@ export default function useWebSocket() {
                 callback?.(body);
             };
 
-            if (stompClient.current?.active) {
+            // Only subscribe when the STOMP connection is fully established.
+            // `active` is true as soon as activate() is called, but subscribe()
+            // requires the underlying transport to be ready (`connected`).
+            if (stompClient.current?.connected) {
                 const stompSub = stompClient.current.subscribe(destination, (message: IMessage) => {
                     const body: WebSocketPostMessage = JSON.parse(message.body);
                     wrappedCallback(body);
@@ -128,7 +131,7 @@ export default function useWebSocket() {
                 callback?.(body);
             };
 
-            if (stompClient.current?.active) {
+            if (stompClient.current?.connected) {
                 const stompSub = stompClient.current.subscribe(destination, (message: IMessage) => {
                     const body: WebSocketPostMessage = JSON.parse(message.body);
                     wrappedCallback(body);
@@ -161,7 +164,7 @@ export default function useWebSocket() {
             const key = `typing-${threadId}`;
             const destination = `/topic/channel-thread/${threadId}/typing`;
 
-            if (stompClient.current?.active) {
+            if (stompClient.current?.connected) {
                 const stompSub = stompClient.current.subscribe(destination, (message: IMessage) => {
                     const event: TypingEvent = JSON.parse(message.body);
                     callback(event);
@@ -190,7 +193,7 @@ export default function useWebSocket() {
     );
 
     const sendTypingIndicator = useCallback((threadId: string, typing: boolean) => {
-        if (!stompClient.current?.active) return;
+        if (!stompClient.current?.connected) return;
         stompClient.current.publish({
             destination: `/app/channel-thread/${threadId}/typing`,
             body: JSON.stringify({ threadId, typing }),
@@ -198,7 +201,7 @@ export default function useWebSocket() {
     }, []);
 
     const sendChannelBroadcast = useCallback((threadId: string, content: string) => {
-        if (!stompClient.current?.active) return;
+        if (!stompClient.current?.connected) return;
         stompClient.current.publish({
             destination: `/app/channel-thread/${threadId}/broadcast`,
             body: JSON.stringify({ threadId, content }),
