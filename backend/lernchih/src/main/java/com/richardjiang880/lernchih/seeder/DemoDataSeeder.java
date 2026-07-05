@@ -24,6 +24,7 @@ public class DemoDataSeeder implements CommandLineRunner {
     private final CourseRepository courseRepository;
     private final ResourceRepository resourceRepository;
     private final ResourceThreadRepository resourceThreadRepository;
+    private final ResourcePostRepository resourcePostRepository;
     private final ChannelRepository channelRepository;
     private final ChannelThreadRepository channelThreadRepository;
     private final ChannelPostRepository channelPostRepository;
@@ -35,6 +36,7 @@ public class DemoDataSeeder implements CommandLineRunner {
                           CourseRepository courseRepository,
                           ResourceRepository resourceRepository,
                           ResourceThreadRepository resourceThreadRepository,
+                          ResourcePostRepository resourcePostRepository,
                           ChannelRepository channelRepository,
                           ChannelThreadRepository channelThreadRepository,
                           ChannelPostRepository channelPostRepository,
@@ -45,6 +47,7 @@ public class DemoDataSeeder implements CommandLineRunner {
         this.courseRepository = courseRepository;
         this.resourceRepository = resourceRepository;
         this.resourceThreadRepository = resourceThreadRepository;
+        this.resourcePostRepository = resourcePostRepository;
         this.channelRepository = channelRepository;
         this.channelThreadRepository = channelThreadRepository;
         this.channelPostRepository = channelPostRepository;
@@ -66,6 +69,8 @@ public class DemoDataSeeder implements CommandLineRunner {
                 .password(passwordEncoder.encode("password"))
                 .name("Admin User")
                 .role(Role.ADMIN)
+                .verified(true)
+                .credits(0)
                 .build());
 
         User student = userRepository.save(User.builder()
@@ -73,6 +78,8 @@ public class DemoDataSeeder implements CommandLineRunner {
                 .password(passwordEncoder.encode("password"))
                 .name("Demo Student")
                 .role(Role.STUDENT)
+                .verified(true)
+                .credits(0)
                 .build());
 
         Subject cs = subjectRepository.save(Subject.builder().name("Computer Science").build());
@@ -105,7 +112,15 @@ public class DemoDataSeeder implements CommandLineRunner {
                 .format(ContentFormat.PLAIN)
                 .build();
         csResource.setThread(csThread);
-        resourceThreadRepository.save(csThread);
+        csThread = resourceThreadRepository.save(csThread);
+
+        ResourcePost csPost = ResourcePost.builder()
+                .thread(csThread)
+                .user(student)
+                .content("Great article, very helpful for understanding algorithms.")
+                .format(ContentFormat.PLAIN)
+                .build();
+        resourcePostRepository.save(csPost);
 
         Resource mathResource = Resource.builder()
                 .slug(SlugUtil.slugify("Math Guide"))
@@ -128,7 +143,15 @@ public class DemoDataSeeder implements CommandLineRunner {
                 .format(ContentFormat.PLAIN)
                 .build();
         mathResource.setThread(mathThread);
-        resourceThreadRepository.save(mathThread);
+        mathThread = resourceThreadRepository.save(mathThread);
+
+        ResourcePost mathPost = ResourcePost.builder()
+                .thread(mathThread)
+                .user(admin)
+                .content("Thanks for sharing this calculus guide.")
+                .format(ContentFormat.PLAIN)
+                .build();
+        resourcePostRepository.save(mathPost);
 
         Channel general = channelRepository.save(Channel.builder().name("General Discussion").description("General chat for everyone.").build());
         Channel studyHelp = channelRepository.save(Channel.builder().name("Study Help").description("Ask and answer study questions.").build());
@@ -158,8 +181,8 @@ public class DemoDataSeeder implements CommandLineRunner {
                 .build();
         channelPostRepository.save(postByAdmin);
 
-        log.info("Demo data seeding complete. Created {} users, {} subjects, {} topics, {} courses, {} resources, {} channels, and {} channel thread(s).",
+        log.info("Demo data seeding complete. Created {} users, {} subjects, {} topics, {} courses, {} resources, {} resource posts, {} channels, and {} channel thread(s).",
                 userRepository.count(), subjectRepository.count(), topicRepository.count(), courseRepository.count(),
-                resourceRepository.count(), channelRepository.count(), channelThreadRepository.count());
+                resourceRepository.count(), resourcePostRepository.count(), channelRepository.count(), channelThreadRepository.count());
     }
 }
