@@ -10,6 +10,7 @@ import {
     Badge,
 } from "@fluentui/react-components";
 import { Search24Regular, Dismiss24Regular } from "@fluentui/react-icons";
+import { useTranslation } from "react-i18next";
 import { useDebounce } from "../hooks/useDebounce";
 import { useSearch } from "../hooks/useSearch";
 import type { SearchResult } from "../hooks/useSearch";
@@ -73,11 +74,13 @@ interface SearchBarProps {
  * Spec ref: F2.13.
  */
 export function SearchBar({
-    placeholder = "Search resources, channels, people...",
+    placeholder,
     debounceMs = 250,
     onNavigate,
 }: SearchBarProps) {
+    const { t } = useTranslation();
     const styles = useStyles();
+    const resolvedPlaceholder = placeholder ?? t("search.placeholder");
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [open, setOpen] = useState(false);
@@ -117,7 +120,7 @@ export function SearchBar({
                     setOpen(true);
                 }}
                 onFocus={() => setOpen(true)}
-                placeholder={placeholder}
+                placeholder={resolvedPlaceholder}
                 contentBefore={<Search24Regular />}
                 contentAfter={
                     query ? (
@@ -132,7 +135,7 @@ export function SearchBar({
                         <Spinner size="tiny" />
                     ) : null
                 }
-                aria-label="Global search"
+                aria-label={t("search.ariaLabel")}
                 aria-expanded={showDropdown}
                 aria-controls="search-results"
                 role="combobox"
@@ -141,10 +144,12 @@ export function SearchBar({
             {showDropdown && (
                 <div className={styles.dropdown} id="search-results" role="listbox">
                     {isFetching && results.length === 0 && (
-                        <div className={styles.empty}>Searching...</div>
+                        <div className={styles.empty}>{t("search.searching")}</div>
                     )}
                     {!isFetching && results.length === 0 && (
-                        <div className={styles.empty}>No results for “{debouncedQuery}”.</div>
+                        <div className={styles.empty}>
+                            {t("search.noResults", { query: debouncedQuery })}
+                        </div>
                     )}
                     {results.map((result) => (
                         <div
