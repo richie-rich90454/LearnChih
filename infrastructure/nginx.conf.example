@@ -1,0 +1,86 @@
+# Optional nginx reverse-proxy configuration for LernChih.
+#
+# The default single-port deployment runs Spring Boot embedded Tomcat directly
+# and does NOT require nginx. Use this file only when you need TLS termination,
+# load balancing, rate limiting, or an additional caching layer in production.
+#
+# Replace ${SERVER_PORT} with the backend port from your .env file (default 8080)
+# before using this configuration. On Linux you can render it with envsubst, e.g.:
+#   export SERVER_PORT=8080
+#   envsubst '${SERVER_PORT}' < infrastructure/nginx.conf.example > /etc/nginx/sites-available/lernchih
+
+upstream lernchih_backend {
+    server localhost:${SERVER_PORT};
+    keepalive 32;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name _;
+
+    # Optional: redirect HTTP to HTTPS. Uncomment only when a valid TLS
+    # certificate is configured on the HTTPS server block below.
+    # return 301 https://$host$request_uri;
+
+    # Optional static-file serving. Uncomment if you want nginx to serve the
+    # built SPA assets directly. By default every request is forwarded to the
+    # Spring Boot backend so it can handle the SPA fallback.
+    #
+    # location /assets/ {
+    #     alias /opt/lernchih/static/assets/;
+    #     expires 1y;
+    #     add_header Cache-Control "public, immutable";
+    # }
+    #
+    # location / {
+    #     alias /opt/lernchih/static/;
+    #     try_files $uri $uri/ /index.html;
+    # }
+
+    # Default: forward everything to the Spring Boot backend.
+    location / {
+        proxy_pass http://lernchih_backend;
+        proxy_http_version 1.1;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+
+        # WebSocket support (used by Spring Boot WebSocket/STOMP endpoints).
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_read_timeout 86400;
+    }
+}
+
+# Optional HTTPS server block. Configure TLS certificates before enabling.
+# server {
+#     listen 443 ssl http2;
+#     listen [::]:443 ssl http2;
+#     server_name example.com;
+#
+#     ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+#     ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+#
+#     location / {
+#         proxy_pass http://lernchih_backend;
+#         proxy_http_version 1.1;
+#
+#         proxy_set_header Host $host;
+#         proxy_set_header X-Real-IP $remote_addr;
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#         proxy_set_header X-Forwarded-Proto $scheme;
+#         proxy_set_header X-Forwarded-Host $host;
+#         proxy_set_header X-Forwarded-Port $server_port;
+#
+#         proxy_set_header Upgrade $http_upgrade;
+#         proxy_set_header Connection "upgrade";
+#
+#         proxy_read_timeout 86400;
+#     }
+# }
