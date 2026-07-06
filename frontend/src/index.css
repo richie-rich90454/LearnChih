@@ -122,3 +122,24 @@ pre,
 .fui-Button:active {
     transform: translateY(1px);
 }
+
+/* Forced color contrast on Fluent UI v9 Select components.
+   Fluent's Select does not forward the `style` prop to the underlying
+   <select> element, so axe-core / pa11y color-contrast checks fail because
+   the native select inherits a transparent background and undefined color.
+   These rules pin explicit WCAG-compliant foreground/background colors on
+   the rendered <select> so automated accessibility audits pass while
+   keeping Fluent's layout, typography, and spacing intact. Light mode uses
+   #0E2861 (cobalt 30) on #FFFFFF (14.8:1 contrast); dark mode uses #FFFFFF
+   on #1A1A1A (17.4:1 contrast). Both pairs exceed the WCAG AAA 7:1 threshold. */
+.fui-Select .fui-Select__select {
+    color: #0E2861;
+    background-color: #FFFFFF;
+}
+
+@media (prefers-color-scheme: dark) {
+    .fui-Select .fui-Select__select {
+        color: #FFFFFF;
+        background-color: #1A1A1A;
+    }
+}
