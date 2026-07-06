@@ -2,19 +2,15 @@ import {
     makeStyles,
     tokens,
     Title2,
-    Title3,
     Subtitle2,
     Body1,
     Avatar,
     Badge,
-    Button,
     DataGrid,
     DataGridHeader,
     DataGridRow,
     DataGridCell,
     DataGridBody,
-    MessageBar,
-    MessageBarBody,
 } from "@fluentui/react-components";
 import { Trophy24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
@@ -23,6 +19,9 @@ import type { LeaderboardEntry } from "../types";
 import Seo from "../components/Seo";
 import { StaggerReveal } from "../components/StaggerReveal";
 import { SkeletonLine, SkeletonList } from "../components/Skeleton";
+import { AnimatedCounter } from "../components/AnimatedCounter";
+import { EmptyState } from "../components/EmptyState";
+import { ErrorState } from "../components/ErrorState";
 
 const useStyles = makeStyles({
     container: {
@@ -59,12 +58,20 @@ export default function LeaderboardPage() {
     }
     if (isError) {
         return (
-            <main role="alert" style={{ textAlign: "center", padding: 48 }}>
-                <Title3 as="h3">{t("leaderboard.loadError")}</Title3>
-                <p style={{ marginBottom: 12 }}>{t("errors.generic")}</p>
-                <Button appearance="primary" onClick={() => refetch()}>
-                    {t("common.retry")}
-                </Button>
+            <main className={styles.container}>
+                <Seo
+                    title={`${t("leaderboard.title")} — LernChih`}
+                    description={t("leaderboard.description")}
+                    canonicalPath="/leaderboard"
+                    hreflang
+                />
+                <ErrorState
+                    icon={<Trophy24Regular />}
+                    title={t("error.leaderboardTitle")}
+                    description={t("error.leaderboardDescription")}
+                    onRetry={() => refetch()}
+                    retryLabel={t("error.tryAgain")}
+                />
             </main>
         );
     }
@@ -85,9 +92,11 @@ export default function LeaderboardPage() {
             </div>
 
             {users.length === 0 ? (
-                <MessageBar>
-                    <MessageBarBody>{t("leaderboard.empty")}</MessageBarBody>
-                </MessageBar>
+                <EmptyState
+                    icon={<Trophy24Regular />}
+                    title={t("empty.leaderboardTitle")}
+                    description={t("empty.leaderboardDescription")}
+                />
             ) : (
                 <StaggerReveal>
                     <DataGrid
@@ -116,10 +125,12 @@ export default function LeaderboardPage() {
                                                             color="brand"
                                                             size="large"
                                                         >
-                                                            #{rank}
+                                                            <AnimatedCounter value={rank} prefix="#" />
                                                         </Badge>
                                                     ) : (
-                                                        <Body1>#{rank}</Body1>
+                                                        <Body1>
+                                                            <AnimatedCounter value={rank} prefix="#" />
+                                                        </Body1>
                                                     )}
                                                 </DataGridCell>
                                             );
@@ -149,7 +160,7 @@ export default function LeaderboardPage() {
                                             return (
                                                 <DataGridCell>
                                                     <Badge appearance="tint" color="brand">
-                                                        {item.credits ?? 0}
+                                                        <AnimatedCounter value={item.credits ?? 0} />
                                                     </Badge>
                                                 </DataGridCell>
                                             );
