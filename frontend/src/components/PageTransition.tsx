@@ -1,6 +1,13 @@
 import { useRef, type ReactNode, useLayoutEffect } from "react";
 import gsap from "gsap";
+import { CustomEase } from "gsap/CustomEase";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+
+// Register the brand ease once at module load. Both create() and
+// registerPlugin() are idempotent, so importing this module multiple times
+// (e.g. under React StrictMode) is safe.
+gsap.registerPlugin(CustomEase);
+CustomEase.create("lernchih-brand", "0.16, 1, 0.3, 1");
 
 interface PageTransitionProps {
     children: ReactNode;
@@ -8,14 +15,16 @@ interface PageTransitionProps {
 }
 
 /**
- * Wraps routed page content with a subtle fade/slide enter animation.
- * Exit animation is intentionally omitted to keep React Router navigation
- * snappy; the enter animation provides the motion "sugar" without blocking
- * the UI.
+ * Wraps routed page content with a subtle fade + 8px translate-y enter
+ * animation timed to the brand motion tokens (280ms, brand ease
+ * `cubic-bezier(0.16, 1, 0.3, 1)`). Exit animation is intentionally omitted
+ * to keep React Router navigation snappy; the enter animation provides the
+ * motion "sugar" without blocking the UI. Disabled (instant) under
+ * prefers-reduced-motion.
  *
- * The initial opacity is set by GSAP (not a React inline style) so that
- * re-renders cannot reset the element back to opacity:0 after the animation
- * has completed, which previously left pages visually blank.
+ * The initial opacity/transform is set by GSAP (not a React inline style)
+ * so that re-renders cannot reset the element back to opacity:0 after the
+ * animation has completed, which previously left pages visually blank.
  */
 export function PageTransition({ children, className }: PageTransitionProps) {
     const reduced = useReducedMotion();
@@ -28,13 +37,12 @@ export function PageTransition({ children, className }: PageTransitionProps) {
         const ctx = gsap.context(() => {
             gsap.fromTo(
                 container,
-                { opacity: 0, y: 12, scale: 0.985 },
+                { opacity: 0, y: 8 },
                 {
                     opacity: 1,
                     y: 0,
-                    scale: 1,
-                    duration: 0.45,
-                    ease: "power3.out",
+                    duration: 0.28,
+                    ease: "lernchih-brand",
                     force3D: true,
                 },
             );

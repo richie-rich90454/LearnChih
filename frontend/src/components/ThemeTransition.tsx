@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { CustomEase } from "gsap/CustomEase";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+
+// Register the brand ease once at module load. Idempotent — safe under
+// StrictMode double-invoke and shared with PageTransition.
+gsap.registerPlugin(CustomEase);
+CustomEase.create("lernchih-brand", "0.16, 1, 0.3, 1");
 
 interface ThemeTransitionProps {
     mode: "light" | "dark";
@@ -10,8 +16,10 @@ interface ThemeTransitionProps {
 
 /**
  * Renders a circular clip-path reveal when the theme changes.
- * The circle expands from the click/toggle origin to fill the viewport,
- * then is removed. Disabled under reduced motion.
+ * The circle expands from the click/toggle origin (provided by
+ * useThemeStore via main.tsx) to fill the viewport over 480ms with the
+ * brand ease, then is removed. Disabled under reduced motion (instant
+ * color swap).
  */
 export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps) {
     const reduced = useReducedMotion();
@@ -47,8 +55,8 @@ export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps
 
             gsap.to(el, {
                 clipPath: `circle(${maxRadius * 1.25}px at ${cx}px ${cy}px)`,
-                duration: 0.45,
-                ease: "power3.inOut",
+                duration: 0.48,
+                ease: "lernchih-brand",
                 force3D: true,
                 onComplete: () => {
                     gsap.set(el, { clipPath: "none" });
