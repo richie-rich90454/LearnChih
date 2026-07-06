@@ -11,11 +11,12 @@ import {
     Dropdown,
     Option,
 } from "@fluentui/react-components";
-import { ArrowLeft24Regular } from "@fluentui/react-icons";
+import { ArrowLeft24Regular, QuestionCircle24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useQuizzes } from "../hooks/useQuizzes";
 import QuizWidget from "../components/QuizWidget";
 import Seo from "../components/Seo";
+import { EmptyState } from "../components/EmptyState";
 
 const useStyles = makeStyles({
     container: {
@@ -78,9 +79,19 @@ export default function QuizPage() {
 
             {isLoading && <Spinner label={t("quizzes.loadingQuizzes")} />}
 
+            {!isLoading && !selectedQuizId && (!quizzes || quizzes.length === 0) && (
+                <EmptyState
+                    icon={<QuestionCircle24Regular />}
+                    title={t("empty.quizzesTitle")}
+                    description={t("empty.quizzesDescription")}
+                />
+            )}
+
             {!isLoading &&
                 !selectedQuizId &&
-                quizzes?.map((quiz) => (
+                quizzes &&
+                quizzes.length > 0 &&
+                quizzes.map((quiz) => (
                     <Card
                         key={quiz.id}
                         className={styles.quizCard}
