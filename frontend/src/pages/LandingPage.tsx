@@ -195,6 +195,7 @@ const useStyles = makeStyles({
         margin: `${tokens.spacingVerticalXXL} 0 0`,
         padding: `${tokens.spacingVerticalXXXL} ${tokens.spacingHorizontalXL}`,
         backgroundImage: "linear-gradient(135deg, #0E3BC4 0%, #1E4FD8 100%)",
+        backgroundColor: "#1E4FD8",
         color: "#FFFFFF",
         display: "flex",
         flexDirection: "column",
@@ -205,10 +206,6 @@ const useStyles = makeStyles({
         "@media (max-width: 768px)": {
             padding: `${tokens.spacingVerticalXXL} ${tokens.spacingHorizontalL}`,
         },
-    },
-    ctaHeading: {
-        color: "#FFFFFF",
-        margin: 0,
     },
 });
 
@@ -451,7 +448,14 @@ export default function LandingPage() {
             {/* Section 5: Full-width CTA band */}
             <section className={`${styles.contained} ${styles.sectionSpacer}`}>
                 <div className={styles.ctaBand}>
-                    <Title1 as="h2" className={styles.ctaHeading}>
+                    <Title1
+                        as="h2"
+                        style={{
+                            color: "#FFFFFF",
+                            margin: 0,
+                            backgroundColor: "#1E4FD8",
+                        }}
+                    >
                         {t("landing.ctaHeading")}
                     </Title1>
                     <Button
