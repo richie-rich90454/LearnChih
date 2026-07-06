@@ -243,8 +243,8 @@ export default function AppLayout() {
                     <Caption1
                         className={styles.sectionLabel}
                         style={{
-                            color: tokens.colorNeutralForeground2,
-                            backgroundColor: tokens.colorNeutralBackground1,
+                            color: "#424242",
+                            backgroundColor: "#FFFFFF",
                         }}
                     >
                         {t(section.labelKey)}
