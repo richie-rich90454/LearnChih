@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { makeStyles, tokens, Title2, Body1, Card, Button, Badge } from "@fluentui/react-components";
-import { Dismiss24Regular } from "@fluentui/react-icons";
+import { Dismiss24Regular, Bookmark24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useBookmarkStore } from "../store/bookmarkStore";
 import Seo from "../components/Seo";
+import { EmptyState } from "../components/EmptyState";
 
 const useStyles = makeStyles({
     container: {
@@ -49,7 +50,21 @@ export default function BookmarksPage() {
                 canonicalPath="/bookmarks"
             />
             <Title2 as="h1">{t("bookmarks.title")}</Title2>
-            {items.length === 0 && <Body1 className={styles.empty}>{t("bookmarks.empty")}</Body1>}
+            {items.length === 0 ? (
+                <EmptyState
+                    icon={<Bookmark24Regular />}
+                    title={t("empty.bookmarksTitle")}
+                    description={t("empty.bookmarksDescription")}
+                    action={
+                        <Button
+                            appearance="primary"
+                            onClick={() => navigate("/resources")}
+                        >
+                            {t("empty.bookmarksAction")}
+                        </Button>
+                    }
+                />
+            ) : (
             <div className={styles.list}>
                 {items.map((item) => (
                     <Card
@@ -75,6 +90,7 @@ export default function BookmarksPage() {
                     </Card>
                 ))}
             </div>
+            )}
         </main>
     );
 }
