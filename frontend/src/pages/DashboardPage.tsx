@@ -8,8 +8,6 @@ import {
     Card,
     Badge,
     Button,
-    MessageBar,
-    MessageBarBody,
 } from "@fluentui/react-components";
 import {
     Document24Regular,
@@ -27,6 +25,8 @@ import { SkeletonLine, SkeletonList } from "@/components/Skeleton";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { StaggerReveal } from "@/components/StaggerReveal";
 import { HoverLift } from "@/components/HoverLift";
+import { EmptyState } from "@/components/EmptyState";
+import { ErrorState } from "@/components/ErrorState";
 
 const useStyles = makeStyles({
     container: {
@@ -130,18 +130,22 @@ export default function DashboardPage() {
 
     if (profileError || resourcesError) {
         return (
-            <div role="alert" style={{ textAlign: "center", padding: 48 }}>
-                <Title3 as="h3">{t("dashboard.loadError")}</Title3>
-                <p style={{ marginBottom: 12 }}>{t("errors.generic")}</p>
-                <Button
-                    appearance="primary"
-                    onClick={() => {
+            <div className={styles.container}>
+                <Seo
+                    title={`${t("nav.dashboard")} — LernChih`}
+                    description={t("dashboard.description")}
+                    canonicalPath="/"
+                    hreflang
+                />
+                <ErrorState
+                    title={t("error.dashboardTitle")}
+                    description={t("error.dashboardDescription")}
+                    onRetry={() => {
                         refetchProfile();
                         refetchResources();
                     }}
-                >
-                    {t("errors.retry")}
-                </Button>
+                    retryLabel={t("error.tryAgain")}
+                />
             </div>
         );
     }
@@ -250,9 +254,20 @@ export default function DashboardPage() {
                     {t("dashboard.recentResources")}
                 </Title3>
                 {recentResources.length === 0 ? (
-                    <MessageBar>
-                        <MessageBarBody>{t("dashboard.noResources")}</MessageBarBody>
-                    </MessageBar>
+                    <EmptyState
+                        icon={<Document24Regular />}
+                        title={t("empty.dashboardTitle")}
+                        description={t("empty.dashboardDescription")}
+                        action={
+                            <Button
+                                appearance="primary"
+                                icon={<ArrowRight24Regular />}
+                                onClick={() => navigate("/resources")}
+                            >
+                                {t("empty.bookmarksAction")}
+                            </Button>
+                        }
+                    />
                 ) : (
                     <StaggerReveal className={styles.recentGrid}>
                         {recentResources.map((resource) => (
