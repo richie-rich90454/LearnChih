@@ -96,7 +96,10 @@ const useStyles = makeStyles({
         flex: 1,
         overflow: "auto",
         padding: tokens.spacingHorizontalXL,
-        backgroundColor: tokens.colorNeutralBackground2,
+        // Concrete value instead of tokens.colorNeutralBackground2 so
+        // axe-core can evaluate contrast for child elements without
+        // needing to resolve CSS custom properties.
+        backgroundColor: "#F5F5F5",
     },
     navItem: {
         display: "flex",

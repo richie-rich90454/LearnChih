@@ -136,13 +136,13 @@ pre,
    runtime that set color/background-color on the same element; without it,
    source-order ties can let Griffel's theme-derived colors win and fail
    the contrast check. */
-.fui-Select .fui-Select__select {
+.fui-Select__select {
     color: #0E2861 !important;
     background-color: #FFFFFF !important;
 }
 
 @media (prefers-color-scheme: dark) {
-    .fui-Select .fui-Select__select {
+    .fui-Select__select {
         color: #FFFFFF !important;
         background-color: #1A1A1A !important;
     }
@@ -163,6 +163,41 @@ nav .fui-Button .fui-Text {
 
 @media (prefers-color-scheme: dark) {
     nav .fui-Button .fui-Text {
+        color: #FFFFFF !important;
+    }
+}
+
+/* Forced color contrast on Fluent UI v9 Input, Label, and Spinner elements.
+   axe-core's color-contrast rule cannot resolve CSS custom properties
+   (var(--colorXxx)) set by FluentProvider via Griffel. This causes false
+   positives on any element whose color or background-color is derived from
+   a theme token. These rules pin concrete WCAG-compliant values on the
+   most common form elements so automated accessibility audits pass.
+   Values match Fluent v9 light-mode defaults; dark-mode overrides follow. */
+.fui-Input__input {
+    color: #242424 !important;
+    background-color: #FFFFFF !important;
+}
+
+.fui-Label {
+    color: #242424 !important;
+}
+
+.fui-Spinner__label {
+    color: #242424 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .fui-Input__input {
+        color: #FFFFFF !important;
+        background-color: #1A1A1A !important;
+    }
+
+    .fui-Label {
+        color: #FFFFFF !important;
+    }
+
+    .fui-Spinner__label {
         color: #FFFFFF !important;
     }
 }
