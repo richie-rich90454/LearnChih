@@ -137,6 +137,8 @@
         "searchPlaceholder": "Search resources...",
         "category": "Category",
         "subject": "Subject",
+        "allCategories": "All Categories",
+        "allSubjects": "All Subjects",
         "type": "Type",
         "file": "File",
         "url": "URL",
