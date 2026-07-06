@@ -8,7 +8,16 @@
         "admin": "Admin",
         "login": "Login",
         "logout": "Logout",
-        "register": "Register"
+        "register": "Register",
+        "flashcards": "Flashcards",
+        "quizzes": "Quizzes",
+        "studyGroups": "Study Groups",
+        "moderation": "Moderation",
+        "sections": {
+            "main": "Main",
+            "learning": "Learning",
+            "account": "Account"
+        }
     },
     "common": {
         "loading": "Loading...",
@@ -332,7 +341,12 @@
         "feeds": "Feeds:",
         "rss": "RSS",
         "atom": "Atom",
-        "apiDocs": "API Docs"
+        "apiDocs": "API Docs",
+        "tagline": "Learn together, grow faster.",
+        "copyright": "© 2026 LernChih. All rights reserved.",
+        "privacy": "Privacy",
+        "terms": "Terms",
+        "cookiePreferences": "Cookie Preferences"
     },
     "oauth": {
         "or": "or",

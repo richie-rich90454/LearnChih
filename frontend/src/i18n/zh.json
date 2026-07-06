@@ -8,7 +8,16 @@
         "admin": "管理",
         "login": "登录",
         "logout": "退出",
-        "register": "注册"
+        "register": "注册",
+        "flashcards": "抽认卡",
+        "quizzes": "测验",
+        "studyGroups": "学习小组",
+        "moderation": "内容审核",
+        "sections": {
+            "main": "主要",
+            "learning": "学习",
+            "account": "账户"
+        }
     },
     "common": {
         "loading": "加载中...",
@@ -318,7 +327,12 @@
         "feeds": "订阅：",
         "rss": "RSS",
         "atom": "Atom",
-        "apiDocs": "API 文档"
+        "apiDocs": "API 文档",
+        "tagline": "一起学习，更快成长。",
+        "copyright": "© 2026 LernChih. 保留所有权利。",
+        "privacy": "隐私",
+        "terms": "条款",
+        "cookiePreferences": "Cookie 偏好设置"
     },
     "oauth": {
         "or": "或",
