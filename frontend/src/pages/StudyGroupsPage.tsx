@@ -8,9 +8,9 @@ import {
     Badge,
     Button,
     Spinner,
-    MessageBar,
-    MessageBarBody,
 } from "@fluentui/react-components";
+import { PeopleCommunity24Regular } from "@fluentui/react-icons";
+import { useTranslation } from "react-i18next";
 import {
     getStudyGroups,
     joinStudyGroup,
@@ -19,6 +19,8 @@ import {
 } from "../api/studyGroups";
 import Seo from "../components/Seo";
 import { CreateStudyGroupDialog } from "../components/CreateStudyGroupDialog";
+import { EmptyState } from "../components/EmptyState";
+import { ErrorState } from "../components/ErrorState";
 
 const useStyles = makeStyles({
     container: {
@@ -54,6 +56,7 @@ const useStyles = makeStyles({
 
 export default function StudyGroupsPage() {
     const styles = useStyles();
+    const { t } = useTranslation();
     const { data, isLoading, isError, refetch } = useQuery<StudyGroup[]>({
         queryKey: ["studyGroups"],
         queryFn: () => getStudyGroups().then((r) => r.data),
@@ -85,14 +88,20 @@ export default function StudyGroupsPage() {
 
             {isLoading && <Spinner label="Loading study groups..." />}
             {isError && (
-                <MessageBar intent="error">
-                    <MessageBarBody>Failed to load study groups.</MessageBarBody>
-                </MessageBar>
+                <ErrorState
+                    icon={<PeopleCommunity24Regular />}
+                    title={t("error.studyGroupsTitle")}
+                    description={t("error.studyGroupsDescription")}
+                    onRetry={() => refetch()}
+                    retryLabel={t("error.tryAgain")}
+                />
             )}
-            {!isLoading && groups.length === 0 && (
-                <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                    No study groups yet. Create the first one!
-                </Body1>
+            {!isLoading && !isError && groups.length === 0 && (
+                <EmptyState
+                    icon={<PeopleCommunity24Regular />}
+                    title={t("empty.studyGroupsTitle")}
+                    description={t("empty.studyGroupsDescription")}
+                />
             )}
 
             <div className={styles.grid}>
