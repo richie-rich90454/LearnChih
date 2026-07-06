@@ -17,6 +17,13 @@ import App from "./App";
 import { useThemeStore } from "./hooks/useThemeStore";
 import { ThemeTransition } from "./components/ThemeTransition";
 
+// Global stylesheet: resets, @font-face for self-hosted Geist, :root design
+// tokens (--font-sans, --motion-*, --radius-*), prefers-reduced-motion override,
+// and axe-core/pa11y color-contrast overrides for Fluent UI v9 elements
+// (Select, Input, Label, Spinner, nav buttons). Without this import, none of
+// those rules are loaded in the production build.
+import "./index.css";
+
 function ThemedApp() {
     const mode = useThemeStore((s) => s.mode);
     const origin = useThemeStore((s) => s.origin);
