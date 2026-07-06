@@ -11,6 +11,15 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-sans);
+    /* Concrete background so axe-core always has an opaque backdrop
+       even if all child elements have transparent backgrounds. */
+    background-color: #FFFFFF;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1A1A1A;
+    }
 }
 
 #root {
