@@ -11,11 +11,12 @@ import {
     Dropdown,
     Option,
 } from "@fluentui/react-components";
-import { ArrowLeft24Regular } from "@fluentui/react-icons";
+import { ArrowLeft24Regular, Sparkle24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useDecks } from "../hooks/useFlashcards";
 import FlashcardDeck from "../components/FlashcardDeck";
 import Seo from "../components/Seo";
+import { EmptyState } from "../components/EmptyState";
 
 const useStyles = makeStyles({
     container: {
@@ -85,9 +86,19 @@ export default function FlashcardsPage() {
 
             {isLoading && <Spinner label={t("flashcards.loadingDecks")} />}
 
+            {!isLoading && !selectedDeckId && (!decks || decks.length === 0) && (
+                <EmptyState
+                    icon={<Sparkle24Regular />}
+                    title={t("empty.flashcardsTitle")}
+                    description={t("empty.flashcardsDescription")}
+                />
+            )}
+
             {!isLoading &&
                 !selectedDeckId &&
-                decks?.map((deck) => (
+                decks &&
+                decks.length > 0 &&
+                decks.map((deck) => (
                     <Card
                         key={deck.id}
                         className={styles.deckCard}
