@@ -33,6 +33,7 @@ import {
     Link24Regular,
     Bookmark24Regular,
     Bookmark24Filled,
+    Document24Regular,
 } from "@fluentui/react-icons";
 import { useResources, useCreateResource } from "@/hooks/useResources";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -43,6 +44,8 @@ import { Pagination } from "@/components/Pagination";
 import { TagList } from "@/components/TagBadge";
 import { StaggerReveal } from "@/components/StaggerReveal";
 import { HoverLift } from "@/components/HoverLift";
+import { EmptyState } from "@/components/EmptyState";
+import { ErrorState } from "@/components/ErrorState";
 import { useBookmarkStore } from "@/store/bookmarkStore";
 import useAuthStore from "@/store/authStore";
 
@@ -137,7 +140,7 @@ export default function ResourcesPage() {
     if (categoryFilter) params.category = categoryFilter;
     if (subjectFilter) params.subject = subjectFilter;
 
-    const { data, isLoading, isError } = useResources(params);
+    const { data, isLoading, isError, refetch } = useResources(params);
     const createMutation = useCreateResource();
     const { isAuthenticated } = useAuthStore();
     const authenticated = isAuthenticated();
@@ -461,20 +464,38 @@ export default function ResourcesPage() {
             {/* Resources grid */}
             {isLoading && <Spinner label={t("common.loading")} />}
             {isError && (
-                <MessageBar intent="error">
-                    <MessageBarBody>{t("resources.loadError")}</MessageBarBody>
-                </MessageBar>
+                <ErrorState
+                    icon={<Document24Regular />}
+                    title={t("error.resourcesTitle")}
+                    description={t("error.resourcesDescription")}
+                    onRetry={() => refetch()}
+                    retryLabel={t("error.tryAgain")}
+                />
             )}
-            {!isLoading && resources.length === 0 && (
-                <MessageBar>
-                    <MessageBarBody>{t("resources.noResources")}</MessageBarBody>
-                </MessageBar>
+            {!isLoading && !isError && resources.length === 0 && (
+                <EmptyState
+                    icon={<Document24Regular />}
+                    title={t("empty.resourcesTitle")}
+                    description={t("empty.resourcesDescription")}
+                    action={
+                        authenticated ? (
+                            <Button
+                                appearance="primary"
+                                icon={<Add24Regular />}
+                                onClick={() => setDialogOpen(true)}
+                            >
+                                {t("empty.resourcesAction")}
+                            </Button>
+                        ) : undefined
+                    }
+                />
             )}
             {/* TODO(perf): When resource counts exceed ~100 items, introduce list
           virtualization (e.g. react-window / react-virtual) to avoid
           rendering off-screen DOM nodes. Not added now to keep the change
           dependency-free. Keys are already stable (resource.id). */}
-            <StaggerReveal className={styles.grid}>
+            {!isLoading && !isError && resources.length > 0 && (
+                <StaggerReveal className={styles.grid}>
                 {paginatedResources.map((resource) => (
                     <HoverLift key={resource.id}>
                         <article>
@@ -551,6 +572,7 @@ export default function ResourcesPage() {
                     </HoverLift>
                 ))}
             </StaggerReveal>
+            )}
 
             <Pagination
                 currentPage={currentPage}
