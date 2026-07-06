@@ -5,6 +5,7 @@ import {
     tokens,
     Avatar,
     Button,
+    Caption1,
     Drawer,
     DrawerHeader,
     DrawerBody,
@@ -26,11 +27,17 @@ import {
     Person24Regular,
     Shield24Regular,
     SignOut24Regular,
+    SlideLayout24Regular,
+    QuestionCircle24Regular,
+    PeopleTeam24Regular,
+    WeatherMoon24Regular,
+    WeatherSunny24Regular,
 } from "@fluentui/react-icons";
 import useAuthStore from "@/store/authStore";
 import { useDir } from "@/hooks/useDir";
 import { useTranslation } from "react-i18next";
 import { useThemeStore } from "@/hooks/useThemeStore";
+import { LogoFull } from "@/components/Logo";
 import { SearchBar } from "./SearchBar";
 import NotificationBell from "./NotificationBell";
 import Footer from "./Footer";
@@ -39,6 +46,11 @@ interface NavItem {
     path: string;
     label: string;
     icon: React.ReactNode;
+}
+
+interface NavSection {
+    labelKey: string;
+    items: NavItem[];
 }
 
 const useStyles = makeStyles({
@@ -92,9 +104,32 @@ const useStyles = makeStyles({
         gap: tokens.spacingHorizontalM,
         width: "100%",
         textAlign: "left",
+        justifyContent: "flex-start",
+        padding: `10px ${tokens.spacingHorizontalL}`,
+        borderLeft: `3px solid transparent`,
     },
     navItemActive: {
-        backgroundColor: tokens.colorNeutralBackground1Selected,
+        borderLeft: `3px solid ${tokens.colorBrandBackground}`,
+        backgroundColor: tokens.colorBrandBackground2,
+    },
+    navContainer: {
+        display: "flex",
+        flexDirection: "column",
+        gap: tokens.spacingVerticalS,
+    },
+    navSection: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "2px",
+    },
+    sectionLabel: {
+        color: tokens.colorNeutralForeground3,
+        padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalL} ${tokens.spacingVerticalXXS}`,
+    },
+    logoButton: {
+        padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalS}`,
+        minHeight: "0",
+        alignSelf: "flex-start",
     },
     mobileMenuButton: {
         display: "none",
@@ -130,15 +165,45 @@ const PUBLIC_NAV_PATHS = new Set([
     "/api-docs",
 ]);
 
-const getNavItems = (t: (key: string) => string, authenticated: boolean): NavItem[] => {
-    const all: NavItem[] = [
+const getNavSections = (
+    t: (key: string) => string,
+    authenticated: boolean,
+    isAdmin: boolean,
+): NavSection[] => {
+    const mainItems: NavItem[] = [
         { path: "/dashboard", label: t("nav.dashboard"), icon: <Home24Regular /> },
         { path: "/resources", label: t("nav.resources"), icon: <Document24Regular /> },
         { path: "/channels", label: t("nav.channels"), icon: <Chat24Regular /> },
         { path: "/leaderboard", label: t("nav.leaderboard"), icon: <Trophy24Regular /> },
+    ];
+    const learningItems: NavItem[] = [
+        { path: "/flashcards", label: t("nav.flashcards"), icon: <SlideLayout24Regular /> },
+        { path: "/quizzes", label: t("nav.quizzes"), icon: <QuestionCircle24Regular /> },
+        { path: "/study-groups", label: t("nav.studyGroups"), icon: <PeopleTeam24Regular /> },
+    ];
+    const accountItems: NavItem[] = [
         { path: "/profile", label: t("nav.profile"), icon: <Person24Regular /> },
     ];
-    return authenticated ? all : all.filter((item) => PUBLIC_NAV_PATHS.has(item.path));
+
+    const filterPublic = (items: NavItem[]) =>
+        authenticated ? items : items.filter((item) => PUBLIC_NAV_PATHS.has(item.path));
+
+    const sections: NavSection[] = [];
+    const main = filterPublic(mainItems);
+    if (main.length > 0) {
+        sections.push({ labelKey: "nav.sections.main", items: main });
+    }
+    if (authenticated) {
+        sections.push({ labelKey: "nav.sections.learning", items: learningItems });
+        const account: NavItem[] = isAdmin
+            ? [
+                  ...accountItems,
+                  { path: "/admin", label: t("nav.moderation"), icon: <Shield24Regular /> },
+              ]
+            : accountItems;
+        sections.push({ labelKey: "nav.sections.account", items: account });
+    }
+    return sections;
 };
 
 export default function AppLayout() {
@@ -170,33 +235,26 @@ export default function AppLayout() {
         return location.pathname.startsWith(path);
     };
 
-    const navItems = getNavItems(t, authenticated);
+    const navSections = getNavSections(t, authenticated, isAdmin);
 
     const NavLinks = () => (
         <>
-            {navItems.map((item) => (
-                <Button
-                    key={item.path}
-                    appearance="subtle"
-                    className={`${styles.navItem} ${isActive(item.path) ? styles.navItemActive : ""}`}
-                    onClick={() => handleNav(item.path)}
-                    style={{ justifyContent: "flex-start", padding: "10px 16px" }}
-                >
-                    {item.icon}
-                    <Text>{item.label}</Text>
-                </Button>
+            {navSections.map((section) => (
+                <div key={section.labelKey} className={styles.navSection}>
+                    <Caption1 className={styles.sectionLabel}>{t(section.labelKey)}</Caption1>
+                    {section.items.map((item) => (
+                        <Button
+                            key={item.path}
+                            appearance="subtle"
+                            className={`${styles.navItem} ${isActive(item.path) ? styles.navItemActive : ""}`}
+                            onClick={() => handleNav(item.path)}
+                        >
+                            {item.icon}
+                            <Text>{item.label}</Text>
+                        </Button>
+                    ))}
+                </div>
             ))}
-            {isAdmin && (
-                <Button
-                    appearance="subtle"
-                    className={`${styles.navItem} ${isActive("/admin") ? styles.navItemActive : ""}`}
-                    onClick={() => handleNav("/admin")}
-                    style={{ justifyContent: "flex-start", padding: "10px 16px" }}
-                >
-                    <Shield24Regular />
-                    <Text>{t("nav.admin")}</Text>
-                </Button>
-            )}
         </>
     );
 
@@ -210,13 +268,17 @@ export default function AppLayout() {
             <aside className={styles.desktopDrawer} aria-label={t("a11y.sidebar")}>
                 <InlineDrawer open position="start" size="small">
                     <DrawerHeader>
-                        <Title3>LernChih</Title3>
+                        <Button
+                            appearance="subtle"
+                            className={styles.logoButton}
+                            onClick={() => navigate(authenticated ? "/dashboard" : "/")}
+                            aria-label="LernChih"
+                        >
+                            <LogoFull size={28} title="LernChih" />
+                        </Button>
                     </DrawerHeader>
                     <DrawerBody>
-                        <nav
-                            aria-label={t("a11y.mainNavigation")}
-                            style={{ display: "flex", flexDirection: "column", gap: "4px" }}
-                        >
+                        <nav aria-label={t("a11y.mainNavigation")} className={styles.navContainer}>
                             <NavLinks />
                         </nav>
                     </DrawerBody>
@@ -231,13 +293,17 @@ export default function AppLayout() {
                 onOpenChange={(_: unknown, data: { open: boolean }) => setMobileOpen(data.open)}
             >
                 <DrawerHeader>
-                    <Title3>LernChih</Title3>
+                    <Button
+                        appearance="subtle"
+                        className={styles.logoButton}
+                        onClick={() => navigate(authenticated ? "/dashboard" : "/")}
+                        aria-label="LernChih"
+                    >
+                        <LogoFull size={28} title="LernChih" />
+                    </Button>
                 </DrawerHeader>
                 <DrawerBody>
-                    <nav
-                        aria-label={t("a11y.mainNavigation")}
-                        style={{ display: "flex", flexDirection: "column", gap: "4px" }}
-                    >
+                    <nav aria-label={t("a11y.mainNavigation")} className={styles.navContainer}>
                         <NavLinks />
                     </nav>
                 </DrawerBody>
@@ -272,8 +338,9 @@ export default function AppLayout() {
                                 // syncDocumentLang in i18n/index.ts already persists
                                 // the choice to localStorage; no need to duplicate here.
                             }}
+                            aria-label={t("language.label")}
                         >
-                            {t("language.toggle")}
+                            {i18n.language.startsWith("zh") ? "中" : "EN"}
                         </Button>
                         <Button
                             appearance="subtle"
@@ -288,7 +355,7 @@ export default function AppLayout() {
                             }}
                             aria-label={t("theme.toggle")}
                         >
-                            {mode === "light" ? "🌙" : "☀️"}
+                            {mode === "light" ? <WeatherMoon24Regular /> : <WeatherSunny24Regular />}
                         </Button>
                         {authenticated ? (
                             <Menu>
