@@ -65,7 +65,12 @@ const useStyles = makeStyles({
         justifyContent: "space-between",
         padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalL}`,
         borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-        backgroundColor: tokens.colorNeutralBackground1,
+        // Concrete background for axe-core; dark mode override ensures
+        // header text/buttons pass contrast on dark background.
+        backgroundColor: "#FFFFFF",
+        "@media (prefers-color-scheme: dark)": {
+            backgroundColor: "#1A1A1A",
+        },
         minHeight: "56px",
     },
     headerLeft: {
@@ -98,8 +103,13 @@ const useStyles = makeStyles({
         padding: tokens.spacingHorizontalXL,
         // Concrete value instead of tokens.colorNeutralBackground2 so
         // axe-core can evaluate contrast for child elements without
-        // needing to resolve CSS custom properties.
+        // needing to resolve CSS custom properties. Dark mode override
+        // uses #1A1A1A (Fluent v9 dark-mode colorNeutralBackground2)
+        // so white text on the dark background passes WCAG AAA.
         backgroundColor: "#F5F5F5",
+        "@media (prefers-color-scheme: dark)": {
+            backgroundColor: "#1A1A1A",
+        },
     },
     navItem: {
         display: "flex",
@@ -122,7 +132,11 @@ const useStyles = makeStyles({
         // Concrete white background so axe-core can evaluate contrast for
         // child elements (nav items, section labels) without needing to
         // resolve CSS custom properties on ancestor FluentProvider.
+        // Dark mode override uses #1A1A1A so white text passes contrast.
         backgroundColor: "#FFFFFF",
+        "@media (prefers-color-scheme: dark)": {
+            backgroundColor: "#1A1A1A",
+        },
     },
     navSection: {
         display: "flex",
@@ -131,6 +145,14 @@ const useStyles = makeStyles({
     },
     sectionLabel: {
         padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalL} ${tokens.spacingVerticalXXS}`,
+        // Concrete values for axe-core; dark mode overrides so the label
+        // stays readable on the dark navContainer background.
+        color: "#424242",
+        backgroundColor: "#FFFFFF",
+        "@media (prefers-color-scheme: dark)": {
+            color: "#FFFFFF",
+            backgroundColor: "#1A1A1A",
+        },
     },
     logoButton: {
         padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalS}`,
@@ -249,10 +271,6 @@ export default function AppLayout() {
                 <div key={section.labelKey} className={styles.navSection}>
                     <Caption1
                         className={styles.sectionLabel}
-                        style={{
-                            color: "#424242",
-                            backgroundColor: "#FFFFFF",
-                        }}
                     >
                         {t(section.labelKey)}
                     </Caption1>
