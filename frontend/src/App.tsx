@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation, useOutlet } from "react-router-dom";
-import { Spinner, Toaster, makeStyles } from "@fluentui/react-components";
+import { Toaster } from "@fluentui/react-components";
 import RequireAuth from "./components/RequireAuth";
 import AppLayout from "./components/AppLayout";
 import CookieConsent from "./components/CookieConsent";
@@ -9,6 +9,7 @@ import { UpdatePrompt } from "./components/UpdatePrompt";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { CommandPalette, useCommandPaletteShortcut } from "./components/CommandPalette";
 import { PageTransition } from "./components/PageTransition";
+import { RouteSkeleton } from "./components/RouteSkeletons";
 import { prefetchRoute } from "./hooks/useRoutePrefetch";
 import { useRouteAnnouncer } from "./hooks/useRouteAnnouncer";
 
@@ -36,24 +37,13 @@ const BookmarksPage = lazy(() => import("./pages/BookmarksPage"));
 const StudyGroupsPage = lazy(() => import("./pages/StudyGroupsPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
-const useStyles = makeStyles({
-    loadingContainer: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-    },
-});
-
 function LoadingFallback() {
-    const styles = useStyles();
-    // Do not call useTranslation here: this component is a Suspense fallback,
-    // so it must render synchronously without suspending itself.
-    return (
-        <div className={styles.loadingContainer}>
-            <Spinner size="large" label="Loading..." />
-        </div>
-    );
+    // useLocation is safe here: this fallback renders inside <BrowserRouter>,
+    // so we can read the destination pathname and pick a matching skeleton.
+    // Do not call useTranslation: this is a Suspense fallback and must render
+    // synchronously without suspending itself.
+    const location = useLocation();
+    return <RouteSkeleton pathname={location.pathname} />;
 }
 
 function RouteAnnouncer() {
