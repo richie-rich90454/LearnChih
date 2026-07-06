@@ -123,8 +123,6 @@ const useStyles = makeStyles({
         gap: "2px",
     },
     sectionLabel: {
-        color: tokens.colorNeutralForeground2,
-        backgroundColor: tokens.colorNeutralBackground1,
         padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalL} ${tokens.spacingVerticalXXS}`,
     },
     logoButton: {
@@ -242,7 +240,15 @@ export default function AppLayout() {
         <>
             {navSections.map((section) => (
                 <div key={section.labelKey} className={styles.navSection}>
-                    <Caption1 className={styles.sectionLabel}>{t(section.labelKey)}</Caption1>
+                    <Caption1
+                        className={styles.sectionLabel}
+                        style={{
+                            color: tokens.colorNeutralForeground2,
+                            backgroundColor: tokens.colorNeutralBackground1,
+                        }}
+                    >
+                        {t(section.labelKey)}
+                    </Caption1>
                     {section.items.map((item) => (
                         <Button
                             key={item.path}
