@@ -1,4 +1,5 @@
 import { makeStyles, tokens } from "@fluentui/react-components";
+import { motion, useReducedMotion } from "motion/react";
 
 export interface LogoMarkProps {
     /** Size in pixels for both width and height of the mark. Default 32. */
@@ -111,5 +112,57 @@ export function LogoFull({ size = 28, className, title }: LogoFullProps) {
                 LernChih
             </span>
         </span>
+    );
+}
+
+/**
+ * The LernChih brand mark with an animated stroke-draw effect. On first
+ * viewport entry, the "L" path is drawn via stroke-dashoffset, then a cobalt
+ * fill fades in. Respects prefers-reduced-motion by rendering the fully-drawn
+ * mark immediately. The cobalt stroke/fill shifts tone under dark mode via the
+ * same `prefers-color-scheme` rule used by `LogoMark`.
+ */
+export function LogoMarkAnimated({ size = 48, className, title }: LogoMarkProps) {
+    const reduced = useReducedMotion();
+    const styles = useLogoStyles();
+    const merged = className ? `${styles.cobalt} ${className}` : styles.cobalt;
+    const isDecorative = !title;
+
+    if (reduced) {
+        return (
+            <MarkSvg size={size} fill="currentColor" className={merged} title={title} />
+        );
+    }
+
+    return (
+        <svg
+            width={size}
+            height={size}
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            className={merged}
+            role={isDecorative ? undefined : "img"}
+            aria-hidden={isDecorative ? true : undefined}
+            aria-label={isDecorative ? undefined : title}
+            focusable={false}
+        >
+            {title ? <title>{title}</title> : null}
+            <motion.path
+                d={MARK_PATH}
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray={200}
+                initial={{ strokeDashoffset: 200, fillOpacity: 0 }}
+                whileInView={{ strokeDashoffset: 0, fillOpacity: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                    strokeDashoffset: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
+                    fillOpacity: { duration: 0.4, delay: 1.0, ease: [0.16, 1, 0.3, 1] },
+                }}
+            />
+        </svg>
     );
 }
