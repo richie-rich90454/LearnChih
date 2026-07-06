@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import Seo from "@/components/Seo";
 import { MagneticButton } from "@/components/MagneticButton";
 import { LogoWall } from "@/components/LogoWall";
+import { LogoMarkAnimated } from "@/components/Logo";
 import { StickyScrollStack, type StickyScrollCard } from "@/components/StickyScrollStack";
 import useAuthStore from "@/store/authStore";
 
@@ -310,6 +311,13 @@ export default function LandingPage() {
             {/* Section 1: Asymmetric split hero */}
             <section className={styles.hero} aria-label={t("landing.title")}>
                 <div className={styles.heroLeft}>
+                    <motion.div
+                        initial={reduce ? false : { opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: DURATION, ease: EASE, delay: 0 }}
+                    >
+                        <LogoMarkAnimated size={48} title="LernChih" />
+                    </motion.div>
                     <motion.span
                         className={styles.eyebrow}
                         initial={reduce ? false : { opacity: 0 }}
