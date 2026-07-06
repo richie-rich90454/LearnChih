@@ -8,12 +8,11 @@ import {
     Text,
     Caption1,
     Spinner,
-    MessageBar,
-    MessageBarBody,
 } from "@fluentui/react-components";
-import { Checkmark24Regular, ArrowLeft24Regular } from "@fluentui/react-icons";
+import { Checkmark24Regular, ArrowLeft24Regular, AlertOff24Regular } from "@fluentui/react-icons";
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import {
     getNotifications,
     markNotificationRead,
@@ -21,6 +20,8 @@ import {
 } from "@/api/notifications";
 import { useNotificationStore } from "@/store/notificationStore";
 import Seo from "@/components/Seo";
+import { EmptyState } from "@/components/EmptyState";
+import { ErrorState } from "@/components/ErrorState";
 
 const useStyles = makeStyles({
     container: {
@@ -49,6 +50,7 @@ const useStyles = makeStyles({
 
 export default function NotificationsPage() {
     const styles = useStyles();
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const { notifications, setNotifications, markAsRead, markAllAsRead } = useNotificationStore();
@@ -57,6 +59,7 @@ export default function NotificationsPage() {
         data: notificationsData,
         isLoading,
         isError,
+        refetch,
     } = useQuery({
         queryKey: ["notifications"],
         queryFn: () => getNotifications().then((r) => r.data),
@@ -121,14 +124,19 @@ export default function NotificationsPage() {
                 <Spinner label="Loading notifications..." />
             )}
             {isError && (
-                <MessageBar intent="error">
-                    <MessageBarBody>Failed to load notifications.</MessageBarBody>
-                </MessageBar>
+                <ErrorState
+                    title={t("error.notificationsTitle")}
+                    description={t("error.notificationsDescription")}
+                    onRetry={() => refetch()}
+                    retryLabel={t("error.tryAgain")}
+                />
             )}
-            {!isLoading && notifications.length === 0 && (
-                <MessageBar>
-                    <MessageBarBody>No notifications yet.</MessageBarBody>
-                </MessageBar>
+            {!isLoading && !isError && notifications.length === 0 && (
+                <EmptyState
+                    icon={<AlertOff24Regular />}
+                    title={t("empty.notificationsTitle")}
+                    description={t("empty.notificationsDescription")}
+                />
             )}
 
             {notifications.map((n) => (
