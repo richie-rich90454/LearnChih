@@ -94,9 +94,13 @@ const useStyles = makeStyles({
         gap: tokens.spacingVerticalM,
     },
     loginLink: {
-        color: tokens.colorBrandForeground1,
+        color: "#0E2861",
+        backgroundColor: "#FFFFFF",
         textDecoration: "none",
         fontSize: tokens.fontSizeBase300,
+        fontWeight: 600,
+        padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalM}`,
+        borderRadius: "var(--radius-button)",
     },
 });
 
@@ -415,6 +419,7 @@ export default function ResourcesPage() {
                             setCategoryFilter(e.target.value)
                         }
                         aria-label={t("resources.category")}
+                        style={{ color: tokens.colorNeutralForeground1, backgroundColor: tokens.colorNeutralBackground1 }}
                     >
                         <option value="">{t("resources.allCategories")}</option>
                         {CATEGORIES.map((c) => (
@@ -431,6 +436,7 @@ export default function ResourcesPage() {
                             setSubjectFilter(e.target.value)
                         }
                         aria-label={t("resources.subject")}
+                        style={{ color: tokens.colorNeutralForeground1, backgroundColor: tokens.colorNeutralBackground1 }}
                     >
                         <option value="">{t("resources.allSubjects")}</option>
                         {SUBJECTS.map((s) => (
@@ -447,6 +453,7 @@ export default function ResourcesPage() {
                             setSortBy(e.target.value as "newest" | "oldest" | "upvoted")
                         }
                         aria-label={t("common.sortBy")}
+                        style={{ color: tokens.colorNeutralForeground1, backgroundColor: tokens.colorNeutralBackground1 }}
                     >
                         <option value="newest">{t("resources.newest")}</option>
                         <option value="oldest">{t("resources.oldest")}</option>
