@@ -14,12 +14,10 @@ import {
     Textarea,
     Avatar,
     Spinner,
-    MessageBar,
-    MessageBarBody,
     Dropdown,
     Option,
 } from "@fluentui/react-components";
-import { ArrowLeft24Regular, Mention24Regular } from "@fluentui/react-icons";
+import { ArrowLeft24Regular, Mention24Regular, ChatMultiple24Regular } from "@fluentui/react-icons";
 import { useChannel, useChannelPosts, useCreateChannelPost } from "@/hooks/useChannels";
 import useWebSocket from "@/hooks/useWebSocket";
 import useAuthStore from "@/store/authStore";
@@ -31,6 +29,7 @@ import { PresenceIndicator } from "@/components/PresenceIndicator";
 import { MarkdownPreview } from "@/components/MarkdownPreview";
 import { ThreadBadges } from "@/components/ThreadBadges";
 import { ReactionPicker } from "@/components/ReactionPicker";
+import { ErrorState } from "@/components/ErrorState";
 import ReportButton from "@/components/ReportButton";
 import { discussionForumPostingSchema, breadcrumbSchema } from "@/components/jsonLd";
 import { useBackgroundSync } from "@/hooks/useBackgroundSync";
@@ -113,7 +112,7 @@ export default function ChannelThreadPage() {
     const { channelId, threadId } = useParams<{ channelId: string; threadId: string }>();
     const navigate = useNavigate();
     const { data: channel } = useChannel(channelId);
-    const { data: posts, isLoading, isError } = useChannelPosts(channelId, threadId);
+    const { data: posts, isLoading, isError, refetch } = useChannelPosts(channelId, threadId);
     const createPost = useCreateChannelPost(channelId, threadId);
     const queryClient = useQueryClient();
     const {
@@ -397,9 +396,13 @@ export default function ChannelThreadPage() {
             {/* Posts */}
             {isLoading && <Spinner label={t("common.loading")} />}
             {isError && (
-                <MessageBar intent="error">
-                    <MessageBarBody>{t("channels.threadLoadError")}</MessageBarBody>
-                </MessageBar>
+                <ErrorState
+                    icon={<ChatMultiple24Regular />}
+                    title={t("error.threadTitle")}
+                    description={t("error.threadDescription")}
+                    onRetry={() => refetch()}
+                    retryLabel={t("error.tryAgain")}
+                />
             )}
             <section aria-label={t("channels.threads")}>
                 <StaggerReveal className={styles.postsList}>
