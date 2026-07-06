@@ -14,6 +14,7 @@ export interface SeoProps {
 }
 
 const SITE_NAME = "LernChih";
+const DEFAULT_OG_IMAGE = "/og-default.png";
 
 function getBaseUrl(): string {
     const envBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
@@ -39,6 +40,7 @@ export default function Seo({
     const prevUrl = prevPath ? `${baseUrl}${prevPath}` : undefined;
     const nextUrl = nextPath ? `${baseUrl}${nextPath}` : undefined;
     const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+    const resolvedOgImage = ogImage ?? DEFAULT_OG_IMAGE;
 
     return (
         <Helmet>
@@ -56,13 +58,13 @@ export default function Seo({
             <meta property="og:type" content={ogType} />
             <meta property="og:site_name" content={SITE_NAME} />
             <meta property="og:locale" content="en_US" />
-            {ogImage ? <meta property="og:image" content={ogImage} /> : null}
+            <meta property="og:image" content={resolvedOgImage} />
 
             {/* Twitter */}
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:title" content={title} />
             {description ? <meta name="twitter:description" content={description} /> : null}
-            {ogImage ? <meta name="twitter:image" content={ogImage} /> : null}
+            <meta name="twitter:image" content={resolvedOgImage} />
 
             {/* hreflang alternates */}
             {hreflang ? (
