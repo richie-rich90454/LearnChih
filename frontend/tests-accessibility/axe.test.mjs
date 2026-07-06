@@ -31,7 +31,20 @@ async function run() {
     try {
         for (const route of PAGES) {
             const page = await browser.newPage();
-            await page.goto(`${BASE}${route}`, { waitUntil: "networkidle0" });
+            // Use `domcontentloaded` instead of `networkidle0` so the test
+            // can run without the backend. `networkidle0` waits for 500ms of
+            // zero network activity, which never happens when React Query
+            // retries failed API calls (ECONNREFUSED) every few hundred ms.
+            await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
+            // Give React + Motion + GSAP enough time to mount and paint the
+            // initial frame before axe walks the DOM. 1500ms comfortably
+            // covers the longest entry choreography (hero stagger ~720ms)
+            // and lets React Query settle into its loading/error state.
+            await page.waitForFunction(
+                () => document.querySelector("#root")?.children.length > 0,
+                { timeout: 10000 },
+            );
+            await new Promise((resolve) => setTimeout(resolve, 1500));
             await page.evaluate(axeSource);
 
             const results = await page.evaluate(() => {
