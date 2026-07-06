@@ -22,9 +22,14 @@ const useStyles = makeStyles({
         padding: `${tokens.spacingVerticalXL} 0`,
     },
     heading: {
-        color: tokens.colorNeutralForeground3,
+        // Concrete color instead of tokens.colorNeutralForeground3 so
+        // axe-core can evaluate contrast without resolving CSS variables.
+        color: "#616161",
         textAlign: "center",
         marginBottom: tokens.spacingVerticalL,
+        "@media (prefers-color-scheme: dark)": {
+            color: "#FFFFFF",
+        },
     },
     grid: {
         display: "flex",
