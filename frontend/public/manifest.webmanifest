@@ -1,12 +1,28 @@
 {
-    "name": "LernChih - Learning Resource Platform",
+    "name": "LernChih",
     "short_name": "LernChih",
-    "description": "A student forum for sharing learning resources",
+    "description": "Learn together, grow faster.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#0078d4",
+    "background_color": "#FAFAFA",
+    "theme_color": "#1E4FD8",
     "icons": [
+        {
+            "src": "/icon-192.svg",
+            "sizes": "192x192",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "/icon-512.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "/icon-maskable-512.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "maskable"
+        },
         {
             "src": "/favicon.svg",
             "sizes": "any",
