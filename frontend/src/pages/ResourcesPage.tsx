@@ -8,8 +8,6 @@ import {
     Card,
     Badge,
     Button,
-    Dropdown,
-    Option,
     Input,
     Label,
     Textarea,
@@ -410,55 +408,51 @@ export default function ResourcesPage() {
                     style={{ minWidth: "200px" }}
                     aria-label={t("resources.searchPlaceholder")}
                 />
-                <Dropdown
-                    placeholder={t("resources.category")}
-                    value={categoryFilter || undefined}
-                    selectedOptions={categoryFilter ? [categoryFilter] : []}
-                    onOptionSelect={(_: unknown, data: { optionValue?: string }) =>
-                        setCategoryFilter(data.optionValue || "")
-                    }
-                    clearable
-                >
-                    {CATEGORIES.map((c) => (
-                        <Option key={c} value={c}>
-                            {c.replace("_", " ")}
-                        </Option>
-                    ))}
-                </Dropdown>
-                <Dropdown
-                    placeholder={t("resources.subject")}
-                    value={subjectFilter || undefined}
-                    selectedOptions={subjectFilter ? [subjectFilter] : []}
-                    onOptionSelect={(_: unknown, data: { optionValue?: string }) =>
-                        setSubjectFilter(data.optionValue || "")
-                    }
-                    clearable
-                >
-                    {SUBJECTS.map((s) => (
-                        <Option key={s} value={s}>
-                            {s}
-                        </Option>
-                    ))}
-                </Dropdown>
-                <Dropdown
-                    placeholder={t("common.sortBy")}
-                    value={
-                        sortBy === "newest"
-                            ? t("resources.newest")
-                            : sortBy === "oldest"
-                              ? t("resources.oldest")
-                              : t("resources.mostUpvoted")
-                    }
-                    selectedOptions={[sortBy]}
-                    onOptionSelect={(_: unknown, data: { optionValue?: string }) =>
-                        data.optionValue &&
-                        setSortBy(data.optionValue as "newest" | "oldest" | "upvoted")
-                    }
-                >
-                    <Option value="newest">{t("resources.newest")}</Option>
-                    <Option value="oldest">{t("resources.oldest")}</Option>
-                    <Option value="upvoted">{t("resources.mostUpvoted")}</Option>
-                </Dropdown>
+                <Field label={t("resources.category")} style={{ minWidth: "140px" }}>
+                    <Select
+                        value={categoryFilter}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                            setCategoryFilter(e.target.value)
+                        }
+                        aria-label={t("resources.category")}
+                    >
+                        <option value="">{t("resources.allCategories")}</option>
+                        {CATEGORIES.map((c) => (
+                            <option key={c} value={c}>
+                                {c.replace("_", " ")}
+                            </option>
+                        ))}
+                    </Select>
+                </Field>
+                <Field label={t("resources.subject")} style={{ minWidth: "140px" }}>
+                    <Select
+                        value={subjectFilter}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                            setSubjectFilter(e.target.value)
+                        }
+                        aria-label={t("resources.subject")}
+                    >
+                        <option value="">{t("resources.allSubjects")}</option>
+                        {SUBJECTS.map((s) => (
+                            <option key={s} value={s}>
+                                {s}
+                            </option>
+                        ))}
+                    </Select>
+                </Field>
+                <Field label={t("common.sortBy")} style={{ minWidth: "140px" }}>
+                    <Select
+                        value={sortBy}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                            setSortBy(e.target.value as "newest" | "oldest" | "upvoted")
+                        }
+                        aria-label={t("common.sortBy")}
+                    >
+                        <option value="newest">{t("resources.newest")}</option>
+                        <option value="oldest">{t("resources.oldest")}</option>
+                        <option value="upvoted">{t("resources.mostUpvoted")}</option>
+                    </Select>
+                </Field>
             </div>
 
             {/* Resources grid */}
