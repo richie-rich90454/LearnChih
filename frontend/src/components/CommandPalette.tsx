@@ -66,17 +66,17 @@ const useStyles = makeStyles({
 });
 
 interface Shortcut {
-    label: string;
+    labelKey: string;
     path: string;
-    hint: string;
+    hintKey: string;
 }
 
 const NAV_SHORTCUTS: Shortcut[] = [
-    { label: "Dashboard", path: "/", hint: "Go to dashboard" },
-    { label: "Resources", path: "/resources", hint: "Browse resources" },
-    { label: "Channels", path: "/channels", hint: "Browse channels" },
-    { label: "Leaderboard", path: "/leaderboard", hint: "View leaderboard" },
-    { label: "Profile", path: "/profile", hint: "Your profile" },
+    { labelKey: "nav.dashboard", path: "/", hintKey: "commandPalette.hints.dashboard" },
+    { labelKey: "nav.resources", path: "/resources", hintKey: "commandPalette.hints.resources" },
+    { labelKey: "nav.channels", path: "/channels", hintKey: "commandPalette.hints.channels" },
+    { labelKey: "nav.leaderboard", path: "/leaderboard", hintKey: "commandPalette.hints.leaderboard" },
+    { labelKey: "nav.profile", path: "/profile", hintKey: "commandPalette.hints.profile" },
 ];
 
 interface CommandPaletteProps {
@@ -153,9 +153,9 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                         }}
                                     >
                                         <div className={styles.itemLeft}>
-                                            <Body1>{shortcut.label}</Body1>
+                                            <Body1>{t(shortcut.labelKey)}</Body1>
                                         </div>
-                                        <Caption1>{shortcut.hint}</Caption1>
+                                        <Caption1>{t(shortcut.hintKey)}</Caption1>
                                     </div>
                                 ))}
                             </>
@@ -206,9 +206,9 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                                 }}
                                             >
                                                 <div className={styles.itemLeft}>
-                                                    <Body1>{shortcut.label}</Body1>
+                                                    <Body1>{t(shortcut.labelKey)}</Body1>
                                                 </div>
-                                                <Caption1>{shortcut.hint}</Caption1>
+                                                <Caption1>{t(shortcut.hintKey)}</Caption1>
                                             </div>
                                         ))}
                                     </>

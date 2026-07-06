@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
     makeStyles,
     tokens,
@@ -123,6 +124,7 @@ const SOCIAL_TYPES = ["GITHUB", "LINKEDIN", "TWITTER", "WEBSITE", "OTHER"];
 
 export default function ProfilePage() {
     const styles = useStyles();
+    const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const isOwnProfile = !id;
 
@@ -348,6 +350,7 @@ export default function ProfilePage() {
                                         appearance="subtle"
                                         icon={<Dismiss24Regular />}
                                         size="small"
+                                        aria-label={t("profile.removeSocialLink")}
                                         onClick={() => handleRemoveSocial(social.id)}
                                     />
                                 )}
