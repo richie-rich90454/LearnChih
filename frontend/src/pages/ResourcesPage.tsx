@@ -101,6 +101,10 @@ const useStyles = makeStyles({
         fontWeight: 600,
         padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalM}`,
         borderRadius: "var(--radius-button)",
+        "@media (prefers-color-scheme: dark)": {
+            color: "#FFFFFF",
+            backgroundColor: "#1E4FD8",
+        },
     },
 });
 
