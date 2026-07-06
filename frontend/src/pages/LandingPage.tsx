@@ -62,20 +62,34 @@ const useStyles = makeStyles({
         maxWidth: "640px",
     },
     eyebrow: {
-        color: tokens.colorBrandForeground1,
+        // Concrete cobalt instead of tokens.colorBrandForeground1 so
+        // axe-core can evaluate contrast without resolving CSS variables.
+        color: "#1E4FD8",
         fontWeight: 600,
         fontSize: "14px",
         letterSpacing: "0.01em",
+        "@media (prefers-color-scheme: dark)": {
+            color: "#5B8DEF",
+        },
     },
     headline: {
         fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
         lineHeight: 1.05,
         letterSpacing: "-0.02em",
         margin: 0,
+        // Concrete color for axe-core; dark mode override.
+        color: "#242424",
+        "@media (prefers-color-scheme: dark)": {
+            color: "#FFFFFF",
+        },
     },
     subtext: {
-        color: tokens.colorNeutralForeground2,
+        // Concrete color instead of tokens.colorNeutralForeground2.
+        color: "#424242",
         maxWidth: "640px",
+        "@media (prefers-color-scheme: dark)": {
+            color: "#FFFFFF",
+        },
     },
     heroActions: {
         display: "flex",
@@ -113,6 +127,11 @@ const useStyles = makeStyles({
     },
     bentoHeading: {
         marginBottom: tokens.spacingVerticalL,
+        // Concrete color for axe-core; dark mode override.
+        color: "#242424",
+        "@media (prefers-color-scheme: dark)": {
+            color: "#FFFFFF",
+        },
     },
     bento: {
         display: "grid",
@@ -134,7 +153,8 @@ const useStyles = makeStyles({
         cursor: "pointer",
         minHeight: "160px",
         border: `1px solid ${tokens.colorNeutralStroke2}`,
-        backgroundColor: tokens.colorNeutralBackground1,
+        // Concrete background for axe-core; dark mode override.
+        backgroundColor: "#FFFFFF",
         transition: `box-shadow var(--motion-base) var(--motion-ease)`,
         ":hover": {
             boxShadow: "0 12px 28px rgba(0, 0, 0, 0.12)",
@@ -143,10 +163,18 @@ const useStyles = makeStyles({
             outline: `2px solid ${tokens.colorBrandStroke1}`,
             outlineOffset: "2px",
         },
+        "@media (prefers-color-scheme: dark)": {
+            backgroundColor: "#242424",
+            border: `1px solid #3D3D3D`,
+        },
     },
     cellIcon: {
-        color: tokens.colorBrandForeground1,
+        // Concrete cobalt instead of tokens.colorBrandForeground1.
+        color: "#1E4FD8",
         display: "inline-flex",
+        "@media (prefers-color-scheme: dark)": {
+            color: "#5B8DEF",
+        },
     },
     cellFeature: {
         backgroundColor: "#1E4FD8",
@@ -421,7 +449,7 @@ export default function LandingPage() {
                                 </span>
                                 <Title2
                                     as="h3"
-                                    style={cell.feature ? { color: "#FFFFFF" } : undefined}
+                                    style={cell.feature ? { color: "#FFFFFF" } : { color: "#242424" }}
                                 >
                                     {cell.title}
                                 </Title2>
@@ -429,7 +457,7 @@ export default function LandingPage() {
                                     style={
                                         cell.feature
                                             ? { color: "rgba(255, 255, 255, 0.85)" }
-                                            : { color: tokens.colorNeutralForeground2 }
+                                            : { color: "#424242" }
                                     }
                                 >
                                     {cell.description}
