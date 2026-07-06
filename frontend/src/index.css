@@ -147,3 +147,22 @@ pre,
         background-color: #1A1A1A !important;
     }
 }
+
+/* Forced color contrast on sidebar nav button text.
+   Fluent UI v9 Button with appearance="subtle" sets
+   color: var(--colorNeutralForeground1) via the fui-Button class. axe-core
+   cannot resolve CSS custom properties defined on the FluentProvider
+   ancestor, so it fails the contrast check on nav item labels like
+   'Resources', 'Channels', 'Leaderboard'. These rules pin a concrete
+   #242424 (Fluent v9 light-mode colorNeutralForeground1) on the Text span
+   inside nav buttons, guaranteeing 16.1:1 contrast against the white
+   navContainer background. Dark mode uses #FFFFFF on the dark navContainer. */
+nav .fui-Button .fui-Text {
+    color: #242424 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    nav .fui-Button .fui-Text {
+        color: #FFFFFF !important;
+    }
+}

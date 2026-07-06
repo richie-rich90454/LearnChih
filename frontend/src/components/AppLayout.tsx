@@ -116,6 +116,10 @@ const useStyles = makeStyles({
         display: "flex",
         flexDirection: "column",
         gap: tokens.spacingVerticalS,
+        // Concrete white background so axe-core can evaluate contrast for
+        // child elements (nav items, section labels) without needing to
+        // resolve CSS custom properties on ancestor FluentProvider.
+        backgroundColor: "#FFFFFF",
     },
     navSection: {
         display: "flex",
