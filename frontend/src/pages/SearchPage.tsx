@@ -9,14 +9,14 @@ import {
     Badge,
     Input,
     Spinner,
-    MessageBar,
-    MessageBarBody,
 } from "@fluentui/react-components";
 import { Search24Regular } from "@fluentui/react-icons";
 import { useDebounce } from "../hooks/useDebounce";
 import { useSearch } from "../hooks/useSearch";
 import { useTranslation } from "react-i18next";
 import Seo from "../components/Seo";
+import { EmptyState } from "../components/EmptyState";
+import { ErrorState } from "../components/ErrorState";
 import type { SearchResult } from "../hooks/useSearch";
 
 const useStyles = makeStyles({
@@ -53,7 +53,7 @@ export default function SearchPage() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [query, setQuery] = useState<string>(searchParams.get("q") || "");
     const debouncedQuery = useDebounce(query, 250);
-    const { data, isFetching, isError } = useSearch(debouncedQuery);
+    const { data, isFetching, isError, refetch } = useSearch(debouncedQuery);
 
     const results: SearchResult[] = data?.content ?? [];
 
@@ -84,15 +84,20 @@ export default function SearchPage() {
 
             {isFetching && <Spinner label={t("search.searching")} />}
             {isError && (
-                <MessageBar intent="error">
-                    <MessageBarBody>{t("search.loadError")}</MessageBarBody>
-                </MessageBar>
+                <ErrorState
+                    title={t("error.searchTitle")}
+                    description={t("error.searchDescription")}
+                    onRetry={() => refetch()}
+                    retryLabel={t("error.tryAgain")}
+                />
             )}
 
-            {!isFetching && debouncedQuery && results.length === 0 && (
-                <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                    {t("search.noResults", { query: debouncedQuery })}
-                </Body1>
+            {!isFetching && !isError && debouncedQuery && results.length === 0 && (
+                <EmptyState
+                    icon={<Search24Regular />}
+                    title={t("empty.searchTitle")}
+                    description={t("empty.searchDescription")}
+                />
             )}
 
             {results.map((result) => (
