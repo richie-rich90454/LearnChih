@@ -25,7 +25,7 @@ import {
     MessageBarBody,
     Field,
 } from "@fluentui/react-components";
-import { Add24Regular } from "@fluentui/react-icons";
+import { Add24Regular, Chat24Regular } from "@fluentui/react-icons";
 import { useChannels, useChannel, useCreateChannelThread } from "@/hooks/useChannels";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useTranslation } from "react-i18next";
@@ -34,6 +34,8 @@ import Seo from "@/components/Seo";
 import { Pagination } from "@/components/Pagination";
 import { StaggerReveal } from "@/components/StaggerReveal";
 import { HoverLift } from "@/components/HoverLift";
+import { EmptyState } from "@/components/EmptyState";
+import { ErrorState } from "@/components/ErrorState";
 import useAuthStore from "@/store/authStore";
 
 const useStyles = makeStyles({
@@ -103,7 +105,7 @@ export default function ChannelsPage() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const hasQueryParams = searchParams.has("q") || searchParams.has("page");
-    const { data: channels, isLoading, isError } = useChannels();
+    const { data: channels, isLoading, isError, refetch } = useChannels();
     const [selectedChannelId, setSelectedChannelId] = useState<number | null>(null);
     const { data: channelDetail } = useChannel(selectedChannelId);
     const createThread = useCreateChannelThread(selectedChannelId);
@@ -269,22 +271,30 @@ export default function ChannelsPage() {
 
             {isLoading && <Spinner label={t("common.loading")} />}
             {isError && (
-                <MessageBar intent="error">
-                    <MessageBarBody>{t("channels.loadError")}</MessageBarBody>
-                </MessageBar>
+                <ErrorState
+                    icon={<Chat24Regular />}
+                    title={t("error.channelsTitle")}
+                    description={t("error.channelsDescription")}
+                    onRetry={() => refetch()}
+                    retryLabel={t("error.tryAgain")}
+                />
             )}
 
+            {!isLoading && !isError && channelList.length === 0 && (
+                <EmptyState
+                    icon={<Chat24Regular />}
+                    title={t("empty.channelsTitle")}
+                    description={t("empty.channelsDescription")}
+                />
+            )}
+
+            {!isLoading && !isError && channelList.length > 0 && (
             <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
                 {/* Channel list */}
                 <StaggerReveal
                     className={styles.channelList}
                     style={{ flex: 1, minWidth: "280px" }}
                 >
-                    {channelList.length === 0 && !isLoading && (
-                        <MessageBar>
-                            <MessageBarBody>{t("channels.noChannels")}</MessageBarBody>
-                        </MessageBar>
-                    )}
                     {channelList.map((channel) => (
                         <HoverLift key={channel.id}>
                             <article>
@@ -418,6 +428,7 @@ export default function ChannelsPage() {
                     </section>
                 )}
             </div>
+            )}
         </div>
     );
 }
