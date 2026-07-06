@@ -1,4 +1,4 @@
-import { makeStyles, tokens } from "@fluentui/react-components";
+import { makeStyles } from "@fluentui/react-components";
 import { motion, useReducedMotion } from "motion/react";
 
 export interface LogoMarkProps {
@@ -25,7 +25,16 @@ const useLogoStyles = makeStyles({
         fontWeight: 700,
         letterSpacing: "-0.02em",
         lineHeight: 1,
-        color: tokens.colorNeutralForeground1,
+        // Use concrete hex values instead of tokens.colorNeutralForeground1
+        // because axe-core/pa11y cannot resolve CSS custom properties like
+        // var(--colorNeutralForeground1). #242424 is Fluent v9 light-mode
+        // colorNeutralForeground1; #FFFFFF is the dark-mode equivalent.
+        color: "#242424",
+        backgroundColor: "#FFFFFF",
+        "@media (prefers-color-scheme: dark)": {
+            color: "#FFFFFF",
+            backgroundColor: "#1A1A1A",
+        },
     },
 });
 
