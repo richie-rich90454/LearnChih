@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
+import { useInView } from "motion/react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 interface AnimatedCounterProps {
@@ -13,6 +14,7 @@ interface AnimatedCounterProps {
 
 /**
  * Animates numeric value changes with a smooth count-up / count-down tween.
+ * On first viewport entry, counts up from 0 to the initial value.
  * Respects prefers-reduced-motion by jumping directly to the new value.
  */
 export function AnimatedCounter({
@@ -25,30 +27,32 @@ export function AnimatedCounter({
 }: AnimatedCounterProps) {
     const reduced = useReducedMotion();
     const displayRef = useRef<HTMLSpanElement>(null);
-    const valueRef = useRef(value);
+    const containerRef = useRef<HTMLSpanElement>(null);
+    const inView = useInView(containerRef, { once: true, amount: 0.3 });
+    const valueRef = useRef(0);
     const tweenRef = useRef<gsap.core.Tween | null>(null);
-    const isFirstMountRef = useRef(true);
+    const hasEnteredRef = useRef(false);
 
     useEffect(() => {
         if (!displayRef.current) return;
 
-        const from = valueRef.current;
         const to = value;
-        valueRef.current = to;
 
         if (reduced) {
             displayRef.current.textContent = formatter(to);
-            isFirstMountRef.current = false;
+            valueRef.current = to;
+            hasEnteredRef.current = true;
             return;
         }
 
-        if (isFirstMountRef.current && to === 0) {
-            displayRef.current.textContent = formatter(to);
-            isFirstMountRef.current = false;
+        // Wait for the element to enter the viewport before the first count-up.
+        if (!hasEnteredRef.current && !inView) {
             return;
         }
 
-        isFirstMountRef.current = false;
+        const from = valueRef.current;
+        valueRef.current = to;
+        hasEnteredRef.current = true;
 
         tweenRef.current?.kill();
 
@@ -68,12 +72,12 @@ export function AnimatedCounter({
         return () => {
             tweenRef.current?.kill();
         };
-    }, [value, duration, reduced, formatter]);
+    }, [value, duration, reduced, formatter, inView]);
 
     return (
-        <span className={className}>
+        <span ref={containerRef} className={className}>
             {prefix}
-            <span ref={displayRef}>{formatter(value)}</span>
+            <span ref={displayRef}>{formatter(reduced ? value : 0)}</span>
             {suffix}
         </span>
     );
