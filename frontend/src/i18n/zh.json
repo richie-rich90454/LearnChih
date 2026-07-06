@@ -123,6 +123,8 @@
         "searchPlaceholder": "搜索资源...",
         "category": "分类",
         "subject": "学科",
+        "allCategories": "全部分类",
+        "allSubjects": "全部学科",
         "type": "类型",
         "file": "文件",
         "url": "网址",
