@@ -123,7 +123,8 @@ const useStyles = makeStyles({
         gap: "2px",
     },
     sectionLabel: {
-        color: tokens.colorNeutralForeground3,
+        color: tokens.colorNeutralForeground2,
+        backgroundColor: tokens.colorNeutralBackground1,
         padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalL} ${tokens.spacingVerticalXXS}`,
     },
     logoButton: {
