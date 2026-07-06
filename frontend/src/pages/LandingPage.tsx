@@ -194,7 +194,7 @@ const useStyles = makeStyles({
     ctaBand: {
         margin: `${tokens.spacingVerticalXXL} 0 0`,
         padding: `${tokens.spacingVerticalXXXL} ${tokens.spacingHorizontalXL}`,
-        backgroundImage: "linear-gradient(135deg, #1E4FD8 0%, #4A78E5 100%)",
+        backgroundImage: "linear-gradient(135deg, #0E3BC4 0%, #1E4FD8 100%)",
         color: "#FFFFFF",
         display: "flex",
         flexDirection: "column",
