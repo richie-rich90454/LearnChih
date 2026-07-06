@@ -131,15 +131,19 @@ pre,
    the rendered <select> so automated accessibility audits pass while
    keeping Fluent's layout, typography, and spacing intact. Light mode uses
    #0E2861 (cobalt 30) on #FFFFFF (14.8:1 contrast); dark mode uses #FFFFFF
-   on #1A1A1A (17.4:1 contrast). Both pairs exceed the WCAG AAA 7:1 threshold. */
+   on #1A1A1A (17.4:1 contrast). Both pairs exceed the WCAG AAA 7:1 threshold.
+   `!important` is required because Griffel injects atomic CSS classes at
+   runtime that set color/background-color on the same element; without it,
+   source-order ties can let Griffel's theme-derived colors win and fail
+   the contrast check. */
 .fui-Select .fui-Select__select {
-    color: #0E2861;
-    background-color: #FFFFFF;
+    color: #0E2861 !important;
+    background-color: #FFFFFF !important;
 }
 
 @media (prefers-color-scheme: dark) {
     .fui-Select .fui-Select__select {
-        color: #FFFFFF;
-        background-color: #1A1A1A;
+        color: #FFFFFF !important;
+        background-color: #1A1A1A !important;
     }
 }
