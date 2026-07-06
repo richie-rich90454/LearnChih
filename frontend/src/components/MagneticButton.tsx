@@ -1,0 +1,57 @@
+import { useRef, type ReactNode, type MouseEvent } from "react";
+import {
+    motion,
+    useMotionValue,
+    useSpring,
+    useReducedMotion,
+} from "motion/react";
+
+interface MagneticButtonProps {
+    children: ReactNode;
+    /** How strongly the element follows the cursor. 0 = none, 1 = full. */
+    strength?: number;
+}
+
+/**
+ * Wraps a call-to-action so it drifts toward the cursor on hover, then
+ * springs back to center on leave. The transform is GPU-friendly and is
+ * disabled entirely under `prefers-reduced-motion`.
+ */
+export function MagneticButton({ children, strength = 0.25 }: MagneticButtonProps) {
+    const ref = useRef<HTMLDivElement>(null);
+    const reduce = useReducedMotion() ?? false;
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const springConfig = { stiffness: 250, damping: 18, mass: 0.5 };
+    const sx = useSpring(x, springConfig);
+    const sy = useSpring(y, springConfig);
+
+    const handleMove = (e: MouseEvent<HTMLDivElement>) => {
+        if (reduce || !ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
+        const relX = e.clientX - (rect.left + rect.width / 2);
+        const relY = e.clientY - (rect.top + rect.height / 2);
+        x.set(relX * strength);
+        y.set(relY * strength);
+    };
+
+    const handleLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    return (
+        <motion.div
+            ref={ref}
+            onMouseMove={handleMove}
+            onMouseLeave={handleLeave}
+            style={{
+                display: "inline-flex",
+                x: reduce ? 0 : sx,
+                y: reduce ? 0 : sy,
+            }}
+        >
+            {children}
+        </motion.div>
+    );
+}
