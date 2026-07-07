@@ -210,3 +210,19 @@ nav .fui-Button .fui-Text {
         color: #FFFFFF !important;
     }
 }
+
+/* Forced color contrast on CookieConsent banner text.
+   The CookieConsent Card uses concrete backgroundColor but the Body1/Subtitle2
+   text inside it gets its color from Fluent UI's CSS variable-based theme
+   tokens. axe-core cannot resolve these CSS variables, so we pin concrete
+   colors on all text elements within the banner. Light mode: #242424 on
+   #FFFFFF (21:1). Dark mode: #FFFFFF on #242424 (16.1:1). Both pass WCAG AAA. */
+[data-cookie-consent] .fui-Text {
+    color: #242424 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    [data-cookie-consent] .fui-Text {
+        color: #FFFFFF !important;
+    }
+}
