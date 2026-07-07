@@ -1,0 +1,54 @@
+/**
+ * Card primitive - co-located CSS Module overriding Fluent UI v9 Card
+ * visuals with design-system tokens. Fluent keeps the slot structure
+ * (CardHeader / CardPreview / CardFooter) + a11y; these rules own the
+ * surface, elevation, and padding.
+ *
+ * Elevation tiers:
+ *   - rest:  --shadow-card  (default, subtle lift)
+ *   - lift:  --shadow-lift  (hover when `interactive`)
+ * Compound `.card.<modifier>` selectors (0,2,0) beat Griffel atomic (0,1,0).
+ */
+
+.card {
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    color: var(--text-primary);
+    transition:
+        box-shadow var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease),
+        transform var(--motion-fast) var(--motion-ease);
+}
+
+/* Interactive cards lift on hover/focus and expose a pointer cursor. */
+.card.interactive {
+    cursor: pointer;
+}
+.card.interactive:hover,
+.card.interactive:focus-visible {
+    box-shadow: var(--shadow-lift);
+    border-color: var(--border-strong);
+}
+.card.interactive:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus), var(--shadow-lift);
+}
+.card.interactive:active {
+    transform: translateY(1px);
+}
+
+/* ----------------------- Padding scale ------------------------------------- */
+.card.paddingNone {
+    padding: 0;
+}
+.card.paddingSm {
+    padding: var(--space-2);
+}
+.card.paddingMd {
+    padding: var(--space-4);
+}
+.card.paddingLg {
+    padding: var(--space-6);
+}
