@@ -201,6 +201,32 @@ export default function ResourcesPage() {
         setCurrentPage(1);
     }, [debouncedSearch, sortBy, categoryFilter, subjectFilter]);
 
+    // axe-core's color-contrast rule cannot resolve CSS custom properties
+    // (var(--colorXxx)) set by FluentProvider via Griffel. For <select>
+    // elements, Fluent UI v9 does not forward the `style` prop, and global
+    // CSS with `!important` is overridden by Griffel's runtime-injected
+    // atomic classes in some browser/axe-core combinations. This useEffect
+    // sets inline styles with `!important` via JavaScript, which has the
+    // highest specificity and is guaranteed to override all CSS rules.
+    useEffect(() => {
+        const darkMode =
+            typeof window !== "undefined" && window.matchMedia
+                ? window.matchMedia("(prefers-color-scheme: dark)").matches
+                : false;
+        const setColor = darkMode ? "#FFFFFF" : "#0E2861";
+        const setBg = darkMode ? "#1A1A1A" : "#FFFFFF";
+        const apply = () => {
+            document.querySelectorAll<HTMLElement>(".fui-Select__select").forEach((el) => {
+                el.style.setProperty("color", setColor, "important");
+                el.style.setProperty("background-color", setBg, "important");
+            });
+        };
+        apply();
+        // Re-apply after a tick in case Griffel injects styles asynchronously.
+        const timer = window.setTimeout(apply, 100);
+        return () => window.clearTimeout(timer);
+    }, []);
+
     const handleCreate = () => {
         const formData: Record<string, unknown> = {
             title,
