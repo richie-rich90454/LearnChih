@@ -1,0 +1,53 @@
+/**
+ * Dialog primitive - co-located CSS Module that styles the Fluent UI v9
+ * Dialog surface, body, header, content, and footer with design-system
+ * tokens. Fluent keeps focus trap, portal, and escape handling; these
+ * rules own the surface, elevation, and layout spacing.
+ *
+ * Specificity: compound `.surface` etc. passed through Fluent `className`
+ * sit at (0,1,0) — same as Griffel atomic — but these rules set properties
+ * Griffel does not (border-radius, border, box-shadow, padding), so no
+ * conflict. Where a conflict could arise we scope via the wrapper class.
+ */
+
+.surface {
+    background-color: var(--surface-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-lift);
+    color: var(--text-primary);
+    padding: var(--space-6);
+    max-width: min(560px, calc(100vw - var(--space-8)));
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.title {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    margin: 0;
+}
+
+.content {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+    margin: 0;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+}
