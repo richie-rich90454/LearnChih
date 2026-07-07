@@ -19,12 +19,12 @@ body {
     font-family: var(--font-sans);
     /* Concrete background so axe-core always has an opaque backdrop
        even if all child elements have transparent backgrounds. */
-    background-color: #FFFFFF;
+    background-color: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #1A1A1A;
+        background-color: #1a1a1a;
     }
 }
 
@@ -143,14 +143,14 @@ pre,
    source-order ties can let Griffel's theme-derived colors win and fail
    the contrast check. */
 .fui-Select__select {
-    color: #0E2861 !important;
-    background-color: #FFFFFF !important;
+    color: #0e2861 !important;
+    background-color: #ffffff !important;
 }
 
 @media (prefers-color-scheme: dark) {
     .fui-Select__select {
-        color: #FFFFFF !important;
-        background-color: #1A1A1A !important;
+        color: #ffffff !important;
+        background-color: #1a1a1a !important;
     }
 }
 
@@ -169,7 +169,7 @@ nav .fui-Button .fui-Text {
 
 @media (prefers-color-scheme: dark) {
     nav .fui-Button .fui-Text {
-        color: #FFFFFF !important;
+        color: #ffffff !important;
     }
 }
 
@@ -182,7 +182,7 @@ nav .fui-Button .fui-Text {
    Values match Fluent v9 light-mode defaults; dark-mode overrides follow. */
 .fui-Input__input {
     color: #242424 !important;
-    background-color: #FFFFFF !important;
+    background-color: #ffffff !important;
 }
 
 .fui-Label {
@@ -195,16 +195,16 @@ nav .fui-Button .fui-Text {
 
 @media (prefers-color-scheme: dark) {
     .fui-Input__input {
-        color: #FFFFFF !important;
-        background-color: #1A1A1A !important;
+        color: #ffffff !important;
+        background-color: #1a1a1a !important;
     }
 
     .fui-Label {
-        color: #FFFFFF !important;
+        color: #ffffff !important;
     }
 
     .fui-Spinner__label {
-        color: #FFFFFF !important;
+        color: #ffffff !important;
     }
 }
 
@@ -220,6 +220,6 @@ nav .fui-Button .fui-Text {
 
 @media (prefers-color-scheme: dark) {
     [data-cookie-consent] .fui-Text {
-        color: #FFFFFF !important;
+        color: #ffffff !important;
     }
 }

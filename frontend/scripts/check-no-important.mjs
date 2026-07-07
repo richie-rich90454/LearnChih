@@ -46,9 +46,7 @@ function main() {
     const stripped = stripComments(raw);
     const count = countImportant(stripped);
 
-    console.log(
-        `[lint:css] index.css !important count: ${count} (baseline: ${BASELINE})`,
-    );
+    console.log(`[lint:css] index.css !important count: ${count} (baseline: ${BASELINE})`);
 
     if (count > BASELINE) {
         console.error(
