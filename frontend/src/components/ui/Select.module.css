@@ -1,0 +1,98 @@
+/**
+ * Select primitive - co-located CSS Module mirroring Input. The wrapper
+ * composes a label, the Fluent Select field, helper text, and an error
+ * message. Fluent keeps listbox behavior + a11y; these rules own the
+ * layout, focus ring, and error border via tokens.
+ *
+ * Specificity: compound `.select.<state>` (0,2,0) beats Griffel atomic
+ * (0,1,0). The focus ring uses a doubled class (0,3,0) to beat Griffel's
+ * :focus-visible outline.
+ */
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 100%;
+}
+
+.label {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+}
+
+.fieldRow {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.select {
+    border-radius: var(--radius-input);
+    border: 1px solid var(--border-strong);
+    background-color: var(--surface-1);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    transition:
+        border-color var(--motion-fast) var(--motion-ease),
+        box-shadow var(--motion-fast) var(--motion-ease);
+}
+
+/* Focus ring (doubled class -> (0,3,0) beats Griffel :focus-visible). */
+.select.select:focus,
+.select.select:focus-visible {
+    outline: 2px solid transparent;
+    border-color: var(--accent);
+    box-shadow: var(--shadow-focus);
+}
+
+/* Error state border. */
+.select.error,
+.select.error:focus,
+.select.error:focus-visible {
+    border-color: var(--status-danger);
+    box-shadow: 0 0 0 3px var(--status-danger-soft);
+}
+
+.select:disabled,
+.select[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ---- Size refinements ---- */
+.select.small {
+    font-size: var(--font-size-xs);
+}
+.select.medium {
+    font-size: var(--font-size-sm);
+}
+.select.large {
+    font-size: var(--font-size-base);
+}
+
+/* ----------------------- Helper / error ----------------------------------- */
+.helperRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-2);
+}
+
+.helper {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+    margin: 0;
+}
+
+.errorText {
+    font-size: var(--font-size-xs);
+    color: var(--status-danger);
+    line-height: var(--line-height-base);
+    margin: 0;
+}
