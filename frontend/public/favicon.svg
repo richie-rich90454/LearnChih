@@ -1,3 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-  <path fill="#1E4FD8" d="M8 6 L18 6 L18 30 L30 30 L40 42 L8 42 Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="LernChih">
+  <title>LernChih</title>
+  <defs>
+    <linearGradient id="lc-cobalt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2B62F0"/>
+      <stop offset="1" stop-color="#1E4FD8"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background (cobalt) so the favicon reads at 16px in both light and dark tabs -->
+  <rect width="64" height="64" rx="14" fill="url(#lc-cobalt)"/>
+  <!-- Subtle inner highlight for depth, kept below 8% opacity to avoid muddiness at small sizes -->
+  <rect width="64" height="32" rx="14" fill="#FFFFFF" opacity="0.06"/>
+  <!-- The LernChih "L": vertical stem + foot with a diagonal cut signaling forward progress -->
+  <path fill="#FFFFFF" d="M18 14 L27 14 L27 38 L42 38 L50 50 L18 50 Z"/>
 </svg>
