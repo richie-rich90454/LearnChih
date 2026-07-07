@@ -2,7 +2,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { makeStyles, tokens, Title1, Subtitle1 } from "@fluentui/react-components";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useReducedMotion } from "motion/react";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,7 +66,7 @@ const useStyles = makeStyles({
 
 export function StickyScrollStack({ cards }: StickyScrollStackProps) {
     const styles = useStyles();
-    const reduce = useReducedMotion() ?? false;
+    const reduce = useReducedMotion();
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
