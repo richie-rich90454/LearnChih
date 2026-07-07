@@ -176,6 +176,16 @@
     --shadow-card: 0 4px 12px rgba(30, 79, 216, 0.08);
     --shadow-lift: 0 8px 24px rgba(30, 79, 216, 0.12);
     --shadow-focus: 0 0 0 3px rgba(30, 79, 216, 0.24);
+
+    /* Status semantic tokens (Phase 1B additive). Used by Badge variants
+       and Input error states. Each pair is a foreground + soft background
+       tuned for WCAG AA contrast on the soft background. */
+    --status-success: #1a7f4e;
+    --status-success-soft: #e3f4ec;
+    --status-warning: #9a6700;
+    --status-warning-soft: #fdf0d9;
+    --status-danger: #c4252e;
+    --status-danger-soft: #fde8e8;
 }
 
 /* ------------------------------------------------------------------ */
@@ -214,6 +224,13 @@
         --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
         --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.5);
         --shadow-focus: 0 0 0 3px rgba(91, 141, 239, 0.4);
+
+        --status-success: #4cc38a;
+        --status-success-soft: rgba(76, 195, 138, 0.16);
+        --status-warning: #f0b860;
+        --status-warning-soft: rgba(240, 184, 96, 0.16);
+        --status-danger: #f06a6f;
+        --status-danger-soft: rgba(240, 106, 111, 0.16);
     }
 }
 
@@ -251,6 +268,13 @@
     --shadow-card: 0 4px 12px rgba(30, 79, 216, 0.08);
     --shadow-lift: 0 8px 24px rgba(30, 79, 216, 0.12);
     --shadow-focus: 0 0 0 3px rgba(30, 79, 216, 0.24);
+
+    --status-success: #1a7f4e;
+    --status-success-soft: #e3f4ec;
+    --status-warning: #9a6700;
+    --status-warning-soft: #fdf0d9;
+    --status-danger: #c4252e;
+    --status-danger-soft: #fde8e8;
 }
 
 :root[data-theme="dark"] {
@@ -279,4 +303,11 @@
     --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
     --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.5);
     --shadow-focus: 0 0 0 3px rgba(91, 141, 239, 0.4);
+
+    --status-success: #4cc38a;
+    --status-success-soft: rgba(76, 195, 138, 0.16);
+    --status-warning: #f0b860;
+    --status-warning-soft: rgba(240, 184, 96, 0.16);
+    --status-danger: #f06a6f;
+    --status-danger-soft: rgba(240, 106, 111, 0.16);
 }
