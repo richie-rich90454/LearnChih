@@ -38,6 +38,13 @@ const useStyles = makeStyles({
         gap: tokens.spacingVerticalXS,
         alignItems: "flex-start",
     },
+    link: {
+        minHeight: "24px",
+        display: "inline-flex",
+        alignItems: "center",
+        paddingBlock: tokens.spacingVerticalXS,
+        paddingInline: tokens.spacingHorizontalXS,
+    },
     copyright: {
         color: tokens.colorNeutralForeground3,
         fontSize: tokens.fontSizeBase200,
@@ -63,22 +70,22 @@ export default function Footer() {
 
                 {/* Links column */}
                 <nav className={styles.linkColumn} aria-label={t("a11y.footerNavigation")}>
-                    <Link onClick={() => navigate("/resources")}>{t("nav.resources")}</Link>
-                    <Link onClick={() => navigate("/channels")}>{t("nav.channels")}</Link>
-                    <Link onClick={() => navigate("/api-docs")}>{t("footer.apiDocs")}</Link>
-                    <Link href="/api/feeds/rss" target="_blank" rel="noopener noreferrer">
+                    <Link className={styles.link} onClick={() => navigate("/resources")}>{t("nav.resources")}</Link>
+                    <Link className={styles.link} onClick={() => navigate("/channels")}>{t("nav.channels")}</Link>
+                    <Link className={styles.link} onClick={() => navigate("/api-docs")}>{t("footer.apiDocs")}</Link>
+                    <Link className={styles.link} href="/api/feeds/rss" target="_blank" rel="noopener noreferrer">
                         {t("footer.rss")}
                     </Link>
-                    <Link href="/api/feeds/atom" target="_blank" rel="noopener noreferrer">
+                    <Link className={styles.link} href="/api/feeds/atom" target="_blank" rel="noopener noreferrer">
                         {t("footer.atom")}
                     </Link>
                 </nav>
 
                 {/* Legal column */}
                 <nav className={styles.linkColumn} aria-label={t("footer.cookiePreferences")}>
-                    <Link onClick={() => navigate("/privacy")}>{t("footer.privacy")}</Link>
-                    <Link onClick={() => navigate("/terms")}>{t("footer.terms")}</Link>
-                    <Link onClick={() => resetConsent()}>{t("footer.cookiePreferences")}</Link>
+                    <Link className={styles.link} onClick={() => navigate("/privacy")}>{t("footer.privacy")}</Link>
+                    <Link className={styles.link} onClick={() => navigate("/terms")}>{t("footer.terms")}</Link>
+                    <Link className={styles.link} onClick={() => resetConsent()}>{t("footer.cookiePreferences")}</Link>
                 </nav>
             </div>
 
