@@ -350,6 +350,7 @@ export default function AppLayout() {
                             icon={<Navigation24Regular />}
                             className={styles.mobileMenuButton}
                             onClick={() => setMobileOpen(true)}
+                            aria-label={t("a11y.openMenu")}
                         />
                         <Title3 className={styles.desktopDrawer} style={{ display: "none" }}>
                             LernChih
@@ -370,7 +371,7 @@ export default function AppLayout() {
                                 // syncDocumentLang in i18n/index.ts already persists
                                 // the choice to localStorage; no need to duplicate here.
                             }}
-                            aria-label={t("language.label")}
+                            aria-label={`${t("language.label")} (${i18n.language.startsWith("zh") ? "中" : "EN"})`}
                         >
                             {i18n.language.startsWith("zh") ? "中" : "EN"}
                         </Button>
