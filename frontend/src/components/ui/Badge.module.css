@@ -1,0 +1,42 @@
+/**
+ * Badge primitive - co-located CSS Module overriding Fluent UI v9 Badge
+ * visuals with design-system tokens. Each variant pairs a soft background
+ * with a matching foreground tuned for WCAG AA contrast.
+ *
+ * Pill radius is enforced via `--radius-pill` so every badge reads as a
+ * chip regardless of Fluent's size/appearance defaults. Compound selectors
+ * `.badge.<variant>` (0,2,0) beat Griffel atomic (0,1,0).
+ */
+
+.badge {
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-normal);
+    line-height: var(--line-height-tight);
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding-inline: var(--space-2);
+}
+
+/* ----------------------- Variants ------------------------------------------ */
+.badge.accent {
+    background-color: var(--accent-soft);
+    color: var(--accent);
+}
+.badge.neutral {
+    background-color: var(--surface-sunken);
+    color: var(--text-secondary);
+}
+.badge.success {
+    background-color: var(--status-success-soft);
+    color: var(--status-success);
+}
+.badge.warning {
+    background-color: var(--status-warning-soft);
+    color: var(--status-warning);
+}
+.badge.danger {
+    background-color: var(--status-danger-soft);
+    color: var(--status-danger);
+}
