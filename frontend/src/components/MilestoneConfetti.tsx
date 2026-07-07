@@ -16,7 +16,7 @@ interface MilestoneConfettiProps {
  */
 export function MilestoneConfetti({
     active = false,
-    particleCount = 28,
+    particleCount = 20,
     colors = ["#0F6CBD", "#5C2E91", "#107C10", "#D83B01", "#FFB900", "#00B7C3", "#8764B8"],
     onComplete,
 }: MilestoneConfettiProps) {
@@ -53,13 +53,13 @@ export function MilestoneConfetti({
 
         const particles = Array.from({ length: particleCount }, () => {
             const angle = Math.random() * Math.PI * 2;
-            const velocity = 6 + Math.random() * 10;
+            const velocity = 5 + Math.random() * 7;
             const shapes: Shape[] = ["rect", "circle", "ribbon"];
             return {
                 x: originX,
                 y: originY,
                 vx: Math.cos(angle) * velocity,
-                vy: Math.sin(angle) * velocity - 6,
+                vy: Math.sin(angle) * velocity - 4,
                 size: 5 + Math.random() * 7,
                 color: colors[Math.floor(Math.random() * colors.length)],
                 rotation: Math.random() * 360,
