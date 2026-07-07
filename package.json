@@ -1,11 +1,31 @@
 {
-  "dependencies": {
-    "@fluentui/react-components": "^9.74.3",
-    "@fluentui/react-icons": "^2.0.331",
-    "@tanstack/react-query": "^5.101.2",
-    "axios": "^1.18.1",
-    "i18next": "^26.3.4",
-    "react-i18next": "^17.0.8",
-    "react-router-dom": "^7.18.1"
-  }
+    "name": "lernchih",
+    "private": true,
+    "version": "0.0.0",
+    "description": "LernChih — learn together, grow faster.",
+    "type": "module",
+    "scripts": {
+        "dev": "concurrently -n frontend,backend -c cyan,green \"npm:dev:frontend\" \"npm:dev:backend\"",
+        "dev:frontend": "npm --prefix frontend run dev",
+        "dev:backend": "node scripts/dev-backend.mjs",
+        "build": "node scripts/build-all.mjs",
+        "start": "node scripts/dev-backend.mjs",
+        "lint": "npm --prefix frontend run lint",
+        "format": "npm --prefix frontend run format",
+        "format:check": "npm --prefix frontend run format:check",
+        "type-check": "npm --prefix frontend run type-check",
+        "test:a11y": "npm --prefix frontend run a11y",
+        "test:axe": "npm --prefix frontend run axe",
+        "test:pa11y": "npm --prefix frontend run pa11y",
+        "test:smoke": "npm --prefix frontend run smoke",
+        "test:lighthouse": "npm --prefix frontend run lighthouse",
+        "storybook": "npm --prefix frontend run storybook",
+        "generate-api": "npm --prefix frontend run generate-api"
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.0"
+    },
+    "engines": {
+        "node": ">=22.18.0"
+    }
 }
