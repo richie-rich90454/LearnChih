@@ -22,7 +22,8 @@ const useStyles = makeStyles({
         maxWidth: "720px",
         zIndex: 1000,
         padding: `${tokens.spacingVerticalL} ${tokens.spacingHorizontalXL}`,
-        backgroundColor: tokens.colorNeutralBackground1,
+        // Concrete background for axe-core; dark mode override.
+        backgroundColor: "#FFFFFF",
         border: `1px solid ${tokens.colorNeutralStroke1}`,
         borderRadius: tokens.borderRadiusLarge,
         boxShadow: tokens.shadow16,
@@ -36,6 +37,9 @@ const useStyles = makeStyles({
             borderLeft: "none",
             borderRight: "none",
             borderBottom: "none",
+        },
+        "@media (prefers-color-scheme: dark)": {
+            backgroundColor: "#242424",
         },
     },
     content: {
@@ -107,6 +111,7 @@ export default function CookieConsent() {
             role="region"
             aria-label={t("cookieConsent.ariaLabel")}
             size="small"
+            data-cookie-consent="true"
         >
             <div className={styles.content}>
                 <div className={styles.header}>
