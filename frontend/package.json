@@ -22,6 +22,7 @@
         "lighthouse": "node ./tests-accessibility/lighthouse.test.mjs",
         "axe": "node ./tests-accessibility/axe.test.mjs",
         "pa11y": "node ./tests-accessibility/pa11y.test.mjs",
+        "smoke": "node ./tests-accessibility/smoke.test.mjs",
         "a11y": "npm run build && npm run lighthouse && npm run axe && npm run pa11y"
     },
     "dependencies": {
