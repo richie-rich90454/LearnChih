@@ -14,52 +14,72 @@ interface ThemeTransitionProps {
     originY?: number;
 }
 
+// Concrete background colors that exactly match the body background declared
+// in index.css. Using the same hex values (not CSS variables) guarantees the
+// overlay is indistinguishable from the real app surface during the reveal.
+const SURFACE = {
+    light: "#FFFFFF",
+    dark: "#1A1A1A",
+} as const;
+
 /**
  * Renders a circular clip-path reveal when the theme changes.
- * The circle expands from the click/toggle origin (provided by
- * useThemeStore via main.tsx) to fill the viewport over 480ms with the
- * brand ease, then is removed. Disabled under reduced motion (instant
- * color swap).
+ *
+ * Pattern: the overlay is painted in the *previous* theme's surface color
+ * and starts fully covering the viewport. It then shrinks (clip-path circle
+ * from maxRadius → 0) toward the toggle origin, revealing the new theme
+ * underneath. Once the shrink completes, the overlay is unmounted.
+ *
+ * Disabled under reduced motion (instant color swap, no overlay rendered).
  */
 export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps) {
     const reduced = useReducedMotion();
     const ref = useRef<HTMLDivElement>(null);
-    const [key, setKey] = useState(0);
-    const [hasChanged, setHasChanged] = useState(false);
+
+    // The previous mode is captured in state so the overlay can render with
+    // the OLD surface color. It updates synchronously during the same render
+    // pass that detects the change, so the overlay always paints the color
+    // the user was just looking at (not the new one).
+    const [prevMode, setPrevMode] = useState<"light" | "dark" | null>(null);
     const prevModeRef = useRef(mode);
 
     useEffect(() => {
         if (prevModeRef.current === mode) return;
+        const oldMode = prevModeRef.current;
         prevModeRef.current = mode;
-        setHasChanged(true);
-        setKey((k) => k + 1);
+        setPrevMode(oldMode);
     }, [mode]);
 
     useEffect(() => {
-        if (reduced || !ref.current || !hasChanged) return;
+        if (reduced || !ref.current || prevMode === null) return;
 
         const el = ref.current;
-
-        const ctx = gsap.context(() => {
-            const rect = el.getBoundingClientRect();
-            const cx = originX ?? rect.width / 2;
-            const cy = originY ?? rect.height / 2;
-            const maxRadius = Math.max(
+        const cx = originX ?? window.innerWidth / 2;
+        const cy = originY ?? window.innerHeight / 2;
+        const maxRadius = Math.ceil(
+            Math.max(
                 Math.hypot(cx, cy),
-                Math.hypot(rect.width - cx, cy),
-                Math.hypot(cx, rect.height - cy),
-                Math.hypot(rect.width - cx, rect.height - cy),
-            );
+                Math.hypot(window.innerWidth - cx, cy),
+                Math.hypot(cx, window.innerHeight - cy),
+                Math.hypot(window.innerWidth - cx, window.innerHeight - cy),
+            ),
+        );
 
-            el.style.clipPath = `circle(0px at ${cx}px ${cy}px)`;
+        // Start fully covering the viewport (OLD theme color on top, NEW
+        // theme already swapped underneath). Shrink toward the toggle origin
+        // to reveal the new theme.
+        const ctx = gsap.context(() => {
+            gsap.set(el, {
+                clipPath: `circle(${maxRadius}px at ${cx}px ${cy}px)`,
+            });
 
             gsap.to(el, {
-                clipPath: `circle(${maxRadius * 1.25}px at ${cx}px ${cy}px)`,
+                clipPath: `circle(0px at ${cx}px ${cy}px)`,
                 duration: 0.48,
                 ease: "lernchih-brand",
                 force3D: true,
                 onComplete: () => {
-                    gsap.set(el, { clipPath: "none" });
+                    setPrevMode(null);
                 },
             });
         }, el);
@@ -67,13 +87,12 @@ export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps
         return () => {
             ctx.revert();
         };
-    }, [key, reduced, originX, originY, hasChanged]);
+    }, [prevMode, reduced, originX, originY]);
 
-    if (reduced || !hasChanged) return null;
+    if (reduced || prevMode === null) return null;
 
     return (
         <div
-            key={key}
             ref={ref}
             aria-hidden="true"
             style={{
@@ -81,7 +100,7 @@ export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps
                 inset: 0,
                 zIndex: 9998,
                 pointerEvents: "none",
-                backgroundColor: mode === "dark" ? "#0a0a0a" : "#ffffff",
+                backgroundColor: SURFACE[prevMode],
             }}
         />
     );
