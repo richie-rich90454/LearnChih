@@ -1,6 +1,13 @@
 import { useRef, type ReactNode, type CSSProperties, useLayoutEffect } from "react";
 import gsap from "gsap";
+import { CustomEase } from "gsap/CustomEase";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+
+// Register the brand ease once at module load. Both create() and
+// registerPlugin() are idempotent, so importing this module multiple times
+// (e.g. under React StrictMode) is safe.
+gsap.registerPlugin(CustomEase);
+CustomEase.create("lernchih-brand", "0.16, 1, 0.3, 1");
 
 interface StaggerRevealProps {
     children: ReactNode;
@@ -53,7 +60,7 @@ export function StaggerReveal({
                 scale: 1,
                 duration,
                 stagger: targets.length > 40 ? 0.02 : stagger,
-                ease: "power2.out",
+                ease: "lernchih-brand",
                 force3D: true,
             });
         }, container);
