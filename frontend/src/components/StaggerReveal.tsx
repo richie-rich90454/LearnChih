@@ -24,8 +24,8 @@ export function StaggerReveal({
     className,
     style,
     stagger = 0.05,
-    y = 18,
-    duration = 0.5,
+    y = 12,
+    duration = 0.45,
     childSelector = ":scope > *",
 }: StaggerRevealProps) {
     const reduced = useReducedMotion();
