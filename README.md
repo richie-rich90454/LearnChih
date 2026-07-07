@@ -114,6 +114,18 @@ When the `local` Spring profile is active, only `JWT_SECRET` is required; H2 is 
 
 For a full list see `.env.example`.
 
+### Seeding the database
+
+Demo data is provided by `DemoDataSeeder`, a `CommandLineRunner` gated by the `app.seed.enabled` flag (`@ConditionalOnProperty`). It creates demo users (admin + student), subjects, topics, courses, resources, discussion threads, posts, and channels. It is idempotent: it skips when the users table already has rows.
+
+- **Local H2 quick start** — the `local` profile sets `app.seed.enabled=true` in `application-local.properties`, so demo data is loaded on every startup.
+- **MySQL / dev** — start the backend with `app.seed.enabled=true` to seed the MySQL database once, then restart without the flag (or leave it on; the seeder skips when data exists):
+  ```bash
+  ./mvnw spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=dev --app.seed.enabled=true"
+  ```
+
+Demo credentials: `admin@example.com` / `password` and `student@example.com` / `password`.
+
 ### Production environment file
 
 In production, provide the environment file via the systemd service (`/etc/lernchih/lernchih.env`, referenced by `lernchih.service`).
