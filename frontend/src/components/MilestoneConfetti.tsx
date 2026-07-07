@@ -113,7 +113,7 @@ export function MilestoneConfetti({
                     gsap.to(p, {
                         opacity: 0,
                         rotation: p.rotation + p.rotationSpeed * 18,
-                        duration: 1.1 + Math.random() * 0.5,
+                        duration: 0.9 + Math.random() * 0.4,
                         ease: "power1.out",
                         delay: i * 0.008,
                         onComplete: () => {
