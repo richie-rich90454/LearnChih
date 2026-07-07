@@ -1,5 +1,6 @@
 import { makeStyles } from "@fluentui/react-components";
 import { motion, useReducedMotion } from "motion/react";
+import { useThemeStore } from "@/hooks/useThemeStore";
 
 export interface LogoMarkProps {
     /** Size in pixels for both width and height of the mark. Default 32. */
@@ -25,16 +26,9 @@ const useLogoStyles = makeStyles({
         fontWeight: 700,
         letterSpacing: "-0.02em",
         lineHeight: 1,
-        // Use concrete hex values instead of tokens.colorNeutralForeground1
-        // because axe-core/pa11y cannot resolve CSS custom properties like
-        // var(--colorNeutralForeground1). #242424 is Fluent v9 light-mode
-        // colorNeutralForeground1; #FFFFFF is the dark-mode equivalent.
-        color: "#242424",
-        backgroundColor: "#FFFFFF",
-        "@media (prefers-color-scheme: dark)": {
-            color: "#FFFFFF",
-            backgroundColor: "#1A1A1A",
-        },
+        // Color and background are set via inline styles in LogoFull to
+        // guarantee axe-core can resolve them (inline styles have the
+        // highest specificity and override Fluent UI Button's atomic classes).
     },
 });
 
@@ -101,6 +95,8 @@ export function LogoMono({ size = 32, className, title }: LogoMarkProps) {
  */
 export function LogoFull({ size = 28, className, title }: LogoFullProps) {
     const styles = useLogoStyles();
+    const mode = useThemeStore((s) => s.mode);
+    const isDark = mode === "dark";
     return (
         <span
             className={className}
@@ -115,7 +111,14 @@ export function LogoFull({ size = 28, className, title }: LogoFullProps) {
             <LogoMark size={size} />
             <span
                 className={styles.wordmark}
-                style={{ fontSize: `${Math.round(size * 0.82)}px` }}
+                style={{
+                    fontSize: `${Math.round(size * 0.82)}px`,
+                    // Concrete inline colors so axe-core can evaluate contrast
+                    // without resolving CSS variables. Inline styles override
+                    // all classes, including Fluent UI Button's atomic classes.
+                    color: isDark ? "#FFFFFF" : "#242424",
+                    backgroundColor: isDark ? "#1A1A1A" : "#FFFFFF",
+                }}
                 aria-hidden={title ? true : undefined}
             >
                 LernChih
