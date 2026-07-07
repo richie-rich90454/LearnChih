@@ -421,7 +421,9 @@
     "a11y": {
         "skipToContent": "跳转到内容",
         "sidebar": "侧边栏",
-        "mainNavigation": "主导航"
+        "mainNavigation": "主导航",
+        "mobileNavigation": "移动端导航",
+        "footerNavigation": "页脚导航"
     },
     "theme": {
         "toggle": "切换深色模式"

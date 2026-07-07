@@ -59,7 +59,9 @@
     "a11y": {
         "skipToContent": "Skip to content",
         "sidebar": "Sidebar",
-        "mainNavigation": "Main navigation"
+        "mainNavigation": "Main navigation",
+        "mobileNavigation": "Mobile navigation",
+        "footerNavigation": "Footer navigation"
     },
     "theme": {
         "toggle": "Toggle dark mode"
