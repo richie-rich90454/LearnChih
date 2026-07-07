@@ -54,23 +54,25 @@ export function AnimatedCounter({
         valueRef.current = to;
         hasEnteredRef.current = true;
 
-        tweenRef.current?.kill();
-
         const obj = { value: from };
-        tweenRef.current = gsap.to(obj, {
-            value: to,
-            duration,
-            ease: "power2.out",
-            overwrite: true,
-            onUpdate: () => {
-                if (displayRef.current) {
-                    displayRef.current.textContent = formatter(obj.value);
-                }
-            },
-        });
+        const ctx = gsap.context(() => {
+            tweenRef.current?.kill();
+            tweenRef.current = gsap.to(obj, {
+                value: to,
+                duration,
+                ease: "power2.out",
+                overwrite: true,
+                onUpdate: () => {
+                    if (displayRef.current) {
+                        displayRef.current.textContent = formatter(obj.value);
+                    }
+                },
+            });
+        }, displayRef.current);
 
         return () => {
             tweenRef.current?.kill();
+            ctx.revert();
         };
     }, [value, duration, reduced, formatter, inView]);
 
