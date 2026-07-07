@@ -1,0 +1,70 @@
+/**
+ * Motion utility classes (CSS Module).
+ *
+ * Entrance animations for the design-system primitives. Each class consumes
+ * the --motion-* tokens from tokens.css so durations stay consistent and
+ * tunable in one place.
+ *
+ * Reduced-motion handling has two layers:
+ *  1. The global prefers-reduced-motion rule in index.css collapses
+ *     animation-duration / transition-duration to 0.01ms (with !important),
+ *     so every class here is automatically instant under the media query.
+ *  2. The .reduce class below is a JS-driven opt-out guard. Components that
+ *     read useReducedMotion() can apply it alongside an entrance class to
+ *     fully disable the animation regardless of the media query. It uses
+ *     !important so it wins over the entrance class regardless of how a
+ *     consumer composes class names; this is a local module override, not a
+ *     global hack, so it does not trip the index.css !important lint guard.
+ *
+ * Animate only transform and opacity (hardware-accelerated, no layout work).
+ */
+.fadeIn {
+    animation: fadeIn var(--motion-base) var(--motion-ease) both;
+}
+
+.slideUp {
+    animation: slideUp var(--motion-base) var(--motion-ease) both;
+}
+
+.scaleIn {
+    animation: scaleIn var(--motion-base) var(--motion-ease) both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* JS-driven reduced-motion kill switch. Apply alongside an entrance class
+   (e.g. className={`${styles.fadeIn} ${styles.reduce}`}`) when
+   useReducedMotion() returns true. */
+.reduce {
+    animation: none !important;
+    transition: none !important;
+}
