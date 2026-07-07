@@ -1,0 +1,282 @@
+/**
+ * LernChih design-system token layer.
+ *
+ * Framework-agnostic CSS custom properties that govern all visuals for the
+ * CSS-Modules-over-Fluent design system. Fluent UI v9 remains the behavioral
+ * substrate (a11y, keyboard, focus management); these tokens own the look.
+ *
+ * Organization:
+ *   1. Raw brand palette + neutral ramp (theme-agnostic hex references).
+ *   2. Radius / spacing / density / typography / motion / z-index scales
+ *      (theme-agnostic, defined once on :root).
+ *   3. Semantic surface / text / border / accent / shadow tokens
+ *      (theme-aware: light on :root, dark under prefers-color-scheme + the
+ *      explicit [data-theme] attribute so a manual toggle always wins).
+ *
+ * Anti-slop rules enforced here (per design-taste-frontend):
+ *   - No pure #000 / #fff. Off-black (#0A0A0B) and off-white (#FAFAFA) anchor
+ *     the ramps. Pure values kill depth and read as a Tell.
+ *   - Shadows are tinted to the cobalt brand hue in light mode and deepen to
+ *     near-black in dark mode. No flat grey drop shadows.
+ *   - Z-index scale is documented and finite; no ad-hoc z-50 sprinkles.
+ *   - Motion timings respect prefers-reduced-motion via the global guard in
+ *     index.css (animation/transition-duration collapse to 0.01ms).
+ *
+ * This file is imported at the top of index.css so its :root rules cascade
+ * before any other style. It contains ONLY custom properties - no element
+ * selectors, no !important. New components should consume these tokens via
+ * var(--token-name); primitives (Phase 1B) will build on top of them.
+ */
+
+/* ------------------------------------------------------------------ */
+/* 1. Raw palette (theme-agnostic hex references)                      */
+/* ------------------------------------------------------------------ */
+
+:root {
+    /* Brand cobalt - the single accent. Canonical shade is #1E4FD8 (light)
+       with a lighter #5B8DEF for foregrounds on dark surfaces. */
+    --brand-cobalt: #1e4fd8;
+    --brand-cobalt-light: #1e4fd8;
+    --brand-cobalt-dark: #5b8def;
+    --brand-off-black: #0a0a0b;
+    --brand-off-white: #fafafa;
+
+    /* Neutral ramp (no pure #000 / #fff). Shared by both themes; semantic
+       tokens below pick from this ramp and flip per theme. */
+    --neutral-0: #fafafa;
+    --neutral-50: #f4f4f5;
+    --neutral-100: #ececee;
+    --neutral-200: #dedee1;
+    --neutral-300: #c8c8cc;
+    --neutral-400: #9a9aa0;
+    --neutral-500: #6e6e76;
+    --neutral-600: #4a4a50;
+    --neutral-700: #2e2e33;
+    --neutral-800: #1a1a1e;
+    --neutral-900: #0a0a0b;
+
+    /* ---------------------------------------------------------------- */
+    /* 2a. Radius scale                                                  */
+    /* ---------------------------------------------------------------- */
+    --radius-card: 12px;
+    --radius-input: 8px;
+    --radius-button: 8px;
+    --radius-pill: 999px;
+
+    /* ---------------------------------------------------------------- */
+    /* 2b. Spacing scale (4 / 8 / 12 / 16 / 24 / 32 / 48 / 64)          */
+    /* ---------------------------------------------------------------- */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-12: 48px;
+    --space-16: 64px;
+
+    /* ---------------------------------------------------------------- */
+    /* 2c. Density                                                       */
+    /* ---------------------------------------------------------------- */
+    /* Base density multiplier (1 = default). Primitives can scale
+       internal padding by this to offer a future "compact" mode without
+       rewriting token references. */
+    --density-base: 1;
+    --control-height-sm: 28px;
+    --control-height-md: 32px;
+    --control-height-lg: 40px;
+
+    /* ---------------------------------------------------------------- */
+    /* 2d. Typography                                                    */
+    /* ---------------------------------------------------------------- */
+    /* Geist is self-hosted (see @font-face in index.css). Never link
+       Google Fonts in production. */
+    --font-sans: "Geist", system-ui, -apple-system, sans-serif;
+    --font-mono: "Geist Mono", ui-monospace, monospace;
+
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 24px;
+    --font-size-3xl: 30px;
+    --font-size-4xl: 36px;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-tight: 1.2;
+    --line-height-base: 1.5;
+    --line-height-relaxed: 1.65;
+
+    --letter-spacing-tight: -0.01em;
+    --letter-spacing-normal: 0;
+
+    /* ---------------------------------------------------------------- */
+    /* 2e. Motion                                                        */
+    /* ---------------------------------------------------------------- */
+    /* The global prefers-reduced-motion rule in index.css collapses
+       animation/transition-duration to 0.01ms, so these values are
+       automatically honored under reduced motion. */
+    --motion-fast: 180ms;
+    --motion-base: 280ms;
+    --motion-slow: 480ms;
+    --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* ---------------------------------------------------------------- */
+    /* 2f. Z-index scale (documented, finite)                           */
+    /* ---------------------------------------------------------------- */
+    /* Use these layers instead of ad-hoc z values. The transient layer
+       is reserved for the ThemeTransition reveal overlay which must sit
+       above all app content but below browser chrome. */
+    --z-base: 0;
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-fixed: 300;
+    --z-overlay: 800;
+    --z-modal: 900;
+    --z-toast: 1000;
+    --z-tooltip: 1100;
+    --z-transient: 9998;
+
+    /* ---------------------------------------------------------------- */
+    /* 3. Semantic tokens - LIGHT defaults                              */
+    /* ---------------------------------------------------------------- */
+    /* Surfaces use off-white (not pure #fff). Cards sit one step lighter
+       than the app background so elevation reads without a heavy shadow. */
+    --surface-1: #fafafa; /* app background */
+    --surface-2: #fcfcfd; /* card / raised */
+    --surface-3: #fcfcfd; /* popover / dialog */
+    --surface-sunken: #f4f4f5; /* inset / well */
+
+    --text-primary: #0a0a0b;
+    --text-secondary: #4a4a50;
+    --text-disabled: #9a9aa0;
+    --text-on-accent: #fcfcfd;
+
+    --border-subtle: #ececee;
+    --border-strong: #c8c8cc;
+
+    /* Accent: foreground/link/stroke uses the canonical cobalt. Filled
+       backgrounds (primary buttons) also stay cobalt in light mode. */
+    --accent: #1e4fd8;
+    --accent-hover: #1a47d0;
+    --accent-pressed: #16409d;
+    --accent-fill: #1e4fd8;
+    --accent-fill-hover: #1a47d0;
+    --accent-fill-pressed: #16409d;
+    --accent-soft: #e8eefc; /* subtle brand tint background */
+    --accent-foreground: #fcfcfd; /* text on accent-fill */
+
+    /* Tinted shadows: light mode carries a faint cobalt tint so elevated
+       cards feel branded rather than generic grey. */
+    --shadow-card: 0 4px 12px rgba(30, 79, 216, 0.08);
+    --shadow-lift: 0 8px 24px rgba(30, 79, 216, 0.12);
+    --shadow-focus: 0 0 0 3px rgba(30, 79, 216, 0.24);
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Semantic tokens - DARK via system preference                     */
+/* ------------------------------------------------------------------ */
+/* Applies when the OS prefers dark AND no explicit [data-theme] is set.
+   The [data-theme="light"] rule below has higher specificity and wins
+   when the user manually toggles to light. */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --surface-1: #0a0a0b; /* app background */
+        --surface-2: #16161a; /* card / raised */
+        --surface-3: #1f1f24; /* popover / dialog */
+        --surface-sunken: #050506;
+
+        --text-primary: #f4f4f5;
+        --text-secondary: #9a9aa0;
+        --text-disabled: #6e6e76;
+        --text-on-accent: #fcfcfd;
+
+        --border-subtle: #2e2e33;
+        --border-strong: #4a4a50;
+
+        /* Accent foreground/links lighten to #5B8DEF for WCAG AA on dark.
+           Filled backgrounds stay canonical cobalt #1E4FD8 where the dark
+           surface provides sufficient contrast (matches brandTheme.ts). */
+        --accent: #5b8def;
+        --accent-hover: #7ba4f4;
+        --accent-pressed: #9ab8f7;
+        --accent-fill: #1e4fd8;
+        --accent-fill-hover: #2b62e0;
+        --accent-fill-pressed: #4a78e5;
+        --accent-soft: rgba(91, 141, 239, 0.16);
+        --accent-foreground: #fcfcfd;
+
+        --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
+        --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.5);
+        --shadow-focus: 0 0 0 3px rgba(91, 141, 239, 0.4);
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Semantic tokens - explicit [data-theme] overrides                */
+/* ------------------------------------------------------------------ */
+/* Attribute selectors carry higher specificity (0,2,0) than the bare
+   :root in the media query (0,1,0), so a manual toggle always wins
+   over the system preference. Light is re-stated so [data-theme="light"]
+   beats prefers-color-scheme: dark. */
+
+:root[data-theme="light"] {
+    --surface-1: #fafafa;
+    --surface-2: #fcfcfd;
+    --surface-3: #fcfcfd;
+    --surface-sunken: #f4f4f5;
+
+    --text-primary: #0a0a0b;
+    --text-secondary: #4a4a50;
+    --text-disabled: #9a9aa0;
+    --text-on-accent: #fcfcfd;
+
+    --border-subtle: #ececee;
+    --border-strong: #c8c8cc;
+
+    --accent: #1e4fd8;
+    --accent-hover: #1a47d0;
+    --accent-pressed: #16409d;
+    --accent-fill: #1e4fd8;
+    --accent-fill-hover: #1a47d0;
+    --accent-fill-pressed: #16409d;
+    --accent-soft: #e8eefc;
+    --accent-foreground: #fcfcfd;
+
+    --shadow-card: 0 4px 12px rgba(30, 79, 216, 0.08);
+    --shadow-lift: 0 8px 24px rgba(30, 79, 216, 0.12);
+    --shadow-focus: 0 0 0 3px rgba(30, 79, 216, 0.24);
+}
+
+:root[data-theme="dark"] {
+    --surface-1: #0a0a0b;
+    --surface-2: #16161a;
+    --surface-3: #1f1f24;
+    --surface-sunken: #050506;
+
+    --text-primary: #f4f4f5;
+    --text-secondary: #9a9aa0;
+    --text-disabled: #6e6e76;
+    --text-on-accent: #fcfcfd;
+
+    --border-subtle: #2e2e33;
+    --border-strong: #4a4a50;
+
+    --accent: #5b8def;
+    --accent-hover: #7ba4f4;
+    --accent-pressed: #9ab8f7;
+    --accent-fill: #1e4fd8;
+    --accent-fill-hover: #2b62e0;
+    --accent-fill-pressed: #4a78e5;
+    --accent-soft: rgba(91, 141, 239, 0.16);
+    --accent-foreground: #fcfcfd;
+
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-focus: 0 0 0 3px rgba(91, 141, 239, 0.4);
+}
