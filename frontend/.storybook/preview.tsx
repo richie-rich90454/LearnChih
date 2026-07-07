@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import type { Preview, ReactRenderer } from "@storybook/react-vite";
 import type { Decorator } from "@storybook/react";
 import { FluentProvider, webDarkTheme, webLightTheme } from "@fluentui/react-components";
@@ -6,6 +7,18 @@ import "../src/index.css";
 
 type ThemeMode = "light" | "dark";
 
+/**
+ * Keeps `data-theme` on <html> in sync with the toolbar toggle so the
+ * semantic tokens in design-system/tokens.css resolve to the matching
+ * light/dark set. Mirrors the runtime sync in design-system/ThemeProvider.
+ */
+function ThemeAttributeSync({ mode }: { mode: ThemeMode }) {
+    useEffect(() => {
+        document.documentElement.dataset.theme = mode;
+    }, [mode]);
+    return null;
+}
+
 const withProviders: Decorator<ReactRenderer> = (Story, context) => {
     const mode = (context.globals.theme as ThemeMode) ?? "light";
     const theme = mode === "dark" ? webDarkTheme : webLightTheme;
@@ -13,6 +26,7 @@ const withProviders: Decorator<ReactRenderer> = (Story, context) => {
     return (
         <HelmetProvider>
             <FluentProvider theme={theme} style={{ minHeight: "100vh", padding: "16px" }}>
+                <ThemeAttributeSync mode={mode} />
                 <Story />
             </FluentProvider>
         </HelmetProvider>
