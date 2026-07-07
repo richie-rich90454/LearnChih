@@ -15,6 +15,30 @@
                 window.global = window;
             }
         </script>
+        <script>
+            // Pre-hydration theme sync. Set data-theme on <html> before the app
+            // bundle loads so tokens.css resolves the correct light/dark semantic
+            // values on first paint. Mirrors the logic in hooks/useThemeStore.ts
+            // and uses the same localStorage key ("lernchih-theme"). Prevents a
+            // flash-of-light-theme (B11) when the user previously chose dark.
+            (function () {
+                try {
+                    var saved = localStorage.getItem("lernchih-theme");
+                    var mode =
+                        saved === "light" || saved === "dark"
+                            ? saved
+                            : window.matchMedia &&
+                              window.matchMedia("(prefers-color-scheme: dark)").matches
+                            ? "dark"
+                            : "light";
+                    document.documentElement.dataset.theme = mode;
+                } catch (e) {
+                    // localStorage / matchMedia unavailable (private mode, SSR);
+                    // leave data-theme unset so tokens.css falls back to the
+                    // prefers-color-scheme media-query defaults.
+                }
+            })();
+        </script>
     </head>
     <body>
         <div id="root"></div>
