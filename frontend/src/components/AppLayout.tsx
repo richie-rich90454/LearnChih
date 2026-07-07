@@ -335,7 +335,7 @@ export default function AppLayout() {
                     </Button>
                 </DrawerHeader>
                 <DrawerBody>
-                    <nav aria-label={t("a11y.mainNavigation")} className={styles.navContainer}>
+                    <nav aria-label={t("a11y.mobileNavigation")} className={styles.navContainer}>
                         <NavLinks />
                     </nav>
                 </DrawerBody>
