@@ -1,0 +1,14 @@
+/**
+ * Inline layout primitive - horizontal flex row that wraps. The gap, cross-
+ * axis alignment, and main-axis justification are parameterised through CSS
+ * custom properties set inline by the component.
+ */
+
+.inline {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: var(--inline-align, center);
+    justify-content: var(--inline-justify, flex-start);
+    gap: var(--inline-gap, var(--space-4));
+}
