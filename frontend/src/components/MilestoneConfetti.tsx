@@ -17,7 +17,7 @@ interface MilestoneConfettiProps {
 export function MilestoneConfetti({
     active = false,
     particleCount = 20,
-    colors = ["#0F6CBD", "#5C2E91", "#107C10", "#D83B01", "#FFB900", "#00B7C3", "#8764B8"],
+    colors = ["#0F6CBD", "#5C2E91", "#107C10", "#FFB900", "#00B7C3"],
     onComplete,
 }: MilestoneConfettiProps) {
     const reduced = useReducedMotion();
