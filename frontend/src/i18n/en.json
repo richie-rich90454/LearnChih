@@ -61,7 +61,8 @@
         "sidebar": "Sidebar",
         "mainNavigation": "Main navigation",
         "mobileNavigation": "Mobile navigation",
-        "footerNavigation": "Footer navigation"
+        "footerNavigation": "Footer navigation",
+        "openMenu": "Open menu"
     },
     "theme": {
         "toggle": "Toggle dark mode"

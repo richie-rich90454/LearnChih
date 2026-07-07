@@ -423,7 +423,8 @@
         "sidebar": "侧边栏",
         "mainNavigation": "主导航",
         "mobileNavigation": "移动端导航",
-        "footerNavigation": "页脚导航"
+        "footerNavigation": "页脚导航",
+        "openMenu": "打开菜单"
     },
     "theme": {
         "toggle": "切换深色模式"
