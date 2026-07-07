@@ -62,7 +62,7 @@ export default function Footer() {
                 </div>
 
                 {/* Links column */}
-                <nav className={styles.linkColumn} aria-label={t("a11y.mainNavigation")}>
+                <nav className={styles.linkColumn} aria-label={t("a11y.footerNavigation")}>
                     <Link onClick={() => navigate("/resources")}>{t("nav.resources")}</Link>
                     <Link onClick={() => navigate("/channels")}>{t("nav.channels")}</Link>
                     <Link onClick={() => navigate("/api-docs")}>{t("footer.apiDocs")}</Link>
