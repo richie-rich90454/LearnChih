@@ -1,15 +1,18 @@
+import type { CSSProperties } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Button } from "../ui/Button";
+import { Button, type ButtonVariant, type ButtonSize } from "../ui/Button";
 
 const meta: Meta<typeof Button> = {
     title: "UI/Button",
     component: Button,
     argTypes: {
-        appearance: {
+        variant: {
             control: "select",
-            options: ["outline", "primary", "secondary", "subtle", "transparent"],
+            options: ["primary", "subtle", "outline", "ghost"] satisfies ButtonVariant[],
         },
-        size: { control: "select", options: ["small", "medium", "large"] },
+        size: { control: "select", options: ["small", "medium", "large"] satisfies ButtonSize[] },
+        loading: { control: "boolean" },
+        disabled: { control: "boolean" },
         children: { control: "text" },
     },
 };
@@ -17,14 +20,66 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const Primary: Story = {
-    args: { children: "Button", appearance: "primary" },
+export const Default: Story = {
+    args: { children: "Button", variant: "primary" },
 };
 
-export const Outline: Story = {
-    args: { children: "Outline", appearance: "outline" },
+const rowStyle: CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    flexWrap: "wrap",
 };
 
-export const Subtle: Story = {
-    args: { children: "Subtle", appearance: "subtle" },
+export const Variants: Story = {
+    render: () => (
+        <div style={rowStyle}>
+            <Button variant="primary">Primary</Button>
+            <Button variant="subtle">Subtle</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+        </div>
+    ),
+};
+
+export const Sizes: Story = {
+    render: () => (
+        <div style={rowStyle}>
+            <Button variant="primary" size="small">
+                Small
+            </Button>
+            <Button variant="primary" size="medium">
+                Medium
+            </Button>
+            <Button variant="primary" size="large">
+                Large
+            </Button>
+        </div>
+    ),
+};
+
+export const Loading: Story = {
+    render: () => (
+        <div style={rowStyle}>
+            <Button variant="primary" loading>
+                Saving
+            </Button>
+            <Button variant="outline" loading>
+                Loading
+            </Button>
+        </div>
+    ),
+};
+
+export const Disabled: Story = {
+    render: () => (
+        <div style={rowStyle}>
+            <Button variant="primary" disabled>
+                Disabled
+            </Button>
+            <Button variant="outline" disabled>
+                Disabled
+            </Button>
+        </div>
+    ),
 };
