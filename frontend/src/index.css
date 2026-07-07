@@ -1,3 +1,9 @@
+/* Design-system token layer: brand palette, neutral ramp, radius, spacing,
+   density, typography, motion, z-index, and light/dark semantic tokens.
+   Imported first so its :root custom properties cascade before any rule
+   below. Framework-agnostic (plain CSS custom properties). */
+@import "./design-system/tokens.css";
+
 /* Minimal global reset for Fluent 2 app */
 *,
 *::before,
@@ -102,18 +108,9 @@ body {
     font-display: swap;
 }
 
-:root {
-    --motion-fast: 180ms;
-    --motion-base: 280ms;
-    --motion-slow: 480ms;
-    --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
-    --radius-card: 12px;
-    --radius-input: 8px;
-    --radius-button: 8px;
-    --radius-pill: 999px;
-    --font-sans: "Geist", system-ui, -apple-system, sans-serif;
-    --font-mono: "Geist Mono", ui-monospace, monospace;
-}
+/* Design tokens (--motion-*, --radius-*, --font-*, spacing, typography,
+   z-index, light/dark semantics) now live in design-system/tokens.css,
+   imported at the top of this file. Do not redeclare them here. */
 
 code,
 pre,
