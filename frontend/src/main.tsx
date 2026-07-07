@@ -7,15 +7,12 @@ if (typeof (window as any).global === "undefined") {
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { FluentProvider } from "@fluentui/react-components";
-import { brandDarkTheme, brandLightTheme } from "./theme/brandTheme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { I18nextProvider } from "react-i18next";
 import i18n, { initPromise } from "./i18n";
 import App from "./App";
-import { useThemeStore } from "./hooks/useThemeStore";
-import { ThemeTransition } from "./components/ThemeTransition";
+import { ThemeProvider } from "./design-system/ThemeProvider";
 
 // Global stylesheet: resets, @font-face for self-hosted Geist, :root design
 // tokens (--font-sans, --motion-*, --radius-*), prefers-reduced-motion override,
@@ -25,14 +22,10 @@ import { ThemeTransition } from "./components/ThemeTransition";
 import "./index.css";
 
 function ThemedApp() {
-    const mode = useThemeStore((s) => s.mode);
-    const origin = useThemeStore((s) => s.origin);
-    const theme = mode === "dark" ? brandDarkTheme : brandLightTheme;
     return (
-        <FluentProvider theme={theme}>
-            <ThemeTransition mode={mode} originX={origin.x} originY={origin.y} />
+        <ThemeProvider>
             <App />
-        </FluentProvider>
+        </ThemeProvider>
     );
 }
 
