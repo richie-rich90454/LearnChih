@@ -1,0 +1,14 @@
+/**
+ * Stack layout primitive - vertical flex column with a token-based gap.
+ *
+ * The gap and cross-axis alignment are parameterised through CSS custom
+ * properties (--stack-gap, --stack-align) set inline by the component so
+ * the module owns the layout while callers pick the scale step.
+ */
+
+.stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stack-gap, var(--space-4));
+    align-items: var(--stack-align, stretch);
+}
