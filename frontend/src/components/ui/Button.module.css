@@ -1,0 +1,131 @@
+/**
+ * Button primitive - co-located CSS Module that overrides Fluent UI v9
+ * Button visuals with design-system tokens. Fluent keeps behavior + a11y
+ * (keyboard focus management, aria handling, loading spinner); these rules
+ * own the look via tokens.css.
+ *
+ * Specificity strategy (no !important):
+ *   - Griffel atomic classes (hashes like .bezu6) sit at (0,1,0); the
+ *     `fui-Button` display class is also (0,1,0). To win color/background
+ *     overrides we use compound `.button.<variant>` selectors at (0,2,0).
+ *   - Griffel's `:focus-visible` rules land at (0,2,0). The doubled-class
+ *     `.button.button:focus-visible` is (0,3,0) so the design-system focus
+ *     ring always wins regardless of stylesheet injection order.
+ *   - Hover/active compound selectors reach (0,3,0) / (0,3,0) which beats
+ *     Griffel's hover atomic rules (0,2,0).
+ */
+
+.button {
+    border-radius: var(--radius-button);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    transition:
+        transform var(--motion-fast) var(--motion-ease),
+        background-color var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease),
+        box-shadow var(--motion-fast) var(--motion-ease),
+        color var(--motion-fast) var(--motion-ease);
+}
+
+/* Tactile press: 1px downward offset gives a physical response. The
+   global .fui-Button rule in index.css already provides this; restating
+   it here makes the primitive self-contained. Reduced motion is honored
+   by the global prefers-reduced-motion override in index.css. */
+.button:active {
+    transform: translateY(1px);
+}
+
+/* Focus-visible ring. Doubled class raises specificity to (0,3,0) so the
+   token-based ring beats Griffel's atomic :focus-visible outline. */
+.button.button:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+}
+
+/* Disabled / aria-disabled: dampen without removing from a11y tree. */
+.button:disabled,
+.button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ----------------- Variants (compound .button.<v> = (0,2,0)) ----------------- */
+
+.button.primary {
+    background-color: var(--accent-fill);
+    color: var(--accent-foreground);
+    border: 1px solid transparent;
+}
+.button.primary:hover {
+    background-color: var(--accent-fill-hover);
+}
+.button.primary:active {
+    background-color: var(--accent-fill-pressed);
+}
+
+.button.subtle {
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid transparent;
+}
+.button.subtle:hover {
+    background-color: var(--surface-sunken);
+}
+.button.subtle:active {
+    background-color: var(--border-subtle);
+}
+
+.button.outline {
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+}
+.button.outline:hover {
+    background-color: var(--surface-sunken);
+    border-color: var(--text-secondary);
+}
+.button.outline:active {
+    background-color: var(--border-subtle);
+}
+
+.button.ghost {
+    background-color: transparent;
+    color: var(--accent);
+    border: 1px solid transparent;
+}
+.button.ghost:hover {
+    background-color: var(--accent-soft);
+}
+.button.ghost:active {
+    background-color: var(--accent-soft);
+    color: var(--accent-pressed);
+}
+
+/* ----------------------- Sizes (compound .button.<s>) ---------------------- */
+
+.button.small {
+    min-height: var(--control-height-sm);
+    padding-inline: var(--space-2);
+    font-size: var(--font-size-xs);
+}
+.button.medium {
+    min-height: var(--control-height-md);
+    padding-inline: var(--space-3);
+    font-size: var(--font-size-sm);
+}
+.button.large {
+    min-height: var(--control-height-lg);
+    padding-inline: var(--space-4);
+    font-size: var(--font-size-base);
+}
+
+/* ----------------------- Loading hook -------------------------------------- */
+/* Fluent renders its own Spinner during loading; this class is a hook for
+   cursor + reduced pointer affordance. */
+.button.loading {
+    cursor: progress;
+}
