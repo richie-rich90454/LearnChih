@@ -1,14 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-    makeStyles,
-    tokens,
-    Title2,
-    Body1,
-    Card,
-    Badge,
-    Button,
-    Spinner,
-} from "@fluentui/react-components";
+import { Spinner } from "@fluentui/react-components";
 import { PeopleCommunity24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
@@ -21,41 +12,12 @@ import Seo from "../components/Seo";
 import { CreateStudyGroupDialog } from "../components/CreateStudyGroupDialog";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "900px",
-    },
-    headerRow: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: tokens.spacingHorizontalM,
-    },
-    grid: {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-        gap: tokens.spacingHorizontalM,
-    },
-    card: {
-        padding: tokens.spacingHorizontalM,
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalS,
-    },
-    cardHeader: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-    },
-});
+import { Button } from "../components/ui/Button";
+import { Card } from "../components/ui/Card";
+import { Badge } from "../components/ui/Badge";
+import styles from "./List.module.css";
 
 export default function StudyGroupsPage() {
-    const styles = useStyles();
     const { t } = useTranslation();
     const { data, isLoading, isError, refetch } = useQuery<StudyGroup[]>({
         queryKey: ["studyGroups"],
@@ -75,16 +37,18 @@ export default function StudyGroupsPage() {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={styles.page}>
             <Seo
                 title="Study Groups — LernChih"
                 description="Join or create study groups on LernChih."
                 canonicalPath="/study-groups"
             />
-            <div className={styles.headerRow}>
-                <Title2 as="h1">Study Groups</Title2>
-                <CreateStudyGroupDialog onCreated={refetch} />
-            </div>
+            <header className={styles.pageHeader}>
+                <h1 className={styles.title}>Study Groups</h1>
+                <div className={styles.headerActions}>
+                    <CreateStudyGroupDialog onCreated={refetch} />
+                </div>
+            </header>
 
             {isLoading && <Spinner label="Loading study groups..." />}
             {isError && (
@@ -106,37 +70,29 @@ export default function StudyGroupsPage() {
 
             <div className={styles.grid}>
                 {groups.map((group) => (
-                    <Card key={group.id} className={styles.card}>
-                        <div className={styles.cardHeader}>
-                            <Body1 style={{ fontWeight: 600 }}>{group.name}</Body1>
-                            <Badge appearance="outline" size="small">
+                    <Card key={group.id} className={styles.item} padding="md">
+                        <div className={styles.itemHeader}>
+                            <h3 className={styles.itemTitle}>{group.name}</h3>
+                            <Badge variant="neutral" size="small">
                                 {group.isPublic ? "Public" : "Private"}
                             </Badge>
                         </div>
-                        <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                            {group.description}
-                        </Body1>
+                        <p className={styles.itemBody}>{group.description}</p>
                         {group.subject && (
-                            <Badge appearance="tint" size="small">
+                            <Badge variant="accent" size="small">
                                 {group.subject}
                             </Badge>
                         )}
-                        <Body1 style={{ fontSize: "var(--fontSizeBase200)" }}>
+                        <div className={styles.itemMeta}>
                             {group.memberCount} member{group.memberCount === 1 ? "" : "s"}
-                        </Body1>
-                        <div
-                            style={{
-                                display: "flex",
-                                gap: tokens.spacingHorizontalS,
-                                marginTop: tokens.spacingVerticalS,
-                            }}
-                        >
-                            <Button size="small" onClick={() => handleJoin(group.id)}>
+                        </div>
+                        <div className={styles.itemActions}>
+                            <Button variant="outline" size="small" onClick={() => handleJoin(group.id)}>
                                 Join
                             </Button>
                             <Button
+                                variant="subtle"
                                 size="small"
-                                appearance="subtle"
                                 onClick={() => handleLeave(group.id)}
                             >
                                 Leave

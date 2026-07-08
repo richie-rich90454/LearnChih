@@ -1,17 +1,4 @@
-import {
-    makeStyles,
-    tokens,
-    Title2,
-    Subtitle2,
-    Body1,
-    Avatar,
-    Badge,
-    DataGrid,
-    DataGridHeader,
-    DataGridRow,
-    DataGridCell,
-    DataGridBody,
-} from "@fluentui/react-components";
+import { Avatar } from "@fluentui/react-components";
 import { Trophy24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useLeaderboard } from "../hooks/useResources";
@@ -22,35 +9,17 @@ import { SkeletonLine, SkeletonList } from "../components/Skeleton";
 import { AnimatedCounter } from "../components/AnimatedCounter";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "800px",
-    },
-    headerRow: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalM,
-    },
-});
+import { Card } from "../components/ui/Card";
+import { Badge } from "../components/ui/Badge";
+import styles from "./List.module.css";
 
 export default function LeaderboardPage() {
-    const styles = useStyles();
     const { t } = useTranslation();
     const { data, isLoading, isError, refetch } = useLeaderboard();
 
-    const columns = [
-        { columnId: "rank", renderHeaderCell: () => t("leaderboard.rank"), minWidth: 80 },
-        { columnId: "user", renderHeaderCell: () => t("leaderboard.user"), minWidth: 250 },
-        { columnId: "credits", renderHeaderCell: () => t("leaderboard.credits"), minWidth: 120 },
-    ];
-
     if (isLoading) {
         return (
-            <main className={styles.container}>
+            <main className={`${styles.page} ${styles.pageNarrow}`}>
                 <SkeletonLine width="40%" />
                 <SkeletonList count={5} />
             </main>
@@ -58,7 +27,7 @@ export default function LeaderboardPage() {
     }
     if (isError) {
         return (
-            <main className={styles.container}>
+            <main className={`${styles.page} ${styles.pageNarrow}`}>
                 <Seo
                     title={`${t("leaderboard.title")} — LernChih`}
                     description={t("leaderboard.description")}
@@ -77,19 +46,24 @@ export default function LeaderboardPage() {
     }
 
     const users: LeaderboardEntry[] = Array.isArray(data) ? data : (data as any)?.content || [];
+    const ranked = users.slice(0, 50);
 
     return (
-        <main className={styles.container}>
+        <main className={`${styles.page} ${styles.pageNarrow}`}>
             <Seo
                 title={`${t("leaderboard.title")} — LernChih`}
                 description={t("leaderboard.description")}
                 canonicalPath="/leaderboard"
                 hreflang
             />
-            <div className={styles.headerRow}>
-                <Trophy24Regular />
-                <Title2 as="h1">{t("leaderboard.title")}</Title2>
-            </div>
+            <header className={styles.pageHeader}>
+                <div className={styles.headerLead}>
+                    <span className={styles.headerIcon} aria-hidden="true">
+                        <Trophy24Regular />
+                    </span>
+                    <h1 className={styles.title}>{t("leaderboard.title")}</h1>
+                </div>
+            </header>
 
             {users.length === 0 ? (
                 <EmptyState
@@ -98,80 +72,91 @@ export default function LeaderboardPage() {
                     description={t("empty.leaderboardDescription")}
                 />
             ) : (
-                <StaggerReveal>
-                    <DataGrid
-                        items={users.slice(0, 50)}
-                        columns={columns as any}
-                        style={{ minWidth: "500px" }}
-                    >
-                        <DataGridHeader>
-                            <DataGridRow>
-                                {({ renderHeaderCell }) => (
-                                    <DataGridCell>{renderHeaderCell()}</DataGridCell>
-                                )}
-                            </DataGridRow>
-                        </DataGridHeader>
-                        <DataGridBody>
-                            {({ item, rowId }: { item: LeaderboardEntry; rowId: any }) => (
-                                <DataGridRow key={rowId}>
-                                    {({ columnId }) => {
-                                        const rank = users.indexOf(item) + 1;
-                                        if (columnId === "rank") {
-                                            return (
-                                                <DataGridCell>
-                                                    {rank <= 3 ? (
-                                                        <Badge
-                                                            appearance="filled"
-                                                            color="brand"
-                                                            size="large"
-                                                        >
+                <>
+                    {/* Desktop: semantic table with sticky first column (B17). */}
+                    <StaggerReveal>
+                        <div className={styles.tableWrap} role="region" aria-label={t("leaderboard.title")} tabIndex={0}>
+                            <table className={styles.table}>
+                                <thead className={styles.tableHead}>
+                                    <tr>
+                                        <th scope="col">{t("leaderboard.rank")}</th>
+                                        <th scope="col">{t("leaderboard.user")}</th>
+                                        <th scope="col">{t("leaderboard.credits")}</th>
+                                    </tr>
+                                </thead>
+                                <tbody className={styles.tableBody}>
+                                    {ranked.map((item, i) => {
+                                        const rank = i + 1;
+                                        return (
+                                            <tr key={item.userId} className={styles.tableRow}>
+                                                <td>
+                                                    <span className={styles.rankCell}>
+                                                        {rank <= 3 ? (
+                                                            <Badge variant="accent" size="medium">
+                                                                <AnimatedCounter value={rank} prefix="#" />
+                                                            </Badge>
+                                                        ) : (
                                                             <AnimatedCounter value={rank} prefix="#" />
-                                                        </Badge>
-                                                    ) : (
-                                                        <Body1>
-                                                            <AnimatedCounter value={rank} prefix="#" />
-                                                        </Body1>
-                                                    )}
-                                                </DataGridCell>
-                                            );
-                                        }
-                                        if (columnId === "user") {
-                                            return (
-                                                <DataGridCell>
-                                                    <div
-                                                        style={{
-                                                            display: "flex",
-                                                            alignItems: "center",
-                                                            gap: "8px",
-                                                        }}
-                                                    >
+                                                        )}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div className={styles.userCell}>
                                                         <Avatar
                                                             name={item.name || t("common.user")}
                                                             size={28}
                                                         />
-                                                        <Subtitle2>
-                                                            {item.name || t("common.unknown")}
-                                                        </Subtitle2>
+                                                        <span>{item.name || t("common.unknown")}</span>
                                                     </div>
-                                                </DataGridCell>
-                                            );
-                                        }
-                                        if (columnId === "credits") {
-                                            return (
-                                                <DataGridCell>
-                                                    <Badge appearance="tint" color="brand">
+                                                </td>
+                                                <td>
+                                                    <Badge variant="accent">
                                                         <AnimatedCounter value={item.credits ?? 0} />
                                                     </Badge>
-                                                </DataGridCell>
-                                            );
-                                        }
-                                        return <DataGridCell>-</DataGridCell>;
-                                    }}
-                                </DataGridRow>
-                            )}
-                        </DataGridBody>
-                    </DataGrid>
-                </StaggerReveal>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </StaggerReveal>
+
+                    {/* Mobile: card reflow (B25). Same data, toggled by CSS. */}
+                    <div className={styles.tableCards}>
+                        {ranked.map((item, i) => {
+                            const rank = i + 1;
+                            return (
+                                <Card key={item.userId} className={styles.item} padding="md">
+                                    <div className={styles.itemHeader}>
+                                        <div className={styles.userCell}>
+                                            <Avatar
+                                                name={item.name || t("common.user")}
+                                                size={32}
+                                            />
+                                            <h3 className={styles.itemTitle}>
+                                                {item.name || t("common.unknown")}
+                                            </h3>
+                                        </div>
+                                        {rank <= 3 ? (
+                                            <Badge variant="accent" size="medium">
+                                                <AnimatedCounter value={rank} prefix="#" />
+                                            </Badge>
+                                        ) : (
+                                            <span className={styles.itemMeta}>#{rank}</span>
+                                        )}
+                                    </div>
+                                    <div className={styles.itemMeta}>
+                                        <Badge variant="accent">
+                                            <AnimatedCounter value={item.credits ?? 0} />{" "}
+                                            {t("leaderboard.credits")}
+                                        </Badge>
+                                    </div>
+                                </Card>
+                            );
+                        })}
+                    </div>
+                </>
             )}
         </main>
     );
