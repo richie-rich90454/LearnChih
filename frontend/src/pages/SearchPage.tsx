@@ -1,15 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import {
-    makeStyles,
-    tokens,
-    Title2,
-    Body1,
-    Card,
-    Badge,
-    Input,
-    Spinner,
-} from "@fluentui/react-components";
+import { Spinner } from "@fluentui/react-components";
 import { Search24Regular } from "@fluentui/react-icons";
 import { useDebounce } from "../hooks/useDebounce";
 import { useSearch } from "../hooks/useSearch";
@@ -17,39 +8,14 @@ import { useTranslation } from "react-i18next";
 import Seo from "../components/Seo";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
+import { Card } from "../components/ui/Card";
+import { Badge } from "../components/ui/Badge";
+import { Input } from "../components/ui/Input";
 import type { SearchResult } from "../hooks/useSearch";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "800px",
-    },
-    searchRow: {
-        display: "flex",
-        gap: tokens.spacingHorizontalM,
-        alignItems: "center",
-    },
-    resultCard: {
-        padding: tokens.spacingHorizontalM,
-        cursor: "pointer",
-    },
-    resultHeader: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalS,
-    },
-    snippet: {
-        color: tokens.colorNeutralForeground3,
-        marginTop: tokens.spacingVerticalXS,
-    },
-});
+import styles from "./List.module.css";
 
 export default function SearchPage() {
     const { t } = useTranslation();
-    const styles = useStyles();
     const [searchParams, setSearchParams] = useSearchParams();
     const [query, setQuery] = useState<string>(searchParams.get("q") || "");
     const debouncedQuery = useDebounce(query, 250);
@@ -63,24 +29,24 @@ export default function SearchPage() {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={`${styles.page} ${styles.pageNarrow}`}>
             <Seo
                 title={`${query ? `${query} — ` : ""}${t("search.title")} — LernChih`}
                 description={t("search.description")}
                 canonicalPath="/search"
                 robots="noindex, follow"
             />
-            <Title2 as="h1">{t("search.title")}</Title2>
-            <div className={styles.searchRow}>
-                <Input
-                    value={query}
-                    onChange={(_e, data) => handleChange(data.value)}
-                    placeholder={t("search.placeholder")}
-                    contentBefore={<Search24Regular />}
-                    style={{ flex: 1 }}
-                    aria-label={t("search.placeholder")}
-                />
-            </div>
+            <header className={styles.pageHeader}>
+                <h1 className={styles.title}>{t("search.title")}</h1>
+            </header>
+            <Input
+                value={query}
+                onChange={(_e, data) => handleChange(data.value)}
+                placeholder={t("search.placeholder")}
+                contentBefore={<Search24Regular />}
+                wrapperClassName={styles.search}
+                aria-label={t("search.placeholder")}
+            />
 
             {isFetching && <Spinner label={t("search.searching")} />}
             {isError && (
@@ -100,28 +66,31 @@ export default function SearchPage() {
                 />
             )}
 
-            {results.map((result) => (
-                <Card
-                    key={`${result.type}-${result.id}`}
-                    className={styles.resultCard}
-                    onClick={() => {
-                        // External URLs open in a new tab; internal paths use react-router.
-                        if (result.url.startsWith("http")) {
-                            window.open(result.url, "_blank", "noopener noreferrer");
-                        } else {
-                            window.location.href = result.url;
-                        }
-                    }}
-                >
-                    <div className={styles.resultHeader}>
-                        <Body1>{result.title}</Body1>
-                        <Badge appearance="tint" size="small">
-                            {result.type}
-                        </Badge>
-                    </div>
-                    {result.snippet && <div className={styles.snippet}>{result.snippet}</div>}
-                </Card>
-            ))}
+            <div className={styles.list}>
+                {results.map((result) => (
+                    <Card
+                        key={`${result.type}-${result.id}`}
+                        className={`${styles.item} ${styles.itemClickable}`}
+                        padding="md"
+                        onClick={() => {
+                            // External URLs open in a new tab; internal paths use react-router.
+                            if (result.url.startsWith("http")) {
+                                window.open(result.url, "_blank", "noopener noreferrer");
+                            } else {
+                                window.location.href = result.url;
+                            }
+                        }}
+                    >
+                        <div className={styles.itemHeader}>
+                            <h3 className={styles.itemTitle}>{result.title}</h3>
+                            <Badge variant="accent" size="small">
+                                {result.type}
+                            </Badge>
+                        </div>
+                        {result.snippet && <p className={styles.itemBody}>{result.snippet}</p>}
+                    </Card>
+                ))}
+            </div>
         </div>
     );
 }
