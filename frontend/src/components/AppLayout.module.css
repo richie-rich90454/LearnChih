@@ -1,0 +1,224 @@
+/**
+ * AppLayout - co-located CSS Module that skins the app shell (sidebar,
+ * header, content, mobile drawer nav) with design-system tokens. Fluent UI
+ * v9 keeps behavior + a11y (mobile Drawer focus trap/scrim/escape, Button
+ * keyboard handling); these rules own the look via tokens.css.
+ *
+ * Specificity strategy (no !important):
+ *   - Nav items are Fluent Buttons. Griffel atomic classes (hashes) and the
+ *     `fui-Button` display class sit at (0,1,0). Doubled-class selectors
+ *     like `.navItem.navItem` reach (0,2,0) to win color/background
+ *     overrides regardless of stylesheet injection order.
+ *   - Griffel's `:focus-visible` rules land at (0,2,0). The doubled-class
+ *     `.navItem.navItem:focus-visible` is (0,3,0) so the token-based focus
+ *     ring always wins.
+ *   - Hover/active compound selectors reach (0,3,0), beating Griffel's
+ *     hover atomic rules (0,2,0).
+ *
+ * B8 (active accent bar parity): the active nav item's left bar uses
+ * `var(--accent)`, which is theme-aware in tokens.css (cobalt in light,
+ * lighter cobalt in dark), so contrast/parity holds in both themes without
+ * a hardcoded color.
+ */
+
+/* ----------------------- Shell ----------------------- */
+.shell {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--surface-1);
+}
+
+/* ----------------------- Sidebar (desktop) ----------------------- */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 260px;
+    height: 100vh;
+    background-color: var(--surface-2);
+    border-right: 1px solid var(--border-subtle);
+}
+
+.sidebarHeader {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: var(--space-2);
+}
+
+.sidebarBody {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-2);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+}
+
+/* ----------------------- Header ----------------------- */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-2) var(--space-6);
+    background-color: var(--surface-2);
+    border-bottom: 1px solid var(--border-subtle);
+    min-height: 56px;
+    flex-shrink: 0;
+}
+
+.headerLeft,
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.headerCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 0 var(--space-4);
+    max-width: 520px;
+}
+
+/* ----------------------- Main area / content ----------------------- */
+.mainArea {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.content {
+    flex: 1;
+    overflow: auto;
+    padding: var(--space-8);
+    background-color: var(--surface-1);
+}
+
+/* ----------------------- Navigation ----------------------- */
+.navList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.navSection {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Section labels are Fluent Caption1 (a Text variant). Doubled class reaches
+   (0,2,0) to beat Griffel's atomic color/font-weight on the Caption1 span. */
+.sectionLabel.sectionLabel {
+    padding: var(--space-1) var(--space-4);
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    text-transform: uppercase;
+}
+
+/* Nav items are Fluent Buttons (appearance="subtle"). Doubled-class
+   selectors reach (0,2,0) to beat Griffel atomic classes (0,1,0). The left
+   accent bar is reserved as a 3px transparent border on the base item so
+   activating an item never shifts the label horizontally. */
+.navItem.navItem {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-3);
+    width: 100%;
+    text-align: left;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid transparent;
+    border-left: 3px solid transparent;
+    border-radius: var(--radius-button);
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    transition:
+        background-color var(--motion-fast) var(--motion-ease),
+        color var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease);
+}
+
+.navItem.navItem:hover {
+    background-color: var(--surface-sunken);
+    color: var(--text-primary);
+}
+
+/* Focus-visible ring. Doubled class raises specificity to (0,3,0) so the
+   token-based ring beats Griffel's atomic :focus-visible outline. */
+.navItem.navItem:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+}
+
+/* Active state: accent-soft bg + accent left bar + primary text.
+   B8 (active accent bar parity): the left bar uses var(--accent), which is
+   theme-aware in tokens.css (cobalt in light, lighter cobalt in dark), so
+   the bar has correct contrast/parity in both themes without a hardcoded
+   color.
+   Text uses var(--text-primary) rather than var(--accent) for axe-core
+   color-contrast compliance: in dark mode --accent-soft is a semi-
+   transparent rgba that composites to a mid-navy, and --accent text on it
+   lands at ~4.4:1 (just under the AA 4.5:1 threshold). --text-primary
+   passes AAA on the same background in both themes. The accent bar still
+   carries the brand-accent indicator. */
+.navItem.navItemActive {
+    background-color: var(--accent-soft);
+    color: var(--text-primary);
+    border-left-color: var(--accent);
+    font-weight: var(--font-weight-semibold);
+}
+
+.navItem.navItemActive:hover {
+    color: var(--text-primary);
+    background-color: var(--accent-soft);
+}
+
+/* ----------------------- Brand / logo button ----------------------- */
+.brand.brand {
+    padding: var(--space-1) var(--space-2);
+    min-height: 0;
+    align-self: flex-start;
+}
+
+/* ----------------------- Responsive toggles ----------------------- */
+.mobileMenuButton {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobileMenuButton {
+        display: inline-flex;
+    }
+}
+
+/* ----------------------- Skip link ----------------------- */
+.skipLink {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    z-index: var(--z-overlay);
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--accent-fill);
+    color: var(--accent-foreground);
+    border-radius: var(--radius-button);
+    transition: top var(--motion-fast) var(--motion-ease);
+}
+
+.skipLink:focus {
+    top: 0;
+}
