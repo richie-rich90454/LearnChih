@@ -12,6 +12,7 @@ import { PageTransition } from "./components/PageTransition";
 import { RouteSkeleton } from "./components/RouteSkeletons";
 import { prefetchRoute } from "./hooks/useRoutePrefetch";
 import { useRouteAnnouncer } from "./hooks/useRouteAnnouncer";
+import toasterStyles from "./components/Toaster.module.css";
 
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
@@ -264,7 +265,12 @@ export default function App() {
                     <AppShell />
                 </Suspense>
             </ErrorBoundary>
-            <Toaster position="bottom-end" timeout={4000} toasterId="main-toaster" />
+            <Toaster
+                className={toasterStyles.toaster}
+                position="bottom-end"
+                timeout={4000}
+                toasterId="main-toaster"
+            />
             <CookieConsent />
             <UpdatePrompt />
         </BrowserRouter>

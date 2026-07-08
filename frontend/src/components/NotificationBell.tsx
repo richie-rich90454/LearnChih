@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-    makeStyles,
-    tokens,
     Button,
     Badge,
     Popover,
@@ -23,39 +21,10 @@ import {
     markAllNotificationsRead,
 } from "../api/notifications";
 import { useNotificationStore } from "../store/notificationStore";
-
-const useStyles = makeStyles({
-    popoverSurface: {
-        width: "320px",
-        maxHeight: "400px",
-        overflow: "auto",
-    },
-    header: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalM}`,
-        borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-    },
-    empty: {
-        padding: tokens.spacingHorizontalL,
-        textAlign: "center",
-        color: tokens.colorNeutralForeground3,
-    },
-    unread: {
-        backgroundColor: tokens.colorNeutralBackground1Hover,
-    },
-    footer: {
-        display: "flex",
-        justifyContent: "center",
-        padding: tokens.spacingHorizontalS,
-        borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
-    },
-});
+import styles from "./NotificationBell.module.css";
 
 export default function NotificationBell() {
     const { t } = useTranslation();
-    const styles = useStyles();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
@@ -104,16 +73,16 @@ export default function NotificationBell() {
         <Popover open={open} onOpenChange={(_, data) => setOpen(data.open)}>
             <PopoverTrigger disableButtonEnhancement>
                 <Button
+                    className={styles.bellButton}
                     appearance="subtle"
                     icon={<Alert24Regular />}
                     aria-label={`${t("notifications.title")}${unreadCount > 0 ? ` (${unreadCount})` : ""}`}
                 >
                     {unreadCount > 0 && (
                         <Badge
+                            className={styles.badge}
                             appearance="filled"
-                            color="danger"
                             size="small"
-                            style={{ position: "absolute", top: 2, right: 2 }}
                         >
                             {unreadCount > 99 ? "99+" : unreadCount}
                         </Badge>
@@ -153,21 +122,18 @@ export default function NotificationBell() {
                             className={!n.read ? styles.unread : undefined}
                             onClick={() => handleItemClick(n.id, n.link)}
                         >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    width: "100%",
-                                    textAlign: "left",
-                                }}
-                            >
-                                <Text size={300} weight={n.read ? "regular" : "semibold"}>
+                            <div className={styles.itemContent}>
+                                <Text
+                                    className={styles.itemTitle}
+                                    size={300}
+                                    weight={n.read ? "regular" : "semibold"}
+                                >
                                     {n.title}
                                 </Text>
-                                <Caption1 style={{ color: "var(--colorNeutralForeground3)" }}>
+                                <Caption1 className={styles.itemBody}>
                                     {n.message}
                                 </Caption1>
-                                <Caption1 style={{ color: "var(--colorNeutralForeground3)" }}>
+                                <Caption1 className={styles.itemTimestamp}>
                                     {new Date(n.createdAt).toLocaleString()}
                                 </Caption1>
                             </div>

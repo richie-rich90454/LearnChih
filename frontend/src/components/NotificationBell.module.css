@@ -1,0 +1,116 @@
+/**
+ * NotificationBell - co-located CSS Module that skins the notification bell
+ * (Fluent Popover + MenuList of MenuItem) with design-system tokens. Fluent
+ * keeps popover focus management + a11y; these rules own the bell button,
+ * unread badge, dropdown panel, and item visuals.
+ *
+ * B29 (aria-label on icon-only button): the bell Button already carries an
+ * aria-label in NotificationBell.tsx (verified) — this module only styles.
+ * B31 (role="status" on toast region): toasts are handled by the Fluent
+ * Toaster's AriaLive region in App.tsx; the notification dropdown is a
+ * Popover, not a live region, so no role="status" is appropriate here.
+ *
+ * Specificity: bell Button, Badge, PopoverSurface, MenuItem, Text, and
+ * Caption1 are Fluent components; doubled-class selectors (.bellButton.bellButton)
+ * reach (0,2,0) to beat Griffel atomic rules (0,1,0). Plain layout divs use
+ * single classes.
+ */
+
+/* Fluent Button: doubled class. position:relative anchors the unread badge. */
+.bellButton.bellButton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Unread badge: anchored top-right of the bell. Doubled class beats the
+   Fluent Badge color atomic rules so the accent-fill chip reads on-brand
+   instead of the default danger red. */
+.badge.badge {
+    position: absolute;
+    top: var(--space-1);
+    right: var(--space-1);
+    min-width: 18px;
+    height: 18px;
+    padding: 0 var(--space-1);
+    background-color: var(--accent-fill);
+    color: var(--accent-foreground);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* PopoverSurface: doubled class beats Griffel reset bg/radius/border. */
+.popoverSurface.popoverSurface {
+    width: 320px;
+    max-height: 400px;
+    overflow: auto;
+    z-index: var(--z-dropdown);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-lift);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    text-align: center;
+}
+
+/* Unread indicator on a Fluent MenuItem: inset box-shadow avoids the
+   layout shift a left border would cause. Doubled class beats Griffel. */
+.unread.unread {
+    box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.itemContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+}
+
+/* Fluent Text: doubled class for title color. Font-weight stays driven by
+   the Text `weight` prop (semibold for unread, regular for read). */
+.itemTitle.itemTitle {
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+}
+
+/* Fluent Caption1: doubled class beats the default foreground-3 color. */
+.itemBody.itemBody {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.itemTimestamp.itemTimestamp {
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-2);
+    border-top: 1px solid var(--border-subtle);
+}

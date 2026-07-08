@@ -1,0 +1,56 @@
+/**
+ * Toaster - co-located CSS Module that skins the Fluent Toaster region and
+ * individual toasts with design-system tokens. The Toaster className is
+ * applied to each position slot (a fixed-positioned container Fluent
+ * renders per position); individual toasts are re-skinned via descendant
+ * :global(.fui-Toast) selectors.
+ *
+ * B31 (role="status" / aria-live on toast region): Fluent's Toaster renders
+ * an AriaLive component (polite + assertive visually-hidden regions) that
+ * owns toast announcements, so the live-region contract is satisfied
+ * without an extra aria-live prop on the position container.
+ *
+ * Specificity: the position container's reset sets position/width but not
+ * z-index, so a single .toaster class suffices for stacking. Toast card
+ * rules use a descendant selector (.toaster .fui-Toast) at (0,2,0), beating
+ * the Fluent Toast reset (0,1,0) for background/radius/border/shadow.
+ */
+
+.toaster {
+    z-index: var(--z-toast);
+}
+
+/* Toast card. Surface-3 sits one step above the page surface so elevation
+   reads. The default left border carries the info accent (--accent);
+   per-status overrides below apply when a toast is dispatched with a
+   data-status attribute. */
+.toaster :global(.fui-Toast) {
+    background-color: var(--surface-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-lift);
+    padding: var(--space-3) var(--space-4);
+    border-left: 3px solid var(--accent);
+}
+
+.toaster :global(.fui-Toast[data-status="success"]) {
+    border-left-color: var(--status-success);
+}
+
+.toaster :global(.fui-Toast[data-status="warning"]) {
+    border-left-color: var(--status-warning);
+}
+
+.toaster :global(.fui-Toast[data-status="danger"]) {
+    border-left-color: var(--status-danger);
+}
+
+.toaster :global(.fui-ToastTitle) {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.toaster :global(.fui-ToastBody) {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
