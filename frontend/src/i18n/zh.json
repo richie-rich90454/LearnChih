@@ -154,7 +154,11 @@
         "writeComment": "写评论...",
         "post": "发布",
         "reportResource": "举报资源",
-        "reportReason": "您为什么要举报此资源？"
+        "reportReason": "您为什么要举报此资源？",
+        "notes": "笔记",
+        "notesPlaceholder": "边读边记笔记……（自动保存）",
+        "splitView": "分屏视图",
+        "splitViewExit": "退出分屏视图"
     },
     "channels": {
         "title": "频道",

@@ -1,0 +1,68 @@
+/**
+ * SplitView - co-located CSS Module for the read-along notes split layout.
+ *
+ * Spec ref: F71.
+ *   - Desktop: 50/50 grid with a divider gutter.
+ *   - Mobile (<768px): stacks vertically (content above notes).
+ *
+ * Token-only. No !important. Notes panel uses --surface-2 + --border-subtle
+ * so it reads as a raised surface beside the resource content.
+ */
+
+.split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    align-items: start;
+}
+
+.pane {
+    min-width: 0;
+}
+
+.notes {
+    position: sticky;
+    top: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+}
+
+.notesLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+/* Textarea is a Fluent component. Doubled class reaches (0,2,0) to beat
+   Griffel atomic rules so the field fills the pane and matches the design
+   token surface. */
+.notesTextarea.notesTextarea {
+    width: 100%;
+    min-height: 320px;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-primary);
+    background-color: var(--surface-1);
+}
+
+@media (max-width: 768px) {
+    .split {
+        grid-template-columns: 1fr;
+    }
+
+    .notes {
+        position: static;
+    }
+
+    .notesTextarea.notesTextarea {
+        min-height: 220px;
+    }
+}

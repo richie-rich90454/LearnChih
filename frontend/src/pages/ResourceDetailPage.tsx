@@ -22,6 +22,7 @@ import {
     ArrowLeft24Regular,
     Bookmark24Regular,
     Bookmark24Filled,
+    SplitHorizontal24Regular,
 } from "@fluentui/react-icons";
 import { useResource, useDeleteResource } from "@/hooks/useResources";
 import { useResourcePosts, useCreateResourcePost } from "@/hooks/useThreads";
@@ -44,6 +45,7 @@ import { articleSchema, breadcrumbSchema } from "@/components/jsonLd";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { SplitView } from "@/components/SplitView";
 import styles from "./Detail.module.css";
 
 function cx(...parts: Array<string | false | undefined | null>): string {
@@ -99,6 +101,7 @@ export default function ResourceDetailPage() {
     const [newPost, setNewPost] = useState<string>("");
     const [reportDialogOpen, setReportDialogOpen] = useState<boolean>(false);
     const [reportReason, setReportReason] = useState<string>("");
+    const [splitView, setSplitView] = useState<boolean>(false);
 
     // Subscribe to real-time updates for this thread
     useEffect(() => {
@@ -228,9 +231,18 @@ export default function ResourceDetailPage() {
                 >
                     {t("resources.backToResources") || t("resources.title")}
                 </Button>
+                <Button
+                    variant="subtle"
+                    icon={<SplitHorizontal24Regular />}
+                    onClick={() => setSplitView((v) => !v)}
+                    aria-pressed={splitView}
+                >
+                    {splitView ? t("resources.splitViewExit") : t("resources.splitView")}
+                </Button>
             </div>
 
-            {/* Resource info */}
+            {/* Resource info (wrapped in SplitView for read-along notes) */}
+            <SplitView resourceId={id ?? ""} enabled={splitView}>
             <Card padding="lg" className={styles.header}>
                 <div className={styles.headerTop}>
                     <h1 className={styles.title}>{resource?.title}</h1>
@@ -384,6 +396,7 @@ export default function ResourceDetailPage() {
                     )}
                 </div>
             </Card>
+            </SplitView>
 
             {/* Thread / Discussion */}
             <section className={styles.thread} aria-label={t("resources.discussion")}>

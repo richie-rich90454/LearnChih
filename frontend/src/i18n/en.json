@@ -171,7 +171,11 @@
         "writeComment": "Write a comment...",
         "post": "Post",
         "reportResource": "Report Resource",
-        "reportReason": "Why are you reporting this resource?"
+        "reportReason": "Why are you reporting this resource?",
+        "notes": "Notes",
+        "notesPlaceholder": "Take notes while you read... (saved automatically)",
+        "splitView": "Split view",
+        "splitViewExit": "Exit split view"
     },
     "channels": {
         "title": "Channels",
