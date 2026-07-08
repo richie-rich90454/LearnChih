@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback, useRef, useMemo, type ReactNode } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
     Dialog,
@@ -11,11 +11,26 @@ import {
     Caption1,
     Badge,
     Divider,
+    Toast,
+    ToastTitle,
+    ToastBody,
+    useToastController,
 } from "@fluentui/react-components";
-import { Search24Regular, Delete24Regular } from "@fluentui/react-icons";
+import {
+    Search24Regular,
+    Delete24Regular,
+    WeatherMoon24Regular,
+    DocumentAdd24Regular,
+    Home24Regular,
+    Bookmark24Regular,
+    Eye24Regular,
+} from "@fluentui/react-icons";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearch } from "@/hooks/useSearch";
 import type { SearchResult } from "@/hooks/useSearch";
+import { useThemeStore } from "@/hooks/useThemeStore";
+import { useFocusModeStore } from "@/hooks/useFocusModeStore";
+import { useBookmarkStore } from "@/store/bookmarkStore";
 import { Button } from "./ui/Button";
 import { Input as DSInput } from "./ui/Input";
 import { Select, Option } from "./ui/Select";
@@ -64,6 +79,13 @@ const BUILTIN_COMMANDS: BuiltinCommand[] = [
 interface CmdAlias {
     alias: string;
     commandId: string;
+}
+
+interface QuickAction {
+    id: string;
+    labelKey: string;
+    icon: ReactNode;
+    execute: () => void;
 }
 
 const ALIASES_KEY = "lernchih-cmd-aliases";
@@ -130,10 +152,16 @@ interface CommandPaletteProps {
  */
 export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
     const navigate = useNavigate();
+    const location = useLocation();
     const { t } = useTranslation();
     const [query, setQuery] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
     const { aliases, addAlias, removeAlias } = useCmdAliases();
+    const themeToggle = useThemeStore((s) => s.toggle);
+    const focusModeToggle = useFocusModeStore((s) => s.toggle);
+    const focusMode = useFocusModeStore((s) => s.focusMode);
+    const { toggleBookmark, isBookmarked } = useBookmarkStore();
+    const { dispatchToast } = useToastController("main-toaster");
 
     const showAliasManager = query.startsWith(">");
     const searchQuery = showAliasManager ? "" : query;
@@ -177,6 +205,103 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
     }, [aliases, query, showAliasManager]);
 
     const showSearch = searchQuery.trim().length > 0;
+
+    const notify = useCallback(
+        (titleKey: string, bodyKey?: string, intent: "success" | "info" | "warning" | "error" = "success") => {
+            dispatchToast(
+                <Toast>
+                    <ToastTitle>{t(titleKey)}</ToastTitle>
+                    {bodyKey ? <ToastBody>{t(bodyKey)}</ToastBody> : null}
+                </Toast>,
+                { intent },
+            );
+        },
+        [dispatchToast, t],
+    );
+
+    const quickActions: QuickAction[] = useMemo(() => [
+        {
+            id: "qa.toggleTheme",
+            labelKey: "commandPalette.quickActions.toggleTheme",
+            icon: <WeatherMoon24Regular />,
+            execute: () => {
+                themeToggle();
+                onOpenChange(false);
+            },
+        },
+        {
+            id: "qa.createResource",
+            labelKey: "commandPalette.quickActions.createResource",
+            icon: <DocumentAdd24Regular />,
+            execute: () => {
+                onOpenChange(false);
+                navigate("/resources");
+            },
+        },
+        {
+            id: "qa.goDashboard",
+            labelKey: "commandPalette.quickActions.goDashboard",
+            icon: <Home24Regular />,
+            execute: () => {
+                onOpenChange(false);
+                navigate("/dashboard");
+            },
+        },
+        {
+            id: "qa.bookmarkPage",
+            labelKey: "commandPalette.quickActions.bookmarkPage",
+            icon: <Bookmark24Regular />,
+            execute: () => {
+                const match = location.pathname.match(/^\/resources\/(\d+)/);
+                if (match) {
+                    const resourceId = Number(match[1]);
+                    const wasBookmarked = isBookmarked(resourceId);
+                    toggleBookmark(resourceId, document.title, location.pathname);
+                    notify(
+                        wasBookmarked
+                            ? "commandPalette.quickActions.removedBookmark"
+                            : "commandPalette.quickActions.bookmarked",
+                    );
+                } else {
+                    notify(
+                        "commandPalette.quickActions.noBookmarkable",
+                        undefined,
+                        "info",
+                    );
+                }
+                onOpenChange(false);
+            },
+        },
+        {
+            id: "qa.toggleFocusMode",
+            labelKey: focusMode
+                ? "commandPalette.quickActions.exitFocusMode"
+                : "commandPalette.quickActions.toggleFocusMode",
+            icon: <Eye24Regular />,
+            execute: () => {
+                focusModeToggle();
+                onOpenChange(false);
+            },
+        },
+    ], [
+        themeToggle,
+        onOpenChange,
+        navigate,
+        location.pathname,
+        isBookmarked,
+        toggleBookmark,
+        notify,
+        focusModeToggle,
+        focusMode,
+    ]);
+
+    const matchingQuickActions = useMemo(() => {
+        if (showAliasManager || !query.trim()) return [];
+        const q = query.toLowerCase();
+        return quickActions.filter((a) =>
+            t(a.labelKey).toLowerCase().includes(q),
+        );
+    }, [quickActions, query, showAliasManager, t]);
 
     return (
         <Dialog
@@ -226,6 +351,28 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                         <Caption1>{t(shortcut.hintKey)}</Caption1>
                                     </div>
                                 ))}
+                                <div className={styles.sectionLabel}>
+                                    {t("commandPalette.quickActions.title")}
+                                </div>
+                                {quickActions.map((action) => (
+                                    <div
+                                        key={action.id}
+                                        className={styles.item}
+                                        role="button"
+                                        tabIndex={0}
+                                        onClick={action.execute}
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter") action.execute();
+                                        }}
+                                    >
+                                        <div className={styles.itemLeft}>
+                                            <span className={styles.actionIcon} aria-hidden="true">
+                                                {action.icon}
+                                            </span>
+                                            <Body1>{t(action.labelKey)}</Body1>
+                                        </div>
+                                    </div>
+                                ))}
                                 <div className={styles.managerHint}>
                                     <Caption1>
                                         {t("commandPalette.aliasManager.hint")}
@@ -236,6 +383,32 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
 
                         {!showAliasManager && showSearch && (
                             <>
+                                {matchingQuickActions.length > 0 && (
+                                    <>
+                                        <div className={styles.sectionLabel}>
+                                            {t("commandPalette.quickActions.title")}
+                                        </div>
+                                        {matchingQuickActions.map((action) => (
+                                            <div
+                                                key={action.id}
+                                                className={styles.item}
+                                                role="button"
+                                                tabIndex={0}
+                                                onClick={action.execute}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter") action.execute();
+                                                }}
+                                            >
+                                                <div className={styles.itemLeft}>
+                                                    <span className={styles.actionIcon} aria-hidden="true">
+                                                        {action.icon}
+                                                    </span>
+                                                    <Body1>{t(action.labelKey)}</Body1>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </>
+                                )}
                                 {matchingAliases.length > 0 && (
                                     <>
                                         <div className={styles.sectionLabel}>
@@ -282,11 +455,14 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                         ? t("commandPalette.searching")
                                         : t("commandPalette.searchResults")}
                                 </div>
-                                {!isFetching && results.length === 0 && matchingAliases.length === 0 && (
-                                    <div className={styles.empty}>
-                                        {t("commandPalette.noResults", { query: debouncedQuery })}
-                                    </div>
-                                )}
+                                {!isFetching &&
+                                    results.length === 0 &&
+                                    matchingAliases.length === 0 &&
+                                    matchingQuickActions.length === 0 && (
+                                        <div className={styles.empty}>
+                                            {t("commandPalette.noResults", { query: debouncedQuery })}
+                                        </div>
+                                    )}
                                 {results.map((result) => (
                                     <div
                                         key={`${result.type}-${result.id}`}

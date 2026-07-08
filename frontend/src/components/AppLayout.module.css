@@ -29,6 +29,19 @@
     background-color: var(--surface-1);
 }
 
+/* Focus mode (F63): hide the sidebar and header so the main content fills
+   the viewport for distraction-free reading. Toggled via the command
+   palette's "Toggle focus mode" quick action. The command palette itself
+   remains accessible via Cmd/Ctrl+K to exit focus mode. */
+.shell.focusMode .sidebar,
+.shell.focusMode .header {
+    display: none;
+}
+
+.shell.focusMode .content {
+    padding: var(--space-4);
+}
+
 /* ----------------------- Sidebar (desktop) ----------------------- */
 .sidebar {
     display: flex;

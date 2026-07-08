@@ -34,6 +34,7 @@ import useAuthStore from "@/store/authStore";
 import { useDir } from "@/hooks/useDir";
 import { useTranslation } from "react-i18next";
 import { useThemeStore } from "@/hooks/useThemeStore";
+import { useFocusModeStore } from "@/hooks/useFocusModeStore";
 import { LogoFull } from "@/components/Logo";
 import { SearchBar } from "./SearchBar";
 import NotificationBell from "./NotificationBell";
@@ -112,6 +113,7 @@ export default function AppLayout() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const mode = useThemeStore((s) => s.mode);
     const toggle = useThemeStore((s) => s.toggle);
+    const focusMode = useFocusModeStore((s) => s.focusMode);
     const dir = useDir();
 
     const authenticated = isAuthenticated();
@@ -162,7 +164,7 @@ export default function AppLayout() {
     );
 
     return (
-        <div className={styles.shell} dir={dir}>
+        <div className={cx(styles.shell, focusMode && styles.focusMode)} dir={dir}>
             <a href="#main-content" className={styles.skipLink}>
                 {t("a11y.skipToContent")}
             </a>

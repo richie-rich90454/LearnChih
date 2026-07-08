@@ -229,6 +229,18 @@
             "aliasFor": "{{label}} 的别名",
             "aliasBadge": "别名",
             "remove": "移除别名 {{name}}"
+        },
+        "quickActions": {
+            "title": "快捷操作",
+            "toggleTheme": "切换主题",
+            "createResource": "创建资源",
+            "goDashboard": "前往仪表板",
+            "bookmarkPage": "收藏当前页面",
+            "toggleFocusMode": "切换专注模式",
+            "exitFocusMode": "退出专注模式",
+            "bookmarked": "已收藏",
+            "removedBookmark": "已移除收藏",
+            "noBookmarkable": "当前页面没有可收藏的资源"
         }
     },
     "notifications": {

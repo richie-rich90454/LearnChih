@@ -105,6 +105,16 @@
     min-width: 0;
 }
 
+/* Quick-action icon (F63). Sits before the label in the same .itemLeft row
+   as nav items, tinted with the accent so actions read as verbs. */
+.actionIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
 .empty {
     padding: var(--space-4);
     color: var(--text-secondary);

@@ -246,6 +246,18 @@
             "aliasFor": "Alias for {{label}}",
             "aliasBadge": "alias",
             "remove": "Remove alias {{name}}"
+        },
+        "quickActions": {
+            "title": "Quick actions",
+            "toggleTheme": "Toggle theme",
+            "createResource": "Create resource",
+            "goDashboard": "Go to dashboard",
+            "bookmarkPage": "Bookmark current page",
+            "toggleFocusMode": "Toggle focus mode",
+            "exitFocusMode": "Exit focus mode",
+            "bookmarked": "Bookmarked",
+            "removedBookmark": "Removed bookmark",
+            "noBookmarkable": "No bookmarkable resource on this page"
         }
     },
     "notifications": {
