@@ -20,12 +20,16 @@
 
 /* ----------------------- Page shell ----------------------- */
 /* Centered card on a tinted backdrop. The radial gradient adds a very subtle
-   brand wash at the top so the page does not read as a flat Tell. */
+   brand wash at the top so the page does not read as a flat Tell. Safe-area
+   padding (B20) keeps the card clear of iOS notches/home indicators. */
 .shell {
     min-height: 100dvh;
     display: grid;
     place-items: center;
-    padding: var(--space-6);
+    padding-top: max(var(--space-6), env(safe-area-inset-top));
+    padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+    padding-left: max(var(--space-6), env(safe-area-inset-left));
+    padding-right: max(var(--space-6), env(safe-area-inset-right));
     background-color: var(--surface-1);
     background-image: radial-gradient(
         ellipse 80% 50% at 50% 0%,
@@ -188,4 +192,26 @@
     font-size: var(--font-size-sm);
     line-height: var(--line-height-base);
     color: var(--status-success);
+}
+
+/* ----------------------- Responsive ----------------------- */
+/* Card padding eases under 640px; under 480px the card goes full-bleed
+   (no max-width) with a tighter shell padding. Safe-area max() still
+   applies so notches never clip the card. (B20) */
+@media (max-width: 640px) {
+    .card {
+        padding: var(--space-6);
+    }
+}
+
+@media (max-width: 480px) {
+    .shell {
+        padding-top: max(var(--space-4), env(safe-area-inset-top));
+        padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+        padding-left: max(var(--space-4), env(safe-area-inset-left));
+        padding-right: max(var(--space-4), env(safe-area-inset-right));
+    }
+    .card {
+        max-width: none;
+    }
 }

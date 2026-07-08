@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
                 ) : (
                     <>
                         {mutation.isError && (
-                            <MessageBar intent="error">
+                            <MessageBar intent="error" aria-live="polite">
                                 <MessageBarBody>{t("auth.resetEmailFailed")}</MessageBarBody>
                             </MessageBar>
                         )}

@@ -62,19 +62,19 @@ export default function ResetPasswordPage() {
                 </div>
 
                 {!token && (
-                    <MessageBar intent="error">
+                    <MessageBar intent="error" aria-live="polite">
                         <MessageBarBody>{t("auth.invalidResetLink")}</MessageBarBody>
                     </MessageBar>
                 )}
 
                 {validationError && (
-                    <MessageBar intent="error">
+                    <MessageBar intent="error" aria-live="polite">
                         <MessageBarBody>{validationError}</MessageBarBody>
                     </MessageBar>
                 )}
 
                 {mutation.isError && (
-                    <MessageBar intent="error">
+                    <MessageBar intent="error" aria-live="polite">
                         <MessageBarBody>{t("auth.resetPasswordFailed")}</MessageBarBody>
                     </MessageBar>
                 )}
