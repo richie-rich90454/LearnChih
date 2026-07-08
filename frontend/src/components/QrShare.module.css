@@ -1,0 +1,44 @@
+/**
+ * QrShare - co-located CSS Module. Token-based; no !important.
+ * The Dialog primitive owns the surface chrome; this module centers the
+ * QR canvas / fallback image and lays out the URL caption. The canvas is
+ * given a subtle bordered surface so it remains scannable on both themes.
+ */
+
+.qrWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    background-color: var(--surface-sunken);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    width: fit-content;
+    margin-inline: auto;
+}
+
+.canvas,
+.fallbackImg {
+    display: block;
+    width: 240px;
+    height: 240px;
+    border-radius: var(--radius-button);
+}
+
+.urlLine {
+    margin: var(--space-3) 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+    word-break: break-all;
+    text-align: center;
+}
+
+@media (max-width: 560px) {
+    .canvas,
+    .fallbackImg {
+        width: 200px;
+        height: 200px;
+    }
+}

@@ -396,6 +396,14 @@
         "share": "分享",
         "linkCopied": "链接已复制"
     },
+    "qrShare": {
+        "trigger": "二维码",
+        "triggerLabel": "显示“{{title}}”的二维码",
+        "title": "“{{title}}”的二维码",
+        "download": "下载 PNG",
+        "fallbackAlt": "由备用服务生成的二维码",
+        "canvasAlt": "指向“{{title}}”的二维码"
+    },
     "badges": {
         "title": "徽章",
         "loading": "加载徽章中...",

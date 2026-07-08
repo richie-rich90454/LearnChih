@@ -49,6 +49,7 @@ import { SplitView } from "@/components/SplitView";
 import { ReadingProgress } from "@/components/ReadingProgress";
 import { useHeadingAnchors } from "@/components/HeadingAnchor";
 import { ShareButton } from "@/components/ShareButton";
+import { QrShare } from "@/components/QrShare";
 import { recordLastVisited } from "@/components/ResumeCard";
 import styles from "./Detail.module.css";
 
@@ -255,6 +256,7 @@ export default function ResourceDetailPage() {
                     {splitView ? t("resources.splitViewExit") : t("resources.splitView")}
                 </Button>
                 <ShareButton title={resourceTitle} url={articleUrl} />
+                <QrShare title={resourceTitle} url={articleUrl} />
             </div>
 
             {/* Resource info (wrapped in SplitView for read-along notes) */}
