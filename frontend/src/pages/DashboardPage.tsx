@@ -1,15 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import {
-    makeStyles,
-    tokens,
-    Title1,
-    Title3,
-    Subtitle2,
-    Card,
-    Badge,
-    Button,
-} from "@fluentui/react-components";
-import {
     Document24Regular,
     Chat24Regular,
     Trophy24Regular,
@@ -19,7 +9,7 @@ import useAuthStore from "@/store/authStore";
 import { useMyProfile } from "@/hooks/useProfile";
 import { useResources } from "@/hooks/useResources";
 import { useTranslation } from "react-i18next";
-import type { UserProfile, Resource } from "@/types";
+import type { Resource } from "@/types";
 import Seo from "@/components/Seo";
 import { SkeletonLine, SkeletonList } from "@/components/Skeleton";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
@@ -27,69 +17,13 @@ import { StaggerReveal } from "@/components/StaggerReveal";
 import { HoverLift } from "@/components/HoverLift";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalXL,
-        maxWidth: "960px",
-    },
-    statsRow: {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-        gap: tokens.spacingHorizontalM,
-    },
-    statCard: {
-        padding: tokens.spacingHorizontalL,
-    },
-    statValue: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalS,
-    },
-    quickLinks: {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-        gap: tokens.spacingHorizontalM,
-    },
-    quickLinkCard: {
-        padding: tokens.spacingHorizontalL,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        cursor: "pointer",
-    },
-    quickLinkLeft: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalM,
-    },
-    recentGrid: {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-        gap: tokens.spacingHorizontalM,
-    },
-    resourceCard: {
-        cursor: "pointer",
-        padding: tokens.spacingHorizontalL,
-    },
-    cardHeader: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-    },
-    cardMeta: {
-        display: "flex",
-        gap: tokens.spacingHorizontalS,
-        alignItems: "center",
-        marginTop: tokens.spacingVerticalXS,
-    },
-});
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import styles from "./DashboardPage.module.css";
 
 export default function DashboardPage() {
     const { t } = useTranslation();
-    const styles = useStyles();
     const navigate = useNavigate();
     const user = useAuthStore((s) => s.user);
     const {
@@ -110,15 +44,15 @@ export default function DashboardPage() {
             <div className={styles.container}>
                 <SkeletonLine width="40%" />
                 <div className={styles.statsRow}>
-                    <Card className={styles.statCard}>
+                    <Card padding="lg" className={styles.statCard}>
                         <SkeletonLine width="50%" />
                         <SkeletonLine />
                     </Card>
-                    <Card className={styles.statCard}>
+                    <Card padding="lg" className={styles.statCard}>
                         <SkeletonLine width="50%" />
                         <SkeletonLine />
                     </Card>
-                    <Card className={styles.statCard}>
+                    <Card padding="lg" className={styles.statCard}>
                         <SkeletonLine width="50%" />
                         <SkeletonLine />
                     </Card>
@@ -164,85 +98,93 @@ export default function DashboardPage() {
             />
             {/* Welcome */}
             <div>
-                <Title1 as="h1">
+                <h1 className={styles.welcomeTitle}>
                     {t("dashboard.welcome", { name: user?.name || t("common.student") })}
-                </Title1>
-                <Subtitle2 style={{ color: "var(--colorNeutralForeground2)", marginTop: "4px" }}>
-                    {t("dashboard.subtitle")}
-                </Subtitle2>
+                </h1>
+                <p className={styles.welcomeSubtitle}>{t("dashboard.subtitle")}</p>
             </div>
 
             {/* Quick stats */}
             <div className={styles.statsRow}>
-                <Card className={styles.statCard}>
-                    <Subtitle2>{t("dashboard.credits")}</Subtitle2>
+                <Card padding="lg" className={styles.statCard}>
+                    <p className={styles.statLabel}>{t("dashboard.credits")}</p>
                     <div className={styles.statValue}>
-                        <Title3>
-                            <AnimatedCounter value={profile?.credits ?? 0} />
-                        </Title3>
-                        <Badge appearance="filled" color="brand">
-                            {t("dashboard.points")}
-                        </Badge>
+                        <AnimatedCounter value={profile?.credits ?? 0} />
+                        <Badge variant="accent">{t("dashboard.points")}</Badge>
                     </div>
                 </Card>
-                <Card className={styles.statCard}>
-                    <Subtitle2>{t("dashboard.resourcesUploaded")}</Subtitle2>
+                <Card padding="lg" className={styles.statCard}>
+                    <p className={styles.statLabel}>{t("dashboard.resourcesUploaded")}</p>
                     <div className={styles.statValue}>
-                        <Title3>
-                            <AnimatedCounter value={profile?.resourceCount ?? 0} />
-                        </Title3>
+                        <AnimatedCounter value={profile?.resourceCount ?? 0} />
                     </div>
                 </Card>
-                <Card className={styles.statCard}>
-                    <Subtitle2>{t("dashboard.upvotesReceived")}</Subtitle2>
+                <Card padding="lg" className={styles.statCard}>
+                    <p className={styles.statLabel}>{t("dashboard.upvotesReceived")}</p>
                     <div className={styles.statValue}>
-                        <Title3>
-                            <AnimatedCounter value={profile?.upvoteCount ?? 0} />
-                        </Title3>
+                        <AnimatedCounter value={profile?.upvoteCount ?? 0} />
                     </div>
                 </Card>
             </div>
 
             {/* Quick links */}
             <div>
-                <Title3 as="h2" style={{ marginBottom: "12px" }}>
-                    {t("dashboard.quickLinks")}
-                </Title3>
+                <h2 className={styles.sectionTitle}>{t("dashboard.quickLinks")}</h2>
                 <StaggerReveal className={styles.quickLinks}>
                     <HoverLift>
                         <Card
+                            interactive
+                            padding="md"
                             className={styles.quickLinkCard}
                             onClick={() => navigate("/resources")}
                         >
                             <div className={styles.quickLinkLeft}>
-                                <Document24Regular />
-                                <Subtitle2>{t("nav.resources")}</Subtitle2>
+                                <span className={styles.quickLinkIcon}>
+                                    <Document24Regular />
+                                </span>
+                                <span className={styles.quickLinkLabel}>{t("nav.resources")}</span>
                             </div>
-                            <ArrowRight24Regular />
+                            <span className={styles.quickLinkArrow}>
+                                <ArrowRight24Regular />
+                            </span>
                         </Card>
                     </HoverLift>
                     <HoverLift>
                         <Card
+                            interactive
+                            padding="md"
                             className={styles.quickLinkCard}
                             onClick={() => navigate("/channels")}
                         >
                             <div className={styles.quickLinkLeft}>
-                                <Chat24Regular />
-                                <Subtitle2>{t("nav.channels")}</Subtitle2>
+                                <span className={styles.quickLinkIcon}>
+                                    <Chat24Regular />
+                                </span>
+                                <span className={styles.quickLinkLabel}>{t("nav.channels")}</span>
                             </div>
-                            <ArrowRight24Regular />
+                            <span className={styles.quickLinkArrow}>
+                                <ArrowRight24Regular />
+                            </span>
                         </Card>
                     </HoverLift>
                     <HoverLift>
                         <Card
+                            interactive
+                            padding="md"
                             className={styles.quickLinkCard}
                             onClick={() => navigate("/leaderboard")}
                         >
                             <div className={styles.quickLinkLeft}>
-                                <Trophy24Regular />
-                                <Subtitle2>{t("nav.leaderboard")}</Subtitle2>
+                                <span className={styles.quickLinkIcon}>
+                                    <Trophy24Regular />
+                                </span>
+                                <span className={styles.quickLinkLabel}>
+                                    {t("nav.leaderboard")}
+                                </span>
                             </div>
-                            <ArrowRight24Regular />
+                            <span className={styles.quickLinkArrow}>
+                                <ArrowRight24Regular />
+                            </span>
                         </Card>
                     </HoverLift>
                 </StaggerReveal>
@@ -250,9 +192,7 @@ export default function DashboardPage() {
 
             {/* Recent resources */}
             <div>
-                <Title3 as="h2" style={{ marginBottom: "12px" }}>
-                    {t("dashboard.recentResources")}
-                </Title3>
+                <h2 className={styles.sectionTitle}>{t("dashboard.recentResources")}</h2>
                 {recentResources.length === 0 ? (
                     <EmptyState
                         icon={<Document24Regular />}
@@ -260,7 +200,7 @@ export default function DashboardPage() {
                         description={t("empty.dashboardDescription")}
                         action={
                             <Button
-                                appearance="primary"
+                                variant="primary"
                                 icon={<ArrowRight24Regular />}
                                 onClick={() => navigate("/resources")}
                             >
@@ -273,27 +213,24 @@ export default function DashboardPage() {
                         {recentResources.map((resource) => (
                             <HoverLift key={resource.id}>
                                 <Card
+                                    interactive
+                                    padding="md"
                                     className={styles.resourceCard}
                                     onClick={() => navigate(`/resources/${resource.id}`)}
                                 >
                                     <div className={styles.cardHeader}>
-                                        <Subtitle2>{resource.title}</Subtitle2>
-                                        <Badge appearance="tint" size="small">
+                                        <h3 className={styles.resourceTitle}>{resource.title}</h3>
+                                        <Badge variant="neutral" size="small">
                                             {resource.category || t("resources.general")}
                                         </Badge>
                                     </div>
                                     <div className={styles.cardMeta}>
-                                        <span
-                                            style={{
-                                                fontSize: "var(--fontSizeBase200)",
-                                                color: "var(--colorNeutralForeground3)",
-                                            }}
-                                        >
+                                        <span className={styles.cardMetaText}>
                                             {t("common.byAuthor", {
                                                 author: resource.authorName || t("common.unknown"),
                                             })}
                                         </span>
-                                        <Badge appearance="outline" size="small">
+                                        <Badge variant="neutral" size="small">
                                             <AnimatedCounter
                                                 value={resource.upvoteCount ?? 0}
                                                 suffix={` ${t("resources.upvotes")}`}

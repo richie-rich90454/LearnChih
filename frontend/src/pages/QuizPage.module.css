@@ -1,0 +1,52 @@
+/**
+ * QuizPage - co-located CSS Module. The design-system Card / Button
+ * primitives carry their own token-based visuals; this module owns the page
+ * layout, header row, and quiz card stack. The Fluent Dropdown (combobox) is
+ * retained for its listbox behavior; these rules own the rest. Token-based;
+ * no !important.
+ */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 800px;
+}
+
+.headerRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.quizCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.quizTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.quizText {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}

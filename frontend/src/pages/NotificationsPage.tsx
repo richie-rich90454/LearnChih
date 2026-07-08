@@ -1,15 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import {
-    makeStyles,
-    tokens,
-    Title2,
-    Card,
-    Button,
-    Text,
-    Caption1,
-    Spinner,
-} from "@fluentui/react-components";
 import { Checkmark24Regular, ArrowLeft24Regular, AlertOff24Regular } from "@fluentui/react-icons";
+import { Spinner } from "@fluentui/react-components";
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -22,34 +13,16 @@ import { useNotificationStore } from "@/store/notificationStore";
 import Seo from "@/components/Seo";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import stateStyles from "@/components/States.module.css";
+import styles from "./NotificationsPage.module.css";
 
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "700px",
-    },
-    headerRow: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: tokens.spacingHorizontalM,
-    },
-    notificationCard: {
-        padding: tokens.spacingHorizontalL,
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalXS,
-        cursor: "pointer",
-    },
-    unread: {
-        borderLeft: `4px solid ${tokens.colorBrandForeground1}`,
-    },
-});
+function cx(...parts: Array<string | false | undefined | null>): string {
+    return parts.filter(Boolean).join(" ");
+}
 
 export default function NotificationsPage() {
-    const styles = useStyles();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -101,16 +74,16 @@ export default function NotificationsPage() {
             />
             <div className={styles.headerRow}>
                 <Button
-                    appearance="subtle"
+                    variant="subtle"
                     icon={<ArrowLeft24Regular />}
                     onClick={() => navigate(-1)}
                 >
                     Back
                 </Button>
-                <Title2 as="h1">Notifications</Title2>
+                <h1 className={styles.title}>Notifications</h1>
                 {notifications.some((n) => !n.read) && (
                     <Button
-                        appearance="outline"
+                        variant="outline"
                         icon={<Checkmark24Regular />}
                         onClick={() => markAllMutation.mutate()}
                         disabled={markAllMutation.isPending}
@@ -121,7 +94,10 @@ export default function NotificationsPage() {
             </div>
 
             {isLoading && notifications.length === 0 && (
-                <Spinner label="Loading notifications..." />
+                <div className={stateStyles.loading} role="status" aria-live="polite">
+                    <Spinner />
+                    <p className={stateStyles.loadingLabel}>Loading notifications…</p>
+                </div>
             )}
             {isError && (
                 <ErrorState
@@ -142,14 +118,18 @@ export default function NotificationsPage() {
             {notifications.map((n) => (
                 <Card
                     key={n.id}
-                    className={`${styles.notificationCard} ${!n.read ? styles.unread : ""}`}
+                    interactive
+                    padding="md"
+                    className={cx(styles.notificationCard, !n.read && styles.unread)}
                     onClick={() => handleClick(n.id, n.link)}
                 >
-                    <Text weight={n.read ? "regular" : "semibold"}>{n.title}</Text>
-                    <Text style={{ color: "var(--colorNeutralForeground3)" }}>{n.message}</Text>
-                    <Caption1 style={{ color: "var(--colorNeutralForeground3)" }}>
+                    <p className={cx(styles.notificationTitle, !n.read && styles.notificationTitleUnread)}>
+                        {n.title}
+                    </p>
+                    <p className={styles.notificationMessage}>{n.message}</p>
+                    <span className={styles.notificationTime}>
                         {new Date(n.createdAt).toLocaleString()}
-                    </Caption1>
+                    </span>
                 </Card>
             ))}
         </div>

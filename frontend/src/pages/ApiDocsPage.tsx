@@ -1,34 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { makeStyles, tokens, Title2, Button, TabList, Tab } from "@fluentui/react-components";
 import { ArrowLeft24Regular, Open24Regular } from "@fluentui/react-icons";
 import ApiKeyManager from "../components/ApiKeyManager";
 import Seo from "../components/Seo";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "1000px",
-    },
-    headerRow: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalM,
-    },
-    iframe: {
-        width: "100%",
-        height: "600px",
-        border: `1px solid ${tokens.colorNeutralStroke2}`,
-        borderRadius: tokens.borderRadiusMedium,
-    },
-});
+import { Button } from "@/components/ui/Button";
+import { Tabs, Tab } from "@/components/ui/Tabs";
+import styles from "./ApiDocsPage.module.css";
 
 type DocsTab = "swagger" | "keys";
 
 export default function ApiDocsPage() {
-    const styles = useStyles();
     const navigate = useNavigate();
     const [selectedTab, setSelectedTab] = useState<DocsTab>("swagger");
 
@@ -37,29 +18,31 @@ export default function ApiDocsPage() {
             <Seo title="API Docs — LernChih" canonicalPath="/api-docs" robots="noindex, follow" />
             <div className={styles.headerRow}>
                 <Button
-                    appearance="subtle"
+                    variant="subtle"
                     icon={<ArrowLeft24Regular />}
                     onClick={() => navigate("/")}
                 >
                     Back
                 </Button>
-                <Title2 as="h1">API</Title2>
-                <Button
-                    appearance="subtle"
-                    icon={<Open24Regular />}
-                    onClick={() => window.open("/swagger-ui.html", "_blank")}
-                >
-                    Open Swagger UI
-                </Button>
+                <h1 className={styles.title}>API</h1>
+                <div className={styles.headerActions}>
+                    <Button
+                        variant="subtle"
+                        icon={<Open24Regular />}
+                        onClick={() => window.open("/swagger-ui.html", "_blank")}
+                    >
+                        Open Swagger UI
+                    </Button>
+                </div>
             </div>
 
-            <TabList
+            <Tabs
                 selectedValue={selectedTab}
                 onTabSelect={(_, data) => setSelectedTab(data.value as DocsTab)}
             >
                 <Tab value="swagger">Swagger UI</Tab>
                 <Tab value="keys">API Keys</Tab>
-            </TabList>
+            </Tabs>
 
             {selectedTab === "swagger" && (
                 <iframe src="/swagger-ui.html" title="Swagger UI" className={styles.iframe} />

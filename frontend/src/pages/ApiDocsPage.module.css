@@ -1,0 +1,42 @@
+/**
+ * ApiDocsPage - co-located CSS Module. The design-system Button / Tabs
+ * primitives carry their own token-based visuals; this module owns the page
+ * layout, header row, and the Swagger iframe frame. Token-based; no !important.
+ */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 1000px;
+}
+
+.headerRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+/* Push the trailing "Open Swagger UI" action to the right edge so the header
+   reads [Back] [Title] … [Open external]. */
+.headerActions {
+    margin-left: auto;
+}
+
+.iframe {
+    width: 100%;
+    height: 600px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    background-color: var(--surface-2);
+}

@@ -1,43 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-    makeStyles,
-    tokens,
-    Title2,
-    Button,
-    Card,
-    Text,
-    Spinner,
-    Dropdown,
-    Option,
-} from "@fluentui/react-components";
+import { Dropdown, Option, Spinner } from "@fluentui/react-components";
 import { ArrowLeft24Regular, QuestionCircle24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useQuizzes } from "../hooks/useQuizzes";
 import QuizWidget from "../components/QuizWidget";
 import Seo from "../components/Seo";
 import { EmptyState } from "../components/EmptyState";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "800px",
-    },
-    headerRow: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalM,
-    },
-    quizCard: {
-        padding: tokens.spacingHorizontalL,
-        cursor: "pointer",
-    },
-});
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import stateStyles from "@/components/States.module.css";
+import styles from "./QuizPage.module.css";
 
 export default function QuizPage() {
-    const styles = useStyles();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { data: quizzes, isLoading } = useQuizzes();
@@ -54,13 +29,13 @@ export default function QuizPage() {
             />
             <div className={styles.headerRow}>
                 <Button
-                    appearance="subtle"
+                    variant="subtle"
                     icon={<ArrowLeft24Regular />}
                     onClick={() => navigate("/")}
                 >
                     {t("common.back")}
                 </Button>
-                <Title2 as="h1">{t("quizzes.title")}</Title2>
+                <h1 className={styles.title}>{t("quizzes.title")}</h1>
             </div>
 
             <Dropdown
@@ -77,7 +52,12 @@ export default function QuizPage() {
                 ))}
             </Dropdown>
 
-            {isLoading && <Spinner label={t("quizzes.loadingQuizzes")} />}
+            {isLoading && (
+                <div className={stateStyles.loading} role="status" aria-live="polite">
+                    <Spinner />
+                    <p className={stateStyles.loadingLabel}>{t("quizzes.loadingQuizzes")}</p>
+                </div>
+            )}
 
             {!isLoading && !selectedQuizId && (!quizzes || quizzes.length === 0) && (
                 <EmptyState
@@ -94,18 +74,16 @@ export default function QuizPage() {
                 quizzes.map((quiz) => (
                     <Card
                         key={quiz.id}
+                        interactive
+                        padding="md"
                         className={styles.quizCard}
                         onClick={() => setSelectedQuizId(String(quiz.id))}
                     >
-                        <Text weight="semibold">{quiz.title}</Text>
-                        {quiz.description && (
-                            <Text style={{ color: "var(--colorNeutralForeground3)" }}>
-                                {quiz.description}
-                            </Text>
-                        )}
-                        <Text style={{ color: "var(--colorNeutralForeground3)" }}>
+                        <h2 className={styles.quizTitle}>{quiz.title}</h2>
+                        {quiz.description && <p className={styles.quizText}>{quiz.description}</p>}
+                        <p className={styles.quizText}>
                             {t("quizzes.questionCount", { count: quiz.questions.length })}
-                        </Text>
+                        </p>
                     </Card>
                 ))}
 

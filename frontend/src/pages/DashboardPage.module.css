@@ -1,0 +1,165 @@
+/**
+ * DashboardPage - co-located CSS Module. The design-system Card / Badge /
+ * Button primitives carry their own token-based visuals; this module owns the
+ * page-level layout (welcome header, stat grid, quick-link grid, recent
+ * resource grid) and the typography that replaces the former Griffel
+ * makeStyles + inline styles. Token-based; no !important.
+ */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    max-width: 960px;
+}
+
+/* ----------------------- Welcome header ----------------------- */
+.welcomeTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.welcomeSubtitle {
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Stat grid ----------------------- */
+.statsRow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--space-4);
+}
+
+/* Card padding is owned by the design-system Card (padding="lg"); .statCard
+   only adds the internal flex stack. */
+.statCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.statLabel {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    line-height: var(--line-height-tight);
+}
+
+.statValue {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ----------------------- Section heading ----------------------- */
+.sectionTitle {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+/* ----------------------- Quick links ----------------------- */
+.quickLinks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+}
+
+.quickLinkCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+
+.quickLinkLeft {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.quickLinkIcon {
+    color: var(--accent);
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.quickLinkArrow {
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.quickLinkLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+}
+
+/* ----------------------- Recent resources ----------------------- */
+.recentGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+}
+
+.resourceCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.resourceTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cardHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.cardMeta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-1);
+}
+
+.cardMetaText {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}

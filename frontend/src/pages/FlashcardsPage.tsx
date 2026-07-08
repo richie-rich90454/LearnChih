@@ -1,48 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-    makeStyles,
-    tokens,
-    Title2,
-    Button,
-    Card,
-    Text,
-    Spinner,
-    Dropdown,
-    Option,
-} from "@fluentui/react-components";
+import { Dropdown, Option, Spinner } from "@fluentui/react-components";
 import { ArrowLeft24Regular, Sparkle24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useDecks } from "../hooks/useFlashcards";
 import FlashcardDeck from "../components/FlashcardDeck";
 import Seo from "../components/Seo";
 import { EmptyState } from "../components/EmptyState";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "800px",
-    },
-    headerRow: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalM,
-    },
-    deckSelector: {
-        display: "flex",
-        gap: tokens.spacingHorizontalM,
-        alignItems: "center",
-    },
-    deckCard: {
-        padding: tokens.spacingHorizontalL,
-        cursor: "pointer",
-    },
-});
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import stateStyles from "@/components/States.module.css";
+import styles from "./FlashcardsPage.module.css";
 
 export default function FlashcardsPage() {
-    const styles = useStyles();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { data: decks, isLoading } = useDecks();
@@ -59,13 +29,13 @@ export default function FlashcardsPage() {
             />
             <div className={styles.headerRow}>
                 <Button
-                    appearance="subtle"
+                    variant="subtle"
                     icon={<ArrowLeft24Regular />}
                     onClick={() => navigate("/")}
                 >
                     {t("common.back")}
                 </Button>
-                <Title2 as="h1">{t("flashcards.title")}</Title2>
+                <h1 className={styles.title}>{t("flashcards.title")}</h1>
             </div>
 
             <div className={styles.deckSelector}>
@@ -84,7 +54,12 @@ export default function FlashcardsPage() {
                 </Dropdown>
             </div>
 
-            {isLoading && <Spinner label={t("flashcards.loadingDecks")} />}
+            {isLoading && (
+                <div className={stateStyles.loading} role="status" aria-live="polite">
+                    <Spinner />
+                    <p className={stateStyles.loadingLabel}>{t("flashcards.loadingDecks")}</p>
+                </div>
+            )}
 
             {!isLoading && !selectedDeckId && (!decks || decks.length === 0) && (
                 <EmptyState
@@ -101,16 +76,18 @@ export default function FlashcardsPage() {
                 decks.map((deck) => (
                     <Card
                         key={deck.id}
+                        interactive
+                        padding="md"
                         className={styles.deckCard}
                         onClick={() => setSelectedDeckId(String(deck.id))}
                     >
-                        <Text weight="semibold">{deck.name}</Text>
-                        <Text style={{ color: "var(--colorNeutralForeground3)" }}>
+                        <h2 className={styles.deckTitle}>{deck.name}</h2>
+                        <p className={styles.deckText}>
                             {t("flashcards.cardsDue", {
                                 cards: deck.cardCount,
                                 due: deck.dueCount ?? 0,
                             })}
-                        </Text>
+                        </p>
                     </Card>
                 ))}
 

@@ -1,0 +1,75 @@
+/**
+ * NotificationsPage - co-located CSS Module. The design-system Card / Button
+ * primitives carry their own token-based visuals; this module owns the page
+ * layout, the notification card stack, and the unread accent stripe. Token-
+ * based; no !important.
+ *
+ * Specificity: the unread accent stripe uses a doubled-class selector
+ * `.notificationCard.unread` (0,2,0) so it beats the design-system Card
+ * `.card` border rule (0,1,0) regardless of stylesheet injection order.
+ */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 700px;
+}
+
+.headerRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+/* Card padding is owned by the design-system Card (padding="md"); this class
+   only adds the internal stack. */
+.notificationCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+/* Unread accent stripe. Doubled class (0,2,0) beats the Card border. */
+.notificationCard.unread {
+    border-left: 3px solid var(--accent);
+}
+
+.notificationTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.notificationTitleUnread {
+    font-weight: var(--font-weight-semibold);
+}
+
+.notificationMessage {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.notificationTime {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
