@@ -1,13 +1,5 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
-    makeStyles,
-    tokens,
-    Title2,
-    Title3,
-    Subtitle2,
-    Body1,
-    Badge,
-    Button,
     DataGrid,
     DataGridHeader,
     DataGridRow,
@@ -16,7 +8,6 @@ import {
     Dropdown,
     Option,
     Dialog,
-    DialogTrigger,
     DialogSurface,
     DialogBody,
     DialogTitle,
@@ -32,6 +23,9 @@ import {
     Delete24Regular,
     Clock24Regular,
     Dismiss24Regular,
+    Search24Regular,
+    ArrowUp24Regular,
+    ArrowDown24Regular,
 } from "@fluentui/react-icons";
 import {
     useReports,
@@ -44,33 +38,56 @@ import { useTranslation } from "react-i18next";
 import type { Report } from "@/types";
 import Seo from "@/components/Seo";
 import { SkeletonList } from "@/components/Skeleton";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "1000px",
-    },
-    headerRow: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalM,
-    },
-    filterRow: {
-        display: "flex",
-        gap: tokens.spacingHorizontalM,
-        alignItems: "center",
-    },
-});
+import { Button } from "@/components/ui/Button";
+import { Badge, type BadgeVariant } from "@/components/ui/Badge";
+import { Card } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
+import styles from "./Admin.module.css";
 
 const STATUS_OPTIONS = ["PENDING", "RESOLVED", "DISMISSED"];
 
+function statusBadgeVariant(status: Report["status"]): BadgeVariant {
+    if (status === "RESOLVED") return "success";
+    if (status === "PENDING") return "warning";
+    return "neutral";
+}
+
+function StatCard({
+    label,
+    value,
+    trend,
+}: {
+    label: string;
+    value: number;
+    trend?: "up" | "down";
+}) {
+    return (
+        <Card padding="md" className={styles.statCard}>
+            <p className={styles.statLabel}>{label}</p>
+            <span className={styles.statValue}>{value}</span>
+            {trend && (
+                <span
+                    className={`${styles.statTrend} ${
+                        trend === "up" ? styles.statTrendUp : styles.statTrendDown
+                    }`}
+                    aria-hidden="true"
+                >
+                    {trend === "up" ? (
+                        <ArrowUp24Regular className={styles.statTrendIcon} />
+                    ) : (
+                        <ArrowDown24Regular className={styles.statTrendIcon} />
+                    )}
+                </span>
+            )}
+        </Card>
+    );
+}
+
 export default function AdminPage() {
     const { t } = useTranslation();
-    const styles = useStyles();
     const user = useAuthStore((s) => s.user);
     const [statusFilter, setStatusFilter] = useState<string>("");
+    const [query, setQuery] = useState<string>("");
     const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
     const [deleteTarget, setDeleteTarget] = useState<{ id: number; type: string } | null>(null);
 
@@ -86,6 +103,21 @@ export default function AdminPage() {
     const isAdmin = user?.role === "ADMIN" || user?.role === "MODERATOR";
 
     const reports: Report[] = Array.isArray(data) ? data : (data as any)?.content || [];
+
+    // Client-side search over the already-fetched reports (no backend call).
+    const filteredReports = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        if (!q) return reports;
+        return reports.filter((r) =>
+            [r.reason, r.reporterName, r.targetTitle, String(r.targetId)]
+                .filter((v): v is string => Boolean(v))
+                .some((v) => v.toLowerCase().includes(q)),
+        );
+    }, [reports, query]);
+
+    const pending = reports.filter((r) => r.status === "PENDING").length;
+    const resolved = reports.filter((r) => r.status === "RESOLVED").length;
+    const dismissed = reports.filter((r) => r.status === "DISMISSED").length;
 
     const columns = [
         { columnId: "id", renderHeaderCell: () => t("admin.id") as string, minWidth: 60 },
@@ -148,170 +180,186 @@ export default function AdminPage() {
     }
 
     return (
-        <div className={styles.container}>
+        <div className={styles.page}>
             <Seo
                 title={`${t("admin.title")} — LernChih`}
                 canonicalPath="/admin"
                 robots="noindex, nofollow"
             />
-            <div className={styles.headerRow}>
-                <Shield24Regular />
-                <Title2 as="h1">{t("admin.title")}</Title2>
+            <header className={styles.header}>
+                <span className={styles.headerIcon} aria-hidden="true">
+                    <Shield24Regular />
+                </span>
+                <h1 className={styles.title}>{t("admin.title")}</h1>
+            </header>
+
+            {/* KPI cards derived from the fetched reports (no extra calls). */}
+            <div className={styles.statsGrid}>
+                <StatCard
+                    label={t("status.pending")}
+                    value={pending}
+                    trend={pending === 0 ? "up" : "down"}
+                />
+                <StatCard label={t("status.resolved")} value={resolved} />
+                <StatCard label={t("status.dismissed")} value={dismissed} />
             </div>
 
-            {/* Filter */}
-            <div className={styles.filterRow}>
-                <Dropdown
-                    placeholder={t("admin.filterByStatus")}
-                    value={statusFilter || undefined}
-                    selectedOptions={statusFilter ? [statusFilter] : []}
-                    onOptionSelect={(_: unknown, d: { optionValue?: string }) =>
-                        setStatusFilter(d.optionValue || "")
-                    }
-                    clearable
-                >
-                    {STATUS_OPTIONS.map((s) => (
-                        <Option key={s} value={s}>
-                            {t(`status.${s.toLowerCase()}`)}
-                        </Option>
-                    ))}
-                </Dropdown>
+            {/* Toolbar: client-side search + status filter. */}
+            <div className={styles.toolbar}>
+                <div className={styles.toolbarSearch}>
+                    <Input
+                        value={query}
+                        onChange={(_, d) => setQuery(d.value)}
+                        placeholder={t("common.searchPlaceholder")}
+                        contentBefore={<Search24Regular />}
+                        aria-label={t("common.search")}
+                    />
+                </div>
+                <div className={styles.toolbarFilter}>
+                    <Dropdown
+                        placeholder={t("admin.filterByStatus")}
+                        value={statusFilter || undefined}
+                        selectedOptions={statusFilter ? [statusFilter] : []}
+                        onOptionSelect={(_: unknown, d: { optionValue?: string }) =>
+                            setStatusFilter(d.optionValue || "")
+                        }
+                        clearable
+                    >
+                        {STATUS_OPTIONS.map((s) => (
+                            <Option key={s} value={s}>
+                                {t(`status.${s.toLowerCase()}`)}
+                            </Option>
+                        ))}
+                    </Dropdown>
+                </div>
             </div>
 
             {isLoading && <SkeletonList count={4} />}
             {isError && (
-                <div role="alert" style={{ textAlign: "center", padding: 48 }}>
-                    <Title3 as="h3">{t("admin.loadError")}</Title3>
-                    <p style={{ marginBottom: 12 }}>{t("errors.generic")}</p>
-                    <Button appearance="primary" onClick={() => refetch()}>
+                <div role="alert" className={styles.errorState}>
+                    <h3 className={styles.errorTitle}>{t("admin.loadError")}</h3>
+                    <p className={styles.errorText}>{t("errors.generic")}</p>
+                    <Button variant="primary" onClick={() => refetch()}>
                         {t("errors.retry")}
                     </Button>
                 </div>
             )}
 
-            {!isLoading && reports.length === 0 && (
-                <MessageBar>
-                    <MessageBarBody>{t("admin.noReports")}</MessageBarBody>
-                </MessageBar>
+            {!isLoading && !isError && filteredReports.length === 0 && (
+                <div className={styles.empty} role="status">
+                    <span className={styles.emptyIcon} aria-hidden="true">
+                        <Clock24Regular />
+                    </span>
+                    <p className={styles.emptyTitle}>{t("admin.noReports")}</p>
+                </div>
             )}
 
-            {!isLoading && reports.length > 0 && (
-                <DataGrid items={reports} columns={columns as any} style={{ minWidth: "800px" }}>
-                    <DataGridHeader>
-                        <DataGridRow>
-                            {({ renderHeaderCell }) => (
-                                <DataGridCell>{renderHeaderCell()}</DataGridCell>
-                            )}
-                        </DataGridRow>
-                    </DataGridHeader>
-                    <DataGridBody>
-                        {({ item, rowId }: { item: Report; rowId: any }) => (
-                            <DataGridRow key={rowId}>
-                                {({ columnId }) => {
-                                    if (columnId === "id") {
-                                        return (
-                                            <DataGridCell>
-                                                <Body1>{item.id}</Body1>
-                                            </DataGridCell>
-                                        );
-                                    }
-                                    if (columnId === "reporter") {
-                                        return (
-                                            <DataGridCell>
-                                                <Body1>
-                                                    {item.reporterName || t("common.unknown")}
-                                                </Body1>
-                                            </DataGridCell>
-                                        );
-                                    }
-                                    if (columnId === "target") {
-                                        return (
-                                            <DataGridCell>
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        gap: "4px",
-                                                    }}
-                                                >
-                                                    <Badge appearance="outline" size="small">
-                                                        {item.targetType ||
-                                                            t("common.notApplicable")}
-                                                    </Badge>
-                                                    <Body1>
-                                                        {item.targetTitle ||
-                                                            item.targetId ||
-                                                            t("common.notApplicable")}
-                                                    </Body1>
-                                                </div>
-                                            </DataGridCell>
-                                        );
-                                    }
-                                    if (columnId === "reason") {
-                                        return (
-                                            <DataGridCell>
-                                                <Body1>{item.reason || t("common.noReason")}</Body1>
-                                            </DataGridCell>
-                                        );
-                                    }
-                                    if (columnId === "status") {
-                                        const color =
-                                            item.status === "RESOLVED"
-                                                ? "success"
-                                                : item.status === "PENDING"
-                                                  ? "warning"
-                                                  : "informative";
-                                        return (
-                                            <DataGridCell>
-                                                <Badge
-                                                    appearance="tint"
-                                                    color={color}
-                                                    icon={statusIcon(item.status)}
-                                                >
-                                                    {t(`status.${item.status.toLowerCase()}`)}
-                                                </Badge>
-                                            </DataGridCell>
-                                        );
-                                    }
-                                    if (columnId === "actions") {
-                                        return (
-                                            <DataGridCell>
-                                                <div style={{ display: "flex", gap: "8px" }}>
-                                                    {item.status === "PENDING" && (
-                                                        <Button
-                                                            appearance="subtle"
-                                                            icon={<Checkmark24Regular />}
-                                                            size="small"
-                                                            onClick={() => handleResolve(item.id)}
-                                                        >
-                                                            {t("admin.resolve")}
-                                                        </Button>
-                                                    )}
-                                                    <Button
-                                                        appearance="subtle"
-                                                        icon={<Delete24Regular />}
-                                                        size="small"
-                                                        color="danger"
-                                                        onClick={() => {
-                                                            setDeleteTarget({
-                                                                id: item.targetId,
-                                                                type: item.targetType,
-                                                            });
-                                                            setDeleteDialogOpen(true);
-                                                        }}
-                                                    >
-                                                        {t("admin.delete")}
-                                                    </Button>
-                                                </div>
-                                            </DataGridCell>
-                                        );
-                                    }
-                                    return <DataGridCell>-</DataGridCell>;
-                                }}
+            {!isLoading && !isError && filteredReports.length > 0 && (
+                <div className={styles.table}>
+                    <DataGrid items={filteredReports} columns={columns as any}>
+                        <DataGridHeader>
+                            <DataGridRow>
+                                {({ renderHeaderCell }) => (
+                                    <DataGridCell>{renderHeaderCell()}</DataGridCell>
+                                )}
                             </DataGridRow>
-                        )}
-                    </DataGridBody>
-                </DataGrid>
+                        </DataGridHeader>
+                        <DataGridBody>
+                            {({ item, rowId }: { item: Report; rowId: any }) => (
+                                <DataGridRow key={rowId}>
+                                    {({ columnId }) => {
+                                        if (columnId === "id") {
+                                            return <DataGridCell>{item.id}</DataGridCell>;
+                                        }
+                                        if (columnId === "reporter") {
+                                            return (
+                                                <DataGridCell>
+                                                    {item.reporterName || t("common.unknown")}
+                                                </DataGridCell>
+                                            );
+                                        }
+                                        if (columnId === "target") {
+                                            return (
+                                                <DataGridCell>
+                                                    <div className={styles.cellInline}>
+                                                        <Badge
+                                                            variant="neutral"
+                                                            size="small"
+                                                        >
+                                                            {item.targetType ||
+                                                                t("common.notApplicable")}
+                                                        </Badge>
+                                                        <span>
+                                                            {item.targetTitle ||
+                                                                item.targetId ||
+                                                                t("common.notApplicable")}
+                                                        </span>
+                                                    </div>
+                                                </DataGridCell>
+                                            );
+                                        }
+                                        if (columnId === "reason") {
+                                            return (
+                                                <DataGridCell>
+                                                    {item.reason || t("common.noReason")}
+                                                </DataGridCell>
+                                            );
+                                        }
+                                        if (columnId === "status") {
+                                            return (
+                                                <DataGridCell>
+                                                    <Badge
+                                                        variant={statusBadgeVariant(item.status)}
+                                                        icon={statusIcon(item.status)}
+                                                    >
+                                                        {t(
+                                                            `status.${item.status.toLowerCase()}`,
+                                                        )}
+                                                    </Badge>
+                                                </DataGridCell>
+                                            );
+                                        }
+                                        if (columnId === "actions") {
+                                            return (
+                                                <DataGridCell>
+                                                    <div className={styles.cellActions}>
+                                                        {item.status === "PENDING" && (
+                                                            <Button
+                                                                variant="subtle"
+                                                                size="small"
+                                                                icon={<Checkmark24Regular />}
+                                                                onClick={() =>
+                                                                    handleResolve(item.id)
+                                                                }
+                                                            >
+                                                                {t("admin.resolve")}
+                                                            </Button>
+                                                        )}
+                                                        <Button
+                                                            variant="subtle"
+                                                            size="small"
+                                                            icon={<Delete24Regular />}
+                                                            onClick={() => {
+                                                                setDeleteTarget({
+                                                                    id: item.targetId,
+                                                                    type: item.targetType,
+                                                                });
+                                                                setDeleteDialogOpen(true);
+                                                            }}
+                                                        >
+                                                            {t("admin.delete")}
+                                                        </Button>
+                                                    </div>
+                                                </DataGridCell>
+                                            );
+                                        }
+                                        return <DataGridCell>-</DataGridCell>;
+                                    }}
+                                </DataGridRow>
+                            )}
+                        </DataGridBody>
+                    </DataGrid>
+                </div>
             )}
 
             {/* Delete confirmation dialog */}
@@ -323,22 +371,19 @@ export default function AdminPage() {
                     <DialogBody>
                         <DialogTitle>{t("admin.confirmDeleteTitle")}</DialogTitle>
                         <DialogContent>
-                            <Body1>
-                                {t("admin.confirmDeleteContent", {
-                                    type: deleteTarget?.type?.toLowerCase() || t("common.content"),
-                                })}
-                            </Body1>
+                            {t("admin.confirmDeleteContent", {
+                                type: deleteTarget?.type?.toLowerCase() || t("common.content"),
+                            })}
                         </DialogContent>
                         <DialogActions>
                             <Button
-                                appearance="secondary"
+                                variant="outline"
                                 onClick={() => setDeleteDialogOpen(false)}
                             >
                                 {t("common.cancel")}
                             </Button>
                             <Button
-                                appearance="primary"
-                                color="danger"
+                                variant="primary"
                                 onClick={handleDelete}
                                 disabled={deleteResource.isPending || deletePost.isPending}
                             >
