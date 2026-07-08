@@ -20,6 +20,7 @@ import { ErrorState } from "@/components/ErrorState";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { ResumeCard } from "@/components/ResumeCard";
 import styles from "./DashboardPage.module.css";
 
 export default function DashboardPage() {
@@ -103,6 +104,9 @@ export default function DashboardPage() {
                 </h1>
                 <p className={styles.welcomeSubtitle}>{t("dashboard.subtitle")}</p>
             </div>
+
+            {/* Continue where you left off */}
+            <ResumeCard />
 
             {/* Quick stats */}
             <div className={styles.statsRow}>

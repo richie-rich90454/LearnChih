@@ -338,7 +338,9 @@
         "resourcesUploaded": "已上传资源",
         "upvotesReceived": "获赞数",
         "noResources": "暂无资源，来上传第一个吧！",
-        "loadError": "加载仪表板失败"
+        "loadError": "加载仪表板失败",
+        "continueWhereYouLeftOff": "从上次离开的地方继续",
+        "continue": "继续"
     },
     "bookmarks": {
         "title": "书签",

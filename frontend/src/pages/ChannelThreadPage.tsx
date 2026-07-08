@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { Textarea, Avatar, Spinner, Dropdown, Option } from "@fluentui/react-components";
 import { ArrowLeft24Regular, Mention24Regular, ChatMultiple24Regular } from "@fluentui/react-icons";
 import { useChannel, useChannelPosts, useCreateChannelPost } from "@/hooks/useChannels";
@@ -20,6 +20,7 @@ import { discussionForumPostingSchema, breadcrumbSchema } from "@/components/jso
 import { useBackgroundSync } from "@/hooks/useBackgroundSync";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { recordLastVisited } from "@/components/ResumeCard";
 import styles from "./Detail.module.css";
 
 function getBaseUrl(): string {
@@ -33,6 +34,7 @@ export default function ChannelThreadPage() {
     const { t } = useTranslation();
     const { channelId, threadId } = useParams<{ channelId: string; threadId: string }>();
     const navigate = useNavigate();
+    const location = useLocation();
     const { data: channel } = useChannel(channelId);
     const { data: posts, isLoading, isError, refetch } = useChannelPosts(channelId, threadId);
     const createPost = useCreateChannelPost(channelId, threadId);
@@ -174,6 +176,13 @@ export default function ChannelThreadPage() {
             return next;
         });
     }, [postList]);
+
+    // Record this visit for the dashboard "Continue where you left off" card.
+    useEffect(() => {
+        if (thread?.title) {
+            recordLastVisited(location.pathname, thread.title);
+        }
+    }, [thread?.title, location.pathname]);
 
     const threadTitle = thread?.title || "Thread";
     const canonicalPath = `/channels/${channel?.slug || channelId}/threads/${threadId}`;

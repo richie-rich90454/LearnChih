@@ -1,0 +1,65 @@
+/**
+ * ResumeCard - co-located CSS Module for the "Continue where you left off"
+ * dashboard card.
+ *
+ * Spec ref: F74. The design-system Card primitive owns the surface
+ * (--surface-2), border, radius, and shadow; this module styles the inner
+ * layout (body column + continue button) and typography with tokens. A
+ * plain inner div avoids any Griffel specificity conflict.
+ */
+
+.inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+}
+
+.label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.time {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .title {
+        white-space: normal;
+    }
+}

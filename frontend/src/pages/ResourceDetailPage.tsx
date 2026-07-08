@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import {
     Textarea,
     Avatar,
@@ -47,6 +47,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { SplitView } from "@/components/SplitView";
 import { ReadingProgress } from "@/components/ReadingProgress";
+import { recordLastVisited } from "@/components/ResumeCard";
 import styles from "./Detail.module.css";
 
 function cx(...parts: Array<string | false | undefined | null>): string {
@@ -64,6 +65,7 @@ export default function ResourceDetailPage() {
     const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const location = useLocation();
     const { data: resource, isLoading, isError } = useResource(id);
     const { data: posts, isLoading: postsLoading } = useResourcePosts(id);
     const queryClient = useQueryClient();
@@ -112,6 +114,13 @@ export default function ResourceDetailPage() {
         });
         return unsubscribe;
     }, [id, subscribeToThread]);
+
+    // Record this visit for the dashboard "Continue where you left off" card.
+    useEffect(() => {
+        if (resource?.title) {
+            recordLastVisited(location.pathname, resource.title);
+        }
+    }, [resource?.title, location.pathname]);
 
     const applyOptimisticUpvote = async () => {
         await queryClient.cancelQueries({ queryKey: ["resource", id] });

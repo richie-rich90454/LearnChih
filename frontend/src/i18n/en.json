@@ -355,7 +355,9 @@
         "resourcesUploaded": "Resources Uploaded",
         "upvotesReceived": "Upvotes Received",
         "noResources": "No resources yet. Be the first to upload!",
-        "loadError": "Failed to load dashboard"
+        "loadError": "Failed to load dashboard",
+        "continueWhereYouLeftOff": "Continue where you left off",
+        "continue": "Continue"
     },
     "bookmarks": {
         "title": "Bookmarks",
