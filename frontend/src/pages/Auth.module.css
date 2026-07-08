@@ -1,0 +1,191 @@
+/**
+ * Auth - shared CSS Module for the 5 auth pages (Login, Register,
+ * ForgotPassword, ResetPassword, VerifyEmail). They share the same layout
+ * pattern: a centered card on a tinted backdrop. Fluent UI v9 keeps behavior
+ * + a11y (Button keyboard/focus, MessageBar roles); these rules own the look
+ * via tokens.css. The design-system Button + Input primitives carry their own
+ * token-based visuals (see components/ui); this module owns page-level layout.
+ *
+ * Specificity strategy (no !important):
+ *   - Page-level layout rules sit at (0,1,0) which is enough because they
+ *     style plain elements (main, div, h1, p, form, a) with no Griffel
+ *     competition.
+ *   - The OTP code cells (VerifyEmail) are raw Fluent Inputs (the labeled
+ *     Input primitive wrapper does not fit the inline 6-cell row). Griffel
+ *     atomic classes + the `fui-Input` display class sit at (0,1,0), so the
+ *     base cell styling uses a doubled class `.field.field` (0,2,0) and the
+ *     focus ring uses `.field.field:focus-visible` (0,3,0) to beat Griffel's
+ *     own :focus-visible outline regardless of stylesheet injection order.
+ */
+
+/* ----------------------- Page shell ----------------------- */
+/* Centered card on a tinted backdrop. The radial gradient adds a very subtle
+   brand wash at the top so the page does not read as a flat Tell. */
+.shell {
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: var(--space-6);
+    background-color: var(--surface-1);
+    background-image: radial-gradient(
+        ellipse 80% 50% at 50% 0%,
+        var(--accent-soft),
+        transparent 70%
+    );
+}
+
+/* ----------------------- Auth card ----------------------- */
+/* The card is both the visual container and the flex column that stacks
+   header / messages / form / actions. Padding owns the inner breath. */
+.card {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding: var(--space-8);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-lift);
+}
+
+/* ----------------------- Header ----------------------- */
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Form ----------------------- */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+/* OTP code-cell row (VerifyEmail). A horizontal group of single-digit
+   fields; the labeled Input primitive wrapper does not fit this layout. */
+.fieldGroup {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+/* Single OTP cell. Raw Fluent Input; doubled class wins over Griffel atomic
+   border/background/color rules (0,1,0) and the focus ring beats Griffel's
+   :focus-visible outline (0,2,0). */
+.field.field {
+    border-radius: var(--radius-input);
+    border: 1px solid var(--border-strong);
+    background-color: var(--surface-1);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    text-align: center;
+    transition:
+        border-color var(--motion-fast) var(--motion-ease),
+        box-shadow var(--motion-fast) var(--motion-ease);
+}
+
+.field.field:focus,
+.field.field:focus-visible {
+    outline: 2px solid transparent;
+    border-color: var(--accent);
+    box-shadow: var(--shadow-focus);
+}
+
+.codeInput {
+    width: 48px;
+}
+
+/* Required-field asterisk rendered inside an Input primitive label node. */
+.requiredMark {
+    color: var(--status-danger);
+}
+
+/* ----------------------- Submit / actions / links ----------------------- */
+.submit {
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+.footer {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    text-align: center;
+}
+
+.link {
+    color: var(--accent);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--motion-ease);
+}
+
+.link:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.link:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+    border-radius: var(--radius-button);
+}
+
+/* ----------------------- Inline status text ----------------------- */
+/* Vocabulary for inline (non-MessageBar) status text. Kept token-based so
+   any future auth inline message matches the design system. */
+.errorText {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--status-danger);
+}
+
+.helperText {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.successText {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--status-success);
+}
