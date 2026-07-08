@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-    Button,
     Dialog,
     DialogTrigger,
     DialogSurface,
@@ -8,32 +7,24 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Input,
     Textarea,
     Field,
     Switch,
     Spinner,
-    makeStyles,
-    tokens,
 } from "@fluentui/react-components";
 import { Add24Regular } from "@fluentui/react-icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createStudyGroup, type CreateStudyGroupRequest } from "@/api/studyGroups";
-
-const useStyles = makeStyles({
-    form: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalM,
-    },
-});
+import { Button } from "./ui/Button";
+import { Input } from "./ui/Input";
+import dialogStyles from "./ui/Dialog.module.css";
+import styles from "./CreateStudyGroupDialog.module.css";
 
 interface CreateStudyGroupDialogProps {
     onCreated?: () => void;
 }
 
 export function CreateStudyGroupDialog({ onCreated }: CreateStudyGroupDialogProps) {
-    const styles = useStyles();
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
@@ -66,22 +57,22 @@ export function CreateStudyGroupDialog({ onCreated }: CreateStudyGroupDialogProp
             onOpenChange={(_: unknown, data: { open: boolean }) => setOpen(data.open)}
         >
             <DialogTrigger disableButtonEnhancement>
-                <Button appearance="primary" icon={<Add24Regular />}>
+                <Button variant="primary" icon={<Add24Regular />}>
                     Create Group
                 </Button>
             </DialogTrigger>
-            <DialogSurface>
-                <DialogBody>
-                    <DialogTitle>Create Study Group</DialogTitle>
-                    <DialogContent>
+            <DialogSurface className={dialogStyles.surface}>
+                <DialogBody className={dialogStyles.body}>
+                    <DialogTitle className={dialogStyles.title}>Create Study Group</DialogTitle>
+                    <DialogContent className={dialogStyles.content}>
                         <div className={styles.form}>
-                            <Field label="Name" required>
-                                <Input
-                                    value={name}
-                                    onChange={(_e, data) => setName(data.value)}
-                                    placeholder="e.g. Calculus Study Crew"
-                                />
-                            </Field>
+                            <Input
+                                label="Name"
+                                required
+                                value={name}
+                                onChange={(_e, data) => setName(data.value)}
+                                placeholder="e.g. Calculus Study Crew"
+                            />
                             <Field label="Description" required>
                                 <Textarea
                                     value={description}
@@ -89,13 +80,12 @@ export function CreateStudyGroupDialog({ onCreated }: CreateStudyGroupDialogProp
                                     placeholder="What is this group about?"
                                 />
                             </Field>
-                            <Field label="Subject">
-                                <Input
-                                    value={subject}
-                                    onChange={(_e, data) => setSubject(data.value)}
-                                    placeholder="e.g. Mathematics"
-                                />
-                            </Field>
+                            <Input
+                                label="Subject"
+                                value={subject}
+                                onChange={(_e, data) => setSubject(data.value)}
+                                placeholder="e.g. Mathematics"
+                            />
                             <Switch
                                 checked={isPublic}
                                 onChange={(_e, data) => setIsPublic(data.checked)}
@@ -103,13 +93,14 @@ export function CreateStudyGroupDialog({ onCreated }: CreateStudyGroupDialogProp
                             />
                         </div>
                     </DialogContent>
-                    <DialogActions>
-                        <Button appearance="secondary" onClick={() => setOpen(false)}>
+                    <DialogActions className={dialogStyles.footer}>
+                        <Button variant="outline" onClick={() => setOpen(false)}>
                             Cancel
                         </Button>
                         <Button
-                            appearance="primary"
-                            disabled={!canSubmit || mutation.isPending}
+                            variant="primary"
+                            loading={mutation.isPending}
+                            disabled={!canSubmit}
                             onClick={() =>
                                 mutation.mutate({
                                     name: name.trim(),

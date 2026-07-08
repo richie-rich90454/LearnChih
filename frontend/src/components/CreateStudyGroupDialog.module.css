@@ -1,0 +1,10 @@
+/**
+ * CreateStudyGroupDialog - co-located CSS Module. The shared Dialog.module.css
+ * owns the dialog surface/title/content; this module owns the in-dialog form
+ * stack spacing. Token-based; no !important.
+ */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}

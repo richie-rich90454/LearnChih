@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-    Button,
     Dialog,
     DialogTrigger,
     DialogSurface,
@@ -15,6 +14,8 @@ import {
 import { Flag24Regular } from "@fluentui/react-icons";
 import { useCreateReport } from "../hooks/useReports";
 import type { ReportTargetType } from "../types";
+import { Button } from "./ui/Button";
+import dialogStyles from "./ui/Dialog.module.css";
 
 interface ReportButtonProps {
     targetType: ReportTargetType;
@@ -42,14 +43,16 @@ export default function ReportButton({ targetType, targetId }: ReportButtonProps
     return (
         <Dialog open={open} onOpenChange={(_, data) => setOpen(data.open)}>
             <DialogTrigger disableButtonEnhancement>
-                <Button appearance="subtle" size="small" icon={<Flag24Regular />}>
+                <Button variant="subtle" size="small" icon={<Flag24Regular />}>
                     Report
                 </Button>
             </DialogTrigger>
-            <DialogSurface>
-                <DialogBody>
-                    <DialogTitle>Report {targetType.toLowerCase().replace("_", " ")}</DialogTitle>
-                    <DialogContent>
+            <DialogSurface className={dialogStyles.surface}>
+                <DialogBody className={dialogStyles.body}>
+                    <DialogTitle className={dialogStyles.title}>
+                        Report {targetType.toLowerCase().replace("_", " ")}
+                    </DialogTitle>
+                    <DialogContent className={dialogStyles.content}>
                         <Field label="Reason">
                             <Textarea
                                 value={reason}
@@ -60,14 +63,15 @@ export default function ReportButton({ targetType, targetId }: ReportButtonProps
                             />
                         </Field>
                     </DialogContent>
-                    <DialogActions>
-                        <Button appearance="secondary" onClick={() => setOpen(false)}>
+                    <DialogActions className={dialogStyles.footer}>
+                        <Button variant="outline" onClick={() => setOpen(false)}>
                             Cancel
                         </Button>
                         <Button
-                            appearance="primary"
+                            variant="primary"
+                            loading={createReport.isPending}
+                            disabled={!reason.trim()}
                             onClick={handleSubmit}
-                            disabled={!reason.trim() || createReport.isPending}
                         >
                             {createReport.isPending ? <Spinner size="tiny" /> : "Submit Report"}
                         </Button>

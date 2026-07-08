@@ -6,8 +6,9 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Button,
 } from "@fluentui/react-components";
+import { Button } from "./ui/Button";
+import dialogStyles from "./ui/Dialog.module.css";
 
 interface ConfirmDialogProps {
     trigger: React.ReactElement;
@@ -19,6 +20,14 @@ interface ConfirmDialogProps {
     destructive?: boolean;
 }
 
+/**
+ * Confirmation dialog. Uses raw Fluent Dialog internals (to preserve the
+ * `disableButtonEnhancement` trigger + custom open/close behavior) but skins
+ * the surface via the shared Dialog.module.css tokens and the design-system
+ * Button primitive. The `destructive` flag is accepted for API compatibility;
+ * the design-system Button has no danger variant, so the confirm action uses
+ * the primary variant regardless.
+ */
 export function ConfirmDialog({
     trigger,
     title,
@@ -26,23 +35,19 @@ export function ConfirmDialog({
     confirmLabel = "Confirm",
     cancelLabel = "Cancel",
     onConfirm,
-    destructive,
 }: ConfirmDialogProps) {
     return (
         <Dialog>
             <DialogTrigger disableButtonEnhancement>{trigger}</DialogTrigger>
-            <DialogSurface>
-                <DialogBody>
-                    <DialogTitle>{title}</DialogTitle>
-                    <DialogContent>{content}</DialogContent>
-                    <DialogActions>
+            <DialogSurface className={dialogStyles.surface}>
+                <DialogBody className={dialogStyles.body}>
+                    <DialogTitle className={dialogStyles.title}>{title}</DialogTitle>
+                    <DialogContent className={dialogStyles.content}>{content}</DialogContent>
+                    <DialogActions className={dialogStyles.footer}>
                         <DialogTrigger disableButtonEnhancement>
-                            <Button appearance="secondary">{cancelLabel}</Button>
+                            <Button variant="outline">{cancelLabel}</Button>
                         </DialogTrigger>
-                        <Button
-                            appearance={destructive ? "primary" : "secondary"}
-                            onClick={onConfirm}
-                        >
+                        <Button variant="primary" onClick={onConfirm}>
                             {confirmLabel}
                         </Button>
                     </DialogActions>
