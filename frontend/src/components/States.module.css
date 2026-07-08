@@ -1,0 +1,223 @@
+/**
+ * States - shared CSS Module for the four full-page/inline state surfaces
+ * (empty, error, loading, success) plus an inline error banner. Imported by
+ * state components (EmptyState / ErrorState), the NotFound + Error pages, and
+ * any page that needs a centered loading or inline-error block.
+ *
+ * Token-based; no !important. The centered layout is shared via a comma
+ * selector across the four state roots so each state reads consistently.
+ * Fluent UI v9 keeps behavior (Spinner / focus management); these rules own
+ * the look via tokens.css.
+ *
+ * Accessibility:
+ *   - Empty / loading / success roots carry role="status"; the error root
+ *     carries role="alert" (set by the consumer). aria-live="polite" is set
+ *     on the loading label (B31) and the inline error banner (B32) so screen
+ *     readers announce async state changes without trapping focus.
+ *   - Icons are decorative: consumers wrap them in aria-hidden="true"; the
+ *     SVG fills inherit currentColor so the wrapper `color` token controls
+ *     the semantic hue (muted for empty, danger for error, success for done).
+ *
+ * Reduced motion: the global prefers-reduced-motion rule in index.css
+ * collapses animation/transition-duration to 0.01ms; the shimmer keyframe is
+ * additionally disabled here so skeleton blocks sit perfectly still.
+ */
+
+/* ----------------------- Shared centered layout ----------------------- */
+/* All four states share the same centered column so a page flipping between
+   them (loading -> error -> empty) never shifts. */
+.empty,
+.error,
+.loading,
+.success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-12) var(--space-4);
+    text-align: center;
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* ----------------------- Empty state ----------------------- */
+.emptyIcon {
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Render the passed Fluent icon at a consistent 64px regardless of the
+   *24Regular size baked into the icon component name. */
+.emptyIcon :global(svg),
+.errorIcon :global(svg),
+.successIcon :global(svg) {
+    width: 64px;
+    height: 64px;
+}
+
+.emptyTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.emptyBody {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.emptyAction {
+    margin-top: var(--space-2);
+}
+
+/* ----------------------- Error state ----------------------- */
+.errorIcon {
+    color: var(--status-danger);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.errorTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.errorBody {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.errorAction {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+/* ----------------------- Loading state ----------------------- */
+/* The consumer mounts a Fluent Spinner (or a .shimmer skeleton block) inside
+   .loading and a .loadingLabel span. role="status" + aria-live="polite" are
+   set on the root by the consumer (B31). */
+.loading {
+    gap: var(--space-3);
+}
+
+.loadingLabel {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Success state ----------------------- */
+.successIcon {
+    color: var(--status-success);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.successTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.successBody {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.successAction {
+    margin-top: var(--space-2);
+}
+
+/* ----------------------- Inline error banner (B32) ----------------------- */
+/* Status-tinted surface with a 3px danger border-left so inline form errors
+    read as a discrete alert without hijacking the layout. aria-live="polite"
+    is set on the element by the consumer so screen readers announce async
+    validation errors. */
+.inlineError {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background-color: var(--status-danger-soft);
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--status-danger);
+    border-radius: var(--radius-input);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-primary);
+}
+
+/* ----------------------- Shimmer skeleton ----------------------- */
+/* A subtle skeleton block for loading states that prefer a skeleton over a
+   Spinner. Reuses the --surface-sunken well with a slow left-to-right sweep.
+   The sweep is intentionally faint (low-alpha white) so it reads as a shimmer
+   rather than a moving bar. */
+.shimmer {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--surface-sunken);
+    border-radius: var(--radius-input);
+}
+
+.shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.18),
+        transparent
+    );
+    animation: states-shimmer var(--motion-slow) infinite;
+}
+
+@keyframes states-shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Respect reduced-motion: static block, no shimmer sweep. */
+@media (prefers-reduced-motion: reduce) {
+    .shimmer::after {
+        animation: none;
+    }
+}
