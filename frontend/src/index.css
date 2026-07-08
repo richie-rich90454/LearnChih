@@ -17,15 +17,13 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-sans);
-    /* Concrete background so axe-core always has an opaque backdrop
-       even if all child elements have transparent backgrounds. */
-    background-color: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #1a1a1a;
-    }
+    /* Page background routed through the --surface-1 semantic token so the
+       body always has an opaque backdrop (axe-core needs an opaque ancestor
+       even when child elements have transparent backgrounds) and follows
+       the active theme automatically. --surface-1 is theme-aware in
+       tokens.css (light on :root, dark under prefers-color-scheme and
+       [data-theme="dark"]), so no separate dark-mode override is needed. */
+    background-color: var(--surface-1);
 }
 
 #root {
@@ -129,97 +127,75 @@ pre,
     transform: translateY(1px);
 }
 
-/* Forced color contrast on Fluent UI v9 Select components.
+/* Color contrast on Fluent UI v9 Select components.
    Fluent's Select does not forward the `style` prop to the underlying
-   <select> element, so axe-core / pa11y color-contrast checks fail because
-   the native select inherits a transparent background and undefined color.
-   These rules pin explicit WCAG-compliant foreground/background colors on
-   the rendered <select> so automated accessibility audits pass while
-   keeping Fluent's layout, typography, and spacing intact. Light mode uses
-   #0E2861 (cobalt 30) on #FFFFFF (14.8:1 contrast); dark mode uses #FFFFFF
-   on #1A1A1A (17.4:1 contrast). Both pairs exceed the WCAG AAA 7:1 threshold.
-   `!important` is required because Griffel injects atomic CSS classes at
-   runtime that set color/background-color on the same element; without it,
-   source-order ties can let Griffel's theme-derived colors win and fail
-   the contrast check. */
-.fui-Select__select {
-    color: #0e2861 !important;
-    background-color: #ffffff !important;
+   <select> element, so the native select inherits a transparent background
+   and undefined color that fails axe-core / pa11y contrast checks. This
+   rule pins explicit theme-aware foreground/background on the rendered
+   <select> via the --text-primary and --surface-1 semantic tokens so
+   automated accessibility audits pass while keeping Fluent's layout,
+   typography, and spacing intact. The doubled-class compound selector
+   `.fui-Select__select.fui-Select__select` raises specificity to (0,2,0),
+   beating Griffel's atomic classes (0,1,0) WITHOUT `!important`. Because
+   both tokens are theme-aware (resolved in tokens.css per :root,
+   prefers-color-scheme, and [data-theme]), no separate dark-mode
+   @media block is needed. */
+.fui-Select__select.fui-Select__select {
+    color: var(--text-primary);
+    background-color: var(--surface-1);
 }
 
-@media (prefers-color-scheme: dark) {
-    .fui-Select__select {
-        color: #ffffff !important;
-        background-color: #1a1a1a !important;
-    }
-}
-
-/* Forced color contrast on sidebar nav button text.
+/* Color contrast on sidebar nav button text.
    Fluent UI v9 Button with appearance="subtle" sets
-   color: var(--colorNeutralForeground1) via the fui-Button class. axe-core
-   cannot resolve CSS custom properties defined on the FluentProvider
-   ancestor, so it fails the contrast check on nav item labels like
-   'Resources', 'Channels', 'Leaderboard'. These rules pin a concrete
-   #242424 (Fluent v9 light-mode colorNeutralForeground1) on the Text span
-   inside nav buttons, guaranteeing 16.1:1 contrast against the white
-   navContainer background. Dark mode uses #FFFFFF on the dark navContainer. */
-nav .fui-Button .fui-Text {
-    color: #242424 !important;
+   color: var(--colorNeutralForeground1) via the fui-Button class. This
+   rule pins the theme-aware --text-primary token on the Text span inside
+   nav buttons so axe-core / pa11y contrast checks pass on labels like
+   'Resources', 'Channels', 'Leaderboard'. The doubled final class
+   (`nav .fui-Button .fui-Text.fui-Text`) raises specificity to (0,3,0),
+   beating Griffel's atomic classes (0,1,0) WITHOUT `!important`. Because
+   --text-primary is theme-aware (resolved in tokens.css per :root,
+   prefers-color-scheme, and [data-theme]), no separate dark-mode
+   @media block is needed. */
+nav .fui-Button .fui-Text.fui-Text {
+    color: var(--text-primary);
 }
 
-@media (prefers-color-scheme: dark) {
-    nav .fui-Button .fui-Text {
-        color: #ffffff !important;
-    }
-}
-
-/* Forced color contrast on Fluent UI v9 Input, Label, and Spinner elements.
+/* Color contrast on Fluent UI v9 Input, Label, and Spinner elements.
    axe-core's color-contrast rule cannot resolve CSS custom properties
-   (var(--colorXxx)) set by FluentProvider via Griffel. This causes false
-   positives on any element whose color or background-color is derived from
-   a theme token. These rules pin concrete WCAG-compliant values on the
-   most common form elements so automated accessibility audits pass.
-   Values match Fluent v9 light-mode defaults; dark-mode overrides follow. */
-.fui-Input__input {
-    color: #242424 !important;
-    background-color: #ffffff !important;
+   (var(--colorXxx)) set by FluentProvider via Griffel, causing false
+   positives on any element whose color or background-color is derived
+   from a theme token. These rules pin theme-aware --text-primary /
+   --surface-1 tokens on the most common form elements so automated
+   accessibility audits pass. Each doubled-class compound selector
+   (e.g. `.fui-Input__input.fui-Input__input`) raises specificity to
+   (0,2,0), beating Griffel's atomic classes (0,1,0) WITHOUT `!important`.
+   Because both tokens are theme-aware (resolved in tokens.css per :root,
+   prefers-color-scheme, and [data-theme]), no separate dark-mode
+   @media block is needed. */
+.fui-Input__input.fui-Input__input {
+    color: var(--text-primary);
+    background-color: var(--surface-1);
 }
 
-.fui-Label {
-    color: #242424 !important;
+.fui-Label.fui-Label {
+    color: var(--text-primary);
 }
 
-.fui-Spinner__label {
-    color: #242424 !important;
+.fui-Spinner__label.fui-Spinner__label {
+    color: var(--text-primary);
 }
 
-@media (prefers-color-scheme: dark) {
-    .fui-Input__input {
-        color: #ffffff !important;
-        background-color: #1a1a1a !important;
-    }
-
-    .fui-Label {
-        color: #ffffff !important;
-    }
-
-    .fui-Spinner__label {
-        color: #ffffff !important;
-    }
-}
-
-/* Forced color contrast on CookieConsent banner text.
-   The CookieConsent Card uses concrete backgroundColor but the Body1/Subtitle2
-   text inside it gets its color from Fluent UI's CSS variable-based theme
-   tokens. axe-core cannot resolve these CSS variables, so we pin concrete
-   colors on all text elements within the banner. Light mode: #242424 on
-   #FFFFFF (21:1). Dark mode: #FFFFFF on #242424 (16.1:1). Both pass WCAG AAA. */
-[data-cookie-consent] .fui-Text {
-    color: #242424 !important;
-}
-
-@media (prefers-color-scheme: dark) {
-    [data-cookie-consent] .fui-Text {
-        color: #ffffff !important;
-    }
+/* Color contrast on CookieConsent banner text.
+   The CookieConsent Card uses a concrete backgroundColor but the
+   Body1/Subtitle2 text inside it gets its color from Fluent UI's
+   CSS variable-based theme tokens, which axe-core cannot resolve. This
+   rule pins the theme-aware --text-primary token on all Text spans within
+   the banner so automated accessibility audits pass. The doubled final
+   class (`[data-cookie-consent] .fui-Text.fui-Text`) raises specificity to
+   (0,3,0), beating Griffel's atomic classes (0,1,0) WITHOUT `!important`.
+   Because --text-primary is theme-aware (resolved in tokens.css per :root,
+   prefers-color-scheme, and [data-theme]), no separate dark-mode
+   @media block is needed. */
+[data-cookie-consent] .fui-Text.fui-Text {
+    color: var(--text-primary);
 }
