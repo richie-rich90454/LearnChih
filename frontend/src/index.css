@@ -199,3 +199,41 @@ nav .fui-Button .fui-Text.fui-Text {
 [data-cookie-consent] .fui-Text.fui-Text {
     color: var(--text-primary);
 }
+
+/* ---- Theme-aware scrollbars (B12) ----
+   Cross-browser: Firefox uses `scrollbar-color` (2 values: thumb, track);
+   WebKit/Chromium use `::-webkit-scrollbar*` pseudo-elements.
+   Tokens make the colors theme-aware (light/dark) with no media-query duplication. */
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+}
+
+/* WebKit / Chromium */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: var(--border-strong);
+    border-radius: var(--radius-pill);
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-secondary);
+}
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* ---- Theme-aware text selection (B12) ---- */
+::selection {
+    background-color: var(--accent-soft);
+    color: var(--text-primary);
+}
