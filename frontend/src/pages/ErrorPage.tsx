@@ -1,32 +1,16 @@
-import { makeStyles, tokens, Title1, Body1, Button, Card } from "@fluentui/react-components";
-import { ArrowCounterclockwise24Regular } from "@fluentui/react-icons";
+import { Link } from "react-router-dom";
+import {
+    ArrowCounterclockwise24Regular,
+    ErrorCircle24Regular,
+    ArrowLeft24Regular,
+} from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import Seo from "../components/Seo";
-
-const useStyles = makeStyles({
-    pageContainer: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: tokens.colorNeutralBackground2,
-        padding: tokens.spacingHorizontalL,
-    },
-    card: {
-        width: "100%",
-        maxWidth: "520px",
-        padding: tokens.spacingHorizontalXL,
-        textAlign: "center",
-    },
-    actions: {
-        display: "flex",
-        justifyContent: "center",
-        marginTop: tokens.spacingVerticalL,
-    },
-});
+import { Button } from "../components/ui/Button";
+import stateStyles from "../components/States.module.css";
+import styles from "./ErrorPage.module.css";
 
 export default function ErrorPage() {
-    const styles = useStyles();
     const { t } = useTranslation();
 
     const handleRetry = () => {
@@ -34,29 +18,29 @@ export default function ErrorPage() {
     };
 
     return (
-        <main className={styles.pageContainer}>
+        <main className={styles.page}>
             <Seo title={t("errorPage.title")} canonicalPath="/error" robots="noindex, nofollow" />
-            <Card className={styles.card}>
-                <Title1 as="h1">{t("errorPage.title")}</Title1>
-                <Body1
-                    style={{
-                        marginTop: "8px",
-                        display: "block",
-                        color: "var(--colorNeutralForeground2)",
-                    }}
-                >
-                    {t("errorPage.message")}
-                </Body1>
-                <div className={styles.actions}>
+            <div className={stateStyles.error} role="alert">
+                <div className={stateStyles.errorIcon} aria-hidden="true">
+                    <ErrorCircle24Regular />
+                </div>
+                <h1 className={stateStyles.errorTitle}>{t("errorPage.title")}</h1>
+                <p className={stateStyles.errorBody}>{t("errorPage.message")}</p>
+                <div className={stateStyles.errorAction}>
                     <Button
-                        appearance="primary"
+                        variant="primary"
                         icon={<ArrowCounterclockwise24Regular />}
                         onClick={handleRetry}
                     >
                         {t("errorPage.retry")}
                     </Button>
+                    <Link to="/">
+                        <Button variant="outline" icon={<ArrowLeft24Regular />}>
+                            {t("notFound.backToHome")}
+                        </Button>
+                    </Link>
                 </div>
-            </Card>
+            </div>
         </main>
     );
 }

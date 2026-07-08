@@ -1,0 +1,37 @@
+/**
+ * NotFoundPage - co-located CSS Module for the 404 surface. The shared
+ * States.module.css .empty layout owns the centered column (padding, max-
+ * width, body copy); this module adds viewport-height centering and the
+ * large decorative 404 glyph + 2xl title that the empty-state title token
+ * (lg) does not cover. Token-based; no !important.
+ */
+.page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: var(--space-6);
+    background-color: var(--surface-1);
+}
+
+/* Decorative 404 glyph. aria-hidden so screen readers skip it; the visible
+   title below carries the meaning. Accent hue keeps it on-brand. */
+.code {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--accent);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}

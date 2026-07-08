@@ -1,0 +1,15 @@
+/**
+ * ErrorPage - co-located CSS Module for the standalone error surface. The
+ * shared States.module.css .error layout owns the centered column, icon,
+ * title, and body; this module adds viewport-height centering so the
+ * unexpected-error surface reads as a full page rather than an inline block.
+ * Token-based; no !important.
+ */
+.page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: var(--space-6);
+    background-color: var(--surface-1);
+}
