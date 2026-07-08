@@ -1,15 +1,12 @@
 import { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import {
-    makeStyles,
-    tokens,
     Avatar,
     Button,
     Caption1,
     Drawer,
     DrawerHeader,
     DrawerBody,
-    InlineDrawer,
     Menu,
     MenuTrigger,
     MenuPopover,
@@ -41,6 +38,7 @@ import { LogoFull } from "@/components/Logo";
 import { SearchBar } from "./SearchBar";
 import NotificationBell from "./NotificationBell";
 import Footer from "./Footer";
+import styles from "./AppLayout.module.css";
 
 interface NavItem {
     path: string;
@@ -53,137 +51,9 @@ interface NavSection {
     items: NavItem[];
 }
 
-const useStyles = makeStyles({
-    root: {
-        display: "flex",
-        height: "100vh",
-        overflow: "hidden",
-    },
-    header: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalL}`,
-        borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-        // Concrete background for axe-core; dark mode override ensures
-        // header text/buttons pass contrast on dark background.
-        backgroundColor: "#FFFFFF",
-        "@media (prefers-color-scheme: dark)": {
-            backgroundColor: "#1A1A1A",
-        },
-        minHeight: "56px",
-    },
-    headerLeft: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalM,
-    },
-    headerCenter: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flex: 1,
-        padding: `0 ${tokens.spacingHorizontalL}`,
-        maxWidth: "520px",
-    },
-    headerRight: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalS,
-    },
-    mainArea: {
-        display: "flex",
-        flexDirection: "column",
-        flex: 1,
-        overflow: "hidden",
-    },
-    content: {
-        flex: 1,
-        overflow: "auto",
-        padding: tokens.spacingHorizontalXL,
-        // Concrete value instead of tokens.colorNeutralBackground2 so
-        // axe-core can evaluate contrast for child elements without
-        // needing to resolve CSS custom properties. Dark mode override
-        // uses #1A1A1A (Fluent v9 dark-mode colorNeutralBackground2)
-        // so white text on the dark background passes WCAG AAA.
-        backgroundColor: "#F5F5F5",
-        "@media (prefers-color-scheme: dark)": {
-            backgroundColor: "#1A1A1A",
-        },
-    },
-    navItem: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalM,
-        width: "100%",
-        textAlign: "left",
-        justifyContent: "flex-start",
-        padding: `10px ${tokens.spacingHorizontalL}`,
-        borderLeft: `3px solid transparent`,
-    },
-    navItemActive: {
-        borderLeft: `3px solid ${tokens.colorBrandBackground}`,
-        backgroundColor: tokens.colorBrandBackground2,
-    },
-    navContainer: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalS,
-        // Concrete white background so axe-core can evaluate contrast for
-        // child elements (nav items, section labels) without needing to
-        // resolve CSS custom properties on ancestor FluentProvider.
-        // Dark mode override uses #1A1A1A so white text passes contrast.
-        backgroundColor: "#FFFFFF",
-        "@media (prefers-color-scheme: dark)": {
-            backgroundColor: "#1A1A1A",
-        },
-    },
-    navSection: {
-        display: "flex",
-        flexDirection: "column",
-        gap: "2px",
-    },
-    sectionLabel: {
-        padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalL} ${tokens.spacingVerticalXXS}`,
-        // Concrete values for axe-core; dark mode overrides so the label
-        // stays readable on the dark navContainer background.
-        color: "#424242",
-        backgroundColor: "#FFFFFF",
-        "@media (prefers-color-scheme: dark)": {
-            color: "#FFFFFF",
-            backgroundColor: "#1A1A1A",
-        },
-    },
-    logoButton: {
-        padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalS}`,
-        minHeight: "0",
-        alignSelf: "flex-start",
-    },
-    mobileMenuButton: {
-        display: "none",
-        "@media (max-width: 768px)": {
-            display: "inline-flex",
-        },
-    },
-    desktopDrawer: {
-        "@media (max-width: 768px)": {
-            display: "none",
-        },
-    },
-    skipLink: {
-        position: "absolute",
-        top: "-40px",
-        left: "0",
-        background: "#0078d4",
-        color: "white",
-        padding: "8px 16px",
-        zIndex: "1000",
-        transition: "top 0.2s",
-        "&:focus": {
-            top: "0",
-        },
-    },
-});
+function cx(...parts: Array<string | false | undefined | null>): string {
+    return parts.filter(Boolean).join(" ");
+}
 
 const PUBLIC_NAV_PATHS = new Set([
     "/resources",
@@ -235,7 +105,6 @@ const getNavSections = (
 };
 
 export default function AppLayout() {
-    const styles = useStyles();
     const navigate = useNavigate();
     const location = useLocation();
     const { user, logout, isAuthenticated } = useAuthStore();
@@ -269,52 +138,52 @@ export default function AppLayout() {
         <>
             {navSections.map((section) => (
                 <div key={section.labelKey} className={styles.navSection}>
-                    <Caption1
-                        className={styles.sectionLabel}
-                    >
+                    <Caption1 className={styles.sectionLabel}>
                         {t(section.labelKey)}
                     </Caption1>
-                    {section.items.map((item) => (
-                        <Button
-                            key={item.path}
-                            appearance="subtle"
-                            className={`${styles.navItem} ${isActive(item.path) ? styles.navItemActive : ""}`}
-                            onClick={() => handleNav(item.path)}
-                        >
-                            {item.icon}
-                            <Text>{item.label}</Text>
-                        </Button>
-                    ))}
+                    {section.items.map((item) => {
+                        const active = isActive(item.path);
+                        return (
+                            <Button
+                                key={item.path}
+                                appearance="subtle"
+                                className={cx(styles.navItem, active && styles.navItemActive)}
+                                onClick={() => handleNav(item.path)}
+                                aria-current={active ? "page" : undefined}
+                            >
+                                {item.icon}
+                                <span>{item.label}</span>
+                            </Button>
+                        );
+                    })}
                 </div>
             ))}
         </>
     );
 
     return (
-        <div className={styles.root} dir={dir}>
+        <div className={styles.shell} dir={dir}>
             <a href="#main-content" className={styles.skipLink}>
                 {t("a11y.skipToContent")}
             </a>
 
             {/* Desktop sidebar */}
-            <aside className={styles.desktopDrawer} aria-label={t("a11y.sidebar")}>
-                <InlineDrawer open position="start" size="small">
-                    <DrawerHeader>
-                        <Button
-                            appearance="subtle"
-                            className={styles.logoButton}
-                            onClick={() => navigate(authenticated ? "/dashboard" : "/")}
-                            aria-label="LernChih"
-                        >
-                            <LogoFull size={28} title="LernChih" />
-                        </Button>
-                    </DrawerHeader>
-                    <DrawerBody>
-                        <nav aria-label={t("a11y.mainNavigation")} className={styles.navContainer}>
-                            <NavLinks />
-                        </nav>
-                    </DrawerBody>
-                </InlineDrawer>
+            <aside className={styles.sidebar} aria-label={t("a11y.sidebar")}>
+                <div className={styles.sidebarHeader}>
+                    <Button
+                        appearance="subtle"
+                        className={styles.brand}
+                        onClick={() => navigate(authenticated ? "/dashboard" : "/")}
+                        aria-label="LernChih"
+                    >
+                        <LogoFull size={28} title="LernChih" />
+                    </Button>
+                </div>
+                <div className={styles.sidebarBody}>
+                    <nav aria-label={t("a11y.mainNavigation")} className={styles.navList}>
+                        <NavLinks />
+                    </nav>
+                </div>
             </aside>
 
             {/* Mobile drawer */}
@@ -327,7 +196,7 @@ export default function AppLayout() {
                 <DrawerHeader>
                     <Button
                         appearance="subtle"
-                        className={styles.logoButton}
+                        className={styles.brand}
                         onClick={() => navigate(authenticated ? "/dashboard" : "/")}
                         aria-label="LernChih"
                     >
@@ -335,7 +204,7 @@ export default function AppLayout() {
                     </Button>
                 </DrawerHeader>
                 <DrawerBody>
-                    <nav aria-label={t("a11y.mobileNavigation")} className={styles.navContainer}>
+                    <nav aria-label={t("a11y.mobileNavigation")} className={styles.navList}>
                         <NavLinks />
                     </nav>
                 </DrawerBody>
@@ -352,7 +221,7 @@ export default function AppLayout() {
                             onClick={() => setMobileOpen(true)}
                             aria-label={t("a11y.openMenu")}
                         />
-                        <Title3 className={styles.desktopDrawer} style={{ display: "none" }}>
+                        <Title3 style={{ display: "none" }}>
                             LernChih
                         </Title3>
                     </div>
