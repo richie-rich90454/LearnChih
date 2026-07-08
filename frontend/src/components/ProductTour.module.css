@@ -1,0 +1,106 @@
+/**
+ * ProductTour - co-located CSS Module. Token-based; no !important.
+ *
+ * Layers (stacking via DOM order within .root):
+ *   1. .catcher  - transparent full-screen click block (pointer-events auto).
+ *   2. .band(s)  - dark backdrop panes forming a hole around the target
+ *                  (pointer-events none; visual only).
+ *   3. .ring     - 4px accent ring around the target (pointer-events none).
+ *   4. .tooltip  - adjacent card with Skip/Next/Done (pointer-events auto).
+ *
+ * Fades are applied via the *Animate modifier classes and are omitted when
+ * the caller passes no modifier (prefers-reduced-motion path). The global
+ * prefers-reduced-motion guard in index.css also collapses any residual
+ * transition-duration to 0.01ms.
+ */
+
+.root {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    pointer-events: none;
+}
+
+.catcher {
+    position: fixed;
+    inset: 0;
+    pointer-events: auto;
+    background-color: transparent;
+}
+
+.band {
+    position: fixed;
+    pointer-events: none;
+    background-color: rgba(10, 10, 11, 0.5);
+}
+
+.bandAnimate {
+    animation: tourFade var(--motion-fast) var(--motion-ease);
+}
+
+.ring {
+    position: fixed;
+    pointer-events: none;
+    border-radius: var(--radius-input);
+    box-shadow: 0 0 0 4px var(--accent);
+}
+
+.tooltip {
+    position: fixed;
+    pointer-events: auto;
+    width: 320px;
+    max-width: calc(100vw - var(--space-4) * 2);
+    padding: var(--space-4);
+    background-color: var(--surface-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-lift);
+    color: var(--text-primary);
+}
+
+.tooltipAnimate {
+    animation: tourFade var(--motion-fast) var(--motion-ease);
+}
+
+.tooltipStep {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--accent);
+    letter-spacing: var(--letter-spacing-tight);
+    text-transform: uppercase;
+}
+
+.tooltipTitle {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+}
+
+.tooltipBody {
+    margin: 0 0 var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+}
+
+.tooltipActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+@keyframes tourFade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

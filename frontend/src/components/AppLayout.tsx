@@ -185,7 +185,11 @@ export default function AppLayout() {
                     </Button>
                 </div>
                 <div className={styles.sidebarBody}>
-                    <nav aria-label={t("a11y.mainNavigation")} className={styles.navList}>
+                    <nav
+                        aria-label={t("a11y.mainNavigation")}
+                        className={styles.navList}
+                        data-tour="sidebar-nav"
+                    >
                         <NavLinks />
                     </nav>
                 </div>
@@ -231,7 +235,7 @@ export default function AppLayout() {
                         </Title3>
                     </div>
 
-                    <div className={styles.headerCenter}>
+                    <div className={styles.headerCenter} data-tour="command-palette">
                         <SearchBar placeholder={t("common.searchPlaceholder")} />
                     </div>
 
@@ -251,6 +255,7 @@ export default function AppLayout() {
                         </Button>
                         <Button
                             appearance="subtle"
+                            data-tour="theme-toggle"
                             onClick={(e) => {
                                 const rect = (
                                     e.currentTarget as HTMLButtonElement

@@ -371,6 +371,31 @@
             "takeQuiz": "Take a quiz"
         }
     },
+    "tour": {
+        "title": "Product tour",
+        "skip": "Skip tour",
+        "next": "Next",
+        "done": "Done",
+        "stepOf": "Step {{current}} of {{total}}",
+        "steps": {
+            "sidebarNav": {
+                "title": "Navigation",
+                "body": "Use the sidebar to move between dashboard, resources, channels, and more."
+            },
+            "commandPalette": {
+                "title": "Search & commands",
+                "body": "Search the whole site here, or press Cmd/Ctrl+K to open the command palette."
+            },
+            "notifications": {
+                "title": "Notifications",
+                "body": "Your unread notifications show up here. Click the bell to review them."
+            },
+            "themeToggle": {
+                "title": "Theme",
+                "body": "Switch between light and dark mode any time with this button."
+            }
+        }
+    },
     "bookmarks": {
         "title": "Bookmarks",
         "description": "Your saved learning resources on LernChih.",

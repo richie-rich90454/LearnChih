@@ -75,6 +75,7 @@ export default function NotificationBell() {
                 <Button
                     className={styles.bellButton}
                     appearance="subtle"
+                    data-tour="notifications"
                     icon={<Alert24Regular />}
                     aria-label={`${t("notifications.title")}${unreadCount > 0 ? ` (${unreadCount})` : ""}`}
                 >
