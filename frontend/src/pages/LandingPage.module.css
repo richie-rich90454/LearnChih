@@ -1,0 +1,347 @@
+/**
+ * LandingPage - co-located CSS Module that skins the marketing landing page
+ * (hero, logo wall, bento feature grid, sticky-scroll section, CTA band) with
+ * design-system tokens. Fluent UI v9 keeps behavior + a11y (keyboard, focus,
+ * GSAP ScrollTrigger pinning via StickyScrollStack); these rules own the look
+ * via tokens.css.
+ *
+ * Specificity strategy (no !important):
+ *   - Plain HTML elements (h1/h2/h3/p/div/section/img) are styled at (0,1,0).
+ *   - The inverted CTA button overrides the design-system Button's
+ *     `.button.primary` rule (0,2,0) via a descendant + doubled-class selector
+ *     `.ctaBand .ctaButton.ctaButton` at (0,3,0) so the white button on the
+ *     cobalt band always wins regardless of stylesheet injection order. Hover
+ *     and active states reach (0,4,0), beating `.button.primary:hover` (0,3,0).
+ *
+ * Premium direction (adapted from design-taste-frontend):
+ *   - Generous vertical rhythm: var(--space-16) between major sections.
+ *   - Wide editorial typography: fluid display H1, tracked uppercase eyebrow,
+ *     tight letter-spacing + line-height on headings.
+ *   - One accent-filled bento cell for emphasis; the rest on --surface-2 with
+ *     hairline borders. No templated mesh gradients - only a single extremely
+ *     subtle cobalt radial glow behind the hero.
+ *   - Tinted shadows (cobalt hue) for depth that reads as branded, not grey.
+ *   - Motion choreography (GSAP + Motion) stays intact in the TSX; CSS only
+ *     owns hover shadow/border transitions. No parallax. Reduced motion is
+ *     honored globally by the prefers-reduced-motion rule in index.css.
+ */
+
+/* ----------------------- Page + container ----------------------- */
+.page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--surface-1);
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+}
+
+/* ----------------------- Hero ----------------------- */
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-12);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-16) var(--space-6);
+    min-height: calc(100dvh - 72px);
+    background:
+        radial-gradient(
+            ellipse 70% 55% at 50% 0%,
+            var(--accent-soft) 0%,
+            transparent 65%
+        ),
+        var(--surface-1);
+}
+
+.heroLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+    max-width: 640px;
+}
+
+.eyebrow {
+    color: var(--accent);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.headline {
+    margin: 0;
+    font-size: clamp(2.25rem, 5.5vw, 3.75rem);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.subtext {
+    margin: 0;
+    max-width: 560px;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.heroActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+}
+
+.heroRight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heroImage {
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    max-height: 70vh;
+    object-fit: cover;
+    border-radius: var(--radius-card);
+    box-shadow: 0 24px 60px rgba(30, 79, 216, 0.16);
+}
+
+/* ----------------------- Logo wall band ----------------------- */
+.logoWallBand {
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    background-color: var(--surface-1);
+}
+
+/* ----------------------- Bento feature grid ----------------------- */
+.bentoSection {
+    padding: var(--space-16) 0;
+}
+
+.bentoHeading {
+    margin: 0 0 var(--space-8);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.bento {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+}
+
+.cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    min-height: 168px;
+    text-align: left;
+    cursor: pointer;
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    transition:
+        box-shadow var(--motion-base) var(--motion-ease),
+        border-color var(--motion-base) var(--motion-ease);
+}
+
+.cell:hover {
+    box-shadow: var(--shadow-lift);
+    border-color: var(--border-strong);
+}
+
+.cell:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.cellIcon {
+    display: inline-flex;
+    color: var(--accent);
+}
+
+.cellTitle {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.cellDesc {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+/* Feature cell: accent-filled emphasis tile, spans 2x2 on desktop. The
+   gradient stays within the cobalt ramp (fill -> fill-hover) for depth
+   without reading as a templated mesh. */
+.cellFeature {
+    justify-content: space-between;
+    min-height: 280px;
+    color: var(--accent-foreground);
+    background-image: linear-gradient(
+        135deg,
+        var(--accent-fill) 0%,
+        var(--accent-fill-hover) 100%
+    );
+    border-color: transparent;
+}
+
+.cellFeature:hover {
+    border-color: transparent;
+}
+
+.cellFeature .cellIcon {
+    color: var(--accent-foreground);
+}
+
+.cellFeature .cellTitle {
+    color: var(--accent-foreground);
+}
+
+.cellFeature .cellDesc {
+    color: var(--accent-foreground);
+}
+
+/* Tablet (2-col) layout: 640px - 899px. Feature + Tools span the full
+   width so the bento keeps a deliberate rhythm rather than orphan cells. */
+@media (min-width: 640px) {
+    .bento {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6);
+    }
+    .cellFeature {
+        grid-column: 1 / 3;
+    }
+    .cellTools {
+        grid-column: 1 / 3;
+    }
+}
+
+/* Desktop (3-col) bento with explicit spans for a genuine bento feel. */
+@media (min-width: 900px) {
+    .bento {
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: minmax(180px, auto);
+        gap: var(--space-6);
+    }
+    .cellFeature {
+        grid-column: 1 / 3;
+        grid-row: 1 / 3;
+    }
+    .cellChannels {
+        grid-column: 3 / 4;
+        grid-row: 1 / 2;
+    }
+    .cellLeaderboard {
+        grid-column: 3 / 4;
+        grid-row: 2 / 3;
+    }
+    .cellTools {
+        grid-column: 1 / 3;
+        grid-row: 3 / 4;
+    }
+    .cellGroups {
+        grid-column: 3 / 4;
+        grid-row: 3 / 4;
+    }
+}
+
+/* ----------------------- Sticky-scroll section ----------------------- */
+.stickySection {
+    padding-top: var(--space-16);
+    background-color: var(--surface-1);
+}
+
+/* ----------------------- CTA band ----------------------- */
+.ctaSection {
+    padding: var(--space-16) 0 0;
+}
+
+.ctaBand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-12) var(--space-8);
+    text-align: center;
+    color: var(--accent-foreground);
+    background-image: linear-gradient(
+        135deg,
+        var(--accent-fill) 0%,
+        var(--accent-fill-hover) 100%
+    );
+    border-radius: var(--radius-card);
+}
+
+.ctaHeading {
+    margin: 0;
+    max-width: 720px;
+    font-size: clamp(var(--font-size-2xl), 3.5vw, var(--font-size-4xl));
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--accent-foreground);
+}
+
+/* Inverted primary button on the cobalt band. The compound
+   `.ctaBand .ctaButton.ctaButton` reaches (0,3,0), beating the
+   design-system `.button.primary` rule (0,2,0) without !important. */
+.ctaBand .ctaButton.ctaButton {
+    background-color: var(--accent-foreground);
+    color: var(--accent-fill);
+    border: 1px solid var(--accent-foreground);
+}
+
+.ctaBand .ctaButton.ctaButton:hover {
+    background-color: var(--accent-soft);
+    color: var(--accent-fill-pressed);
+    border-color: var(--accent-soft);
+}
+
+.ctaBand .ctaButton.ctaButton:active {
+    background-color: var(--accent-soft);
+    color: var(--accent-fill-pressed);
+    border-color: var(--accent-soft);
+}
+
+/* ----------------------- Responsive ----------------------- */
+/* Hero collapses to a single column on narrow viewports (B14); the image
+   drops below the copy so the headline + CTA stay first on mobile. */
+@media (max-width: 900px) {
+    .hero {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+        padding: var(--space-12) var(--space-6);
+        min-height: auto;
+    }
+    .heroRight {
+        order: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .ctaBand {
+        padding: var(--space-8) var(--space-4);
+    }
+}
