@@ -46,6 +46,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { SplitView } from "@/components/SplitView";
+import { ReadingProgress } from "@/components/ReadingProgress";
 import styles from "./Detail.module.css";
 
 function cx(...parts: Array<string | false | undefined | null>): string {
@@ -222,6 +223,7 @@ export default function ResourceDetailPage() {
                 jsonLd={jsonLd}
                 hreflang
             />
+            <ReadingProgress />
             {/* Back button */}
             <div className={styles.backRow}>
                 <Button

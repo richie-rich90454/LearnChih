@@ -1,0 +1,33 @@
+/**
+ * ReadingProgress - co-located CSS Module for the scroll-progress bar.
+ *
+ * Spec ref: F73.
+ *   - 3px thin bar fixed at the top of the viewport.
+ *   - z-index from token (--z-fixed).
+ *   - Bar fill: --accent-fill. Track: transparent.
+ *   - Transition: --motion-fast.
+ *   - Reduced motion: static fill (no transition).
+ */
+
+.track {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: transparent;
+    z-index: var(--z-fixed);
+    pointer-events: none;
+}
+
+.bar {
+    height: 100%;
+    background-color: var(--accent-fill);
+    transition: width var(--motion-fast) var(--motion-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bar {
+        transition: none;
+    }
+}
