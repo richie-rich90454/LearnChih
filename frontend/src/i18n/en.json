@@ -409,6 +409,10 @@
         "linkCopied": "Link copied",
         "copyLabel": "Copy link to section: {{section}}"
     },
+    "share": {
+        "share": "Share",
+        "linkCopied": "Link copied"
+    },
     "badges": {
         "title": "Badges",
         "loading": "Loading badges...",

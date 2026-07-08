@@ -392,6 +392,10 @@
         "linkCopied": "链接已复制",
         "copyLabel": "复制指向此部分的链接：{{section}}"
     },
+    "share": {
+        "share": "分享",
+        "linkCopied": "链接已复制"
+    },
     "badges": {
         "title": "徽章",
         "loading": "加载徽章中...",

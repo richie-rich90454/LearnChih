@@ -21,6 +21,7 @@ import { useBackgroundSync } from "@/hooks/useBackgroundSync";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { recordLastVisited } from "@/components/ResumeCard";
+import { ShareButton } from "@/components/ShareButton";
 import styles from "./Detail.module.css";
 
 function getBaseUrl(): string {
@@ -221,6 +222,7 @@ export default function ChannelThreadPage() {
                 >
                     {t("channels.backToChannels")}
                 </Button>
+                <ShareButton title={threadTitle} url={threadUrl} />
             </div>
 
             {/* Thread info */}
