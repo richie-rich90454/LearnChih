@@ -1,14 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import {
-    makeStyles,
-    tokens,
-    Title2,
-    Subtitle2,
-    Body1,
-    Card,
-    Badge,
-    Button,
     Input,
     Textarea,
     Dropdown,
@@ -36,72 +28,14 @@ import { StaggerReveal } from "@/components/StaggerReveal";
 import { HoverLift } from "@/components/HoverLift";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
 import useAuthStore from "@/store/authStore";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "900px",
-    },
-    headerRow: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-    filterBar: {
-        display: "flex",
-        gap: tokens.spacingHorizontalM,
-        flexWrap: "wrap",
-        alignItems: "center",
-    },
-    channelList: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingHorizontalM,
-    },
-    channelCard: {
-        padding: tokens.spacingHorizontalL,
-        cursor: "pointer",
-    },
-    channelHeader: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-    channelMeta: {
-        display: "flex",
-        gap: tokens.spacingHorizontalM,
-        marginTop: tokens.spacingVerticalXS,
-    },
-    threadsSection: {
-        marginTop: tokens.spacingVerticalL,
-    },
-    threadList: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingHorizontalS,
-    },
-    threadCard: {
-        padding: tokens.spacingHorizontalM,
-        cursor: "pointer",
-    },
-    dialogForm: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalM,
-    },
-    loginLink: {
-        color: tokens.colorBrandForeground1,
-        textDecoration: "none",
-        fontSize: tokens.fontSizeBase300,
-    },
-});
+import styles from "./List.module.css";
 
 export default function ChannelsPage() {
     const { t } = useTranslation();
-    const styles = useStyles();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const hasQueryParams = searchParams.has("q") || searchParams.has("page");
@@ -183,7 +117,7 @@ export default function ChannelsPage() {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={styles.page}>
             <Seo
                 title={`${t("channels.title")} — LernChih`}
                 description={t("channels.description")}
@@ -193,81 +127,83 @@ export default function ChannelsPage() {
                 robots={hasQueryParams ? "noindex, follow" : "index, follow"}
                 hreflang
             />
-            <div className={styles.headerRow}>
-                <Title2 as="h1">{t("channels.title")}</Title2>
-                {selectedChannelId &&
-                    (authenticated ? (
-                        <Dialog
-                            open={dialogOpen}
-                            onOpenChange={(_: unknown, d: { open: boolean }) =>
-                                setDialogOpen(d.open)
-                            }
-                        >
-                            <DialogTrigger disableButtonEnhancement>
-                                <Button appearance="primary" icon={<Add24Regular />}>
-                                    {t("channels.newThread")}
-                                </Button>
-                            </DialogTrigger>
-                            <DialogSurface>
-                                <DialogBody>
-                                    <DialogTitle>{t("channels.createThread")}</DialogTitle>
-                                    <DialogContent>
-                                        {createThread.isError && (
-                                            <MessageBar intent="error">
-                                                <MessageBarBody>
-                                                    {t("channels.threadLoadError")}
-                                                </MessageBarBody>
-                                            </MessageBar>
-                                        )}
-                                        <div className={styles.dialogForm}>
-                                            <Field label={t("channels.threadTitle")} required>
-                                                <Input
-                                                    value={threadTitle}
-                                                    onChange={(
-                                                        e: React.ChangeEvent<HTMLInputElement>,
-                                                    ) => setThreadTitle(e.target.value)}
-                                                    placeholder={t("channels.threadTitle")}
-                                                />
-                                            </Field>
-                                            <Field label={t("channels.threadContent")}>
-                                                <Textarea
-                                                    value={threadContent}
-                                                    onChange={(
-                                                        e: React.ChangeEvent<HTMLTextAreaElement>,
-                                                    ) => setThreadContent(e.target.value)}
-                                                    placeholder={t("channels.threadContent")}
-                                                />
-                                            </Field>
-                                        </div>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button
-                                            appearance="secondary"
-                                            onClick={() => setDialogOpen(false)}
-                                        >
-                                            {t("common.cancel")}
-                                        </Button>
-                                        <Button
-                                            appearance="primary"
-                                            onClick={handleCreateThread}
-                                            disabled={createThread.isPending || !threadTitle.trim()}
-                                        >
-                                            {createThread.isPending ? (
-                                                <Spinner size="tiny" />
-                                            ) : (
-                                                t("common.create")
+            <header className={styles.pageHeader}>
+                <h1 className={styles.title}>{t("channels.title")}</h1>
+                <div className={styles.headerActions}>
+                    {selectedChannelId &&
+                        (authenticated ? (
+                            <Dialog
+                                open={dialogOpen}
+                                onOpenChange={(_: unknown, d: { open: boolean }) =>
+                                    setDialogOpen(d.open)
+                                }
+                            >
+                                <DialogTrigger disableButtonEnhancement>
+                                    <Button variant="primary" icon={<Add24Regular />}>
+                                        {t("channels.newThread")}
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogSurface>
+                                    <DialogBody>
+                                        <DialogTitle>{t("channels.createThread")}</DialogTitle>
+                                        <DialogContent>
+                                            {createThread.isError && (
+                                                <MessageBar intent="error">
+                                                    <MessageBarBody>
+                                                        {t("channels.threadLoadError")}
+                                                    </MessageBarBody>
+                                                </MessageBar>
                                             )}
-                                        </Button>
-                                    </DialogActions>
-                                </DialogBody>
-                            </DialogSurface>
-                        </Dialog>
-                    ) : (
-                        <Link to="/login?redirect=/channels" className={styles.loginLink}>
-                            {t("auth.loginToStartThread")}
-                        </Link>
-                    ))}
-            </div>
+                                            <div className={styles.form}>
+                                                <Field label={t("channels.threadTitle")} required>
+                                                    <Input
+                                                        value={threadTitle}
+                                                        onChange={(
+                                                            e: React.ChangeEvent<HTMLInputElement>,
+                                                        ) => setThreadTitle(e.target.value)}
+                                                        placeholder={t("channels.threadTitle")}
+                                                    />
+                                                </Field>
+                                                <Field label={t("channels.threadContent")}>
+                                                    <Textarea
+                                                        value={threadContent}
+                                                        onChange={(
+                                                            e: React.ChangeEvent<HTMLTextAreaElement>,
+                                                        ) => setThreadContent(e.target.value)}
+                                                        placeholder={t("channels.threadContent")}
+                                                    />
+                                                </Field>
+                                            </div>
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button
+                                                variant="subtle"
+                                                onClick={() => setDialogOpen(false)}
+                                            >
+                                                {t("common.cancel")}
+                                            </Button>
+                                            <Button
+                                                variant="primary"
+                                                onClick={handleCreateThread}
+                                                disabled={createThread.isPending || !threadTitle.trim()}
+                                            >
+                                                {createThread.isPending ? (
+                                                    <Spinner size="tiny" />
+                                                ) : (
+                                                    t("common.create")
+                                                )}
+                                            </Button>
+                                        </DialogActions>
+                                    </DialogBody>
+                                </DialogSurface>
+                            </Dialog>
+                        ) : (
+                            <Link to="/login?redirect=/channels" className={styles.loginLink}>
+                                {t("auth.loginToStartThread")}
+                            </Link>
+                        ))}
+                </div>
+            </header>
 
             {isLoading && <Spinner label={t("common.loading")} />}
             {isError && (
@@ -289,41 +225,29 @@ export default function ChannelsPage() {
             )}
 
             {!isLoading && !isError && channelList.length > 0 && (
-            <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+            <div className={styles.split}>
                 {/* Channel list */}
-                <StaggerReveal
-                    className={styles.channelList}
-                    style={{ flex: 1, minWidth: "280px" }}
-                >
+                <StaggerReveal className={`${styles.list} ${styles.splitAside}`}>
                     {channelList.map((channel) => (
                         <HoverLift key={channel.id}>
                             <article>
                                 <Card
-                                    className={styles.channelCard}
-                                    style={{
-                                        backgroundColor:
-                                            selectedChannelId === channel.id
-                                                ? "var(--colorNeutralBackground1Selected)"
-                                                : undefined,
-                                    }}
+                                    className={`${styles.item} ${styles.itemClickable}${
+                                        selectedChannelId === channel.id
+                                            ? ` ${styles.itemSelected}`
+                                            : ""
+                                    }`}
+                                    padding="md"
                                     onClick={() => setSelectedChannelId(channel.id)}
                                 >
-                                    <div className={styles.channelHeader}>
-                                        <Subtitle2>{channel.name}</Subtitle2>
-                                        <Badge appearance="outline" size="small">
+                                    <div className={styles.itemHeader}>
+                                        <h3 className={styles.itemTitle}>{channel.name}</h3>
+                                        <Badge variant="neutral" size="small">
                                             {channel.threadCount ?? 0} {t("channels.threads")}
                                         </Badge>
                                     </div>
                                     {channel.description && (
-                                        <Body1
-                                            style={{
-                                                color: "var(--colorNeutralForeground3)",
-                                                marginTop: "4px",
-                                                display: "block",
-                                            }}
-                                        >
-                                            {channel.description}
-                                        </Body1>
+                                        <p className={styles.itemBody}>{channel.description}</p>
                                     )}
                                 </Card>
                             </article>
@@ -334,21 +258,20 @@ export default function ChannelsPage() {
                 {/* Threads for selected channel */}
                 {selectedChannelId && (
                     <section
-                        className={styles.threadsSection}
-                        style={{ flex: 2 }}
+                        className={styles.splitMain}
                         aria-label={t("channels.threads")}
                     >
-                        <Subtitle2 as="h2" style={{ marginBottom: "12px" }}>
+                        <h2 className={styles.panelTitle}>
                             {channelDetail?.name || t("channels.title")} — {t("channels.threads")}
-                        </Subtitle2>
-                        <div className={styles.filterBar} style={{ marginBottom: "12px" }}>
+                        </h2>
+                        <div className={styles.toolbar}>
                             <Input
                                 placeholder={t("channels.searchThreads")}
                                 value={threadSearch}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                     setThreadSearch(e.target.value)
                                 }
-                                style={{ minWidth: "180px" }}
+                                className={styles.searchFluid}
                                 aria-label={t("channels.searchThreads")}
                             />
                             <Dropdown
@@ -371,16 +294,12 @@ export default function ChannelsPage() {
                                 <Option value="posts">{t("channels.mostPosts")}</Option>
                             </Dropdown>
                         </div>
-                        <StaggerReveal className={styles.threadList}>
+                        <StaggerReveal className={styles.list}>
                             {threads.length === 0 && (
-                                <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                                    {t("channels.noThreads")}
-                                </Body1>
+                                <p className={styles.itemBody}>{t("channels.noThreads")}</p>
                             )}
                             {threads.length > 0 && sortedThreads.length === 0 && (
-                                <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                                    {t("channels.noMatches")}
-                                </Body1>
+                                <p className={styles.itemBody}>{t("channels.noMatches")}</p>
                             )}
                             {/* TODO(perf): When threads exceed ~100 items, add list
                   virtualization (e.g. react-window / react-virtual) to avoid
@@ -390,28 +309,24 @@ export default function ChannelsPage() {
                                 <HoverLift key={thread.id}>
                                     <article>
                                         <Card
-                                            className={styles.threadCard}
+                                            className={`${styles.item} ${styles.itemClickable}`}
+                                            padding="md"
                                             onClick={() =>
                                                 navigate(
                                                     `/channels/${selectedChannel?.slug || selectedChannelId}/threads/${thread.id}`,
                                                 )
                                             }
                                         >
-                                            <Subtitle2>{thread.title}</Subtitle2>
-                                            <div className={styles.channelMeta}>
-                                                <span
-                                                    style={{
-                                                        fontSize: "var(--fontSizeBase200)",
-                                                        color: "var(--colorNeutralForeground3)",
-                                                    }}
-                                                >
+                                            <h3 className={styles.itemTitle}>{thread.title}</h3>
+                                            <div className={styles.itemMeta}>
+                                                <span>
                                                     {t("common.byAuthor", {
                                                         author:
                                                             thread.authorName ||
                                                             t("common.unknown"),
                                                     })}
                                                 </span>
-                                                <Badge appearance="outline" size="small">
+                                                <Badge variant="neutral" size="small">
                                                     {thread.postCount ?? 0} {t("channels.posts")}
                                                 </Badge>
                                             </div>

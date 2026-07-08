@@ -1,16 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import {
-    makeStyles,
-    tokens,
-    Title2,
-    Subtitle2,
-    Card,
-    Badge,
-    Button,
     Input,
-    Label,
     Textarea,
+    Select,
+    Field,
     Dialog,
     DialogTrigger,
     DialogSurface,
@@ -21,13 +15,9 @@ import {
     Spinner,
     MessageBar,
     MessageBarBody,
-    MessageBarTitle,
-    Select,
-    Field,
 } from "@fluentui/react-components";
 import {
     Add24Regular,
-    ArrowUpload24Regular,
     Link24Regular,
     Bookmark24Regular,
     Bookmark24Filled,
@@ -44,69 +34,12 @@ import { StaggerReveal } from "@/components/StaggerReveal";
 import { HoverLift } from "@/components/HoverLift";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
 import { useBookmarkStore } from "@/store/bookmarkStore";
 import useAuthStore from "@/store/authStore";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "1100px",
-    },
-    headerRow: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: tokens.spacingHorizontalM,
-    },
-    filterBar: {
-        display: "flex",
-        gap: tokens.spacingHorizontalM,
-        flexWrap: "wrap",
-        alignItems: "center",
-    },
-    grid: {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-        gap: tokens.spacingHorizontalM,
-    },
-    resourceCard: {
-        cursor: "pointer",
-        padding: tokens.spacingHorizontalL,
-    },
-    cardHeader: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        marginBottom: tokens.spacingVerticalXS,
-    },
-    cardMeta: {
-        display: "flex",
-        gap: tokens.spacingHorizontalS,
-        alignItems: "center",
-        marginTop: tokens.spacingVerticalXS,
-    },
-    dialogForm: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalM,
-    },
-    loginLink: {
-        color: "#0E2861",
-        backgroundColor: "#FFFFFF",
-        textDecoration: "none",
-        fontSize: tokens.fontSizeBase300,
-        fontWeight: 600,
-        padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalM}`,
-        borderRadius: "var(--radius-button)",
-        "@media (prefers-color-scheme: dark)": {
-            color: "#FFFFFF",
-            backgroundColor: "#1E4FD8",
-        },
-    },
-});
+import styles from "./List.module.css";
 
 const CATEGORIES = ["NOTES", "PAST_PAPER", "TEXTBOOK", "TUTORIAL", "OTHER"];
 const SUBJECTS = [
@@ -123,7 +56,6 @@ const SUBJECTS = [
 
 export default function ResourcesPage() {
     const { t } = useTranslation();
-    const styles = useStyles();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const hasQueryParams = searchParams.has("q") || searchParams.has("page");
@@ -264,7 +196,7 @@ export default function ResourcesPage() {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={styles.page}>
             <Seo
                 title={`${t("resources.title")} — LernChih`}
                 description={t("resources.description")}
@@ -274,175 +206,176 @@ export default function ResourcesPage() {
                 robots={hasQueryParams ? "noindex, follow" : "index, follow"}
                 hreflang
             />
-            <div className={styles.headerRow}>
-                <Title2 as="h1">{t("resources.title")}</Title2>
-                {authenticated ? (
-                    <Dialog
-                        open={dialogOpen}
-                        onOpenChange={(_: unknown, d: { open: boolean }) => setDialogOpen(d.open)}
-                    >
-                        <DialogTrigger disableButtonEnhancement>
-                            <Button appearance="primary" icon={<Add24Regular />}>
-                                {t("resources.uploadResource")}
-                            </Button>
-                        </DialogTrigger>
-                        <DialogSurface>
-                            <DialogBody>
-                                <DialogTitle>{t("resources.uploadResource")}</DialogTitle>
-                                <DialogContent>
-                                    {createMutation.isError && (
-                                        <MessageBar intent="error">
-                                            <MessageBarBody>
-                                                {(createMutation.error as any)?.response?.data
-                                                    ?.message || t("resources.loadError")}
-                                            </MessageBarBody>
-                                        </MessageBar>
-                                    )}
-                                    <div className={styles.dialogForm}>
-                                        <Field label={t("resources.titleLabel")} required>
-                                            <Input
-                                                value={title}
-                                                onChange={(
-                                                    e: React.ChangeEvent<HTMLInputElement>,
-                                                ) => setTitle(e.target.value)}
-                                                placeholder={t("resources.titleLabel")}
-                                            />
-                                        </Field>
-                                        <Field label={t("resources.descriptionLabel")}>
-                                            <Textarea
-                                                value={description}
-                                                onChange={(
-                                                    e: React.ChangeEvent<HTMLTextAreaElement>,
-                                                ) => setDescription(e.target.value)}
-                                                placeholder={t("resources.descriptionLabel")}
-                                            />
-                                        </Field>
-                                        <Field label={t("resources.category")}>
-                                            <Select
-                                                value={category}
-                                                onChange={(
-                                                    e: React.ChangeEvent<HTMLSelectElement>,
-                                                ) => setCategory(e.target.value)}
-                                            >
-                                                {CATEGORIES.map((c) => (
-                                                    <option key={c} value={c}>
-                                                        {c.replace("_", " ")}
-                                                    </option>
-                                                ))}
-                                            </Select>
-                                        </Field>
-                                        <Field label={t("resources.type")}>
-                                            <Select
-                                                value={resourceType}
-                                                onChange={(
-                                                    e: React.ChangeEvent<HTMLSelectElement>,
-                                                ) => setResourceType(e.target.value)}
-                                            >
-                                                <option value="UPLOAD">
-                                                    {t("resources.file")}
-                                                </option>
-                                                <option value="LINK">{t("resources.url")}</option>
-                                            </Select>
-                                        </Field>
-                                        {resourceType === "UPLOAD" ? (
-                                            <Field label={t("resources.file")}>
-                                                <input
-                                                    type="file"
-                                                    onChange={(
-                                                        e: React.ChangeEvent<HTMLInputElement>,
-                                                    ) => setFile(e.target.files?.[0] ?? null)}
-                                                    style={{ marginTop: "4px" }}
-                                                />
-                                            </Field>
-                                        ) : (
-                                            <Field label={t("resources.url")}>
+            <header className={styles.pageHeader}>
+                <h1 className={styles.title}>{t("resources.title")}</h1>
+                <div className={styles.headerActions}>
+                    {authenticated ? (
+                        <Dialog
+                            open={dialogOpen}
+                            onOpenChange={(_: unknown, d: { open: boolean }) => setDialogOpen(d.open)}
+                        >
+                            <DialogTrigger disableButtonEnhancement>
+                                <Button variant="primary" icon={<Add24Regular />}>
+                                    {t("resources.uploadResource")}
+                                </Button>
+                            </DialogTrigger>
+                            <DialogSurface>
+                                <DialogBody>
+                                    <DialogTitle>{t("resources.uploadResource")}</DialogTitle>
+                                    <DialogContent>
+                                        {createMutation.isError && (
+                                            <MessageBar intent="error">
+                                                <MessageBarBody>
+                                                    {(createMutation.error as any)?.response?.data
+                                                        ?.message || t("resources.loadError")}
+                                                </MessageBarBody>
+                                            </MessageBar>
+                                        )}
+                                        <div className={styles.form}>
+                                            <Field label={t("resources.titleLabel")} required>
                                                 <Input
-                                                    value={url}
+                                                    value={title}
                                                     onChange={(
                                                         e: React.ChangeEvent<HTMLInputElement>,
-                                                    ) => setUrl(e.target.value)}
-                                                    placeholder="https://..."
+                                                    ) => setTitle(e.target.value)}
+                                                    placeholder={t("resources.titleLabel")}
                                                 />
                                             </Field>
-                                        )}
-                                        <Field label={t("resources.subject")}>
-                                            <Select
-                                                value={subject}
-                                                onChange={(
-                                                    e: React.ChangeEvent<HTMLSelectElement>,
-                                                ) => setSubject(e.target.value)}
-                                            >
-                                                <option value="">
-                                                    {t("common.select") || "Select subject"}
-                                                </option>
-                                                {SUBJECTS.map((s) => (
-                                                    <option key={s} value={s}>
-                                                        {s}
+                                            <Field label={t("resources.descriptionLabel")}>
+                                                <Textarea
+                                                    value={description}
+                                                    onChange={(
+                                                        e: React.ChangeEvent<HTMLTextAreaElement>,
+                                                    ) => setDescription(e.target.value)}
+                                                    placeholder={t("resources.descriptionLabel")}
+                                                />
+                                            </Field>
+                                            <Field label={t("resources.category")}>
+                                                <Select
+                                                    value={category}
+                                                    onChange={(
+                                                        e: React.ChangeEvent<HTMLSelectElement>,
+                                                    ) => setCategory(e.target.value)}
+                                                >
+                                                    {CATEGORIES.map((c) => (
+                                                        <option key={c} value={c}>
+                                                            {c.replace("_", " ")}
+                                                        </option>
+                                                    ))}
+                                                </Select>
+                                            </Field>
+                                            <Field label={t("resources.type")}>
+                                                <Select
+                                                    value={resourceType}
+                                                    onChange={(
+                                                        e: React.ChangeEvent<HTMLSelectElement>,
+                                                    ) => setResourceType(e.target.value)}
+                                                >
+                                                    <option value="UPLOAD">
+                                                        {t("resources.file")}
                                                     </option>
-                                                ))}
-                                            </Select>
-                                        </Field>
-                                        <Field label={t("resources.topic")}>
-                                            <Input
-                                                value={topic}
-                                                onChange={(
-                                                    e: React.ChangeEvent<HTMLInputElement>,
-                                                ) => setTopic(e.target.value)}
-                                                placeholder="e.g. Calculus"
-                                            />
-                                        </Field>
-                                        <Field label={t("resources.course")}>
-                                            <Input
-                                                value={course}
-                                                onChange={(
-                                                    e: React.ChangeEvent<HTMLInputElement>,
-                                                ) => setCourse(e.target.value)}
-                                                placeholder="e.g. MATH101"
-                                            />
-                                        </Field>
-                                    </div>
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button
-                                        appearance="secondary"
-                                        onClick={() => setDialogOpen(false)}
-                                    >
-                                        {t("common.cancel")}
-                                    </Button>
-                                    <Button
-                                        appearance="primary"
-                                        onClick={handleCreate}
-                                        disabled={createMutation.isPending || !title}
-                                    >
-                                        {createMutation.isPending ? (
-                                            <Spinner size="tiny" />
-                                        ) : (
-                                            t("common.upload")
-                                        )}
-                                    </Button>
-                                </DialogActions>
-                            </DialogBody>
-                        </DialogSurface>
-                    </Dialog>
-                ) : (
-                    <Link to="/login?redirect=/resources" className={styles.loginLink}>
-                        {t("auth.loginToUpload")}
-                    </Link>
-                )}
-            </div>
+                                                    <option value="LINK">{t("resources.url")}</option>
+                                                </Select>
+                                            </Field>
+                                            {resourceType === "UPLOAD" ? (
+                                                <Field label={t("resources.file")}>
+                                                    <input
+                                                        type="file"
+                                                        onChange={(
+                                                            e: React.ChangeEvent<HTMLInputElement>,
+                                                        ) => setFile(e.target.files?.[0] ?? null)}
+                                                    />
+                                                </Field>
+                                            ) : (
+                                                <Field label={t("resources.url")}>
+                                                    <Input
+                                                        value={url}
+                                                        onChange={(
+                                                            e: React.ChangeEvent<HTMLInputElement>,
+                                                        ) => setUrl(e.target.value)}
+                                                        placeholder="https://..."
+                                                    />
+                                                </Field>
+                                            )}
+                                            <Field label={t("resources.subject")}>
+                                                <Select
+                                                    value={subject}
+                                                    onChange={(
+                                                        e: React.ChangeEvent<HTMLSelectElement>,
+                                                    ) => setSubject(e.target.value)}
+                                                >
+                                                    <option value="">
+                                                        {t("common.select") || "Select subject"}
+                                                    </option>
+                                                    {SUBJECTS.map((s) => (
+                                                        <option key={s} value={s}>
+                                                            {s}
+                                                        </option>
+                                                    ))}
+                                                </Select>
+                                            </Field>
+                                            <Field label={t("resources.topic")}>
+                                                <Input
+                                                    value={topic}
+                                                    onChange={(
+                                                        e: React.ChangeEvent<HTMLInputElement>,
+                                                    ) => setTopic(e.target.value)}
+                                                    placeholder="e.g. Calculus"
+                                                />
+                                            </Field>
+                                            <Field label={t("resources.course")}>
+                                                <Input
+                                                    value={course}
+                                                    onChange={(
+                                                        e: React.ChangeEvent<HTMLInputElement>,
+                                                    ) => setCourse(e.target.value)}
+                                                    placeholder="e.g. MATH101"
+                                                />
+                                            </Field>
+                                        </div>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button
+                                            variant="subtle"
+                                            onClick={() => setDialogOpen(false)}
+                                        >
+                                            {t("common.cancel")}
+                                        </Button>
+                                        <Button
+                                            variant="primary"
+                                            onClick={handleCreate}
+                                            disabled={createMutation.isPending || !title}
+                                        >
+                                            {createMutation.isPending ? (
+                                                <Spinner size="tiny" />
+                                            ) : (
+                                                t("common.upload")
+                                            )}
+                                        </Button>
+                                    </DialogActions>
+                                </DialogBody>
+                            </DialogSurface>
+                        </Dialog>
+                    ) : (
+                        <Link to="/login?redirect=/resources" className={styles.loginLink}>
+                            {t("auth.loginToUpload")}
+                        </Link>
+                    )}
+                </div>
+            </header>
 
             {/* Filter bar */}
-            <div className={styles.filterBar}>
+            <div className={styles.toolbar}>
                 <Input
                     placeholder={t("resources.searchPlaceholder")}
                     value={searchQuery}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setSearchQuery(e.target.value)
                     }
-                    style={{ minWidth: "200px" }}
+                    className={styles.searchFluid}
                     aria-label={t("resources.searchPlaceholder")}
                 />
-                <Field label={t("resources.category")} style={{ minWidth: "140px" }}>
+                <Field label={t("resources.category")}>
                     <Select
                         value={categoryFilter}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
@@ -458,7 +391,7 @@ export default function ResourcesPage() {
                         ))}
                     </Select>
                 </Field>
-                <Field label={t("resources.subject")} style={{ minWidth: "140px" }}>
+                <Field label={t("resources.subject")}>
                     <Select
                         value={subjectFilter}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
@@ -474,7 +407,7 @@ export default function ResourcesPage() {
                         ))}
                     </Select>
                 </Field>
-                <Field label={t("common.sortBy")} style={{ minWidth: "140px" }}>
+                <Field label={t("common.sortBy")}>
                     <Select
                         value={sortBy}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
@@ -508,7 +441,7 @@ export default function ResourcesPage() {
                     action={
                         authenticated ? (
                             <Button
-                                appearance="primary"
+                                variant="primary"
                                 icon={<Add24Regular />}
                                 onClick={() => setDialogOpen(true)}
                             >
@@ -528,23 +461,18 @@ export default function ResourcesPage() {
                     <HoverLift key={resource.id}>
                         <article>
                             <Card
-                                className={styles.resourceCard}
+                                className={`${styles.item} ${styles.itemClickable}`}
+                                padding="md"
                                 onClick={() =>
                                     navigate(`/resources/${resource.slug || resource.id}`)
                                 }
                             >
-                                <div className={styles.cardHeader}>
-                                    <Subtitle2>{resource.title}</Subtitle2>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            gap: "4px",
-                                            alignItems: "center",
-                                        }}
-                                    >
+                                <div className={styles.itemHeader}>
+                                    <h3 className={styles.itemTitle}>{resource.title}</h3>
+                                    <div className={styles.itemActions}>
                                         {authenticated && (
                                             <Button
-                                                appearance="subtle"
+                                                variant="subtle"
                                                 size="small"
                                                 icon={
                                                     isBookmarked(resource.id) ? (
@@ -564,33 +492,24 @@ export default function ResourcesPage() {
                                                 }
                                             />
                                         )}
-                                        <Badge appearance="tint" size="small">
+                                        <Badge variant="neutral" size="small">
                                             {resource.category?.replace("_", " ") ||
                                                 t("resources.general")}
                                         </Badge>
                                     </div>
                                 </div>
-                                <div className={styles.cardMeta}>
-                                    <span
-                                        style={{
-                                            fontSize: "var(--fontSizeBase200)",
-                                            color: "var(--colorNeutralForeground3)",
-                                        }}
-                                    >
+                                <div className={styles.itemMeta}>
+                                    <span>
                                         {t("common.byAuthor", {
                                             author: resource.authorName || t("common.unknown"),
                                         })}
                                     </span>
-                                    <Badge appearance="outline" size="small">
+                                    <Badge variant="accent" size="small">
                                         {resource.upvoteCount ?? 0} {t("resources.upvotes")}
                                     </Badge>
                                 </div>
                                 {resource.subject && (
-                                    <Badge
-                                        appearance="outline"
-                                        size="small"
-                                        style={{ marginTop: "4px" }}
-                                    >
+                                    <Badge variant="neutral" size="small">
                                         {resource.subject}
                                     </Badge>
                                 )}
