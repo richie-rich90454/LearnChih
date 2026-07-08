@@ -1,0 +1,647 @@
+/**
+ * Detail - shared CSS Module that skins the 3 detail pages
+ * (ResourceDetail, ChannelThread, Profile) with design-system tokens.
+ * Fluent UI v9 keeps behavior + a11y (Button keyboard/focus, Dialog focus
+ * trap, TabList roving-tabindex, Avatar semantics); these rules own the
+ * look via tokens.css. The design-system Button / Card / Badge / Input
+ * primitives carry their own token-based visuals (see components/ui); this
+ * module owns page-level layout, typography, and detail-specific patterns
+ * (thread nesting, upvote soft-toggle, stat tiles, code blocks).
+ *
+ * Specificity strategy (no !important):
+ *   - Page-level layout on plain elements (div/section/article/h1/p) sits at
+ *     (0,1,0) with no Griffel competition.
+ *   - The upvote button is a design-system Button (variant="subtle"). Its
+ *     `.button.subtle` rule is (0,2,0); the soft-toggle overrides use a
+ *     descendant + doubled class `.actions .upvote.upvote` at (0,3,0) so the
+ *     active/inactive background always wins regardless of stylesheet
+ *     injection order. Hover reaches (0,4,0).
+ *   - Responsive header padding (B26) overrides the design-system Card
+ *     `.card.paddingLg` rule (0,2,0) via `.container .header.header` (0,3,0).
+ *
+ * Responsive (B26): under 768px the detail reflows - header padding eases
+ * to --space-4 and thread nesting flattens. Wide code blocks scroll
+ * horizontally (B16). Reduced motion is honored globally by the
+ * prefers-reduced-motion rule in index.css.
+ */
+
+/* ----------------------- Page container ----------------------- */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--text-primary);
+}
+
+/* ----------------------- Back row ----------------------- */
+.backRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* ----------------------- Detail header ----------------------- */
+/* Applied alongside the design-system Card primitive, which owns the card
+   surface (--surface-2), border, radius, and shadow. `.header` owns the
+   internal flex layout; responsive padding is overridden below (B26). */
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.headerTop {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+/* Meta row: author, date, tags, category badges. */
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.metaItem {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.avatar {
+    border-radius: var(--radius-pill);
+    flex-shrink: 0;
+}
+
+/* ----------------------- Action row ----------------------- */
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* ----------------------- Upvote soft-toggle ----------------------- */
+/* The upvote button is a design-system Button (variant="subtle"). The
+   `.button.subtle` rule sits at (0,2,0); the doubled-class + descendant
+   selectors here reach (0,3,0) so the soft-toggle background wins.
+   Text stays --text-primary for axe-core color-contrast compliance: in
+   dark mode --accent on --accent-soft composites to ~4.4:1 (under AA 4.5).
+   The filled arrow icon carries the accent brand signal when active. */
+.actions .upvote.upvote {
+    background-color: var(--surface-sunken);
+    color: var(--text-primary);
+    border: 1px solid transparent;
+}
+.actions .upvote.upvote:hover {
+    background-color: var(--border-subtle);
+}
+.actions .upvote.upvoteActive {
+    background-color: var(--accent-soft);
+    color: var(--text-primary);
+    border-color: transparent;
+}
+.actions .upvote.upvoteActive:hover {
+    background-color: var(--accent-soft);
+    color: var(--text-primary);
+}
+.upvoteCount {
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ----------------------- Content body ----------------------- */
+.body {
+    width: 100%;
+    max-width: 720px;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--text-primary);
+}
+
+.body p {
+    margin: 0 0 var(--space-3);
+}
+.body p:last-child {
+    margin-bottom: 0;
+}
+
+.body h2,
+.body h3 {
+    margin: var(--space-6) 0 var(--space-2);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+.body h2 {
+    font-size: var(--font-size-xl);
+}
+.body h3 {
+    font-size: var(--font-size-lg);
+}
+
+.body a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--motion-ease);
+}
+.body a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+.body a:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+    border-radius: var(--radius-button);
+}
+
+/* Code blocks: sunken well, mono font, horizontal scroll for wide blocks
+   (B16). Also styles markdown <pre>/<code> rendered inside .postBody. */
+.codeBlock {
+    margin: var(--space-3) 0;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--surface-sunken);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-primary);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.codeBlock pre,
+.codeBlock code {
+    margin: 0;
+    font-family: inherit;
+    background: none;
+}
+
+/* ----------------------- Sidebar (desktop sticky, mobile collapsed) ----------------------- */
+.sidebar {
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-card);
+    position: sticky;
+    top: var(--space-4);
+}
+
+/* ----------------------- Thread / discussion ----------------------- */
+.thread {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.threadHeading {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.postsList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+/* ----------------------- Post card ----------------------- */
+.post {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.postHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.postAuthor {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+}
+
+.postMeta {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.postBody {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--text-primary);
+}
+
+/* Markdown code blocks inside a post body (B16 horizontal scroll). */
+.postBody pre {
+    margin: var(--space-3) 0;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--surface-sunken);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.postBody code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+}
+.postBody pre code {
+    background: none;
+    padding: 0;
+}
+.postBody a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--motion-ease);
+}
+.postBody a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.postActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+/* Nested replies: indent with a left border. Flattens on mobile (B26). */
+.postReply {
+    margin-top: var(--space-3);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+/* ----------------------- Reply composer ----------------------- */
+.replyComposer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding: var(--space-3);
+    background-color: var(--surface-sunken);
+    border-radius: var(--radius-input);
+}
+
+.replyComposerActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+/* New post row (top-level composer). */
+.newPostRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-2);
+}
+
+.composerField {
+    flex: 1;
+    min-width: 240px;
+}
+
+/* ----------------------- Typing / read receipts ----------------------- */
+.typingRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 24px;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.readReceipt {
+    margin-left: auto;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Profile header ----------------------- */
+.profileHeader {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+}
+
+.avatarSection {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.creditsBadge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+}
+
+.profileInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+}
+
+.profileName {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.profileEmail {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.profileBio {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--text-primary);
+}
+
+.profileActions {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-2);
+}
+
+/* ----------------------- Stat tiles ----------------------- */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--space-3);
+    width: 100%;
+}
+
+.statTile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+}
+
+.statValue {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+}
+
+/* ----------------------- Profile sections ----------------------- */
+.sectionCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.sectionTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.tagsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.socialRow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.socialItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.socialLink {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--motion-ease);
+}
+.socialLink:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+.socialLink:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+    border-radius: var(--radius-button);
+}
+
+.prefRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.prefLabel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.prefLabelTitle {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.prefLabelDesc {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+}
+
+.dialogForm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+/* Generic vertical stack for profile section content (prefs, security rows). */
+.stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+/* Selectable chip (subjects dialog): cursor affordance without inline style. */
+.selectableChip {
+    cursor: pointer;
+}
+
+/* ----------------------- Links (login prompts) ----------------------- */
+.link {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--motion-ease);
+}
+.link:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+.link:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+    border-radius: var(--radius-button);
+}
+
+/* ----------------------- Empty / loading / error states ----------------------- */
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-8) var(--space-4);
+    text-align: center;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+}
+
+.emptyIcon {
+    color: var(--text-secondary);
+}
+
+/* Inline empty text (no-comments / no-posts line inside a thread). */
+.emptyText {
+    margin: 0;
+    padding: var(--space-4) 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Responsive (B26) ----------------------- */
+@media (max-width: 768px) {
+    .container {
+        gap: var(--space-4);
+    }
+
+    /* Header padding eases to --space-4. Doubled class + descendant reaches
+       (0,3,0) to beat the design-system Card .card.paddingLg rule (0,2,0). */
+    .container .header.header {
+        padding: var(--space-4);
+    }
+
+    .title,
+    .profileName {
+        font-size: var(--font-size-xl);
+    }
+
+    /* Thread nesting flattens on mobile: ease indent + drop the border so
+       deeply-nested replies don't crush the content column. */
+    .postReply {
+        padding-left: var(--space-2);
+        border-left-color: transparent;
+    }
+
+    .profileHeader {
+        align-items: flex-start;
+    }
+    .profileActions {
+        margin-left: 0;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .sidebar {
+        position: static;
+    }
+}
