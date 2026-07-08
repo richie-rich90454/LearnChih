@@ -1,0 +1,392 @@
+/**
+ * Admin - co-located CSS Module that skins the admin console + moderation
+ * queue with design-system tokens. Fluent UI v9 keeps behavior + a11y
+ * (DataGrid keyboard nav, Dropdown listbox, Dialog focus trap, Button
+ * handling); these rules own the look via tokens.css.
+ *
+ * Patterns covered (per Task 2.7 spec):
+ *   - Stat / KPI cards (.statsGrid, .statCard, .statValue, .statLabel,
+ *     .statTrend) with status-token trend arrows.
+ *   - Data tables (.table, .tableHead, .tableRow) with sticky header and a
+ *     sticky first column when the table scrolls horizontally on mobile (B17).
+ *   - Moderation queue (.queue, .queueItem, .queueStatus).
+ *   - Toolbar / filters (.toolbar).
+ *   - User list rows (.userRow, .userAvatar, .userName, .userEmail).
+ *   - Empty state (.empty).
+ *
+ * Specificity strategy (no !important):
+ *   - Page-level layout rules sit at (0,1,0) on plain elements (div, h1, p,
+ *     ul, li) with no Griffel competition, so single-class selectors win.
+ *   - DataGrid cells/rows are reached through stable ARIA roles
+ *     (`[role="grid"]`, `[role="row"]`, `[role="columnheader"]`,
+ *     `[role="gridcell"]`) via :global(), so this does not break if Griffel
+ *     hashes change. `.table :global(...)` lands at (0,2,0)+, beating
+ *     Griffel atomic classes (0,1,0) on cells and header labels.
+ */
+
+/* ----------------------- Page shell ----------------------- */
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 1000px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.headerIcon {
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+/* ----------------------- Stat / KPI cards ----------------------- */
+/* The design-system Card primitive supplies surface-2 bg, radius, border,
+   and shadow. .statCard only adds the inner value/label/trend stack. */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+}
+
+.statCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.statLabel {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.statValue {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Trend indicator: small SVG arrow using currentColor so the status-token
+   color on .statTrendUp/.statTrendDown drives the icon. No emoji. */
+.statTrend {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+}
+
+.statTrendUp {
+    color: var(--status-success);
+}
+
+.statTrendDown {
+    color: var(--status-danger);
+}
+
+.statTrendIcon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+/* ----------------------- Toolbar / filters ----------------------- */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+}
+
+.toolbarSearch {
+    flex: 1 1 220px;
+    min-width: 200px;
+}
+
+.toolbarFilter {
+    flex: 0 0 auto;
+}
+
+/* ----------------------- Data table ----------------------- */
+/* Scroll container: horizontal scroll on narrow widths (B17), vertical
+   scroll with a sticky header. The Fluent DataGrid renders the table with
+   role="grid"; we reach its rows/cells through stable ARIA roles. */
+.table {
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: auto;
+    max-height: 70vh;
+}
+
+.table :global([role="grid"]) {
+    width: 100%;
+    min-width: 760px;
+}
+
+/* Header cells: sunken bg, secondary uppercase label, sticky on scroll. */
+.table :global([role="columnheader"]) {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: var(--surface-sunken);
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    text-transform: uppercase;
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* Body cells: transparent bg so row hover shows through, primary text for
+   axe contrast, subtle row separators via the cell border. */
+.table :global([role="gridcell"]) {
+    background-color: transparent;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Row hover: lift cells to sunken. Specificity (0,4,0) beats the sticky
+   first-cell rule below so the first cell also lifts on hover. */
+.table :global([role="row"]:hover [role="gridcell"]) {
+    background-color: var(--surface-sunken);
+}
+
+/* Sticky first column (B17): opaque bg so content does not show through
+   when scrolling horizontally. z-index 1 sits above body cells but below
+   the sticky header (z-index 2). */
+.table :global([role="gridcell"]:first-child) {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: var(--surface-2);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Corner cell (first column header): sticky both top + left, highest z so
+   it overlaps both the header row and the first column. */
+.table :global([role="columnheader"]:first-child) {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+}
+
+/* Inline cell layout helpers. */
+.cellInline {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.cellActions {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+/* ----------------------- Moderation queue ----------------------- */
+.queue {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.queueItem {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.queueHead {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.queueMeta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+}
+
+.queueTarget {
+    margin: var(--space-1) 0 0;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+}
+
+.queueReason {
+    margin: 0;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+}
+
+.queueStatus {
+    align-self: flex-start;
+}
+
+.queueActions {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+/* ----------------------- User list rows ----------------------- */
+.userRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+}
+
+.userAvatar {
+    border-radius: var(--radius-pill);
+    flex-shrink: 0;
+}
+
+.userMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+}
+
+.userName {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+}
+
+.userEmail {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ----------------------- Empty state ----------------------- */
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-12) var(--space-6);
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.emptyIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+}
+
+.emptyTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.emptyText {
+    margin: 0;
+    max-width: 420px;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Error state ----------------------- */
+.errorState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-12) var(--space-6);
+    text-align: center;
+}
+
+.errorTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.errorText {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Responsive ----------------------- */
+@media (max-width: 640px) {
+    .page {
+        gap: var(--space-4);
+    }
+    .toolbar {
+        padding: var(--space-2);
+    }
+}
