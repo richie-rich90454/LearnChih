@@ -115,6 +115,7 @@
     overflow: auto;
     padding: var(--space-8);
     background-color: var(--surface-1);
+    transition: padding var(--motion-base) var(--motion-ease);
 }
 
 /* ----------------------- Navigation ----------------------- */

@@ -29,6 +29,7 @@ import {
     PeopleTeam24Regular,
     WeatherMoon24Regular,
     WeatherSunny24Regular,
+    Eye24Regular,
 } from "@fluentui/react-icons";
 import useAuthStore from "@/store/authStore";
 import { useDir } from "@/hooks/useDir";
@@ -115,6 +116,7 @@ export default function AppLayout() {
     const mode = useThemeStore((s) => s.mode);
     const toggle = useThemeStore((s) => s.toggle);
     const focusMode = useFocusModeStore((s) => s.focusMode);
+    const toggleFocusMode = useFocusModeStore((s) => s.toggle);
     const dir = useDir();
 
     const authenticated = isAuthenticated();
@@ -262,6 +264,13 @@ export default function AppLayout() {
                         >
                             {mode === "light" ? <WeatherMoon24Regular /> : <WeatherSunny24Regular />}
                         </Button>
+                        <Button
+                            appearance="subtle"
+                            icon={<Eye24Regular />}
+                            onClick={toggleFocusMode}
+                            aria-pressed={focusMode}
+                            aria-label={t("commandPalette.quickActions.toggleFocusMode")}
+                        />
                         {authenticated ? (
                             <Menu>
                                 <MenuTrigger disableButtonEnhancement>
