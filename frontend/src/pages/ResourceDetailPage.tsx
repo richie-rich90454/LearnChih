@@ -1,18 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
-    makeStyles,
-    tokens,
-    Title2,
-    Subtitle1,
-    Subtitle2,
-    Body1,
-    Card,
-    Badge,
-    Button,
     Textarea,
     Avatar,
-    Divider,
     Dialog,
     DialogTrigger,
     DialogSurface,
@@ -51,74 +41,14 @@ import { RelatedResources } from "@/components/RelatedResources";
 import { StaggerReveal } from "@/components/StaggerReveal";
 import { TagList } from "@/components/TagBadge";
 import { articleSchema, breadcrumbSchema } from "@/components/jsonLd";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import styles from "./Detail.module.css";
 
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "800px",
-    },
-    backRow: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalS,
-    },
-    infoCard: {
-        padding: tokens.spacingHorizontalXL,
-    },
-    infoHeader: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        flexWrap: "wrap",
-        gap: tokens.spacingHorizontalM,
-    },
-    infoMeta: {
-        display: "flex",
-        gap: tokens.spacingHorizontalS,
-        alignItems: "center",
-        marginTop: tokens.spacingVerticalXS,
-        flexWrap: "wrap",
-    },
-    actionRow: {
-        display: "flex",
-        gap: tokens.spacingHorizontalM,
-        alignItems: "center",
-        marginTop: tokens.spacingVerticalS,
-        flexWrap: "wrap",
-    },
-    threadSection: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalM,
-    },
-    postsList: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalM,
-    },
-    postCard: {
-        padding: tokens.spacingHorizontalL,
-    },
-    postHeader: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalM,
-        marginBottom: tokens.spacingVerticalS,
-    },
-    newPostRow: {
-        display: "flex",
-        gap: tokens.spacingHorizontalM,
-        alignItems: "flex-end",
-    },
-    postActions: {
-        display: "flex",
-        gap: tokens.spacingHorizontalS,
-        marginTop: tokens.spacingVerticalS,
-        alignItems: "center",
-    },
-});
+function cx(...parts: Array<string | false | undefined | null>): string {
+    return parts.filter(Boolean).join(" ");
+}
 
 function getBaseUrl(): string {
     const envBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
@@ -129,7 +59,6 @@ function getBaseUrl(): string {
 
 export default function ResourceDetailPage() {
     const { t } = useTranslation();
-    const styles = useStyles();
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { data: resource, isLoading, isError } = useResource(id);
@@ -293,7 +222,7 @@ export default function ResourceDetailPage() {
             {/* Back button */}
             <div className={styles.backRow}>
                 <Button
-                    appearance="subtle"
+                    variant="subtle"
                     icon={<ArrowLeft24Regular />}
                     onClick={() => navigate("/resources")}
                 >
@@ -302,46 +231,32 @@ export default function ResourceDetailPage() {
             </div>
 
             {/* Resource info */}
-            <Card className={styles.infoCard}>
-                <div className={styles.infoHeader}>
-                    <div>
-                        <Title2 as="h1">{resource?.title}</Title2>
-                        <div className={styles.infoMeta}>
-                            <Badge appearance="tint">
-                                {resource?.category?.replace("_", " ") || t("resources.general")}
-                            </Badge>
-                            {resource?.subject && (
-                                <Badge appearance="outline">{resource.subject}</Badge>
-                            )}
-                            {resource?.type && <Badge appearance="outline">{resource.type}</Badge>}
-                        </div>
+            <Card padding="lg" className={styles.header}>
+                <div className={styles.headerTop}>
+                    <h1 className={styles.title}>{resource?.title}</h1>
+                    <div className={styles.meta}>
+                        <Badge variant="accent">
+                            {resource?.category?.replace("_", " ") || t("resources.general")}
+                        </Badge>
+                        {resource?.subject && (
+                            <Badge variant="neutral">{resource.subject}</Badge>
+                        )}
+                        {resource?.type && <Badge variant="neutral">{resource.type}</Badge>}
                     </div>
                 </div>
 
-                {resource?.description && (
-                    <Body1 style={{ marginTop: "12px", display: "block" }}>
-                        {resource.description}
-                    </Body1>
-                )}
+                {resource?.description && <p className={styles.body}>{resource.description}</p>}
 
-                <div className={styles.infoMeta}>
-                    <span
-                        style={{
-                            fontSize: "var(--fontSizeBase200)",
-                            color: "var(--colorNeutralForeground3)",
-                        }}
-                    >
+                <div className={styles.meta}>
+                    <span className={styles.metaItem}>
                         {t("common.byAuthor", {
                             author: resource?.authorName || t("common.unknown"),
                         })}
                     </span>
                     {resource?.createdAt && (
                         <time
+                            className={styles.metaItem}
                             dateTime={new Date(resource.createdAt).toISOString()}
-                            style={{
-                                fontSize: "var(--fontSizeBase200)",
-                                color: "var(--colorNeutralForeground3)",
-                            }}
                         >
                             {t("common.onDate", {
                                 date: new Date(resource.createdAt).toLocaleDateString(),
@@ -351,27 +266,31 @@ export default function ResourceDetailPage() {
                 </div>
 
                 {resource?.tags && resource.tags.length > 0 && (
-                    <div className={styles.infoMeta}>
+                    <div className={styles.meta}>
                         <TagList tags={resource.tags} />
                     </div>
                 )}
 
-                <div className={styles.actionRow}>
+                <div className={styles.actions}>
                     {authenticated ? (
                         <>
                             <Button
-                                appearance={resource?.upvoted ? "primary" : "outline"}
+                                variant="subtle"
+                                className={cx(styles.upvote, resource?.upvoted && styles.upvoteActive)}
                                 icon={
                                     resource?.upvoted ? <ArrowUp24Filled /> : <ArrowUp24Regular />
                                 }
                                 onClick={handleUpvote}
                                 aria-label={t("resources.upvotes")}
+                                aria-pressed={resource?.upvoted}
                             >
-                                <AnimatedCounter value={resource?.upvoteCount ?? 0} />
+                                <span className={styles.upvoteCount}>
+                                    <AnimatedCounter value={resource?.upvoteCount ?? 0} />
+                                </span>
                             </Button>
 
                             <Button
-                                appearance={isBookmarked(resource?.id ?? 0) ? "primary" : "outline"}
+                                variant={isBookmarked(resource?.id ?? 0) ? "primary" : "outline"}
                                 icon={
                                     isBookmarked(resource?.id ?? 0) ? (
                                         <Bookmark24Filled />
@@ -396,7 +315,7 @@ export default function ResourceDetailPage() {
                                 }
                             >
                                 <DialogTrigger disableButtonEnhancement>
-                                    <Button appearance="subtle" icon={<Flag24Regular />}>
+                                    <Button variant="subtle" icon={<Flag24Regular />}>
                                         {t("common.report")}
                                     </Button>
                                 </DialogTrigger>
@@ -416,13 +335,13 @@ export default function ResourceDetailPage() {
                                         </DialogContent>
                                         <DialogActions>
                                             <Button
-                                                appearance="secondary"
+                                                variant="subtle"
                                                 onClick={() => setReportDialogOpen(false)}
                                             >
                                                 {t("common.cancel")}
                                             </Button>
                                             <Button
-                                                appearance="primary"
+                                                variant="primary"
                                                 onClick={handleReport}
                                                 disabled={!reportReason.trim()}
                                             >
@@ -436,7 +355,7 @@ export default function ResourceDetailPage() {
                             {isOwner && (
                                 <ConfirmDialog
                                     trigger={
-                                        <Button appearance="subtle">{t("common.delete")}</Button>
+                                        <Button variant="subtle">{t("common.delete")}</Button>
                                     }
                                     title={t("resources.deleteConfirmTitle")}
                                     content={t("resources.deleteConfirmContent")}
@@ -449,7 +368,7 @@ export default function ResourceDetailPage() {
                     ) : (
                         <Link
                             to={`/login?redirect=/resources/${id}`}
-                            style={{ color: tokens.colorBrandForeground1 }}
+                            className={styles.link}
                         >
                             {t("auth.loginToInteract")}
                         </Link>
@@ -457,7 +376,7 @@ export default function ResourceDetailPage() {
 
                     {resource?.url && (
                         <Button
-                            appearance="outline"
+                            variant="outline"
                             onClick={() => window.open(resource.url, "_blank")}
                         >
                             {t("resources.openLink")}
@@ -467,8 +386,8 @@ export default function ResourceDetailPage() {
             </Card>
 
             {/* Thread / Discussion */}
-            <section className={styles.threadSection} aria-label={t("resources.discussion")}>
-                <Subtitle1 as="h2">{t("resources.discussion")}</Subtitle1>
+            <section className={styles.thread} aria-label={t("resources.discussion")}>
+                <h2 className={styles.threadHeading}>{t("resources.discussion")}</h2>
 
                 {/* New post */}
                 {authenticated ? (
@@ -479,10 +398,10 @@ export default function ResourceDetailPage() {
                                 setNewPost(e.target.value)
                             }
                             placeholder={t("resources.writeComment")}
-                            style={{ flex: 1 }}
+                            className={styles.composerField}
                         />
                         <Button
-                            appearance="primary"
+                            variant="primary"
                             onClick={handlePost}
                             disabled={createPost.isPending || !newPost.trim()}
                         >
@@ -492,7 +411,7 @@ export default function ResourceDetailPage() {
                 ) : (
                     <Link
                         to={`/login?redirect=/resources/${id}`}
-                        style={{ color: tokens.colorBrandForeground1 }}
+                        className={styles.link}
                     >
                         {t("auth.loginToInteract")}
                     </Link>
@@ -502,37 +421,38 @@ export default function ResourceDetailPage() {
                 {postsLoading && <Spinner size="small" />}
                 <StaggerReveal className={styles.postsList}>
                     {postList.length === 0 && !postsLoading && (
-                        <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                            {t("resources.noComments")}
-                        </Body1>
+                        <p className={styles.emptyText}>{t("resources.noComments")}</p>
                     )}
                     {postList.map((post) => (
                         <article key={post.id}>
-                            <Card className={styles.postCard}>
-                            <div className={styles.postHeader}>
-                                <Avatar name={post.authorName || t("common.user")} size={28} />
-                                <Subtitle2>{post.authorName || t("common.unknown")}</Subtitle2>
-                                {post.createdAt && (
-                                    <time
-                                        dateTime={new Date(post.createdAt).toISOString()}
-                                        style={{
-                                            fontSize: "var(--fontSizeBase200)",
-                                            color: "var(--colorNeutralForeground3)",
-                                        }}
-                                    >
-                                        {new Date(post.createdAt).toLocaleString()}
-                                    </time>
-                                )}
-                            </div>
-                            <Body1>{post.content}</Body1>
-                            <div className={styles.postActions}>
-                                {authenticated && (
-                                    <ReportButton targetType="RESOURCE_POST" targetId={post.id} />
-                                )}
-                            </div>
-                        </Card>
-                    </article>
-                ))}
+                            <Card padding="md" className={styles.post}>
+                                <div className={styles.postHeader}>
+                                    <Avatar
+                                        name={post.authorName || t("common.user")}
+                                        size={28}
+                                        className={styles.avatar}
+                                    />
+                                    <span className={styles.postAuthor}>
+                                        {post.authorName || t("common.unknown")}
+                                    </span>
+                                    {post.createdAt && (
+                                        <time
+                                            className={styles.postMeta}
+                                            dateTime={new Date(post.createdAt).toISOString()}
+                                        >
+                                            {new Date(post.createdAt).toLocaleString()}
+                                        </time>
+                                    )}
+                                </div>
+                                <div className={styles.postBody}>{post.content}</div>
+                                <div className={styles.postActions}>
+                                    {authenticated && (
+                                        <ReportButton targetType="RESOURCE_POST" targetId={post.id} />
+                                    )}
+                                </div>
+                            </Card>
+                        </article>
+                    ))}
                 </StaggerReveal>
             </section>
 

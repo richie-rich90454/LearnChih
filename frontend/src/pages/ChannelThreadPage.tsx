@@ -1,22 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import {
-    makeStyles,
-    tokens,
-    Title2,
-    Subtitle1,
-    Subtitle2,
-    Body1,
-    Card,
-    Badge,
-    Button,
-    Textarea,
-    Avatar,
-    Spinner,
-    Dropdown,
-    Option,
-} from "@fluentui/react-components";
+import { Textarea, Avatar, Spinner, Dropdown, Option } from "@fluentui/react-components";
 import { ArrowLeft24Regular, Mention24Regular, ChatMultiple24Regular } from "@fluentui/react-icons";
 import { useChannel, useChannelPosts, useCreateChannelPost } from "@/hooks/useChannels";
 import useWebSocket from "@/hooks/useWebSocket";
@@ -33,71 +18,9 @@ import { ErrorState } from "@/components/ErrorState";
 import ReportButton from "@/components/ReportButton";
 import { discussionForumPostingSchema, breadcrumbSchema } from "@/components/jsonLd";
 import { useBackgroundSync } from "@/hooks/useBackgroundSync";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "800px",
-    },
-    backRow: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalS,
-    },
-    threadInfo: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalXS,
-    },
-    postCard: {
-        padding: tokens.spacingHorizontalL,
-    },
-    postHeader: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalM,
-        marginBottom: tokens.spacingVerticalS,
-    },
-    newPostRow: {
-        display: "flex",
-        gap: tokens.spacingHorizontalM,
-        alignItems: "flex-end",
-        flexWrap: "wrap",
-    },
-    postsList: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalM,
-    },
-    replyForm: {
-        marginLeft: tokens.spacingHorizontalXXL,
-        marginTop: tokens.spacingVerticalM,
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalS,
-    },
-    postActions: {
-        display: "flex",
-        gap: tokens.spacingHorizontalS,
-        marginTop: tokens.spacingVerticalS,
-        alignItems: "center",
-    },
-    typingRow: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalS,
-        color: tokens.colorNeutralForeground3,
-        fontSize: tokens.fontSizeBase300,
-        minHeight: "24px",
-    },
-    readReceipt: {
-        fontSize: tokens.fontSizeBase200,
-        color: tokens.colorNeutralForeground3,
-        marginLeft: "auto",
-    },
-});
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import styles from "./Detail.module.css";
 
 function getBaseUrl(): string {
     const envBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
@@ -108,7 +31,6 @@ function getBaseUrl(): string {
 
 export default function ChannelThreadPage() {
     const { t } = useTranslation();
-    const styles = useStyles();
     const { channelId, threadId } = useParams<{ channelId: string; threadId: string }>();
     const navigate = useNavigate();
     const { data: channel } = useChannel(channelId);
@@ -284,7 +206,7 @@ export default function ChannelThreadPage() {
             {/* Back */}
             <div className={styles.backRow}>
                 <Button
-                    appearance="subtle"
+                    variant="subtle"
                     icon={<ArrowLeft24Regular />}
                     onClick={() => navigate("/channels")}
                 >
@@ -293,21 +215,16 @@ export default function ChannelThreadPage() {
             </div>
 
             {/* Thread info */}
-            <div className={styles.threadInfo}>
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: tokens.spacingHorizontalS,
-                        flexWrap: "wrap",
-                    }}
-                >
-                    <Title2 as="h1">{thread?.title || t("channels.threads")}</Title2>
-                    {threadId && <PresenceIndicator threadId={Number(threadId)} />}
+            <Card padding="lg" className={styles.header}>
+                <div className={styles.headerTop}>
+                    <div className={styles.meta}>
+                        <h1 className={styles.title}>{thread?.title || t("channels.threads")}</h1>
+                        {threadId && <PresenceIndicator threadId={Number(threadId)} />}
+                    </div>
+                    <p className={styles.metaItem}>
+                        {t("channels.inChannel", { channel: channel?.name || t("channels.title") })}
+                    </p>
                 </div>
-                <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                    {t("channels.inChannel", { channel: channel?.name || t("channels.title") })}
-                </Body1>
                 <ThreadBadges
                     status={{
                         pinned: thread?.pinned,
@@ -315,7 +232,7 @@ export default function ChannelThreadPage() {
                         qaMode: thread?.qaMode,
                     }}
                 />
-            </div>
+            </Card>
 
             {/* New post */}
             {authenticated ? (
@@ -330,7 +247,7 @@ export default function ChannelThreadPage() {
                                 ? t("channels.lockedPlaceholder")
                                 : t("channels.writeReply")
                         }
-                        style={{ flex: 1 }}
+                        className={styles.composerField}
                         disabled={thread?.locked}
                     />
                     <Dropdown
@@ -348,7 +265,7 @@ export default function ChannelThreadPage() {
                     </Dropdown>
                     {isAdmin && (
                         <Button
-                            appearance="outline"
+                            variant="outline"
                             icon={<Mention24Regular />}
                             onClick={handleAtChannel}
                             disabled={thread?.locked}
@@ -358,7 +275,7 @@ export default function ChannelThreadPage() {
                         </Button>
                     )}
                     <Button
-                        appearance="primary"
+                        variant="primary"
                         onClick={handlePost}
                         disabled={createPost.isPending || !newPost.trim() || thread?.locked}
                     >
@@ -368,7 +285,7 @@ export default function ChannelThreadPage() {
             ) : (
                 <Link
                     to={`/login?redirect=/channels/${channelId}/threads/${threadId}`}
-                    style={{ color: tokens.colorBrandForeground1 }}
+                    className={styles.link}
                 >
                     {t("auth.loginToReply")}
                 </Link>
@@ -404,44 +321,44 @@ export default function ChannelThreadPage() {
                     retryLabel={t("error.tryAgain")}
                 />
             )}
-            <section aria-label={t("channels.threads")}>
+            <section className={styles.thread} aria-label={t("channels.threads")}>
                 <StaggerReveal className={styles.postsList}>
                     {postList.length === 0 && !isLoading && (
-                        <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                            {t("thread.noPosts")}
-                        </Body1>
+                        <p className={styles.emptyText}>{t("thread.noPosts")}</p>
                     )}
                     {postList.map((post) => (
                         <article key={post.id}>
-                            <Card className={styles.postCard}>
+                            <Card padding="md" className={styles.post}>
                                 <div className={styles.postHeader}>
-                                    <Avatar name={post.authorName || t("common.user")} size={32} />
-                                    <div>
-                                        <Subtitle2>{post.authorName || t("common.unknown")}</Subtitle2>
-                                        {post.createdAt && (
-                                            <time
-                                                dateTime={new Date(post.createdAt).toISOString()}
-                                                style={{
-                                                    fontSize: "var(--fontSizeBase200)",
-                                                    color: "var(--colorNeutralForeground3)",
-                                                    marginLeft: "8px",
-                                                }}
-                                            >
-                                                {new Date(post.createdAt).toLocaleString()}
-                                            </time>
-                                        )}
-                                    </div>
+                                    <Avatar
+                                        name={post.authorName || t("common.user")}
+                                        size={32}
+                                        className={styles.avatar}
+                                    />
+                                    <span className={styles.postAuthor}>
+                                        {post.authorName || t("common.unknown")}
+                                    </span>
+                                    {post.createdAt && (
+                                        <time
+                                            className={styles.postMeta}
+                                            dateTime={new Date(post.createdAt).toISOString()}
+                                        >
+                                            {new Date(post.createdAt).toLocaleString()}
+                                        </time>
+                                    )}
                                 </div>
                                 {post.format === "MARKDOWN" ? (
-                                    <MarkdownPreview content={post.content} />
+                                    <div className={styles.postBody}>
+                                        <MarkdownPreview content={post.content} />
+                                    </div>
                                 ) : (
-                                    <Body1>{post.content}</Body1>
+                                    <div className={styles.postBody}>{post.content}</div>
                                 )}
                                 <div className={styles.postActions}>
                                     {authenticated && <ReactionPicker postId={post.id} />}
                                     {authenticated && !thread?.locked && (
                                         <Button
-                                            appearance="subtle"
+                                            variant="subtle"
                                             size="small"
                                             onClick={() => {
                                                 setReplyToPostId(post.id);
@@ -459,7 +376,7 @@ export default function ChannelThreadPage() {
                                     )}
                                 </div>
                                 {authenticated && replyToPostId === post.id && !thread?.locked && (
-                                    <div className={styles.replyForm}>
+                                    <div className={styles.replyComposer}>
                                         <Textarea
                                             value={replyContent}
                                             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -467,22 +384,16 @@ export default function ChannelThreadPage() {
                                             }
                                             placeholder={t("channels.writeReply")}
                                         />
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                gap: tokens.spacingHorizontalS,
-                                                justifyContent: "flex-end",
-                                            }}
-                                        >
+                                        <div className={styles.replyComposerActions}>
                                             <Button
-                                                appearance="secondary"
+                                                variant="subtle"
                                                 size="small"
                                                 onClick={() => setReplyToPostId(null)}
                                             >
                                                 {t("common.cancel")}
                                             </Button>
                                             <Button
-                                                appearance="primary"
+                                                variant="primary"
                                                 size="small"
                                                 disabled={!replyContent.trim() || createPost.isPending}
                                                 onClick={() => handleReply(post.id)}
