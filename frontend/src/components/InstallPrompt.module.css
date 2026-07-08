@@ -1,0 +1,85 @@
+/**
+ * InstallPrompt - co-located CSS Module. Token-based; no !important.
+ * The Card primitive owns surface/border/shadow; this module pins the banner
+ * to the bottom of the viewport and lays out its contents. The slide-in is
+ * applied via the .slideIn modifier and omitted under prefers-reduced-motion
+ * (the global guard in index.css also collapses any residual duration).
+ */
+
+.banner {
+    position: fixed;
+    bottom: var(--space-4);
+    inset-inline: var(--space-4);
+    z-index: var(--z-overlay);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    max-width: 720px;
+    margin-inline: auto;
+}
+
+.slideIn {
+    animation: installSlideIn var(--motion-base) var(--motion-ease);
+}
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--space-8);
+    height: var(--space-8);
+    border-radius: var(--radius-pill);
+    background-color: var(--accent-soft);
+    color: var(--accent);
+}
+
+.body {
+    flex: 1;
+    min-width: 0;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+}
+
+.text {
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+}
+
+@media (max-width: 560px) {
+    .banner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .actions {
+        justify-content: flex-end;
+    }
+}
+
+@keyframes installSlideIn {
+    from {
+        transform: translateY(24px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

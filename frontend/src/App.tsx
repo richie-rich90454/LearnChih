@@ -6,6 +6,7 @@ import AppLayout from "./components/AppLayout";
 import CookieConsent from "./components/CookieConsent";
 import Preconnect from "./components/Preconnect";
 import { UpdatePrompt } from "./components/UpdatePrompt";
+import { InstallPrompt } from "./components/InstallPrompt";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { CommandPalette, useCommandPaletteShortcut } from "./components/CommandPalette";
 import { KeyboardCheatsheet } from "./components/KeyboardCheatsheet";
@@ -279,6 +280,7 @@ export default function App() {
             />
             <CookieConsent />
             <UpdatePrompt />
+            <InstallPrompt />
         </BrowserRouter>
     );
 }
