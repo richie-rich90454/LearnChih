@@ -232,6 +232,20 @@
             "channels": "Browse channels",
             "leaderboard": "View leaderboard",
             "profile": "Your profile"
+        },
+        "aliasManager": {
+            "title": "Manage aliases",
+            "hint": "Type \">\" to manage your custom command aliases.",
+            "aliasLabel": "Alias",
+            "aliasPlaceholder": "e.g. go home",
+            "commandLabel": "Command",
+            "add": "Add alias",
+            "existing": "Existing aliases",
+            "noAliases": "No aliases yet. Create one above.",
+            "aliasesSection": "Aliases",
+            "aliasFor": "Alias for {{label}}",
+            "aliasBadge": "alias",
+            "remove": "Remove alias {{name}}"
         }
     },
     "notifications": {

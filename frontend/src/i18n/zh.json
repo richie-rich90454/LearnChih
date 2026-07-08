@@ -215,6 +215,20 @@
             "channels": "浏览频道",
             "leaderboard": "查看排行榜",
             "profile": "你的个人资料"
+        },
+        "aliasManager": {
+            "title": "管理别名",
+            "hint": "输入 \">\" 管理你的自定义命令别名。",
+            "aliasLabel": "别名",
+            "aliasPlaceholder": "例如：回首页",
+            "commandLabel": "命令",
+            "add": "添加别名",
+            "existing": "已有别名",
+            "noAliases": "暂无别名，请在上方创建。",
+            "aliasesSection": "别名",
+            "aliasFor": "{{label}} 的别名",
+            "aliasBadge": "别名",
+            "remove": "移除别名 {{name}}"
         }
     },
     "notifications": {
