@@ -418,6 +418,25 @@
         "toggle": "English",
         "label": "语言"
     },
+    "cheatsheet": {
+        "title": "键盘快捷键",
+        "categories": {
+            "help": "帮助",
+            "commands": "命令",
+            "navigation": "导航",
+            "actions": "操作"
+        },
+        "items": {
+            "toggleCheatsheet": "切换此快捷键面板",
+            "close": "关闭对话框或命令面板",
+            "commandPalette": "打开命令面板",
+            "focusSearch": "聚焦搜索框",
+            "goHome": "前往仪表板",
+            "goResources": "前往资源",
+            "goChannels": "前往频道",
+            "bookmark": "收藏当前页面"
+        }
+    },
     "a11y": {
         "skipToContent": "跳转到内容",
         "sidebar": "侧边栏",

@@ -435,6 +435,25 @@
         "toggle": "中文",
         "label": "Language"
     },
+    "cheatsheet": {
+        "title": "Keyboard shortcuts",
+        "categories": {
+            "help": "Help",
+            "commands": "Commands",
+            "navigation": "Navigation",
+            "actions": "Actions"
+        },
+        "items": {
+            "toggleCheatsheet": "Toggle this cheatsheet",
+            "close": "Close dialog or palette",
+            "commandPalette": "Open command palette",
+            "focusSearch": "Focus search",
+            "goHome": "Go to dashboard",
+            "goResources": "Go to resources",
+            "goChannels": "Go to channels",
+            "bookmark": "Bookmark current page"
+        }
+    },
     "landing": {
         "title": "LernChih: Learn together",
         "description": "A student-driven platform for sharing learning resources, discussing courses, and collaborating on academic content.",

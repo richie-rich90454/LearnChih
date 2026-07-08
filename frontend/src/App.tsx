@@ -8,6 +8,7 @@ import Preconnect from "./components/Preconnect";
 import { UpdatePrompt } from "./components/UpdatePrompt";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { CommandPalette, useCommandPaletteShortcut } from "./components/CommandPalette";
+import { KeyboardCheatsheet } from "./components/KeyboardCheatsheet";
 import { PageTransition } from "./components/PageTransition";
 import { RouteSkeleton } from "./components/RouteSkeletons";
 import { prefetchRoute } from "./hooks/useRoutePrefetch";
@@ -72,6 +73,7 @@ function AppShell() {
     return (
         <>
             <CommandPalette open={open} onOpenChange={setOpen} />
+            <KeyboardCheatsheet />
             <Routes>
                 {/* Public routes */}
                 <Route
