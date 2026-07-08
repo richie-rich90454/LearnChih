@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import {
     Textarea,
@@ -47,6 +47,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { SplitView } from "@/components/SplitView";
 import { ReadingProgress } from "@/components/ReadingProgress";
+import { useHeadingAnchors } from "@/components/HeadingAnchor";
 import { recordLastVisited } from "@/components/ResumeCard";
 import styles from "./Detail.module.css";
 
@@ -105,6 +106,8 @@ export default function ResourceDetailPage() {
     const [reportDialogOpen, setReportDialogOpen] = useState<boolean>(false);
     const [reportReason, setReportReason] = useState<string>("");
     const [splitView, setSplitView] = useState<boolean>(false);
+    const contentRef = useRef<HTMLDivElement>(null);
+    useHeadingAnchors(contentRef);
 
     // Subscribe to real-time updates for this thread
     useEffect(() => {
@@ -223,7 +226,7 @@ export default function ResourceDetailPage() {
     ];
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} ref={contentRef}>
             <Seo
                 title={`${resourceTitle} — LernChih`}
                 description={seoDescription}

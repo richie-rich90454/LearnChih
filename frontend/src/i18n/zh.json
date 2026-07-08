@@ -388,6 +388,10 @@
         "bookmarkAdded": "已添加书签",
         "bookmarkRemoved": "已移除书签"
     },
+    "anchorLinks": {
+        "linkCopied": "链接已复制",
+        "copyLabel": "复制指向此部分的链接：{{section}}"
+    },
     "badges": {
         "title": "徽章",
         "loading": "加载徽章中...",

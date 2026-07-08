@@ -1,0 +1,55 @@
+/**
+ * HeadingAnchor - co-located CSS Module for the copy-link-to-section glyph
+ * injected into h2/h3 headings (F82). The heading owns its text layout; this
+ * module adds position:relative to the heading and pins a link glyph to its
+ * inline-start edge. The glyph is hidden until the heading is hovered or
+ * keyboard-focused (focus-within), matching GitHub-style anchor links.
+ *
+ * Specificity: the injected <a> carries a scoped class with no Griffel
+ * conflict, so single classes suffice (no doubled-class selectors needed).
+ * Token-based; no !important.
+ */
+
+.heading {
+    position: relative;
+}
+
+.anchor {
+    position: absolute;
+    inset-inline-start: calc(-1 * var(--space-6));
+    top: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-6);
+    height: 100%;
+    color: var(--text-secondary);
+    opacity: 0;
+    text-decoration: none;
+    border-radius: var(--radius-button);
+    transition: opacity var(--motion-fast) var(--motion-ease);
+}
+
+/* Reveal the glyph when the heading is hovered or keyboard-focused. */
+.heading:hover .anchor,
+.heading:focus-within .anchor {
+    opacity: 1;
+}
+
+.anchor:hover,
+.anchor:focus {
+    color: var(--accent);
+    opacity: 1;
+}
+
+.anchor svg {
+    width: var(--font-size-sm);
+    height: var(--font-size-sm);
+}
+
+/* Tighter offset on small screens so the glyph stays within the card padding. */
+@media (max-width: 560px) {
+    .anchor {
+        inset-inline-start: calc(-1 * var(--space-4));
+    }
+}

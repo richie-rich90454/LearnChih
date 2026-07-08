@@ -1,8 +1,13 @@
+import { useRef } from "react";
+import { useHeadingAnchors } from "@/components/HeadingAnchor";
+
 interface MarkdownPreviewProps {
     content: string;
 }
 
 export function MarkdownPreview({ content }: MarkdownPreviewProps) {
+    const ref = useRef<HTMLDivElement>(null);
+    useHeadingAnchors(ref);
     // Lightweight markdown: headers, bold, italic, links, lists
     const html = content
         .replace(/^### (.*$)/gim, "<h3>$1</h3>")
@@ -15,7 +20,7 @@ export function MarkdownPreview({ content }: MarkdownPreviewProps) {
             '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
         )
         .replace(/\n/gim, "<br />");
-    return <div dangerouslySetInnerHTML={{ __html: html }} />;
+    return <div ref={ref} dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 export default MarkdownPreview;

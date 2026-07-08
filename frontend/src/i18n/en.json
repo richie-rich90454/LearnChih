@@ -405,6 +405,10 @@
         "bookmarkAdded": "Bookmark added",
         "bookmarkRemoved": "Bookmark removed"
     },
+    "anchorLinks": {
+        "linkCopied": "Link copied",
+        "copyLabel": "Copy link to section: {{section}}"
+    },
     "badges": {
         "title": "Badges",
         "loading": "Loading badges...",
