@@ -1,0 +1,95 @@
+/**
+ * Footer - co-located CSS Module that skins the shared footer with
+ * design-system tokens. The container is a plain <footer>; links and text
+ * are Fluent components. Fluent keeps link semantics + a11y; these rules
+ * own the look via tokens.css.
+ *
+ * Specificity: the footer container is a plain element (single class ok).
+ * Links and Text are Fluent components whose Griffel atomic classes sit at
+ * (0,1,0); doubled-class selectors (.link.link) reach (0,2,0) to win
+ * color/font-size overrides regardless of stylesheet injection order.
+ *
+ * B18 (Footer link touch targets >=44px): every link is an inline-flex with
+ * min-height: 44px and vertical centering so the tap target meets WCAG 2.5.5
+ * on touch devices, replacing the previous 24px min-height.
+ */
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding: var(--space-8) var(--space-6) var(--space-6);
+    background-color: var(--surface-2);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-8);
+}
+
+.brandColumn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 220px;
+}
+
+/* Fluent Text: doubled class beats Griffel atomic color/font-size. */
+.tagline.tagline {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+}
+
+.linkColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+}
+
+/* Fluent Link: doubled class beats Griffel atomic. B18: min-height 44px
+   makes the whole link a compliant touch target. */
+.link.link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--space-1);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--motion-ease);
+}
+
+.link.link:hover,
+.link.link:focus-visible {
+    color: var(--text-primary);
+    text-decoration: underline;
+}
+
+.link.link:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+}
+
+/* Fluent Text: doubled class for the bottom copyright bar. */
+.copyright.copyright {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+}
+
+@media (max-width: 768px) {
+    .columns {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+
+    .footer {
+        padding: var(--space-6) var(--space-4);
+    }
+}

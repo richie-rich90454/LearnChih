@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import {
-    makeStyles,
-    tokens,
     Card,
     Button,
     Switch,
@@ -11,82 +9,9 @@ import {
     Subtitle2,
 } from "@fluentui/react-components";
 import useCookieConsentStore from "../store/cookieConsentStore";
-
-const useStyles = makeStyles({
-    banner: {
-        position: "fixed",
-        bottom: tokens.spacingVerticalM,
-        left: "50%",
-        transform: "translateX(-50%)",
-        width: "calc(100% - 32px)",
-        maxWidth: "720px",
-        zIndex: 1000,
-        padding: `${tokens.spacingVerticalL} ${tokens.spacingHorizontalXL}`,
-        // Concrete background for axe-core; dark mode override.
-        backgroundColor: "#FFFFFF",
-        border: `1px solid ${tokens.colorNeutralStroke1}`,
-        borderRadius: tokens.borderRadiusLarge,
-        boxShadow: tokens.shadow16,
-        "@media (max-width: 768px)": {
-            bottom: "0",
-            left: "0",
-            transform: "none",
-            width: "100%",
-            maxWidth: "100%",
-            borderRadius: "0",
-            borderLeft: "none",
-            borderRight: "none",
-            borderBottom: "none",
-        },
-        "@media (prefers-color-scheme: dark)": {
-            backgroundColor: "#242424",
-        },
-    },
-    content: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingHorizontalM,
-    },
-    header: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalXS,
-    },
-    actions: {
-        display: "flex",
-        flexWrap: "wrap",
-        gap: tokens.spacingHorizontalS,
-        marginTop: tokens.spacingVerticalXXS,
-    },
-    customizeSection: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalS,
-        paddingTop: tokens.spacingVerticalS,
-        borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
-    },
-    switchRow: {
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "space-between",
-        gap: tokens.spacingHorizontalL,
-    },
-    switchLabel: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalXXS,
-    },
-    switchControl: {
-        flexShrink: 0,
-        marginTop: tokens.spacingVerticalXXS,
-    },
-    privacyLink: {
-        textDecoration: "underline",
-    },
-});
+import styles from "./CookieConsent.module.css";
 
 export default function CookieConsent() {
-    const styles = useStyles();
     // useSuspense: false keeps this component (rendered outside Suspense) from
     // throwing if i18n is not yet ready.
     const { t } = useTranslation("translation", { useSuspense: false });

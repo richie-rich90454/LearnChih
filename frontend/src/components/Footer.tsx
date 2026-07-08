@@ -1,60 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { makeStyles, tokens, Link, Text } from "@fluentui/react-components";
+import { Link, Text } from "@fluentui/react-components";
 import { LogoMono } from "@/components/Logo";
 import useCookieConsentStore from "@/store/cookieConsentStore";
-
-const useStyles = makeStyles({
-    footer: {
-        backgroundColor: tokens.colorNeutralBackground1,
-        borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
-        padding: `${tokens.spacingVerticalL} ${tokens.spacingHorizontalL}`,
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalM,
-    },
-    columns: {
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr 1fr",
-        gap: tokens.spacingHorizontalXL,
-        "@media (max-width: 768px)": {
-            gridTemplateColumns: "1fr",
-            gap: tokens.spacingVerticalM,
-        },
-    },
-    brandColumn: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalXS,
-        maxWidth: "220px",
-    },
-    tagline: {
-        color: tokens.colorNeutralForeground2,
-        fontSize: tokens.fontSizeBase200,
-    },
-    linkColumn: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalXS,
-        alignItems: "flex-start",
-    },
-    link: {
-        minHeight: "24px",
-        display: "inline-flex",
-        alignItems: "center",
-        paddingBlock: tokens.spacingVerticalXS,
-        paddingInline: tokens.spacingHorizontalXS,
-    },
-    copyright: {
-        color: tokens.colorNeutralForeground3,
-        fontSize: tokens.fontSizeBase200,
-        paddingTop: tokens.spacingVerticalS,
-        borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
-    },
-});
+import styles from "./Footer.module.css";
 
 export default function Footer() {
-    const styles = useStyles();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const resetConsent = useCookieConsentStore((s) => s.reset);
