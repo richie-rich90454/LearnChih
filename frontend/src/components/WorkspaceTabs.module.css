@@ -1,0 +1,104 @@
+/**
+ * WorkspaceTabs - co-located CSS Module that skins the session tab bar with
+ * design-system tokens. The bar sits above the content area in AppLayout.
+ *
+ * Spec ref: F70.
+ *   - Bar background: --surface-2.
+ *   - Tab borders: --border-subtle.
+ *   - Active tab: --accent bottom border + --text-primary.
+ *   - Inactive tab: --text-secondary.
+ *
+ * Specificity: tab/close elements are plain divs/buttons (no Griffel), so
+ * single-class selectors at (0,1,0) suffice.
+ */
+
+.tabBar {
+    flex-shrink: 0;
+    background-color: var(--surface-2);
+    border-bottom: 1px solid var(--border-subtle);
+    overflow: hidden;
+}
+
+.scrollArea {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex-shrink: 0;
+    padding: var(--space-2) var(--space-3);
+    border-right: 1px solid var(--border-subtle);
+    border-bottom: 3px solid transparent;
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        background-color var(--motion-fast) var(--motion-ease),
+        color var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease);
+}
+
+.tab:hover {
+    background-color: var(--surface-sunken);
+    color: var(--text-primary);
+}
+
+.tab:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+}
+
+.tabActive {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent);
+    background-color: var(--surface-1);
+    font-weight: var(--font-weight-semibold);
+}
+
+.tabActive:hover {
+    color: var(--text-primary);
+    background-color: var(--surface-1);
+}
+
+.tabLabel {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.closeBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-button);
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition:
+        background-color var(--motion-fast) var(--motion-ease),
+        color var(--motion-fast) var(--motion-ease);
+}
+
+.closeBtn:hover {
+    background-color: var(--border-subtle);
+    color: var(--text-primary);
+}
+
+.closeBtn:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+}

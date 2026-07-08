@@ -39,6 +39,7 @@ import { LogoFull } from "@/components/Logo";
 import { SearchBar } from "./SearchBar";
 import NotificationBell from "./NotificationBell";
 import Footer from "./Footer";
+import { WorkspaceTabs } from "./WorkspaceTabs";
 import styles from "./AppLayout.module.css";
 
 interface NavItem {
@@ -298,6 +299,8 @@ export default function AppLayout() {
                         )}
                     </div>
                 </header>
+
+                <WorkspaceTabs />
 
                 <main id="main-content" tabIndex={-1} className={styles.content}>
                     <Outlet />
