@@ -1,0 +1,145 @@
+/**
+ * CommandPalette - co-located CSS Module that skins the Cmd/Ctrl+K palette
+ * (a Fluent non-modal Dialog) with design-system tokens. Fluent keeps focus
+ * management, portal, and escape handling; these rules own the panel,
+ * results list, group headers, and mobile full-bleed behavior.
+ *
+ * Specificity: DialogSurface is the visible panel (Fluent positions it via
+ * position:fixed; inset:0; margin:auto; height:fit-content). Its Griffel
+ * resetStyles set background / radius / border / shadow / max-width, so
+ * doubled-class .surface.surface (0,2,0) wins. The Fluent backdrop sibling
+ * (.fui-DialogSurface__backdrop) provides the scrim and is left untouched.
+ *
+ * B24 (Command palette full-bleed on mobile): under 640px the panel drops
+ * its max-width and fills the viewport (top/bottom/left/right all 0) so the
+ * palette is usable on small screens.
+ */
+
+/* DialogSurface = the visible panel. Doubled class beats Griffel reset. */
+.surface.surface {
+    top: 15vh;
+    bottom: auto;
+    width: 90vw;
+    max-width: 600px;
+    z-index: var(--z-modal);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-lift);
+}
+
+/* DialogBody: doubled class to win the flex layout over Griffel. */
+.body.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+}
+
+/* Fluent Input: doubled class re-skins the field as a sunken well. */
+.searchInput.searchInput {
+    width: 100%;
+    background-color: var(--surface-sunken);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+}
+
+.searchInput.searchInput:focus,
+.searchInput.searchInput:focus-visible {
+    outline: 2px solid transparent;
+    border-color: var(--accent);
+    box-shadow: var(--shadow-focus);
+}
+
+/* DialogContent: doubled class to clear Fluent padding and own the scroll. */
+.list.list {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.sectionLabel {
+    padding: var(--space-1) var(--space-3);
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-left: 3px solid transparent;
+    border-radius: var(--radius-input);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition:
+        background-color var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease);
+}
+
+.item:hover,
+.item:focus-visible {
+    background-color: var(--accent-soft);
+    border-left-color: var(--accent);
+    outline: none;
+}
+
+.item:focus-visible {
+    box-shadow: var(--shadow-focus);
+}
+
+.itemLeft {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+}
+
+.empty {
+    padding: var(--space-4);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    text-align: center;
+}
+
+/* Footer hint showing keyboard shortcuts. Reserved for when i18n keys are
+   added (commandPalette.footerHint); the class is ready to consume. */
+.footerHint {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+    border-top: 1px solid var(--border-subtle);
+}
+
+@media (max-width: 640px) {
+    /* B24: panel fills the viewport. top/bottom/left/right all 0 + auto
+       width/height lets the fixed surface stretch to fill the screen. */
+    .surface.surface {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: auto;
+        max-width: none;
+        height: auto;
+        border-radius: 0;
+        border: none;
+    }
+
+    .list.list {
+        max-height: calc(100dvh - 220px);
+    }
+}

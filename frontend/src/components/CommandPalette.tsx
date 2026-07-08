@@ -7,8 +7,6 @@ import {
     DialogBody,
     DialogContent,
     Input,
-    makeStyles,
-    tokens,
     Body1,
     Caption1,
     Badge,
@@ -18,52 +16,7 @@ import { Search24Regular } from "@fluentui/react-icons";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearch } from "@/hooks/useSearch";
 import type { SearchResult } from "@/hooks/useSearch";
-
-const useStyles = makeStyles({
-    surface: {
-        maxWidth: "600px",
-        width: "90vw",
-    },
-    body: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalS,
-    },
-    list: {
-        display: "flex",
-        flexDirection: "column",
-        maxHeight: "400px",
-        overflowY: "auto",
-    },
-    item: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: tokens.spacingHorizontalS,
-        padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalM}`,
-        cursor: "pointer",
-        borderRadius: tokens.borderRadiusSmall,
-        "&:hover, &:focus": {
-            background: tokens.colorNeutralBackground1Hover,
-            outline: "none",
-        },
-    },
-    itemLeft: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalS,
-        minWidth: 0,
-    },
-    sectionLabel: {
-        padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalM}`,
-        color: tokens.colorNeutralForeground3,
-    },
-    empty: {
-        padding: tokens.spacingHorizontalM,
-        color: tokens.colorNeutralForeground3,
-        textAlign: "center",
-    },
-});
+import styles from "./CommandPalette.module.css";
 
 interface Shortcut {
     labelKey: string;
@@ -92,7 +45,6 @@ interface CommandPaletteProps {
  * Spec ref: F2.14.
  */
 export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
-    const styles = useStyles();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [query, setQuery] = useState("");
@@ -131,6 +83,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                 <DialogBody className={styles.body}>
                     <Input
                         ref={inputRef}
+                        className={styles.searchInput}
                         value={query}
                         onChange={(_e, data) => setQuery(data.value)}
                         placeholder={t("commandPalette.placeholder")}
