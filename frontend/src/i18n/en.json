@@ -359,6 +359,18 @@
         "continueWhereYouLeftOff": "Continue where you left off",
         "continue": "Continue"
     },
+    "onboarding": {
+        "title": "Get started",
+        "progress": "{{done}} of {{total}} complete",
+        "hide": "Hide",
+        "steps": {
+            "profile": "Complete your profile",
+            "joinChannel": "Join a channel",
+            "bookmark": "Bookmark a resource",
+            "postThread": "Post in a thread",
+            "takeQuiz": "Take a quiz"
+        }
+    },
     "bookmarks": {
         "title": "Bookmarks",
         "description": "Your saved learning resources on LernChih.",

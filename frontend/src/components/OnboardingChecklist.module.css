@@ -1,0 +1,114 @@
+/**
+ * OnboardingChecklist - co-located CSS Module. Token-based; no !important.
+ * The Card primitive owns surface/border/shadow; this module owns layout,
+ * the progress bar, and the step rows.
+ */
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+}
+
+.subtitle {
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+/* Progress bar: surface-sunken track + accent fill. */
+.progressTrack {
+    width: 100%;
+    height: 6px;
+    border-radius: var(--radius-pill);
+    background-color: var(--surface-sunken);
+    overflow: hidden;
+}
+
+.progressBar {
+    height: 100%;
+    border-radius: var(--radius-pill);
+    background-color: var(--accent);
+    transition: width var(--motion-base) var(--motion-ease);
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: none;
+    border-radius: var(--radius-input);
+    background: transparent;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    text-align: start;
+    cursor: pointer;
+    transition: background-color var(--motion-fast) var(--motion-ease);
+}
+
+.row:hover:not(:disabled) {
+    background-color: var(--surface-sunken);
+}
+
+.row:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.row:disabled {
+    cursor: default;
+}
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.iconDone {
+    color: var(--status-success);
+}
+
+.iconTodo {
+    color: var(--text-disabled);
+}
+
+.labelTodo {
+    color: var(--text-primary);
+}
+
+.labelDone {
+    color: var(--text-secondary);
+    text-decoration: line-through;
+    text-decoration-color: var(--text-disabled);
+}

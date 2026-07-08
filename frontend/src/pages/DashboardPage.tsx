@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { ResumeCard } from "@/components/ResumeCard";
+import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 import styles from "./DashboardPage.module.css";
 
 export default function DashboardPage() {
@@ -107,6 +108,9 @@ export default function DashboardPage() {
 
             {/* Continue where you left off */}
             <ResumeCard />
+
+            {/* Onboarding checklist */}
+            <OnboardingChecklist />
 
             {/* Quick stats */}
             <div className={styles.statsRow}>

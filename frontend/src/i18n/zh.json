@@ -342,6 +342,18 @@
         "continueWhereYouLeftOff": "从上次离开的地方继续",
         "continue": "继续"
     },
+    "onboarding": {
+        "title": "新手引导",
+        "progress": "已完成 {{done}} / {{total}}",
+        "hide": "隐藏",
+        "steps": {
+            "profile": "完善个人资料",
+            "joinChannel": "加入一个频道",
+            "bookmark": "收藏一个资源",
+            "postThread": "在讨论中发帖",
+            "takeQuiz": "参加一次测验"
+        }
+    },
     "bookmarks": {
         "title": "书签",
         "description": "您在 LernChih 上保存的学习资源。",
