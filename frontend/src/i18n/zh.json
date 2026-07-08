@@ -347,7 +347,9 @@
         "description": "您在 LernChih 上保存的学习资源。",
         "empty": "暂无书签。从资源卡片或详情页保存资源。",
         "remove": "移除书签",
-        "resource": "资源 #{{id}}"
+        "resource": "资源 #{{id}}",
+        "bookmarkAdded": "已添加书签",
+        "bookmarkRemoved": "已移除书签"
     },
     "badges": {
         "title": "徽章",

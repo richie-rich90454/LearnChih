@@ -364,7 +364,9 @@
         "description": "Your saved learning resources on LernChih.",
         "empty": "No bookmarks yet. Save resources from the resource cards or detail page.",
         "remove": "Remove bookmark",
-        "resource": "Resource #{{id}}"
+        "resource": "Resource #{{id}}",
+        "bookmarkAdded": "Bookmark added",
+        "bookmarkRemoved": "Bookmark removed"
     },
     "badges": {
         "title": "Badges",
