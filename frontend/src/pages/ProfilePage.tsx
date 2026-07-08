@@ -2,21 +2,9 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
-    makeStyles,
-    tokens,
-    Title2,
-    Title3,
-    Subtitle1,
-    Subtitle2,
-    Body1,
-    Card,
-    Badge,
-    Button,
-    Avatar,
-    Input,
     Textarea,
+    Avatar,
     Dialog,
-    DialogTrigger,
     DialogSurface,
     DialogBody,
     DialogTitle,
@@ -26,10 +14,8 @@ import {
     MessageBar,
     MessageBarBody,
     Field,
-    Select,
     Switch,
     Label,
-    Text,
 } from "@fluentui/react-components";
 import { Edit24Regular, Add24Regular, Dismiss24Regular } from "@fluentui/react-icons";
 import {
@@ -51,63 +37,12 @@ import { EndorsementBadge } from "@/components/EndorsementBadge";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import TwoFactorSetup from "@/components/TwoFactorSetup";
 import { useExportUserData, useDeleteUserAccount } from "@/hooks/useGdpr";
-
-const useStyles = makeStyles({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-        maxWidth: "700px",
-    },
-    profileHeader: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalL,
-        padding: tokens.spacingHorizontalXL,
-    },
-    avatarSection: {
-        position: "relative",
-    },
-    creditsBadge: {
-        position: "absolute",
-        bottom: "-4px",
-        right: "-4px",
-    },
-    profileInfo: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalXS,
-    },
-    sectionCard: {
-        padding: tokens.spacingHorizontalL,
-    },
-    sectionHeader: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: tokens.spacingVerticalM,
-    },
-    tagsRow: {
-        display: "flex",
-        gap: tokens.spacingHorizontalS,
-        flexWrap: "wrap",
-    },
-    socialRow: {
-        display: "flex",
-        gap: tokens.spacingHorizontalM,
-        flexWrap: "wrap",
-    },
-    socialItem: {
-        display: "flex",
-        alignItems: "center",
-        gap: tokens.spacingHorizontalS,
-    },
-    dialogForm: {
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalM,
-    },
-});
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import styles from "./Detail.module.css";
 
 const SUBJECTS = [
     "Mathematics",
@@ -123,7 +58,6 @@ const SUBJECTS = [
 const SOCIAL_TYPES = ["GITHUB", "LINKEDIN", "TWITTER", "WEBSITE", "OTHER"];
 
 export default function ProfilePage() {
-    const styles = useStyles();
     const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const isOwnProfile = !id;
@@ -159,7 +93,7 @@ export default function ProfilePage() {
     if (isLoading) {
         return (
             <div className={styles.container}>
-                <Card className={styles.profileHeader}>
+                <Card padding="lg" className={styles.header}>
                     <SkeletonLine width="20%" />
                     <SkeletonLine width="40%" />
                     <SkeletonLine width="30%" />
@@ -169,12 +103,13 @@ export default function ProfilePage() {
             </div>
         );
     }
+
     if (isError) {
         return (
-            <div role="alert" style={{ textAlign: "center", padding: 48 }}>
-                <Title3 as="h3">Failed to load profile</Title3>
-                <p style={{ marginBottom: 12 }}>Something went wrong. Please try again.</p>
-                <Button appearance="primary" onClick={() => refetch()}>
+            <div className={styles.empty} role="alert">
+                <h2 className={styles.threadHeading}>Failed to load profile</h2>
+                <p className={styles.emptyText}>Something went wrong. Please try again.</p>
+                <Button variant="primary" onClick={() => refetch()}>
                     Retry
                 </Button>
             </div>
@@ -250,52 +185,64 @@ export default function ProfilePage() {
                 robots="noindex, follow"
             />
             {/* Profile header */}
-            <Card className={styles.profileHeader}>
-                <div className={styles.avatarSection}>
-                    <Avatar name={profile?.name || "User"} size={72} />
-                    <Badge appearance="filled" color="brand" className={styles.creditsBadge}>
-                        {profile?.credits ?? 0}
-                    </Badge>
+            <Card padding="lg" className={styles.header}>
+                <div className={styles.profileHeader}>
+                    <div className={styles.avatarSection}>
+                        <Avatar name={profile?.name || "User"} size={72} />
+                        <Badge appearance="filled" color="brand" className={styles.creditsBadge}>
+                            {profile?.credits ?? 0}
+                        </Badge>
+                    </div>
+                    <div className={styles.profileInfo}>
+                        <h1 className={styles.profileName}>{profile?.name || "User"}</h1>
+                        <p className={styles.profileEmail}>{profile?.email}</p>
+                        <Badge variant="neutral">{profile?.role || "STUDENT"}</Badge>
+                        {profile?.bio && <p className={styles.profileBio}>{profile.bio}</p>}
+                    </div>
+                    <div className={styles.profileActions}>
+                        {isOwnProfile ? (
+                            <Button
+                                variant="outline"
+                                icon={<Edit24Regular />}
+                                onClick={handleEditOpen}
+                            >
+                                Edit
+                            </Button>
+                        ) : (
+                            profile && <FollowButton userId={profile.id ?? Number(id)} />
+                        )}
+                        {profile?.id && <EndorsementBadge userId={profile.id} />}
+                    </div>
                 </div>
-                <div className={styles.profileInfo}>
-                    <Title2 as="h1">{profile?.name || "User"}</Title2>
-                    <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                        {profile?.email}
-                    </Body1>
-                    <Badge appearance="tint">{profile?.role || "STUDENT"}</Badge>
-                    {profile?.bio && <Body1 style={{ marginTop: "4px" }}>{profile.bio}</Body1>}
-                </div>
-                <div
-                    style={{
-                        marginLeft: "auto",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: tokens.spacingVerticalS,
-                        alignItems: "flex-end",
-                    }}
-                >
-                    {isOwnProfile ? (
-                        <Button
-                            appearance="outline"
-                            icon={<Edit24Regular />}
-                            onClick={handleEditOpen}
-                        >
-                            Edit
-                        </Button>
-                    ) : (
-                        profile && <FollowButton userId={profile.id ?? Number(id)} />
-                    )}
-                    {profile?.id && <EndorsementBadge userId={profile.id} />}
+                <div className={styles.stats}>
+                    <div className={styles.statTile}>
+                        <span className={styles.statValue}>{profile?.credits ?? 0}</span>
+                        <span className={styles.statLabel}>Credits</span>
+                    </div>
+                    <div className={styles.statTile}>
+                        <span className={styles.statValue}>{profile?.resourceCount ?? 0}</span>
+                        <span className={styles.statLabel}>Resources</span>
+                    </div>
+                    <div className={styles.statTile}>
+                        <span className={styles.statValue}>{profile?.upvoteCount ?? 0}</span>
+                        <span className={styles.statLabel}>Upvotes</span>
+                    </div>
+                    <div className={styles.statTile}>
+                        <span className={styles.statValue}>
+                            {profile?.createdAt ? new Date(profile.createdAt).getFullYear() : "—"}
+                        </span>
+                        <span className={styles.statLabel}>Joined</span>
+                    </div>
                 </div>
             </Card>
 
             {/* Subjects */}
-            <Card className={styles.sectionCard}>
+            <Card padding="lg" className={styles.sectionCard}>
                 <div className={styles.sectionHeader}>
-                    <Subtitle1 as="h2">Subjects</Subtitle1>
+                    <h2 className={styles.sectionTitle}>Subjects</h2>
                     {isOwnProfile && (
                         <Button
-                            appearance="subtle"
+                            variant="subtle"
                             icon={<Edit24Regular />}
                             onClick={handleSubjectsOpen}
                         >
@@ -306,25 +253,23 @@ export default function ProfilePage() {
                 <div className={styles.tagsRow}>
                     {(profile?.subjects?.length ?? 0) > 0 ? (
                         profile!.subjects.map((s: string | { name: string }, i: number) => (
-                            <Badge key={i} appearance="tint">
+                            <Badge key={i} variant="neutral">
                                 {typeof s === "string" ? s : s.name}
                             </Badge>
                         ))
                     ) : (
-                        <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                            No subjects added
-                        </Body1>
+                        <p className={styles.emptyText}>No subjects added</p>
                     )}
                 </div>
             </Card>
 
             {/* Social links */}
-            <Card className={styles.sectionCard}>
+            <Card padding="lg" className={styles.sectionCard}>
                 <div className={styles.sectionHeader}>
-                    <Subtitle1 as="h2">Social Links</Subtitle1>
+                    <h2 className={styles.sectionTitle}>Social Links</h2>
                     {isOwnProfile && (
                         <Button
-                            appearance="subtle"
+                            variant="subtle"
                             icon={<Add24Regular />}
                             onClick={() => setSocialDialogOpen(true)}
                         >
@@ -341,13 +286,13 @@ export default function ProfilePage() {
                                     href={social.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    style={{ fontSize: "var(--fontSizeBase300)" }}
+                                    className={styles.socialLink}
                                 >
                                     {social.url}
                                 </a>
                                 {isOwnProfile && (
                                     <Button
-                                        appearance="subtle"
+                                        variant="subtle"
                                         icon={<Dismiss24Regular />}
                                         size="small"
                                         aria-label={t("profile.removeSocialLink")}
@@ -357,34 +302,22 @@ export default function ProfilePage() {
                             </div>
                         ))
                     ) : (
-                        <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                            No social links added
-                        </Body1>
+                        <p className={styles.emptyText}>No social links added</p>
                     )}
                 </div>
             </Card>
 
             {/* Notification preferences */}
             {isOwnProfile && (
-                <Card className={styles.sectionCard}>
+                <Card padding="lg" className={styles.sectionCard}>
                     <div className={styles.sectionHeader}>
-                        <Subtitle1 as="h2">Notification Preferences</Subtitle1>
+                        <h2 className={styles.sectionTitle}>Notification Preferences</h2>
                     </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: tokens.spacingVerticalM,
-                        }}
-                    >
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <Label htmlFor="email-notifications">Email notifications</Label>
+                    <div className={styles.stack}>
+                        <div className={styles.prefRow}>
+                            <Label htmlFor="email-notifications" className={styles.prefLabelTitle}>
+                                Email notifications
+                            </Label>
                             <Switch
                                 id="email-notifications"
                                 checked={preferences.emailNotifications}
@@ -396,14 +329,10 @@ export default function ProfilePage() {
                                 }
                             />
                         </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <Label htmlFor="push-notifications">Push notifications</Label>
+                        <div className={styles.prefRow}>
+                            <Label htmlFor="push-notifications" className={styles.prefLabelTitle}>
+                                Push notifications
+                            </Label>
                             <Switch
                                 id="push-notifications"
                                 checked={preferences.pushNotifications}
@@ -421,39 +350,19 @@ export default function ProfilePage() {
 
             {/* Account security */}
             {isOwnProfile && (
-                <Card className={styles.sectionCard}>
+                <Card padding="lg" className={styles.sectionCard}>
                     <div className={styles.sectionHeader}>
-                        <Subtitle1 as="h2">Account Security</Subtitle1>
+                        <h2 className={styles.sectionTitle}>Account Security</h2>
                     </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: tokens.spacingVerticalL,
-                        }}
-                    >
-                        <div>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    marginBottom: tokens.spacingVerticalS,
-                                }}
-                            >
-                                <div>
-                                    <Text weight="semibold">Email address</Text>
-                                    <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
-                                        {profile?.email}
-                                    </Body1>
-                                </div>
-                                <Button
-                                    appearance="outline"
-                                    onClick={() => setEmailDialogOpen(true)}
-                                >
-                                    Change email
-                                </Button>
+                    <div className={styles.stack}>
+                        <div className={styles.prefRow}>
+                            <div className={styles.prefLabel}>
+                                <span className={styles.prefLabelTitle}>Email address</span>
+                                <span className={styles.prefLabelDesc}>{profile?.email}</span>
                             </div>
+                            <Button variant="outline" onClick={() => setEmailDialogOpen(true)}>
+                                Change email
+                            </Button>
                         </div>
                         <TwoFactorSetup />
                     </div>
@@ -462,50 +371,32 @@ export default function ProfilePage() {
 
             {/* Data & privacy */}
             {isOwnProfile && (
-                <Card className={styles.sectionCard}>
+                <Card padding="lg" className={styles.sectionCard}>
                     <div className={styles.sectionHeader}>
-                        <Subtitle1 as="h2">Data &amp; Privacy</Subtitle1>
+                        <h2 className={styles.sectionTitle}>Data &amp; Privacy</h2>
                     </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: tokens.spacingVerticalM,
-                        }}
-                    >
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                            }}
-                        >
-                            <div>
-                                <Text weight="semibold">Export my data</Text>
-                                <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
+                    <div className={styles.stack}>
+                        <div className={styles.prefRow}>
+                            <div className={styles.prefLabel}>
+                                <span className={styles.prefLabelTitle}>Export my data</span>
+                                <span className={styles.prefLabelDesc}>
                                     Download a copy of your personal data.
-                                </Body1>
+                                </span>
                             </div>
                             <Button
-                                appearance="outline"
+                                variant="outline"
                                 onClick={() => exportData.mutate()}
                                 disabled={exportData.isPending}
                             >
                                 {exportData.isPending ? <Spinner size="tiny" /> : "Export"}
                             </Button>
                         </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                            }}
-                        >
-                            <div>
-                                <Text weight="semibold">Delete my account</Text>
-                                <Body1 style={{ color: "var(--colorNeutralForeground3)" }}>
+                        <div className={styles.prefRow}>
+                            <div className={styles.prefLabel}>
+                                <span className={styles.prefLabelTitle}>Delete my account</span>
+                                <span className={styles.prefLabelDesc}>
                                     Permanently remove your account and data.
-                                </Body1>
+                                </span>
                             </div>
                             <ConfirmDialog
                                 trigger={
@@ -525,7 +416,7 @@ export default function ProfilePage() {
             )}
 
             {/* Badges */}
-            <Card className={styles.sectionCard}>
+            <Card padding="lg" className={styles.sectionCard}>
                 <BadgesWidget userId={profile?.id ?? Number(id)} />
             </Card>
 
@@ -539,15 +430,14 @@ export default function ProfilePage() {
                         <DialogTitle>Edit Profile</DialogTitle>
                         <DialogContent>
                             <div className={styles.dialogForm}>
-                                <Field label="Name">
-                                    <Input
-                                        value={editName}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                            setEditName(e.target.value)
-                                        }
-                                        aria-required="true"
-                                    />
-                                </Field>
+                                <Input
+                                    label="Name"
+                                    value={editName}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                        setEditName(e.target.value)
+                                    }
+                                    aria-required="true"
+                                />
                                 <Field label="Bio">
                                     <Textarea
                                         value={editBio}
@@ -559,11 +449,11 @@ export default function ProfilePage() {
                             </div>
                         </DialogContent>
                         <DialogActions>
-                            <Button appearance="secondary" onClick={() => setEditDialogOpen(false)}>
+                            <Button variant="subtle" onClick={() => setEditDialogOpen(false)}>
                                 Cancel
                             </Button>
                             <Button
-                                appearance="primary"
+                                variant="primary"
                                 onClick={handleEditSave}
                                 disabled={updateProfile.isPending}
                             >
@@ -589,9 +479,8 @@ export default function ProfilePage() {
                                     return (
                                         <Badge
                                             key={s}
-                                            appearance={isSelected ? "filled" : "outline"}
-                                            color={isSelected ? "brand" : "informative"}
-                                            style={{ cursor: "pointer" }}
+                                            variant={isSelected ? "accent" : "neutral"}
+                                            className={styles.selectableChip}
                                             onClick={() => {
                                                 setSelectedSubjects((prev) =>
                                                     isSelected
@@ -607,14 +496,11 @@ export default function ProfilePage() {
                             </div>
                         </DialogContent>
                         <DialogActions>
-                            <Button
-                                appearance="secondary"
-                                onClick={() => setSubjectsDialogOpen(false)}
-                            >
+                            <Button variant="subtle" onClick={() => setSubjectsDialogOpen(false)}>
                                 Cancel
                             </Button>
                             <Button
-                                appearance="primary"
+                                variant="primary"
                                 onClick={handleSubjectsSave}
                                 disabled={updateSubjects.isPending}
                             >
@@ -635,50 +521,44 @@ export default function ProfilePage() {
                         <DialogTitle>Add Social Link</DialogTitle>
                         <DialogContent>
                             <div className={styles.dialogForm}>
-                                <Field label="Type">
-                                    <Select
-                                        value={socialType}
-                                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                                            setSocialType(e.target.value)
-                                        }
-                                    >
-                                        {SOCIAL_TYPES.map((t) => (
-                                            <option key={t} value={t}>
-                                                {t}
-                                            </option>
-                                        ))}
-                                    </Select>
-                                </Field>
-                                <Field label="Label">
-                                    <Input
-                                        value={socialLabel}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                            setSocialLabel(e.target.value)
-                                        }
-                                        placeholder="e.g. My GitHub"
-                                    />
-                                </Field>
-                                <Field label="URL">
-                                    <Input
-                                        value={socialUrl}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                            setSocialUrl(e.target.value)
-                                        }
-                                        placeholder="https://..."
-                                        aria-required="true"
-                                    />
-                                </Field>
+                                <Select
+                                    label="Type"
+                                    value={socialType}
+                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                                        setSocialType(e.target.value)
+                                    }
+                                >
+                                    {SOCIAL_TYPES.map((st) => (
+                                        <option key={st} value={st}>
+                                            {st}
+                                        </option>
+                                    ))}
+                                </Select>
+                                <Input
+                                    label="Label"
+                                    value={socialLabel}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                        setSocialLabel(e.target.value)
+                                    }
+                                    placeholder="e.g. My GitHub"
+                                />
+                                <Input
+                                    label="URL"
+                                    value={socialUrl}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                        setSocialUrl(e.target.value)
+                                    }
+                                    placeholder="https://..."
+                                    aria-required="true"
+                                />
                             </div>
                         </DialogContent>
                         <DialogActions>
-                            <Button
-                                appearance="secondary"
-                                onClick={() => setSocialDialogOpen(false)}
-                            >
+                            <Button variant="subtle" onClick={() => setSocialDialogOpen(false)}>
                                 Cancel
                             </Button>
                             <Button
-                                appearance="primary"
+                                variant="primary"
                                 onClick={handleAddSocial}
                                 disabled={addSocial.isPending || !socialUrl.trim()}
                             >
@@ -699,50 +579,42 @@ export default function ProfilePage() {
                         <DialogTitle>Change Email</DialogTitle>
                         <DialogContent>
                             <div className={styles.dialogForm}>
-                                <Field label="New email">
-                                    <Input
-                                        type="email"
-                                        value={newEmail}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                            setNewEmail(e.target.value)
-                                        }
-                                        placeholder="new@university.edu"
-                                        aria-required="true"
-                                    />
-                                </Field>
-                                <Field label="Current password">
-                                    <Input
-                                        type="password"
-                                        value={emailPassword}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                            setEmailPassword(e.target.value)
-                                        }
-                                        placeholder="Enter your current password"
-                                        aria-required="true"
-                                    />
-                                </Field>
+                                <Input
+                                    label="New email"
+                                    type="email"
+                                    value={newEmail}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                        setNewEmail(e.target.value)
+                                    }
+                                    placeholder="new@university.edu"
+                                    aria-required="true"
+                                />
+                                <Input
+                                    label="Current password"
+                                    type="password"
+                                    value={emailPassword}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                        setEmailPassword(e.target.value)
+                                    }
+                                    placeholder="Enter your current password"
+                                    aria-required="true"
+                                />
+                                {changeEmail.isError && (
+                                    <MessageBar intent="error">
+                                        <MessageBarBody>
+                                            Failed to change email. Please check your password and
+                                            try again.
+                                        </MessageBarBody>
+                                    </MessageBar>
+                                )}
                             </div>
-                            {changeEmail.isError && (
-                                <MessageBar
-                                    intent="error"
-                                    style={{ marginTop: tokens.spacingVerticalM }}
-                                >
-                                    <MessageBarBody>
-                                        Failed to change email. Please check your password and try
-                                        again.
-                                    </MessageBarBody>
-                                </MessageBar>
-                            )}
                         </DialogContent>
                         <DialogActions>
-                            <Button
-                                appearance="secondary"
-                                onClick={() => setEmailDialogOpen(false)}
-                            >
+                            <Button variant="subtle" onClick={() => setEmailDialogOpen(false)}>
                                 Cancel
                             </Button>
                             <Button
-                                appearance="primary"
+                                variant="primary"
                                 onClick={handleChangeEmail}
                                 disabled={
                                     changeEmail.isPending ||
