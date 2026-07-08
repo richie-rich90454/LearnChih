@@ -1,13 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import {
-    makeStyles,
-    tokens,
-    Card,
     Input,
-    Button,
-    Label,
-    Title3,
     MessageBar,
     MessageBarBody,
     MessageBarTitle,
@@ -17,50 +11,11 @@ import { useVerifyEmail } from "../hooks/useAuth";
 import { resendVerification } from "../api/auth";
 import { useTranslation, Trans } from "react-i18next";
 import Seo from "../components/Seo";
-
-const useStyles = makeStyles({
-    pageContainer: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: tokens.colorNeutralBackground2,
-        padding: tokens.spacingHorizontalL,
-    },
-    verifyCard: {
-        width: "100%",
-        maxWidth: "420px",
-        backgroundColor: tokens.colorNeutralBackground2,
-        border: "none",
-        boxShadow: "none",
-    },
-    cardBody: {
-        padding: tokens.spacingHorizontalXL,
-        display: "flex",
-        flexDirection: "column",
-        gap: tokens.spacingVerticalL,
-    },
-    codeInputs: {
-        display: "flex",
-        gap: tokens.spacingHorizontalS,
-        justifyContent: "center",
-    },
-    codeInput: {
-        width: "48px",
-        textAlign: "center",
-    },
-    submitButton: {
-        width: "100%",
-    },
-    resendRow: {
-        display: "flex",
-        justifyContent: "center",
-        gap: tokens.spacingHorizontalS,
-    },
-});
+import { Button } from "../components/ui/Button";
+import styles from "./Auth.module.css";
+import motion from "../design-system/motion.module.css";
 
 export default function VerifyEmailPage() {
-    const styles = useStyles();
     const { t } = useTranslation();
     const [searchParams] = useSearchParams();
     const email = searchParams.get("email") || "";
@@ -119,102 +74,98 @@ export default function VerifyEmailPage() {
     };
 
     return (
-        <main className={styles.pageContainer}>
+        <main className={styles.shell}>
             <Seo
                 title={t("auth.verifyEmailHeading")}
                 canonicalPath="/verify"
                 robots="noindex, nofollow"
             />
-            <Card className={styles.verifyCard}>
-                <div className={styles.cardBody}>
-                    <Title3 as="h1">{t("auth.verifyEmailHeading")}</Title3>
-                    <p style={{ margin: 0, color: "var(--colorNeutralForeground2)" }}>
+            <div className={`${styles.card} ${motion.slideUp}`}>
+                <div className={styles.header}>
+                    <h1 className={styles.title}>{t("auth.verifyEmailHeading")}</h1>
+                    <p className={styles.subtitle}>
                         <Trans
                             i18nKey="auth.codeSentTo"
                             values={{ email: email || t("auth.yourEmailFallback") }}
                             components={{ 1: <strong /> }}
                         />
                     </p>
-
-                    {verifyMutation.isError && (
-                        <MessageBar intent="error" role="alert">
-                            <MessageBarBody>
-                                <MessageBarTitle>
-                                    {t("auth.verificationFailedTitle")}
-                                </MessageBarTitle>
-                                {(verifyMutation.error as any)?.response?.data?.message ||
-                                    t("auth.invalidOrExpiredCode")}
-                            </MessageBarBody>
-                        </MessageBar>
-                    )}
-
-                    {resendStatus === "sent" && (
-                        <MessageBar intent="success">
-                            <MessageBarBody>{t("auth.newCodeSent")}</MessageBarBody>
-                        </MessageBar>
-                    )}
-
-                    {resendStatus === "error" && (
-                        <MessageBar intent="error" role="alert">
-                            <MessageBarBody>{t("auth.resendCodeFailed")}</MessageBarBody>
-                        </MessageBar>
-                    )}
-
-                    <form
-                        onSubmit={handleSubmit}
-                        style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-                    >
-                        <div className={styles.codeInputs} onPaste={handlePaste}>
-                            {code.map((digit, i) => (
-                                <Input
-                                    key={i}
-                                    ref={(el) => {
-                                        inputRefs.current[i] = el;
-                                    }}
-                                    className={styles.codeInput}
-                                    value={digit}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                        handleChange(i, e.target.value)
-                                    }
-                                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
-                                        handleKeyDown(i, e)
-                                    }
-                                    maxLength={1}
-                                    aria-label={t("auth.digitLabel", { index: i + 1 })}
-                                />
-                            ))}
-                        </div>
-
-                        <Button
-                            type="submit"
-                            appearance="primary"
-                            className={styles.submitButton}
-                            disabled={verifyMutation.isPending || code.join("").length !== 6}
-                        >
-                            {verifyMutation.isPending ? (
-                                <Spinner size="tiny" />
-                            ) : (
-                                t("auth.verifyButton")
-                            )}
-                        </Button>
-                    </form>
-
-                    <div className={styles.resendRow}>
-                        <span style={{ fontSize: "var(--fontSizeBase300)" }}>
-                            {t("auth.didntReceiveCode")}
-                        </span>
-                        <Button appearance="transparent" size="small" onClick={handleResend}>
-                            {t("auth.resend")}
-                        </Button>
-                    </div>
-
-                    <div className={styles.resendRow}>
-                        <Link to="/login" style={{ fontSize: "var(--fontSizeBase300)" }}>
-                            {t("auth.backToSignIn")}
-                        </Link>
-                    </div>
                 </div>
-            </Card>
+
+                {verifyMutation.isError && (
+                    <MessageBar intent="error" role="alert">
+                        <MessageBarBody>
+                            <MessageBarTitle>
+                                {t("auth.verificationFailedTitle")}
+                            </MessageBarTitle>
+                            {(verifyMutation.error as any)?.response?.data?.message ||
+                                t("auth.invalidOrExpiredCode")}
+                        </MessageBarBody>
+                    </MessageBar>
+                )}
+
+                {resendStatus === "sent" && (
+                    <MessageBar intent="success">
+                        <MessageBarBody>{t("auth.newCodeSent")}</MessageBarBody>
+                    </MessageBar>
+                )}
+
+                {resendStatus === "error" && (
+                    <MessageBar intent="error" role="alert">
+                        <MessageBarBody>{t("auth.resendCodeFailed")}</MessageBarBody>
+                    </MessageBar>
+                )}
+
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <div className={styles.fieldGroup} onPaste={handlePaste}>
+                        {code.map((digit, i) => (
+                            <Input
+                                key={i}
+                                ref={(el) => {
+                                    inputRefs.current[i] = el;
+                                }}
+                                className={`${styles.field} ${styles.codeInput}`}
+                                value={digit}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    handleChange(i, e.target.value)
+                                }
+                                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
+                                    handleKeyDown(i, e)
+                                }
+                                maxLength={1}
+                                aria-label={t("auth.digitLabel", { index: i + 1 })}
+                            />
+                        ))}
+                    </div>
+
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        size="large"
+                        className={styles.submit}
+                        disabled={verifyMutation.isPending || code.join("").length !== 6}
+                    >
+                        {verifyMutation.isPending ? (
+                            <Spinner size="tiny" />
+                        ) : (
+                            t("auth.verifyButton")
+                        )}
+                    </Button>
+                </form>
+
+                <div className={styles.actions}>
+                    <span className={styles.footer}>{t("auth.didntReceiveCode")}</span>
+                    <Button variant="ghost" size="small" onClick={handleResend}>
+                        {t("auth.resend")}
+                    </Button>
+                </div>
+
+                <div className={styles.footer}>
+                    <Link to="/login" className={styles.link}>
+                        {t("auth.backToSignIn")}
+                    </Link>
+                </div>
+            </div>
         </main>
     );
 }
