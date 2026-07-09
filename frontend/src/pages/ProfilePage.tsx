@@ -38,6 +38,8 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { Portfolio } from "@/components/Portfolio";
 import { ProfileDetails } from "@/components/ProfileDetails";
 import { FeaturedBadges } from "@/components/FeaturedBadges";
+import { FriendsList } from "@/components/FriendsList";
+import { AddFriendButton } from "@/components/AddFriendButton";
 import TwoFactorSetup from "@/components/TwoFactorSetup";
 import { useExportUserData, useDeleteUserAccount } from "@/hooks/useGdpr";
 import { Button } from "@/components/ui/Button";
@@ -212,7 +214,12 @@ export default function ProfilePage() {
                                 Edit
                             </Button>
                         ) : (
-                            profile && <FollowButton userId={profile.id ?? Number(id)} />
+                            profile && (
+                                <>
+                                    <FollowButton userId={profile.id ?? Number(id)} />
+                                    <AddFriendButton userId={profile.id} />
+                                </>
+                            )
                         )}
                         {profile?.id && <EndorsementBadge userId={profile.id} />}
                     </div>
@@ -324,6 +331,9 @@ export default function ProfilePage() {
             {profile?.id && (
                 <FeaturedBadges userId={profile.id} editable={isOwnProfile} />
             )}
+
+            {/* Friends / study-buddies list (F38) */}
+            {isOwnProfile && <FriendsList />}
 
             {/* Notification preferences */}
             {isOwnProfile && (

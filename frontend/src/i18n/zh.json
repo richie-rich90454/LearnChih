@@ -253,6 +253,23 @@
         "empty": "暂无精选徽章。",
         "noEarned": "你还没有获得任何徽章。"
     },
+    "friends": {
+        "title": "好友",
+        "addFriend": "添加好友",
+        "accept": "接受",
+        "decline": "拒绝",
+        "cancel": "取消请求",
+        "unfriend": "解除好友",
+        "pending": "请求待处理",
+        "friends": "已好友",
+        "friendsCount_one": "{{count}} 位好友",
+        "friendsCount_other": "{{count}} 位好友",
+        "incomingCount_one": "{{count}} 个收到的请求",
+        "incomingCount_other": "{{count}} 个收到的请求",
+        "sentCount_one": "{{count}} 个已发送的请求",
+        "sentCount_other": "{{count}} 个已发送的请求",
+        "empty": "还没有好友。去找学习伙伴吧！"
+    },
     "commandPalette": {
         "title": "命令面板",
         "placeholder": "输入命令或搜索...",

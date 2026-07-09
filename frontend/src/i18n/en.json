@@ -270,6 +270,23 @@
         "empty": "No featured badges yet.",
         "noEarned": "You haven't earned any badges yet."
     },
+    "friends": {
+        "title": "Friends",
+        "addFriend": "Add friend",
+        "accept": "Accept",
+        "decline": "Decline",
+        "cancel": "Cancel request",
+        "unfriend": "Unfriend",
+        "pending": "Request pending",
+        "friends": "Friends",
+        "friendsCount_one": "{{count}} friend",
+        "friendsCount_other": "{{count}} friends",
+        "incomingCount_one": "{{count}} incoming request",
+        "incomingCount_other": "{{count}} incoming requests",
+        "sentCount_one": "{{count}} sent request",
+        "sentCount_other": "{{count}} sent requests",
+        "empty": "No friends yet. Find people to study with!"
+    },
     "commandPalette": {
         "title": "Command palette",
         "placeholder": "Type a command or search...",
