@@ -1,0 +1,177 @@
+/**
+ * ModuleProgress - course module completion tracker (F3).
+ * Token-based layout: a header with course name + completion summary, a
+ * progress bar, and an ordered module list with per-item completion state.
+ */
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+/* ----------------------- Header ----------------------- */
+.header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.headerText {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.summary {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+/* ----------------------- Progress bar ----------------------- */
+.progressBar {
+    width: 100%;
+    height: 8px;
+    border-radius: var(--radius-pill);
+    background-color: var(--surface-sunken);
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: var(--radius-pill);
+    background-color: var(--accent-fill);
+    transition: width var(--motion-fast) var(--motion-ease);
+}
+
+/* ----------------------- Module list ----------------------- */
+.moduleList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.moduleRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.moduleRow:last-child {
+    border-bottom: none;
+}
+
+.moduleIndex {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    background-color: var(--surface-sunken);
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+}
+
+.moduleInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.moduleTitle {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-base);
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.moduleMeta {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.moduleStatus {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.completedBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-1);
+}
+
+.completedDate {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.scoreText {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--accent);
+}
+
+/* ----------------------- Motion + responsive ----------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .progressFill {
+        transition: none;
+    }
+}
+
+@media (max-width: 560px) {
+    .moduleRow {
+        flex-wrap: wrap;
+    }
+
+    .moduleStatus {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .completedBlock {
+        align-items: flex-start;
+    }
+}

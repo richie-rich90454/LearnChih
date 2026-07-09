@@ -1,0 +1,21 @@
+/**
+ * CourseDetailPage - minimal shell hosting ModuleProgress (F3).
+ * Centered reading width; ModuleProgress owns the content.
+ */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.invalid {
+    margin: 0;
+    padding: var(--space-6) 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
