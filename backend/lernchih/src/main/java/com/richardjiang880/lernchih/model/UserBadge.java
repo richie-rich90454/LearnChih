@@ -29,8 +29,15 @@ public class UserBadge {
     @Column(name = "earned_at", nullable = false, updatable = false)
     private LocalDateTime earnedAt;
 
+    @Column(name = "featured", nullable = false)
+    @Builder.Default
+    private Boolean featured = false;
+
     @PrePersist
     protected void onCreate() {
         earnedAt = LocalDateTime.now();
+        if (featured == null) {
+            featured = false;
+        }
     }
 }

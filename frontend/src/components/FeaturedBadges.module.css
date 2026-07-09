@@ -1,0 +1,115 @@
+/**
+ * FeaturedBadges - showcase card for up to 3 highlighted badges (F37).
+ * Uses design-system tokens; no !important.
+ */
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    background: var(--surface-2);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.showcase {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.badgeCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-3);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-3);
+    min-width: 120px;
+}
+
+.icon {
+    font-size: var(--font-size-2xl);
+    line-height: 1;
+}
+
+.empty {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.hint {
+    margin: 0 0 var(--space-3) 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.pickerGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: var(--space-2);
+}
+
+.pickerCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-2);
+    border-radius: var(--radius-card);
+    border: 2px solid var(--border-subtle);
+    background: var(--surface-1);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.pickerCard:hover {
+    border-color: var(--accent);
+}
+
+.pickerSelected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.pickerDisabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.pickerDisabled:hover {
+    border-color: var(--border-subtle);
+}
+
+.pickerName {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pickerCard {
+        transition: none;
+    }
+}

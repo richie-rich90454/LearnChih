@@ -37,6 +37,7 @@ import { EndorsementBadge } from "@/components/EndorsementBadge";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { Portfolio } from "@/components/Portfolio";
 import { ProfileDetails } from "@/components/ProfileDetails";
+import { FeaturedBadges } from "@/components/FeaturedBadges";
 import TwoFactorSetup from "@/components/TwoFactorSetup";
 import { useExportUserData, useDeleteUserAccount } from "@/hooks/useGdpr";
 import { Button } from "@/components/ui/Button";
@@ -317,6 +318,11 @@ export default function ProfilePage() {
             {/* Profile details: status, pronouns, timezone (F36) */}
             {profile && (
                 <ProfileDetails profile={profile} editable={isOwnProfile} />
+            )}
+
+            {/* Featured badges showcase (F37) */}
+            {profile?.id && (
+                <FeaturedBadges userId={profile.id} editable={isOwnProfile} />
             )}
 
             {/* Notification preferences */}

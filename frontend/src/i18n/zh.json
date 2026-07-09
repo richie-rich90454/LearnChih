@@ -245,6 +245,14 @@
         "timezoneHint": "使用 IANA 时区，例如 Asia/Shanghai",
         "empty": "尚未设置详情。"
     },
+    "featuredBadges": {
+        "title": "精选徽章",
+        "edit": "编辑",
+        "editTitle": "选择你的精选徽章",
+        "hint": "最多选择 {{max}} 个徽章在个人资料中展示。",
+        "empty": "暂无精选徽章。",
+        "noEarned": "你还没有获得任何徽章。"
+    },
     "commandPalette": {
         "title": "命令面板",
         "placeholder": "输入命令或搜索...",
@@ -571,6 +579,7 @@
         "save": "保存布局",
         "saved": "布局已保存。",
         "selectNode": "选择一个节点查看详情。",
+        "selectSubject": "选择一个学科",
         "details": "节点详情",
         "empty": "还没有概念图节点，添加一个开始吧。",
         "error": "加载概念图失败。"

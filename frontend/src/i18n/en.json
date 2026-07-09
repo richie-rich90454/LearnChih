@@ -262,6 +262,14 @@
         "timezoneHint": "Use an IANA timezone, e.g. Asia/Shanghai",
         "empty": "No details set yet."
     },
+    "featuredBadges": {
+        "title": "Featured badges",
+        "edit": "Edit",
+        "editTitle": "Choose your featured badges",
+        "hint": "Select up to {{max}} badges to showcase on your profile.",
+        "empty": "No featured badges yet.",
+        "noEarned": "You haven't earned any badges yet."
+    },
     "commandPalette": {
         "title": "Command palette",
         "placeholder": "Type a command or search...",
@@ -588,6 +596,7 @@
         "save": "Save layout",
         "saved": "Layout saved.",
         "selectNode": "Select a node to see details.",
+        "selectSubject": "Select a subject",
         "details": "Node details",
         "empty": "No concept map nodes yet. Add one to get started.",
         "error": "Failed to load the concept map."
