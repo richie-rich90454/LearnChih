@@ -22,6 +22,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { ResumeCard } from "@/components/ResumeCard";
 import { OnboardingChecklist } from "@/components/OnboardingChecklist";
+import { PomodoroTimer } from "@/components/PomodoroTimer";
 import styles from "./DashboardPage.module.css";
 
 export default function DashboardPage() {
@@ -133,6 +134,14 @@ export default function DashboardPage() {
                         <AnimatedCounter value={profile?.upvoteCount ?? 0} />
                     </div>
                 </Card>
+            </div>
+
+            {/* Focus timer */}
+            <div>
+                <h2 className={styles.sectionTitle}>{t("pomodoro.title")}</h2>
+                <div className={styles.focusTimer}>
+                    <PomodoroTimer />
+                </div>
             </div>
 
             {/* Quick links */}

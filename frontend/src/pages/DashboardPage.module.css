@@ -78,6 +78,11 @@
     color: var(--text-primary);
 }
 
+/* ----------------------- Focus timer ----------------------- */
+.focusTimer {
+    max-width: 420px;
+}
+
 /* ----------------------- Quick links ----------------------- */
 .quickLinks {
     display: grid;
