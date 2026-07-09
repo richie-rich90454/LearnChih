@@ -1,0 +1,308 @@
+/**
+ * PlaylistsPage - study playlists (F2).
+ * Master-detail layout: an aside list of playlists and a main detail panel
+ * showing the selected playlist's ordered items. All visuals derive from
+ * design-system tokens; no raw hex and no `!important`.
+ */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ----------------------- Page header ----------------------- */
+.pageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.headerLead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.headerIcon {
+    color: var(--accent);
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Split layout ----------------------- */
+.split {
+    display: grid;
+    grid-template-columns: minmax(260px, 320px) 1fr;
+    gap: var(--space-6);
+    align-items: start;
+}
+
+.aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.listCol {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+/* Playlist cards ride on the Card primitive; we tune surface + border so
+   the active selection reads without fighting the base elevation. */
+.playlistCard {
+    transition:
+        border-color var(--motion-fast) var(--motion-ease),
+        background-color var(--motion-fast) var(--motion-ease);
+}
+
+.playlistCardActive {
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+}
+
+/* The whole card is a button target: reset native button chrome and let the
+   card carry the affordance. */
+.playlistBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    text-align: start;
+}
+
+.playlistBtn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-input);
+}
+
+.playlistName {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ----------------------- Detail panel ----------------------- */
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+}
+
+.detailCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.detailHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.detailTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.detailDesc {
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.detailActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+/* ----------------------- Add-item row ----------------------- */
+.addItemRow {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.addItemRow > :first-child {
+    flex: 1 1 200px;
+    min-width: 0;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+/* ----------------------- Item list ----------------------- */
+.itemsList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.emptyItems {
+    margin: 0;
+    padding: var(--space-4) 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.itemRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-1);
+    border-radius: var(--radius-input);
+    transition: background-color var(--motion-fast) var(--motion-ease);
+}
+
+.itemRow:hover {
+    background-color: var(--surface-sunken);
+}
+
+.itemIndex {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    background-color: var(--surface-sunken);
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+}
+
+.itemTitle {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    text-align: start;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-base);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color var(--motion-fast) var(--motion-ease);
+}
+
+.itemTitle:hover {
+    color: var(--accent);
+}
+
+.itemTitle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-input);
+}
+
+.itemControls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+/* ----------------------- Motion + responsive ----------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .playlistCard,
+    .itemRow,
+    .itemTitle {
+        transition: none;
+    }
+}
+
+@media (max-width: 880px) {
+    .split {
+        grid-template-columns: 1fr;
+    }
+
+    .aside {
+        order: 2;
+    }
+
+    .main {
+        order: 1;
+    }
+}
+
+@media (max-width: 640px) {
+    .detailHeader {
+        align-items: stretch;
+    }
+
+    .detailActions {
+        justify-content: flex-start;
+    }
+}

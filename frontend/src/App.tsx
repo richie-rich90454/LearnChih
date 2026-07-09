@@ -42,6 +42,7 @@ const BookmarksPage = lazy(() => import("./pages/BookmarksPage"));
 const StudyGroupsPage = lazy(() => import("./pages/StudyGroupsPage"));
 const MessagesPage = lazy(() => import("./pages/MessagesPage"));
 const ReviewCalendarPage = lazy(() => import("./pages/ReviewCalendarPage"));
+const PlaylistsPage = lazy(() => import("./pages/PlaylistsPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function LoadingFallback() {
@@ -209,6 +210,7 @@ function AppShell() {
                         <Route path="/bookmarks" element={<BookmarksPage />} />
                         <Route path="/study-groups" element={<StudyGroupsPage />} />
                         <Route path="/review" element={<ReviewCalendarPage />} />
+                        <Route path="/playlists" element={<PlaylistsPage />} />
                         <Route path="/messages" element={<MessagesPage />} />
                         <Route path="/admin" element={<AdminPage />} />
                         <Route path="/moderation" element={<ModerationPage />} />
@@ -236,6 +238,7 @@ export default function App() {
             prefetchRoute("bookmarks", () => import("./pages/BookmarksPage"));
             prefetchRoute("study-groups", () => import("./pages/StudyGroupsPage"));
             prefetchRoute("review", () => import("./pages/ReviewCalendarPage"));
+            prefetchRoute("playlists", () => import("./pages/PlaylistsPage"));
             prefetchRoute("messages", () => import("./pages/MessagesPage"));
         };
         if (typeof window.requestIdleCallback === "function") {
