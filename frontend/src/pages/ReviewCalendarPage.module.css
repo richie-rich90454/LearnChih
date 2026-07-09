@@ -1,0 +1,310 @@
+/**
+ * ReviewCalendarPage - spaced-repetition review dashboard (F1).
+ * Token-based layout: page header with stats, due-today card grid, and a
+ * 7-column calendar heatmap of upcoming reviews. Heatmap intensity uses the
+ * accent token at increasing alpha levels (no raw hex).
+ */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ----------------------- Page header ----------------------- */
+.pageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.headerLead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.headerIcon {
+    color: var(--accent);
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.statValue {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    color: var(--accent);
+}
+
+.statLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    margin-top: var(--space-1);
+}
+
+/* ----------------------- Section ----------------------- */
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+
+.sectionTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+/* ----------------------- Due-today cards ----------------------- */
+.dueGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+}
+
+.dueCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.dueHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+
+.dueTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--motion-ease);
+}
+
+.dueTitle:hover {
+    color: var(--accent);
+}
+
+.dueMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.dueActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: auto;
+}
+
+/* ----------------------- Calendar heatmap ----------------------- */
+.calendarCard {
+    overflow-x: auto;
+}
+
+.weekdayRow {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--space-1);
+    margin-bottom: var(--space-2);
+}
+
+.weekday {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.heatmap {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--space-1);
+    min-width: 420px;
+}
+
+.cell {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    min-height: 48px;
+    border-radius: var(--radius-input);
+    background-color: var(--surface-sunken);
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: var(--space-1);
+    transition:
+        background-color var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease);
+}
+
+.cell:hover {
+    border-color: var(--border-strong);
+}
+
+.cellDay {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    line-height: 1;
+}
+
+.cellCount {
+    position: absolute;
+    bottom: var(--space-1);
+    right: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--accent-foreground);
+    background-color: var(--accent-fill);
+    border-radius: var(--radius-pill);
+    padding: 0 var(--space-1);
+    min-width: 18px;
+    text-align: center;
+}
+
+/* Intensity levels: increasing accent alpha. */
+.l1 {
+    background-color: var(--accent-soft);
+}
+
+.l1 .cellDay {
+    color: var(--accent);
+}
+
+.l2 {
+    background-color: rgba(30, 79, 216, 0.32);
+}
+
+.l2 .cellDay {
+    color: var(--text-primary);
+}
+
+.l3 {
+    background-color: var(--accent-fill);
+}
+
+.l3 .cellDay {
+    color: var(--accent-foreground);
+}
+
+.l3 .cellCount {
+    background-color: var(--surface-2);
+    color: var(--accent);
+}
+
+.cellToday {
+    border: 2px solid var(--accent);
+}
+
+/* ----------------------- Legend ----------------------- */
+.legend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-1);
+    margin-top: var(--space-3);
+}
+
+.legendLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    margin: 0 var(--space-1);
+}
+
+.legendCell {
+    width: 16px;
+    height: 16px;
+    border-radius: var(--radius-input);
+    border: 1px solid var(--border-subtle);
+}
+
+/* Dark-mode intensity tweaks: rely on rgba accent so the ramp still reads. */
+@media (prefers-color-scheme: dark) {
+    .l2 {
+        background-color: rgba(91, 141, 239, 0.32);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cell,
+    .dueTitle {
+        transition: none;
+    }
+}
+
+/* Mobile: collapse stats into the header row. */
+@media (max-width: 640px) {
+    .dueGrid {
+        grid-template-columns: 1fr;
+    }
+    .stats {
+        gap: var(--space-4);
+    }
+}
