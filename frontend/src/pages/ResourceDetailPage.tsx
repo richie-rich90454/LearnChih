@@ -41,6 +41,7 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 import ReportButton from "@/components/ReportButton";
 import { RelatedResources } from "@/components/RelatedResources";
 import AiFlashcardGenerator from "@/components/AiFlashcardGenerator";
+import AiQuizGenerator from "@/components/AiQuizGenerator";
 import { StaggerReveal } from "@/components/StaggerReveal";
 import { TagList } from "@/components/TagBadge";
 import { articleSchema, breadcrumbSchema } from "@/components/jsonLd";
@@ -430,6 +431,11 @@ export default function ResourceDetailPage() {
             {/* AI flashcard generation (F4) */}
             {authenticated && resource && (
                 <AiFlashcardGenerator resourceId={resource.id} />
+            )}
+
+            {/* AI quiz generation (F5) */}
+            {authenticated && resource && (
+                <AiQuizGenerator resourceId={resource.id} />
             )}
 
             {/* Thread / Discussion */}
