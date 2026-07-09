@@ -27,6 +27,8 @@ import {
     SlideLayout24Regular,
     QuestionCircle24Regular,
     PeopleTeam24Regular,
+    ChatMultiple24Regular,
+    CalendarClock24Regular,
     WeatherMoon24Regular,
     WeatherSunny24Regular,
     Eye24Regular,
@@ -81,6 +83,8 @@ const getNavSections = (
         { path: "/flashcards", label: t("nav.flashcards"), icon: <SlideLayout24Regular /> },
         { path: "/quizzes", label: t("nav.quizzes"), icon: <QuestionCircle24Regular /> },
         { path: "/study-groups", label: t("nav.studyGroups"), icon: <PeopleTeam24Regular /> },
+        { path: "/messages", label: t("nav.messages"), icon: <ChatMultiple24Regular /> },
+        { path: "/review", label: t("nav.review"), icon: <CalendarClock24Regular /> },
     ];
     const accountItems: NavItem[] = [
         { path: "/profile", label: t("nav.profile"), icon: <Person24Regular /> },
