@@ -1,6 +1,6 @@
 package com.richardjiang880.lernchih.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.richardjiang880.lernchih.dto.AiQuizDtos.GeneratedQuizQuestion;
 import com.richardjiang880.lernchih.dto.AiQuizDtos.GenerateResponse;
 import com.richardjiang880.lernchih.dto.AiQuizDtos.SaveRequest;
