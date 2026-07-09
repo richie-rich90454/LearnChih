@@ -40,6 +40,7 @@ import { useBackgroundSync } from "@/hooks/useBackgroundSync";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import ReportButton from "@/components/ReportButton";
 import { RelatedResources } from "@/components/RelatedResources";
+import AiFlashcardGenerator from "@/components/AiFlashcardGenerator";
 import { StaggerReveal } from "@/components/StaggerReveal";
 import { TagList } from "@/components/TagBadge";
 import { articleSchema, breadcrumbSchema } from "@/components/jsonLd";
@@ -425,6 +426,11 @@ export default function ResourceDetailPage() {
                 </div>
             </Card>
             </SplitView>
+
+            {/* AI flashcard generation (F4) */}
+            {authenticated && resource && (
+                <AiFlashcardGenerator resourceId={resource.id} />
+            )}
 
             {/* Thread / Discussion */}
             <section className={styles.thread} aria-label={t("resources.discussion")}>
