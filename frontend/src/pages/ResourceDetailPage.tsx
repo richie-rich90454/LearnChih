@@ -23,6 +23,7 @@ import {
     Bookmark24Regular,
     Bookmark24Filled,
     SplitHorizontal24Regular,
+    Print24Regular,
 } from "@fluentui/react-icons";
 import { useResource, useDeleteResource } from "@/hooks/useResources";
 import { useResourcePosts, useCreateResourcePost } from "@/hooks/useThreads";
@@ -239,7 +240,7 @@ export default function ResourceDetailPage() {
             />
             <ReadingProgress />
             {/* Back button */}
-            <div className={styles.backRow}>
+            <div className={styles.backRow} data-print="hide">
                 <Button
                     variant="subtle"
                     icon={<ArrowLeft24Regular />}
@@ -257,6 +258,15 @@ export default function ResourceDetailPage() {
                 </Button>
                 <ShareButton title={resourceTitle} url={articleUrl} />
                 <QrShare title={resourceTitle} url={articleUrl} />
+                <Button
+                    variant="outline"
+                    size="small"
+                    icon={<Print24Regular />}
+                    onClick={() => window.print()}
+                    aria-label={t("print.ariaLabel")}
+                >
+                    {t("print.action")}
+                </Button>
             </div>
 
             {/* Resource info (wrapped in SplitView for read-along notes) */}

@@ -237,3 +237,117 @@ nav .fui-Button .fui-Text.fui-Text {
     background-color: var(--accent-soft);
     color: var(--text-primary);
 }
+
+/* ---- Print-friendly stylesheets (F85) ----
+   Force a light, ink-economical print surface regardless of the on-screen
+   theme so dark-mode users get readable black-on-white output. Hide app
+   chrome (sidebar, header, footer, nav, workspace tabs, overlays) and any
+   element annotated with [data-print="hide"], then let the article content
+   fill the page. Avoid page breaks inside headings, cards, and articles.
+
+   Specificity strategy (no !important):
+   - The semantic tokens are redeclared on :root:root (a doubled pseudo-class,
+     specificity (0,2,0)) to tie the [data-theme="light"/"dark"] attribute
+     selectors in tokens.css and win by source order (this block is last).
+     Because every Card, text color, border, and shadow in the design system
+     consumes these tokens, a single override cascades everywhere.
+   - Chrome is hidden via element/attribute selectors that target the AppLayout
+     structure directly (aside, header, footer, nav) and Fluent overlay classes
+     (.fui-Toaster, .fui-Drawer, .fui-Overlay). These sit at (0,0,1)–(0,1,0)
+     with no competing display rule in print context. */
+@media print {
+    :root:root {
+        --surface-1: #ffffff;
+        --surface-2: #ffffff;
+        --surface-3: #ffffff;
+        --surface-sunken: #f4f4f5;
+        --text-primary: #000000;
+        --text-secondary: #4a4a50;
+        --text-disabled: #9a9aa0;
+        --text-on-accent: #ffffff;
+        --border-subtle: transparent;
+        --border-strong: transparent;
+        --accent: #1e4fd8;
+        --accent-hover: #1a47d0;
+        --accent-soft: #e8eefc;
+        --shadow-card: none;
+        --shadow-lift: none;
+        --shadow-focus: none;
+    }
+
+    body {
+        background: #ffffff;
+        color: #000000;
+    }
+
+    /* Hide app chrome, navigation, and interactive overlays. */
+    aside,
+    header,
+    footer,
+    nav,
+    [data-cookie-consent],
+    [data-print="hide"],
+    [role="tablist"],
+    .fui-Toaster,
+    .fui-Drawer,
+    .fui-Overlay,
+    .fui-DialogSurface__backdrop {
+        display: none;
+    }
+
+    /* Reset the main content area for full-width, full-height print. */
+    #main-content {
+        padding: 0;
+        margin: 0;
+        max-width: none;
+        background: #ffffff;
+        color: #000000;
+    }
+
+    /* Drop transitions and transforms so printed layout matches the box model. */
+    *,
+    *::before,
+    *::after {
+        transition: none;
+        animation: none;
+    }
+
+    /* Avoid breaking inside headings, cards, and articles. */
+    h1,
+    h2,
+    h3 {
+        break-after: avoid;
+    }
+    article,
+    .fui-Card {
+        break-inside: avoid;
+    }
+
+    /* Print links in near-black with underlines so they remain identifiable
+       without burning accent-colored ink. */
+    a,
+    a:visited {
+        color: #000000;
+        text-decoration: underline;
+    }
+
+    /* Append external link URLs inline so printed copies stay navigable.
+       Only http(s)/protocol-relative links are annotated; in-app routes
+       (starting with / or #) are omitted to keep the printout readable. */
+    a[href^="http"]::after,
+    a[href^="//"]::after {
+        content: " (" attr(href) ")";
+        color: var(--text-secondary);
+        font-size: 0.9em;
+        text-decoration: none;
+    }
+
+    /* Reveal the contents of any native <details> collapsibles in print. */
+    details:not([open]) > *:not(summary) {
+        display: block;
+    }
+
+    @page {
+        margin: 2cm;
+    }
+}
