@@ -1,0 +1,122 @@
+/**
+ * SavedSearches - sidebar list of saved searches (F34).
+ * Uses design-system tokens; no !important.
+ */
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    background: var(--surface-2);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.headerIcon {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    border-radius: var(--radius-input);
+    border: 1px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.item:hover {
+    background: var(--surface-sunken);
+}
+
+.itemActive {
+    border-color: var(--border-strong);
+    background: var(--accent-soft);
+}
+
+.runButton {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+    min-width: 0;
+    flex: 1;
+    font-family: var(--font-sans);
+}
+
+.name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.query {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex-shrink: 0;
+}
+
+.alertOn {
+    color: var(--accent);
+}
+
+.alertOff {
+    color: var(--text-disabled);
+    opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .item {
+        transition: none;
+    }
+}

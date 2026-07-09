@@ -210,6 +210,14 @@
         "loadError": "加载搜索结果失败。",
         "noResults": "未找到与“{{query}}”相关的结果。"
     },
+    "savedSearches": {
+        "title": "已保存的搜索",
+        "saveThisSearch": "保存此搜索",
+        "alreadySaved": "已保存",
+        "run": "运行已保存的搜索：{{name}}",
+        "emailAlertsLabel": "邮件提醒",
+        "delete": "删除已保存的搜索"
+    },
     "commandPalette": {
         "title": "命令面板",
         "placeholder": "输入命令或搜索...",
