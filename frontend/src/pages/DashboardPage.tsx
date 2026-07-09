@@ -23,6 +23,7 @@ import { Badge } from "@/components/ui/Badge";
 import { ResumeCard } from "@/components/ResumeCard";
 import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 import { PomodoroTimer } from "@/components/PomodoroTimer";
+import { BuddyMatch } from "@/components/BuddyMatch";
 import styles from "./DashboardPage.module.css";
 
 export default function DashboardPage() {
@@ -112,6 +113,9 @@ export default function DashboardPage() {
 
             {/* Onboarding checklist */}
             <OnboardingChecklist />
+
+            {/* Study-buddy suggestions (F39) */}
+            <BuddyMatch />
 
             {/* Quick stats */}
             <div className={styles.statsRow}>
