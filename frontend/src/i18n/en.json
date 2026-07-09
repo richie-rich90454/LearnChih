@@ -235,6 +235,21 @@
         "emailAlertsLabel": "Email alerts",
         "delete": "Delete saved search"
     },
+    "portfolio": {
+        "title": "Portfolio",
+        "add": "Add",
+        "edit": "Edit portfolio item",
+        "delete": "Delete portfolio item",
+        "empty": "No portfolio items yet.",
+        "open": "Open",
+        "addItem": "Add portfolio item",
+        "editItem": "Edit portfolio item",
+        "fieldTitle": "Title",
+        "fieldTitlePlaceholder": "e.g. Capstone project",
+        "fieldDescription": "Description",
+        "fieldDescriptionPlaceholder": "Briefly describe this work...",
+        "fieldUrl": "Link"
+    },
     "commandPalette": {
         "title": "Command palette",
         "placeholder": "Type a command or search...",

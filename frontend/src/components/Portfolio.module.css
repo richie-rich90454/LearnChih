@@ -1,0 +1,127 @@
+/**
+ * Portfolio - curated profile work showcase (F35).
+ * Uses design-system tokens; no !important.
+ */
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    background: var(--surface-2);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+}
+
+.empty {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border-radius: var(--radius-input);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-2);
+    transition: border-color 0.15s ease;
+}
+
+.item:hover {
+    border-color: var(--border-strong);
+}
+
+.itemBody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+    flex: 1;
+}
+
+.itemHeading {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.itemTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.itemLink {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.itemLink:hover {
+    text-decoration: underline;
+}
+
+.itemDesc {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.itemActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex-shrink: 0;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .item {
+        transition: none;
+    }
+}

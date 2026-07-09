@@ -35,6 +35,7 @@ import { BadgesWidget } from "@/components/BadgesWidget";
 import { FollowButton } from "@/components/FollowButton";
 import { EndorsementBadge } from "@/components/EndorsementBadge";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { Portfolio } from "@/components/Portfolio";
 import TwoFactorSetup from "@/components/TwoFactorSetup";
 import { useExportUserData, useDeleteUserAccount } from "@/hooks/useGdpr";
 import { Button } from "@/components/ui/Button";
@@ -306,6 +307,11 @@ export default function ProfilePage() {
                     )}
                 </div>
             </Card>
+
+            {/* Portfolio */}
+            {profile?.id && (
+                <Portfolio userId={profile.id} editable={isOwnProfile} />
+            )}
 
             {/* Notification preferences */}
             {isOwnProfile && (

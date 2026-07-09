@@ -218,6 +218,21 @@
         "emailAlertsLabel": "邮件提醒",
         "delete": "删除已保存的搜索"
     },
+    "portfolio": {
+        "title": "作品集",
+        "add": "添加",
+        "edit": "编辑作品",
+        "delete": "删除作品",
+        "empty": "暂无作品。",
+        "open": "打开",
+        "addItem": "添加作品",
+        "editItem": "编辑作品",
+        "fieldTitle": "标题",
+        "fieldTitlePlaceholder": "例如：毕业设计项目",
+        "fieldDescription": "描述",
+        "fieldDescriptionPlaceholder": "简要介绍这件作品……",
+        "fieldUrl": "链接"
+    },
     "commandPalette": {
         "title": "命令面板",
         "placeholder": "输入命令或搜索...",
