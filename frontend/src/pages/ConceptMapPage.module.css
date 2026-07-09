@@ -1,0 +1,65 @@
+/**
+ * ConceptMapPage - per-subject concept map (F6).
+ * Page shell with a header and a subject selector that gates the map canvas.
+ * All visuals derive from design-system tokens; no raw hex, no `!important`.
+ */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.pageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.headerLead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.headerIcon {
+    color: var(--accent);
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.selectorRow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.subjectSelect {
+    max-width: 320px;
+}
