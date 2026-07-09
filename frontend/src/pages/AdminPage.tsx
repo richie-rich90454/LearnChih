@@ -42,6 +42,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge, type BadgeVariant } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
+import AdminKpis from "@/components/admin/AdminKpis";
 import styles from "./Admin.module.css";
 
 const STATUS_OPTIONS = ["PENDING", "RESOLVED", "DISMISSED"];
@@ -192,6 +193,9 @@ export default function AdminPage() {
                 </span>
                 <h1 className={styles.title}>{t("admin.title")}</h1>
             </header>
+
+            {/* Platform-wide KPI cards (users, resources, posts, reports). */}
+            <AdminKpis />
 
             {/* KPI cards derived from the fetched reports (no extra calls). */}
             <div className={styles.statsGrid}>

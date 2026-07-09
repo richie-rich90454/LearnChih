@@ -1,0 +1,141 @@
+/**
+ * AdminKpis - KPI summary grid for the admin dashboard. Reuses the
+ * design-system Card primitive for surface/border/shadow; this module owns
+ * the inner metric layout (icon + trend, label, value, hint) via tokens.
+ */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-input);
+    background-color: var(--accent-soft);
+    color: var(--accent);
+}
+
+.trend {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+}
+
+.trendUp {
+    color: var(--status-success);
+}
+
+.trendDown {
+    color: var(--status-danger);
+}
+
+.trendIcon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.value {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.hint {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.errorState {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+}
+
+.errorText {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.retry {
+    align-self: flex-start;
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--accent);
+    background-color: var(--accent-soft);
+    border: 1px solid transparent;
+    border-radius: var(--radius-button);
+    cursor: pointer;
+    transition: background-color var(--motion-fast) var(--motion-ease);
+}
+
+.retry:hover {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .retry {
+        transition-duration: 0.01ms;
+    }
+}
+
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .value {
+        font-size: var(--font-size-2xl);
+    }
+}

@@ -57,4 +57,13 @@ public class PresenceService {
     public LocalDateTime lastSeen(Long userId) {
         return lastSeen.get(userId);
     }
+
+    /**
+     * Count of users with a heartbeat within the online window. Used by the
+     * admin stats endpoint as a best-effort "active now" signal.
+     */
+    public long countOnline() {
+        LocalDateTime cutoff = LocalDateTime.now().minusSeconds(ONLINE_WINDOW_SECONDS);
+        return lastSeen.values().stream().filter(seen -> seen.isAfter(cutoff)).count();
+    }
 }

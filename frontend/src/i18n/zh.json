@@ -270,6 +270,15 @@
         "sentCount_other": "{{count}} 个已发送的请求",
         "empty": "还没有好友。去找学习伙伴吧！"
     },
+    "buddyMatch": {
+        "title": "学习伙伴",
+        "subtitle": "与你学科相同的学习者",
+        "connect": "连接",
+        "dismiss": "忽略",
+        "sharedSubjects_one": "{{count}} 个相同学科",
+        "sharedSubjects_other": "{{count}} 个相同学科",
+        "empty": "暂无推荐。在个人资料中添加学科即可找到学习伙伴。"
+    },
     "commandPalette": {
         "title": "命令面板",
         "placeholder": "输入命令或搜索...",
@@ -333,7 +342,19 @@
         "delete": "删除",
         "confirmDeleteTitle": "确认删除",
         "confirmDeleteContent": "您确定要删除此{{type}}吗？此操作无法撤销。",
-        "permissionDenied": "您没有权限访问此页面。"
+        "permissionDenied": "您没有权限访问此页面。",
+        "kpiSection": "平台指标",
+        "kpisLoadError": "加载平台指标失败",
+        "kpiTotalUsers": "用户总数",
+        "kpiActiveToday": "当前在线",
+        "kpiTotalResources": "资源数",
+        "kpiTotalPosts": "帖子数",
+        "kpiPendingReports": "待处理举报",
+        "kpiNewSignups": "新增注册",
+        "kpiNewThisWeek": "本周新增 {{count}}",
+        "kpiNeedsAttention": "需要处理",
+        "kpiAllClear": "一切正常",
+        "kpiLastSevenDays": "近 7 天"
     },
     "status": {
         "pending": "待处理",

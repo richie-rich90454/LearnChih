@@ -287,6 +287,15 @@
         "sentCount_other": "{{count}} sent requests",
         "empty": "No friends yet. Find people to study with!"
     },
+    "buddyMatch": {
+        "title": "Study buddies",
+        "subtitle": "Learners who share your subjects",
+        "connect": "Connect",
+        "dismiss": "Dismiss",
+        "sharedSubjects_one": "{{count}} shared subject",
+        "sharedSubjects_other": "{{count}} shared subjects",
+        "empty": "No suggestions yet. Add subjects to your profile to find study buddies."
+    },
     "commandPalette": {
         "title": "Command palette",
         "placeholder": "Type a command or search...",
@@ -350,7 +359,19 @@
         "delete": "Delete",
         "confirmDeleteTitle": "Confirm Deletion",
         "confirmDeleteContent": "Are you sure you want to delete this {{type}}? This action cannot be undone.",
-        "permissionDenied": "You don't have permission to access this page."
+        "permissionDenied": "You don't have permission to access this page.",
+        "kpiSection": "Platform KPIs",
+        "kpisLoadError": "Failed to load platform KPIs",
+        "kpiTotalUsers": "Total Users",
+        "kpiActiveToday": "Active Now",
+        "kpiTotalResources": "Resources",
+        "kpiTotalPosts": "Posts",
+        "kpiPendingReports": "Pending Reports",
+        "kpiNewSignups": "New Signups",
+        "kpiNewThisWeek": "{{count}} new this week",
+        "kpiNeedsAttention": "Needs attention",
+        "kpiAllClear": "All clear",
+        "kpiLastSevenDays": "Last 7 days"
     },
     "status": {
         "pending": "Pending",
