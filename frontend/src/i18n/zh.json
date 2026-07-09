@@ -233,6 +233,18 @@
         "fieldDescriptionPlaceholder": "简要介绍这件作品……",
         "fieldUrl": "链接"
     },
+    "profileDetails": {
+        "title": "个人资料详情",
+        "edit": "编辑",
+        "editTitle": "编辑个人资料详情",
+        "status": "状态",
+        "statusPlaceholder": "例如：正在备战期末",
+        "pronouns": "代词",
+        "pronounsPlaceholder": "例如：她/她",
+        "timezone": "时区",
+        "timezoneHint": "使用 IANA 时区，例如 Asia/Shanghai",
+        "empty": "尚未设置详情。"
+    },
     "commandPalette": {
         "title": "命令面板",
         "placeholder": "输入命令或搜索...",

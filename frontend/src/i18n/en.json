@@ -250,6 +250,18 @@
         "fieldDescriptionPlaceholder": "Briefly describe this work...",
         "fieldUrl": "Link"
     },
+    "profileDetails": {
+        "title": "Profile details",
+        "edit": "Edit",
+        "editTitle": "Edit profile details",
+        "status": "Status",
+        "statusPlaceholder": "e.g. Studying for finals",
+        "pronouns": "Pronouns",
+        "pronounsPlaceholder": "e.g. she/her",
+        "timezone": "Timezone",
+        "timezoneHint": "Use an IANA timezone, e.g. Asia/Shanghai",
+        "empty": "No details set yet."
+    },
     "commandPalette": {
         "title": "Command palette",
         "placeholder": "Type a command or search...",

@@ -97,7 +97,7 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
         when(userSocialRepository.findByUserId(1L)).thenReturn(List.of());
 
-        UserProfileResponse response = userService.updateProfile(user, new UpdateProfileRequest("Alice", "New bio"));
+        UserProfileResponse response = userService.updateProfile(user, new UpdateProfileRequest("Alice", "New bio", null, null, null));
 
         assertThat(user.getName()).isEqualTo("Alice");
         assertThat(user.getBio()).isEqualTo("New bio");

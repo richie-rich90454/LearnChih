@@ -9,6 +9,9 @@ export interface UserProfile {
     email: string;
     name: string;
     bio: string;
+    pronouns: string | null;
+    timezone: string | null;
+    status: string | null;
     role: string;
     credits: number;
     subjects: string[];
@@ -21,6 +24,9 @@ export interface UserProfile {
 export interface UpdateProfileRequest {
     name: string;
     bio: string;
+    pronouns?: string;
+    timezone?: string;
+    status?: string;
 }
 
 export interface UserSocialRequest {

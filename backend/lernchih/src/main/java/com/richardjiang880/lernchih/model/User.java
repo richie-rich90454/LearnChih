@@ -35,6 +35,15 @@ public class User {
     @Column(columnDefinition = "TEXT")
     private String bio;
 
+    @Column(name = "pronouns", length = 40)
+    private String pronouns;
+
+    @Column(name = "timezone", length = 60)
+    private String timezone;
+
+    @Column(name = "profile_status", length = 120)
+    private String status;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;

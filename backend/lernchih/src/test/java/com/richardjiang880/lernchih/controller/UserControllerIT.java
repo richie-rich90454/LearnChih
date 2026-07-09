@@ -68,7 +68,7 @@ class UserControllerIT extends AbstractControllerIntegrationTest {
         ResponseEntity<UserProfileResponse> response = restTemplate.exchange(
                 "/api/users/me",
                 HttpMethod.PUT,
-                new HttpEntity<>(new UpdateProfileRequest("Alice Updated", "New bio"), authHeaders(token)),
+                new HttpEntity<>(new UpdateProfileRequest("Alice Updated", "New bio", null, null, null), authHeaders(token)),
                 UserProfileResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

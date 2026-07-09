@@ -46,6 +46,9 @@ public class UserService {
     public UserProfileResponse updateProfile(User user, UpdateProfileRequest request) {
         user.setName(request.name());
         user.setBio(request.bio());
+        user.setPronouns(normalizeBlank(request.pronouns()));
+        user.setTimezone(normalizeBlank(request.timezone()));
+        user.setStatus(normalizeBlank(request.status()));
         userRepository.save(user);
         return toProfileResponse(user);
     }
@@ -97,11 +100,18 @@ public class UserService {
                 user.getEmail(),
                 user.getName(),
                 user.getBio(),
+                user.getPronouns(),
+                user.getTimezone(),
+                user.getStatus(),
                 user.getRole().name(),
                 user.getCredits(),
                 subjectNames,
                 socials,
                 user.getCreatedAt()
         );
+    }
+
+    private String normalizeBlank(String value) {
+        return (value == null || value.isBlank()) ? null : value.trim();
     }
 }

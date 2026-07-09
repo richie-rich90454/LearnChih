@@ -47,7 +47,7 @@ class UserControllerTest {
     }
 
     private UserProfileResponse profile() {
-        return new UserProfileResponse(1L, "alice@example.com", "Alice", "bio", "STUDENT", 0, List.of(), List.of(), null);
+        return new UserProfileResponse(1L, "alice@example.com", "Alice", "bio", null, null, null, "STUDENT", 0, List.of(), List.of(), null);
     }
 
     @Test
@@ -72,8 +72,8 @@ class UserControllerTest {
     @Test
     void updateProfileReturnsUpdatedProfile() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-        UpdateProfileRequest request = new UpdateProfileRequest("Alice Updated", "New bio");
-        UserProfileResponse updated = new UserProfileResponse(1L, "alice@example.com", "Alice Updated", "New bio", "STUDENT", 0, List.of(), List.of(), null);
+        UpdateProfileRequest request = new UpdateProfileRequest("Alice Updated", "New bio", null, null, null);
+        UserProfileResponse updated = new UserProfileResponse(1L, "alice@example.com", "Alice Updated", "New bio", null, null, null, "STUDENT", 0, List.of(), List.of(), null);
         when(userService.updateProfile(user, request)).thenReturn(updated);
 
         ResponseEntity<UserProfileResponse> result = controller.updateProfile(userDetails(), request);

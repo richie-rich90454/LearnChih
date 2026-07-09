@@ -36,6 +36,7 @@ import { FollowButton } from "@/components/FollowButton";
 import { EndorsementBadge } from "@/components/EndorsementBadge";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { Portfolio } from "@/components/Portfolio";
+import { ProfileDetails } from "@/components/ProfileDetails";
 import TwoFactorSetup from "@/components/TwoFactorSetup";
 import { useExportUserData, useDeleteUserAccount } from "@/hooks/useGdpr";
 import { Button } from "@/components/ui/Button";
@@ -311,6 +312,11 @@ export default function ProfilePage() {
             {/* Portfolio */}
             {profile?.id && (
                 <Portfolio userId={profile.id} editable={isOwnProfile} />
+            )}
+
+            {/* Profile details: status, pronouns, timezone (F36) */}
+            {profile && (
+                <ProfileDetails profile={profile} editable={isOwnProfile} />
             )}
 
             {/* Notification preferences */}
