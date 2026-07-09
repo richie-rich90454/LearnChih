@@ -596,6 +596,13 @@
         "emptyTitle": "暂无消息",
         "emptyDescription": "从用户个人资料页面开始一段对话。"
     },
+    "groupChat": {
+        "title": "群聊",
+        "open": "聊天",
+        "empty": "还没有消息，开始聊天吧！",
+        "composerPlaceholder": "向群组发送消息...",
+        "send": "发送"
+    },
     "cookieConsent": {
         "title": "Cookie 偏好设置",
         "body": "我们使用 Cookie 来维持网站运行（必要 Cookie）、启用额外功能（功能 Cookie）以及了解您如何使用网站（分析 Cookie）。必要 Cookie 始终开启。查看我们的",

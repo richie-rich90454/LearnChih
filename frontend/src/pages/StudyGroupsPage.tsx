@@ -1,6 +1,14 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Spinner } from "@fluentui/react-components";
-import { PeopleCommunity24Regular } from "@fluentui/react-icons";
+import {
+    Spinner,
+    Dialog,
+    DialogSurface,
+    DialogBody,
+    DialogTitle,
+    DialogContent,
+} from "@fluentui/react-components";
+import { PeopleCommunity24Regular, Chat24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
     getStudyGroups,
@@ -10,6 +18,7 @@ import {
 } from "../api/studyGroups";
 import Seo from "../components/Seo";
 import { CreateStudyGroupDialog } from "../components/CreateStudyGroupDialog";
+import { StudyGroupChat } from "../components/StudyGroupChat";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { Button } from "../components/ui/Button";
@@ -25,6 +34,8 @@ export default function StudyGroupsPage() {
     });
 
     const groups = data ?? [];
+
+    const [chatGroup, setChatGroup] = useState<StudyGroup | null>(null);
 
     const handleJoin = async (id: number) => {
         await joinStudyGroup(id);
@@ -97,10 +108,36 @@ export default function StudyGroupsPage() {
                             >
                                 Leave
                             </Button>
+                            <Button
+                                variant="subtle"
+                                size="small"
+                                icon={<Chat24Regular />}
+                                onClick={() => setChatGroup(group)}
+                            >
+                                {t("groupChat.open")}
+                            </Button>
                         </div>
                     </Card>
                 ))}
             </div>
+
+            <Dialog
+                open={chatGroup !== null}
+                onOpenChange={(_: unknown, d: { open: boolean }) => {
+                    if (!d.open) setChatGroup(null);
+                }}
+            >
+                <DialogSurface>
+                    <DialogBody>
+                        <DialogTitle>
+                            {chatGroup ? `${t("groupChat.title")} — ${chatGroup.name}` : t("groupChat.title")}
+                        </DialogTitle>
+                        <DialogContent>
+                            {chatGroup && <StudyGroupChat groupId={chatGroup.id} />}
+                        </DialogContent>
+                    </DialogBody>
+                </DialogSurface>
+            </Dialog>
         </div>
     );
 }
