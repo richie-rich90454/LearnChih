@@ -620,6 +620,15 @@
         "composerPlaceholder": "Message the group...",
         "send": "Send"
     },
+    "threadSubscription": {
+        "label": "Subscribe",
+        "frequencies": {
+            "NONE": "Off",
+            "INSTANT": "Instant",
+            "DAILY": "Daily",
+            "WEEKLY": "Weekly"
+        }
+    },
     "cookieConsent": {
         "title": "Cookie preferences",
         "body": "We use cookies to keep the site working (necessary), enable extra features (functional), and understand how you use the site (analytics). Necessary cookies are always on. See our",

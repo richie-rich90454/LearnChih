@@ -603,6 +603,15 @@
         "composerPlaceholder": "向群组发送消息...",
         "send": "发送"
     },
+    "threadSubscription": {
+        "label": "订阅",
+        "frequencies": {
+            "NONE": "关闭",
+            "INSTANT": "即时",
+            "DAILY": "每天",
+            "WEEKLY": "每周"
+        }
+    },
     "cookieConsent": {
         "title": "Cookie 偏好设置",
         "body": "我们使用 Cookie 来维持网站运行（必要 Cookie）、启用额外功能（功能 Cookie）以及了解您如何使用网站（分析 Cookie）。必要 Cookie 始终开启。查看我们的",

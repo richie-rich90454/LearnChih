@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { recordLastVisited } from "@/components/ResumeCard";
 import { ShareButton } from "@/components/ShareButton";
+import { ThreadSubscription } from "@/components/ThreadSubscription";
 import styles from "./Detail.module.css";
 
 function getBaseUrl(): string {
@@ -223,6 +224,9 @@ export default function ChannelThreadPage() {
                     {t("channels.backToChannels")}
                 </Button>
                 <ShareButton title={threadTitle} url={threadUrl} />
+                {authenticated && threadId && (
+                    <ThreadSubscription threadId={Number(threadId)} />
+                )}
             </div>
 
             {/* Thread info */}

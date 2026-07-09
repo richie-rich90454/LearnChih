@@ -1,6 +1,7 @@
 package com.richardjiang880.lernchih.model;
 
 import com.richardjiang880.lernchih.model.enums.ContentFormat;
+import com.richardjiang880.lernchih.model.enums.DigestFrequency;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -36,6 +37,15 @@ public class ResourceThread {
     @OrderBy("createdAt ASC")
     @Builder.Default
     private List<ResourcePost> posts = new ArrayList<>();
+
+    /**
+     * Default digest frequency advertised for this thread (F33). Individual
+     * per-user subscriptions override this via ThreadSubscription.frequency.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "digest_frequency", length = 20)
+    @Builder.Default
+    private DigestFrequency digestFrequency = DigestFrequency.NONE;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
