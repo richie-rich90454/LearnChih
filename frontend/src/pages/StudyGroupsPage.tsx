@@ -19,6 +19,7 @@ import {
 import Seo from "../components/Seo";
 import { CreateStudyGroupDialog } from "../components/CreateStudyGroupDialog";
 import { StudyGroupChat } from "../components/StudyGroupChat";
+import { GroupEvents } from "../components/GroupEvents";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { Button } from "../components/ui/Button";
@@ -36,6 +37,7 @@ export default function StudyGroupsPage() {
     const groups = data ?? [];
 
     const [chatGroup, setChatGroup] = useState<StudyGroup | null>(null);
+    const [eventsGroup, setEventsGroup] = useState<StudyGroup | null>(null);
 
     const handleJoin = async (id: number) => {
         await joinStudyGroup(id);
@@ -134,6 +136,24 @@ export default function StudyGroupsPage() {
                         </DialogTitle>
                         <DialogContent>
                             {chatGroup && <StudyGroupChat groupId={chatGroup.id} />}
+                        </DialogContent>
+                    </DialogBody>
+                </DialogSurface>
+            </Dialog>
+
+            <Dialog
+                open={eventsGroup !== null}
+                onOpenChange={(_: unknown, d: { open: boolean }) => {
+                    if (!d.open) setEventsGroup(null);
+                }}
+            >
+                <DialogSurface>
+                    <DialogBody>
+                        <DialogTitle>
+                            {eventsGroup ? `${t("groupEvents.title")} — ${eventsGroup.name}` : t("groupEvents.title")}
+                        </DialogTitle>
+                        <DialogContent>
+                            {eventsGroup && <GroupEvents groupId={eventsGroup.id} />}
                         </DialogContent>
                     </DialogBody>
                 </DialogSurface>

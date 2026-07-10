@@ -1054,6 +1054,36 @@
         "fieldMaxMembers": "人数上限",
         "fieldMaxMembersPlaceholder": "可选",
         "fieldMaxMembersHelper": "留空表示不限人数。"
+    },
+    "groupEvents": {
+        "title": "小组活动",
+        "subtitle": "聚会与学习时段",
+        "createButton": "创建活动",
+        "createTitle": "创建活动",
+        "createConfirm": "创建",
+        "createError": "创建活动失败，请重试。",
+        "fieldName": "活动标题",
+        "fieldNamePlaceholder": "例如：期末复习专场",
+        "fieldDescription": "描述",
+        "fieldDescriptionPlaceholder": "活动内容是什么？",
+        "fieldStart": "开始时间",
+        "fieldEnd": "结束时间",
+        "fieldLocation": "地点",
+        "fieldLocationPlaceholder": "例如：图书馆 204 室",
+        "fieldMeetingUrl": "会议链接",
+        "fieldMeetingUrlPlaceholder": "https://meet.example.com/...",
+        "meetingLink": "加入会议",
+        "going": "参加",
+        "maybe": "待定",
+        "not_going": "不参加",
+        "attendees": "参加人员",
+        "attendeesTitle": "参加人员",
+        "attendeesEmpty": "暂无回应。",
+        "noEvents": "暂无活动，创建一个开始吧！",
+        "errorTitle": "加载活动失败",
+        "errorDescription": "请重试。",
+        "deleteEvent": "删除",
+        "deleteConfirm": "确认删除此活动？此操作无法撤销。"
     }
 }
 

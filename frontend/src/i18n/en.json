@@ -1053,6 +1053,36 @@
         "fieldMaxMembers": "Max members",
         "fieldMaxMembersPlaceholder": "Optional",
         "fieldMaxMembersHelper": "Leave blank for unlimited members."
+    },
+    "groupEvents": {
+        "title": "Group Events",
+        "subtitle": "Meetups and study sessions",
+        "createButton": "Create Event",
+        "createTitle": "Create Event",
+        "createConfirm": "Create",
+        "createError": "Failed to create event. Please try again.",
+        "fieldName": "Event title",
+        "fieldNamePlaceholder": "e.g. Final exam prep session",
+        "fieldDescription": "Description",
+        "fieldDescriptionPlaceholder": "What will you cover?",
+        "fieldStart": "Starts",
+        "fieldEnd": "Ends",
+        "fieldLocation": "Location",
+        "fieldLocationPlaceholder": "e.g. Library Room 204",
+        "fieldMeetingUrl": "Meeting URL",
+        "fieldMeetingUrlPlaceholder": "https://meet.example.com/...",
+        "meetingLink": "Join meeting",
+        "going": "Going",
+        "maybe": "Maybe",
+        "not_going": "Not going",
+        "attendees": "Attendees",
+        "attendeesTitle": "Attendees",
+        "attendeesEmpty": "No responses yet.",
+        "noEvents": "No events scheduled. Create one to get started!",
+        "errorTitle": "Failed to load events",
+        "errorDescription": "Please try again.",
+        "deleteEvent": "Delete",
+        "deleteConfirm": "Delete this event? This action cannot be undone."
     }
 }
 
