@@ -1,0 +1,23 @@
+/**
+ * MaintenanceBanner - site-wide banner shown when the maintenance_banner
+ * system setting is enabled. Uses Fluent MessageBar for a11y; this module
+ * only owns the wrapper layout. No !important. All tokens from the
+ * design-system.
+ */
+
+.bannerWrap {
+    width: 100%;
+}
+
+.messageBar {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+@media (max-width: 640px) {
+    .bannerWrap {
+        font-size: var(--font-size-sm);
+    }
+}
