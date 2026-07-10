@@ -426,6 +426,22 @@
         "confirmDeleteTitle": "Delete selected users?",
         "confirmDeleteContent": "You are about to delete {{count}} user(s). This action cannot be undone."
     },
+    "moderationQueue": {
+        "title": "Moderation Queue",
+        "filterByStatus": "Filter by status",
+        "loadError": "Failed to load moderation queue",
+        "noItems": "No items in the queue.",
+        "reporter": "Reporter",
+        "reason": "Reason",
+        "assigned": "Assigned",
+        "unassigned": "Unassigned",
+        "assign": "Assign to me",
+        "resolve": "Resolve",
+        "dismiss": "Dismiss",
+        "slaOverdue": "Overdue",
+        "slaDueSoon": "Due soon",
+        "slaRemaining": "{{time}} remaining"
+    },
     "status": {
         "pending": "Pending",
         "resolved": "Resolved",

@@ -410,6 +410,22 @@
         "confirmDeleteTitle": "删除所选用户？",
         "confirmDeleteContent": "您即将删除 {{count}} 位用户。此操作无法撤销。"
     },
+    "moderationQueue": {
+        "title": "审核队列",
+        "filterByStatus": "按状态筛选",
+        "loadError": "加载审核队列失败",
+        "noItems": "队列中没有待审核项。",
+        "reporter": "举报者",
+        "reason": "原因",
+        "assigned": "处理人",
+        "unassigned": "未分配",
+        "assign": "分配给我",
+        "resolve": "解决",
+        "dismiss": "驳回",
+        "slaOverdue": "已逾期",
+        "slaDueSoon": "即将到期",
+        "slaRemaining": "剩余 {{time}}"
+    },
     "status": {
         "pending": "待处理",
         "resolved": "已解决",
