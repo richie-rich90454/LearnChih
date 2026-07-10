@@ -52,6 +52,7 @@ const CourseDetailPage = lazy(() => import("./pages/CourseDetailPage"));
 const ConceptMapPage = lazy(() => import("./pages/ConceptMapPage"));
 const StudyStatsPage = lazy(() => import("./pages/StudyStatsPage"));
 const StudyBuddyPage = lazy(() => import("./pages/StudyBuddyPage"));
+const CohortsPage = lazy(() => import("./pages/CohortsPage"));
 const NotesPage = lazy(() => import("./pages/NotesPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
@@ -225,6 +226,7 @@ function AppShell() {
                         <Route path="/study-stats" element={<StudyStatsPage />} />
                         <Route path="/notes" element={<NotesPage />} />
                         <Route path="/study-buddy" element={<StudyBuddyPage />} />
+                        <Route path="/cohorts" element={<CohortsPage />} />
                         <Route path="/courses/:id" element={<CourseDetailPage />} />
                         <Route path="/messages" element={<MessagesPage />} />
                         <Route path="/admin" element={<AdminDashboardPage />} />
