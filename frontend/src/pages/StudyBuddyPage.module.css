@@ -1,0 +1,189 @@
+/**
+ * StudyBuddyPage - study-buddy matching (F39).
+ * A vertical list of match cards, each showing the buddy identity, a
+ * compatibility score with a progress bar, and accept/decline actions.
+ * All visuals derive from design-system tokens; no raw hex, no !important.
+ */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+/* ----------------------- Page header ----------------------- */
+.pageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.headerLead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.headerIcon {
+    color: var(--accent);
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Match list ----------------------- */
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.matchCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    transition: box-shadow var(--motion-fast) var(--motion-ease);
+}
+
+.matchCard:hover {
+    box-shadow: var(--shadow-lift);
+}
+
+.matchTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.identity {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.identity:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-input);
+}
+
+.identityText {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+}
+
+.userName {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ----------------------- Score block ----------------------- */
+.scoreBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-1);
+    flex-shrink: 0;
+}
+
+.scoreIcon {
+    color: var(--accent);
+}
+
+.score {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    color: var(--accent);
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.scoreLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Score bar ----------------------- */
+.scoreBar {
+    width: 100%;
+    height: 6px;
+    border-radius: var(--radius-pill);
+    background-color: var(--surface-sunken);
+    overflow: hidden;
+}
+
+.scoreFill {
+    height: 100%;
+    border-radius: var(--radius-pill);
+    background-color: var(--accent-fill);
+    transition: width var(--motion-base) var(--motion-ease);
+}
+
+/* ----------------------- Actions ----------------------- */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+/* ----------------------- Motion + responsive ----------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .matchCard,
+    .scoreFill {
+        transition: none;
+    }
+}
+
+@media (max-width: 560px) {
+    .matchTop {
+        align-items: flex-start;
+    }
+
+    .scoreBlock {
+        align-items: flex-start;
+    }
+}
