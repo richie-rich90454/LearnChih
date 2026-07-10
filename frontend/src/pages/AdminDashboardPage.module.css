@@ -1,0 +1,255 @@
+/**
+ * AdminDashboardPage - co-located CSS Module skinning the admin KPI dashboard
+ * with design-system tokens. KPI cards grid + inline SVG charts + quick-link
+ * tiles. Fluent UI v9 keeps behavior + a11y; these rules own the look.
+ *
+ * No !important. All colors via tokens.css custom properties. Animations
+ * respect the global prefers-reduced-motion guard in index.css.
+ */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 1100px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.headerIcon {
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+/* ----------------------- KPI cards grid ----------------------- */
+.kpiGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.kpiCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.kpiHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kpiIcon {
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+}
+
+.kpiTrend {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+}
+
+.kpiTrendUp {
+    color: var(--status-success);
+}
+
+.kpiTrendDown {
+    color: var(--status-danger);
+}
+
+.trendIcon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.kpiLabel {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.kpiValue {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.kpiHint {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Charts ----------------------- */
+.chartsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-4);
+}
+
+.chartCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.chartTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.chart {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.gridLine {
+    stroke: var(--border-subtle);
+    stroke-width: 1;
+}
+
+.axisLabel {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    fill: var(--text-secondary);
+}
+
+.barValue {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: var(--font-weight-semibold);
+    fill: var(--text-primary);
+}
+
+.bar {
+    fill: var(--accent-fill);
+}
+
+.hbar {
+    fill: var(--accent);
+}
+
+/* ----------------------- Quick links ----------------------- */
+.sectionTitle {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.linksGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.linkCard {
+    padding: 0;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.linkBody {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.linkLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.linkDesc {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.linkIcon {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+/* ----------------------- Error state ----------------------- */
+.errorState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-12) var(--space-6);
+    text-align: center;
+}
+
+.errorTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+/* ----------------------- Responsive ----------------------- */
+@media (max-width: 640px) {
+    .page {
+        gap: var(--space-4);
+    }
+}

@@ -15,6 +15,7 @@
         "review": "复习",
         "playlists": "播放列表",
         "studyStats": "学习统计",
+        "notes": "笔记",
         "moderation": "内容审核",
         "messages": "消息",
         "sections": {
@@ -356,6 +357,27 @@
         "kpiAllClear": "一切正常",
         "kpiLastSevenDays": "近 7 天"
     },
+    "adminDashboard": {
+        "totalThreads": "讨论帖",
+        "reportedContent": "举报内容",
+        "contentVolumeChart": "内容总量",
+        "engagementChart": "社区活跃度",
+        "chartUsers": "用户",
+        "chartResources": "资源",
+        "chartThreads": "讨论",
+        "chartPosts": "帖子",
+        "quickLinks": "管理板块",
+        "linkUsers": "用户管理",
+        "linkUsersDesc": "搜索用户并管理角色与状态",
+        "linkModeration": "审核队列",
+        "linkModerationDesc": "带 SLA 跟踪的举报内容审核",
+        "linkAuditLog": "审计日志",
+        "linkAuditLogDesc": "查看管理操作记录",
+        "linkFeatureFlags": "功能开关",
+        "linkFeatureFlagsDesc": "开启或关闭平台功能",
+        "linkHealth": "系统健康",
+        "linkHealthDesc": "监控数据库、内存与运行时间"
+    },
     "status": {
         "pending": "待处理",
         "resolved": "已解决",
@@ -655,6 +677,26 @@
         "sun": "周日",
         "noData": "还没有学习会话记录。启动专注计时器即可查看统计。",
         "loading": "加载统计中..."
+    },
+    "notes": {
+        "title": "笔记",
+        "subtitle": "记录想法，用 [[双向链接]] 互联笔记。",
+        "newNote": "新建笔记",
+        "searchPlaceholder": "搜索笔记...",
+        "titleField": "笔记标题",
+        "contentPlaceholder": "在此撰写笔记。使用 [[笔记标题]] 链接到其他笔记。",
+        "untitled": "无标题",
+        "empty": "还没有笔记。创建一个开始吧。",
+        "selectTitle": "选择一篇笔记",
+        "selectDescription": "从列表中选择一篇笔记开始编辑，或新建一篇。",
+        "preview": "预览",
+        "previewEmpty": "暂无内容可预览。",
+        "wikilinkHint": "使用 [[标题]] 链接笔记",
+        "notFound": "未找到标题为“{{title}}”的笔记。",
+        "unsaved": "未保存",
+        "saved": "笔记已保存。",
+        "created": "笔记已创建。",
+        "deleted": "笔记已删除。"
     },
     "profile": {
         "title": "个人资料",
