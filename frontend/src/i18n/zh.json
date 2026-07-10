@@ -426,6 +426,19 @@
         "slaDueSoon": "即将到期",
         "slaRemaining": "剩余 {{time}}"
     },
+    "auditLog": {
+        "title": "审计日志",
+        "searchPlaceholder": "按操作搜索...",
+        "filterByAction": "按操作筛选",
+        "loadError": "加载审计日志失败",
+        "noEntries": "暂无审计日志。",
+        "colId": "ID",
+        "colActor": "操作者",
+        "colAction": "操作",
+        "colTarget": "目标",
+        "colIp": "IP 地址",
+        "colTime": "时间"
+    },
     "status": {
         "pending": "待处理",
         "resolved": "已解决",

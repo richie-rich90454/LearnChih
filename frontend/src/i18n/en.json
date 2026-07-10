@@ -442,6 +442,19 @@
         "slaDueSoon": "Due soon",
         "slaRemaining": "{{time}} remaining"
     },
+    "auditLog": {
+        "title": "Audit Log",
+        "searchPlaceholder": "Search by action...",
+        "filterByAction": "Filter by action",
+        "loadError": "Failed to load audit log",
+        "noEntries": "No audit log entries.",
+        "colId": "ID",
+        "colActor": "Actor",
+        "colAction": "Action",
+        "colTarget": "Target",
+        "colIp": "IP Address",
+        "colTime": "Time"
+    },
     "status": {
         "pending": "Pending",
         "resolved": "Resolved",

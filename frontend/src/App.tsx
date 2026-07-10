@@ -37,6 +37,7 @@ const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
 const AdminDashboardPage = lazy(() => import("./pages/AdminDashboardPage"));
 const AdminUsersPage = lazy(() => import("./pages/AdminUsersPage"));
 const ModerationQueuePage = lazy(() => import("./pages/ModerationQueuePage"));
+const AuditLogPage = lazy(() => import("./pages/AuditLogPage"));
 const ModerationPage = lazy(() => import("./pages/ModerationPage"));
 const ApiDocsPage = lazy(() => import("./pages/ApiDocsPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
@@ -226,6 +227,7 @@ function AppShell() {
                         <Route path="/admin" element={<AdminDashboardPage />} />
                         <Route path="/admin/users" element={<AdminUsersPage />} />
                         <Route path="/admin/moderation" element={<ModerationQueuePage />} />
+                        <Route path="/admin/audit-log" element={<AuditLogPage />} />
                         <Route path="/moderation" element={<ModerationPage />} />
                     </Route>
                 </Route>
