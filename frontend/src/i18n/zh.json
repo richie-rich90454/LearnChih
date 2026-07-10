@@ -449,6 +449,10 @@
         "toggleAriaLabel": "切换功能开关 {{key}}",
         "lastUpdated": "最后更新于 {{time}}"
     },
+    "maintenanceBanner": {
+        "title": "维护通知",
+        "dismiss": "关闭"
+    },
     "status": {
         "pending": "待处理",
         "resolved": "已解决",
@@ -958,5 +962,47 @@
         "errorTitle": "无法加载推荐",
         "errorDescription": "暂时无法加载学习伙伴推荐，请稍后重试。",
         "acceptError": "无法发送连接请求，请稍后重试。"
+    },
+    "cohorts": {
+        "title": "学习小组",
+        "subtitle": "围绕某一学科、有时间限制的学习小组",
+        "createButton": "新建小组",
+        "createTitle": "创建学习小组",
+        "createConfirm": "创建小组",
+        "createError": "无法创建小组，请稍后重试。",
+        "join": "加入",
+        "leave": "退出",
+        "full": "已满",
+        "joinError": "无法加入该小组，可能已满或你已是成员。",
+        "viewMembers": "成员",
+        "memberCount": "成员数",
+        "window": "时间窗",
+        "notSet": "不限",
+        "emptyTitle": "暂无学习小组",
+        "emptyDescription": "创建第一个小组，让同学们围绕学科和截止日期一起学习。",
+        "errorTitle": "无法加载学习小组",
+        "errorDescription": "暂时无法加载学习小组，请稍后重试。",
+        "membersTitle": "成员列表",
+        "membersEmpty": "暂无成员。",
+        "membersError": "无法加载成员列表，请稍后重试。",
+        "joinedOn": "加入于 {{date}}",
+        "role": {
+            "leader": "组长",
+            "member": "成员",
+            "visitor": "访客"
+        },
+        "fieldName": "名称",
+        "fieldNamePlaceholder": "例如：微积分 II — 春季冲刺",
+        "fieldDescription": "描述",
+        "fieldDescriptionPlaceholder": "这个小组将学习什么？",
+        "fieldSubjectId": "学科 ID",
+        "fieldSubjectIdPlaceholder": "可选",
+        "fieldSubjectIdHelper": "将小组关联到某个学科。留空表示跨学科小组。",
+        "fieldStart": "开始日期",
+        "fieldEnd": "结束日期",
+        "fieldMaxMembers": "人数上限",
+        "fieldMaxMembersPlaceholder": "可选",
+        "fieldMaxMembersHelper": "留空表示不限人数。"
     }
 }
+

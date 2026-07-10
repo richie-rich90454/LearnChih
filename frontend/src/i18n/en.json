@@ -465,6 +465,10 @@
         "toggleAriaLabel": "Toggle feature flag {{key}}",
         "lastUpdated": "Last updated {{time}}"
     },
+    "maintenanceBanner": {
+        "title": "Maintenance Notice",
+        "dismiss": "Dismiss"
+    },
     "status": {
         "pending": "Pending",
         "resolved": "Resolved",
@@ -957,5 +961,47 @@
         "errorTitle": "Couldn't load suggestions",
         "errorDescription": "We couldn't load your study-buddy suggestions right now. Please try again.",
         "acceptError": "Couldn't send the connection request. Please try again."
+    },
+    "cohorts": {
+        "title": "Cohorts",
+        "subtitle": "Time-bounded study groups focused on a shared subject",
+        "createButton": "New cohort",
+        "createTitle": "Create a cohort",
+        "createConfirm": "Create cohort",
+        "createError": "Couldn't create the cohort. Please try again.",
+        "join": "Join",
+        "leave": "Leave",
+        "full": "Full",
+        "joinError": "Couldn't join the cohort. It may be full or you may already be a member.",
+        "viewMembers": "Members",
+        "memberCount": "Members",
+        "window": "Window",
+        "notSet": "Open",
+        "emptyTitle": "No cohorts yet",
+        "emptyDescription": "Create the first cohort to bring learners together around a subject and a deadline.",
+        "errorTitle": "Couldn't load cohorts",
+        "errorDescription": "We couldn't load cohorts right now. Please try again.",
+        "membersTitle": "Members",
+        "membersEmpty": "No members yet.",
+        "membersError": "Couldn't load members. Please try again.",
+        "joinedOn": "Joined {{date}}",
+        "role": {
+            "leader": "Leader",
+            "member": "Member",
+            "visitor": "Visitor"
+        },
+        "fieldName": "Name",
+        "fieldNamePlaceholder": "e.g. Calculus II — Spring sprint",
+        "fieldDescription": "Description",
+        "fieldDescriptionPlaceholder": "What will this cohort work on?",
+        "fieldSubjectId": "Subject ID",
+        "fieldSubjectIdPlaceholder": "Optional",
+        "fieldSubjectIdHelper": "Link this cohort to a subject. Leave blank for cross-subject cohorts.",
+        "fieldStart": "Start date",
+        "fieldEnd": "End date",
+        "fieldMaxMembers": "Max members",
+        "fieldMaxMembersPlaceholder": "Optional",
+        "fieldMaxMembersHelper": "Leave blank for unlimited members."
     }
 }
+

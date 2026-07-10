@@ -5,6 +5,7 @@ import RequireAuth from "./components/RequireAuth";
 import AppLayout from "./components/AppLayout";
 import CookieConsent from "./components/CookieConsent";
 import Preconnect from "./components/Preconnect";
+import { MaintenanceBanner } from "./components/MaintenanceBanner";
 import { UpdatePrompt } from "./components/UpdatePrompt";
 import { InstallPrompt } from "./components/InstallPrompt";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -222,6 +223,7 @@ function AppShell() {
                         <Route path="/playlists" element={<PlaylistsPage />} />
                         <Route path="/concept-map" element={<ConceptMapPage />} />
                         <Route path="/study-stats" element={<StudyStatsPage />} />
+                        <Route path="/notes" element={<NotesPage />} />
                         <Route path="/study-buddy" element={<StudyBuddyPage />} />
                         <Route path="/courses/:id" element={<CourseDetailPage />} />
                         <Route path="/messages" element={<MessagesPage />} />
@@ -260,6 +262,7 @@ export default function App() {
             prefetchRoute("study-stats", () => import("./pages/StudyStatsPage"));
             prefetchRoute("course-detail", () => import("./pages/CourseDetailPage"));
             prefetchRoute("messages", () => import("./pages/MessagesPage"));
+            prefetchRoute("notes", () => import("./pages/NotesPage"));
         };
         if (typeof window.requestIdleCallback === "function") {
             window.requestIdleCallback(run);
@@ -296,6 +299,7 @@ export default function App() {
         <BrowserRouter>
             <Preconnect />
             <RouteAnnouncer />
+            <MaintenanceBanner />
             <ErrorBoundary>
                 <Suspense fallback={<LoadingFallback />}>
                     <AppShell />

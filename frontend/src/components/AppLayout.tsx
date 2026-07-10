@@ -89,6 +89,7 @@ const getNavSections = (
         { path: "/review", label: t("nav.review"), icon: <CalendarClock24Regular /> },
         { path: "/playlists", label: t("nav.playlists"), icon: <List24Regular /> },
         { path: "/study-stats", label: t("nav.studyStats"), icon: <ChartMultiple24Regular /> },
+        { path: "/notes", label: t("nav.notes"), icon: <Document24Regular /> },
     ];
     const accountItems: NavItem[] = [
         { path: "/profile", label: t("nav.profile"), icon: <Person24Regular /> },
