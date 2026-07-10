@@ -416,6 +416,16 @@
             "banned": "Banned"
         }
     },
+    "bulkActions": {
+        "regionLabel": "Bulk user actions",
+        "selected": "{{count}} selected",
+        "suspend": "Suspend",
+        "activate": "Activate",
+        "delete": "Delete",
+        "clear": "Clear",
+        "confirmDeleteTitle": "Delete selected users?",
+        "confirmDeleteContent": "You are about to delete {{count}} user(s). This action cannot be undone."
+    },
     "status": {
         "pending": "Pending",
         "resolved": "Resolved",

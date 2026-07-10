@@ -400,6 +400,16 @@
             "banned": "已封禁"
         }
     },
+    "bulkActions": {
+        "regionLabel": "批量用户操作",
+        "selected": "已选 {{count}} 项",
+        "suspend": "暂停",
+        "activate": "激活",
+        "delete": "删除",
+        "clear": "清除",
+        "confirmDeleteTitle": "删除所选用户？",
+        "confirmDeleteContent": "您即将删除 {{count}} 位用户。此操作无法撤销。"
+    },
     "status": {
         "pending": "待处理",
         "resolved": "已解决",

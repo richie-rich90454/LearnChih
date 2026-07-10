@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for admin user management: searchable paginated user list,
@@ -65,6 +68,45 @@ public class AdminUserController {
         user.setAccountStatus(parseStatus(request.status()));
         user = userRepository.save(user);
         return ResponseEntity.ok(toSummary(user));
+    }
+
+    @PostMapping("/bulk-action")
+    public ResponseEntity<BulkActionResponse> bulkAction(@RequestBody BulkActionRequest request) {
+        BulkAction action = parseBulkAction(request.action());
+        List<Long> ids = request.userIds() == null ? List.of() : request.userIds();
+        int processed = 0;
+        for (Long id : ids) {
+            Optional<User> opt = userRepository.findById(id);
+            if (opt.isEmpty()) {
+                continue;
+            }
+            User u = opt.get();
+            switch (action) {
+                case SUSPEND -> u.setAccountStatus(UserStatus.SUSPENDED);
+                case ACTIVATE -> u.setAccountStatus(UserStatus.ACTIVE);
+                case DELETE -> {
+                    userRepository.deleteById(id);
+                    processed++;
+                    continue;
+                }
+            }
+            userRepository.save(u);
+            processed++;
+        }
+        return ResponseEntity.ok(new BulkActionResponse(processed));
+    }
+
+    private enum BulkAction { SUSPEND, ACTIVATE, DELETE }
+
+    private static BulkAction parseBulkAction(String raw) {
+        if (raw == null || raw.isBlank()) {
+            throw new IllegalArgumentException("Action is required");
+        }
+        try {
+            return BulkAction.valueOf(raw.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid action: " + raw);
+        }
     }
 
     private static Role parseRole(String raw) {
@@ -120,4 +162,8 @@ public class AdminUserController {
     public record UpdateRoleRequest(String role) {}
 
     public record UpdateStatusRequest(String status) {}
+
+    public record BulkActionRequest(String action, List<Long> userIds) {}
+
+    public record BulkActionResponse(int processed) {}
 }

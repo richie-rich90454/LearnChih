@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     DataGrid,
     DataGridHeader,
@@ -10,6 +10,7 @@ import {
     MessageBar,
     MessageBarBody,
     Spinner,
+    Checkbox,
 } from "@fluentui/react-components";
 import {
     Shield24Regular,
@@ -24,6 +25,7 @@ import {
     useAdminUsers,
     useUpdateUserRole,
     useUpdateUserStatus,
+    useBulkUserAction,
 } from "@/hooks/useAdminUsers";
 import type { AdminUserSummary, UserRole, UserStatus } from "@/api/adminUsers";
 import Seo from "@/components/Seo";
@@ -32,6 +34,7 @@ import { Pagination } from "@/components/Pagination";
 import { Button } from "@/components/ui/Button";
 import { Badge, type BadgeVariant } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
+import { BulkUserActions, type BulkAction } from "@/components/BulkUserActions";
 import styles from "./AdminUsersPage.module.css";
 
 const ROLES: UserRole[] = ["STUDENT", "MODERATOR", "ADMIN"];
@@ -64,10 +67,67 @@ export default function AdminUsersPage() {
     });
     const updateRole = useUpdateUserRole();
     const updateStatus = useUpdateUserStatus();
+    const bulkAction = useBulkUserAction();
+
+    const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+
+    // Clear selection when the search query or page changes so stale
+    // selections across different result sets don't persist.
+    useEffect(() => {
+        setSelectedIds(new Set());
+    }, [debouncedSearch, page]);
+
+    const users = data?.content ?? [];
+    const visibleIds = users.map((u) => u.id);
+    const isAllVisibleSelected =
+        visibleIds.length > 0 && visibleIds.every((id) => selectedIds.has(id));
+    const isSomeVisibleSelected =
+        visibleIds.some((id) => selectedIds.has(id)) && !isAllVisibleSelected;
+
+    const headerCheckboxRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        if (headerCheckboxRef.current) {
+            headerCheckboxRef.current.indeterminate = isSomeVisibleSelected;
+        }
+    }, [isSomeVisibleSelected, users.length]);
+
+    function toggleSelect(id: number) {
+        setSelectedIds((prev) => {
+            const next = new Set(prev);
+            if (next.has(id)) {
+                next.delete(id);
+            } else {
+                next.add(id);
+            }
+            return next;
+        });
+    }
+
+    function toggleSelectAll() {
+        setSelectedIds((prev) => {
+            const next = new Set(prev);
+            if (isAllVisibleSelected) {
+                visibleIds.forEach((id) => next.delete(id));
+            } else {
+                visibleIds.forEach((id) => next.add(id));
+            }
+            return next;
+        });
+    }
+
+    function handleBulkAction(action: BulkAction) {
+        const ids = Array.from(selectedIds);
+        if (ids.length === 0) return;
+        bulkAction.mutate(
+            { action, userIds: ids },
+            { onSettled: () => setSelectedIds(new Set()) },
+        );
+    }
 
     const isAdmin = user?.role === "ADMIN";
 
     const columns = [
+        { columnId: "select", renderHeaderCell: () => "" as string },
         { columnId: "user", renderHeaderCell: () => t("adminUsers.colUser") as string },
         { columnId: "role", renderHeaderCell: () => t("adminUsers.colRole") as string },
         { columnId: "status", renderHeaderCell: () => t("adminUsers.colStatus") as string },
@@ -91,7 +151,6 @@ export default function AdminUsersPage() {
         );
     }
 
-    const users = data?.content ?? [];
     const totalPages = data?.totalPages ?? 0;
 
     return (
@@ -126,6 +185,13 @@ export default function AdminUsersPage() {
                 )}
             </div>
 
+            <BulkUserActions
+                selectedCount={selectedIds.size}
+                pending={bulkAction.isPending}
+                onAction={handleBulkAction}
+                onClear={() => setSelectedIds(new Set())}
+            />
+
             {isLoading && <SkeletonList count={6} />}
 
             {isError && (
@@ -155,8 +221,18 @@ export default function AdminUsersPage() {
                     >
                         <DataGridHeader>
                             <DataGridRow>
-                                {({ renderHeaderCell }) => (
-                                    <DataGridCell>{renderHeaderCell()}</DataGridCell>
+                                {({ renderHeaderCell, columnId }) => (
+                                    <DataGridCell>
+                                        {columnId === "select" ? (
+                                            <Checkbox
+                                                checked={isAllVisibleSelected}
+                                                onChange={toggleSelectAll}
+                                                aria-label={t("bulkActions.regionLabel")}
+                                            />
+                                        ) : (
+                                            renderHeaderCell()
+                                        )}
+                                    </DataGridCell>
                                 )}
                             </DataGridRow>
                         </DataGridHeader>
@@ -164,6 +240,17 @@ export default function AdminUsersPage() {
                             {({ item }: { item: AdminUserSummary }) => (
                                 <DataGridRow key={item.id}>
                                     {({ columnId }) => {
+                                        if (columnId === "select") {
+                                            return (
+                                                <DataGridCell>
+                                                    <Checkbox
+                                                        checked={selectedIds.has(item.id)}
+                                                        onChange={() => toggleSelect(item.id)}
+                                                        aria-label={t("common.select")}
+                                                    />
+                                                </DataGridCell>
+                                            );
+                                        }
                                         if (columnId === "user") {
                                             return (
                                                 <DataGridCell>
