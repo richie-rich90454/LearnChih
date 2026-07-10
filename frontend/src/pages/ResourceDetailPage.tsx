@@ -55,6 +55,7 @@ import { ShareButton } from "@/components/ShareButton";
 import { QrShare } from "@/components/QrShare";
 import { recordLastVisited } from "@/components/ResumeCard";
 import { PdfHighlightPanel } from "@/components/PdfHighlightPanel";
+import { AnnotationPanel } from "@/components/AnnotationPanel";
 import styles from "./Detail.module.css";
 
 function cx(...parts: Array<string | false | undefined | null>): string {
@@ -442,6 +443,11 @@ export default function ResourceDetailPage() {
             {/* PDF highlights (F12) */}
             {authenticated && resource && (
                 <PdfHighlightPanel resourceId={resource.id} />
+            )}
+
+            {/* Inline annotations (F13) */}
+            {authenticated && resource && (
+                <AnnotationPanel resourceId={resource.id} />
             )}
 
             {/* Thread / Discussion */}

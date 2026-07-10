@@ -811,6 +811,16 @@
         "errorDescription": "We couldn't load your highlights. Please try again.",
         "page": "p."
     },
+    "annotations": {
+        "title": "Annotations",
+        "subtitle": "Annotate specific passages and attach your commentary.",
+        "add": "Add annotation",
+        "quotePlaceholder": "Quote the text you want to annotate...",
+        "contentPlaceholder": "Write your annotation...",
+        "empty": "No annotations yet. Add one to start a discussion with yourself.",
+        "errorTitle": "Couldn't load annotations",
+        "errorDescription": "We couldn't load your annotations. Please try again."
+    },
     "profile": {
         "title": "Profile",
         "editProfile": "Edit Profile",

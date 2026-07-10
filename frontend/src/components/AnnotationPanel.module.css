@@ -1,0 +1,157 @@
+/**
+ * AnnotationPanel - inline resource annotations (F13). Token-based; no raw
+ * hex, no !important.
+ */
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.headerLead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.headerIcon {
+    color: var(--accent);
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Add form ----------------------- */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: var(--surface-sunken);
+    border-radius: var(--radius-input);
+}
+
+.quoteArea,
+.contentArea {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+}
+
+.quoteArea {
+    min-height: 60px;
+    font-style: italic;
+}
+
+.contentArea {
+    min-height: 80px;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+/* ----------------------- Annotation list ----------------------- */
+.empty {
+    margin: 0;
+    padding: var(--space-4) var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.annotationItem {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    background: var(--surface-2);
+    transition: border-color var(--motion-fast) var(--motion-ease);
+}
+
+.annotationItem:hover {
+    border-color: var(--border-strong);
+}
+
+.annotationHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+}
+
+.quote {
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    border-left: 3px solid var(--accent);
+    background: var(--surface-sunken);
+    border-radius: 0 var(--radius-input) var(--radius-input) 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--text-secondary);
+    font-style: italic;
+    white-space: pre-wrap;
+    word-break: break-word;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.deleteBtn {
+    flex-shrink: 0;
+}
+
+.annotationContent {
+    width: 100%;
+    min-height: 60px;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-primary);
+}
+
+/* ----------------------- Motion ----------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .annotationItem {
+        transition: none;
+    }
+}

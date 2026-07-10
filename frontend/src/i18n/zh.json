@@ -795,6 +795,16 @@
         "errorDescription": "暂时无法加载你的高亮，请稍后重试。",
         "page": "第"
     },
+    "annotations": {
+        "title": "批注",
+        "subtitle": "标注特定段落并附上你的评论。",
+        "add": "添加批注",
+        "quotePlaceholder": "引用你要批注的文本...",
+        "contentPlaceholder": "撰写批注内容...",
+        "empty": "暂无批注。添加一个开始记录你的思考。",
+        "errorTitle": "无法加载批注",
+        "errorDescription": "暂时无法加载你的批注，请稍后重试。"
+    },
     "profile": {
         "title": "个人资料",
         "editProfile": "编辑资料",
