@@ -8,6 +8,7 @@ import {
     Save24Regular,
     Search24Regular,
     ArrowClockwise24Regular,
+    PeopleTeam24Regular,
 } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
@@ -31,6 +32,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { BacklinksPanel } from "@/components/BacklinksPanel";
 import { TemplateGallery } from "@/components/TemplateGallery";
+import { CollaborativeNoteEditor } from "@/components/CollaborativeNoteEditor";
 import styles from "./NotesPage.module.css";
 
 const WIKILINK_RE = /\[\[([^\]]+)\]\]/g;
@@ -77,6 +79,7 @@ export default function NotesPage() {
     const [draftTitle, setDraftTitle] = useState("");
     const [draftContent, setDraftContent] = useState("");
     const [dirty, setDirty] = useState(false);
+    const [collabMode, setCollabMode] = useState(false);
 
     const query = useQuery<Note[]>({
         queryKey: ["notes", search],
@@ -160,7 +163,19 @@ export default function NotesPage() {
                 content: draftContent,
             });
         }
+        setCollabMode(false);
         setSelectedId(note.id);
+    };
+
+    const handleEnterCollab = () => {
+        if (dirty && selected) {
+            saveMutation.mutate({
+                id: selected.id,
+                title: draftTitle.trim() || t("notes.untitled"),
+                content: draftContent,
+            });
+        }
+        setCollabMode(true);
     };
 
     const handleWikilinkClick = (title: string) => {
@@ -273,6 +288,16 @@ export default function NotesPage() {
                             title={t("notes.selectTitle")}
                             description={t("notes.selectDescription")}
                         />
+                    ) : collabMode ? (
+                        <CollaborativeNoteEditor
+                            noteId={selected.id}
+                            onExit={() => {
+                                setCollabMode(false);
+                                queryClient.invalidateQueries({
+                                    queryKey: ["notes"],
+                                });
+                            }}
+                        />
                     ) : (
                         <Card padding="lg" className={styles.editorCard}>
                             <div className={styles.editorHeader}>
@@ -297,6 +322,14 @@ export default function NotesPage() {
                                         currentTitle={draftTitle}
                                         currentContent={draftContent}
                                     />
+                                    <Button
+                                        variant="outline"
+                                        size="small"
+                                        icon={<PeopleTeam24Regular />}
+                                        onClick={handleEnterCollab}
+                                    >
+                                        {t("notes.collaborate")}
+                                    </Button>
                                     <Button
                                         variant="subtle"
                                         size="small"

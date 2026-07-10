@@ -5,6 +5,7 @@ import com.richardjiang880.lernchih.dto.NoteDtos.NoteResponse;
 import com.richardjiang880.lernchih.dto.NoteDtos.UpdateNoteRequest;
 import com.richardjiang880.lernchih.model.Note;
 import com.richardjiang880.lernchih.model.User;
+import com.richardjiang880.lernchih.repository.NoteCollaboratorRepository;
 import com.richardjiang880.lernchih.repository.NoteRepository;
 import com.richardjiang880.lernchih.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -26,10 +27,13 @@ public class NoteController {
 
     private final NoteRepository noteRepository;
     private final UserRepository userRepository;
+    private final NoteCollaboratorRepository collaboratorRepository;
 
-    public NoteController(NoteRepository noteRepository, UserRepository userRepository) {
+    public NoteController(NoteRepository noteRepository, UserRepository userRepository,
+                          NoteCollaboratorRepository collaboratorRepository) {
         this.noteRepository = noteRepository;
         this.userRepository = userRepository;
+        this.collaboratorRepository = collaboratorRepository;
     }
 
     @GetMapping
@@ -41,6 +45,25 @@ public class NoteController {
                 ? noteRepository.findByUserIdAndTitleContainingIgnoreCase(user.getId(), query)
                 : noteRepository.findByUserIdOrderByUpdatedAtDesc(user.getId());
         return ResponseEntity.ok(notes.stream().map(this::toResponse).toList());
+    }
+
+    /**
+     * Fetch a single note by id (F14). The note owner and any registered
+     * collaborator may read it; this endpoint backs the collaborative editor's
+     * 3-second poll.
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<NoteResponse> get(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Long id) {
+        User user = getUserFromDetails(userDetails);
+        Note note = noteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Note not found"));
+        if (!note.getUserId().equals(user.getId())
+                && !collaboratorRepository.existsByNoteIdAndUserId(id, user.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok(toResponse(note));
     }
 
     @PostMapping
@@ -66,8 +89,18 @@ public class NoteController {
         User user = getUserFromDetails(userDetails);
         Note note = noteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Note not found"));
-        if (!note.getUserId().equals(user.getId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        // The owner may always edit; a collaborator with the EDITOR role may
+        // also edit (F14). VIEWER collaborators and non-collaborators are
+        // denied.
+        boolean isOwner = note.getUserId().equals(user.getId());
+        if (!isOwner) {
+            boolean canEdit = collaboratorRepository
+                    .findByNoteIdAndUserId(id, user.getId())
+                    .map(c -> "EDITOR".equals(c.getRole()))
+                    .orElse(false);
+            if (!canEdit) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
         }
         if (request.title() != null && !request.title().isBlank()) {
             note.setTitle(request.title());

@@ -780,7 +780,26 @@
         "templateEmpty": "暂无可用模板。",
         "deleteTemplate": "删除模板",
         "saveCurrentAsTemplate": "将当前笔记保存为模板",
-        "templateSaved": "模板已保存。"
+        "templateSaved": "模板已保存。",
+        "collaborate": "协作"
+    },
+    "collaboration": {
+        "title": "协作编辑",
+        "subtitle": "实时共同编辑，每隔几秒同步一次更改。",
+        "exit": "退出",
+        "saving": "保存中...",
+        "synced": "已同步",
+        "syncing": "同步中...",
+        "syncedAt": "上次同步于 {{time}}",
+        "collaborators": "协作者",
+        "noCollaborators": "暂无协作者。邀请你的同学加入。",
+        "you": "你",
+        "roleOwner": "所有者",
+        "roleEditor": "编辑者",
+        "roleViewer": "查看者",
+        "inviteHint": "将此笔记的 ID 分享给同学，让他们申请加入。",
+        "errorTitle": "无法打开协作编辑器",
+        "errorDescription": "暂时无法加载此笔记进行协作，请稍后重试。"
     },
     "pdfHighlights": {
         "title": "PDF 高亮",

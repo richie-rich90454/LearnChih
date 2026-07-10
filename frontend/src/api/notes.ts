@@ -30,6 +30,13 @@ export const getNotes = (q?: string): Promise<AxiosResponse<Note[]>> =>
     api.get<Note[]>("/notes", { params: q ? { q } : undefined });
 
 /**
+ * Fetch a single note by id (F14). Backs the collaborative editor's 3-second
+ * poll; accessible to the note owner and any registered collaborator.
+ */
+export const getNote = (id: number): Promise<AxiosResponse<Note>> =>
+    api.get<Note>(`/notes/${id}`);
+
+/**
  * Create a new note (F9).
  */
 export const createNote = (

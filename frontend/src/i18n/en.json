@@ -796,7 +796,26 @@
         "templateEmpty": "No templates available yet.",
         "deleteTemplate": "Delete template",
         "saveCurrentAsTemplate": "Save current as template",
-        "templateSaved": "Template saved."
+        "templateSaved": "Template saved.",
+        "collaborate": "Collaborate"
+    },
+    "collaboration": {
+        "title": "Collaborative editing",
+        "subtitle": "Edit together in real time. Changes sync every few seconds.",
+        "exit": "Exit",
+        "saving": "Saving...",
+        "synced": "Synced",
+        "syncing": "Syncing...",
+        "syncedAt": "Last synced at {{time}}",
+        "collaborators": "Collaborators",
+        "noCollaborators": "No collaborators yet. Invite peers from your network.",
+        "you": "You",
+        "roleOwner": "Owner",
+        "roleEditor": "Editor",
+        "roleViewer": "Viewer",
+        "inviteHint": "Share this note's ID with peers so they can request access.",
+        "errorTitle": "Couldn't open collaborative editor",
+        "errorDescription": "We couldn't load this note for collaboration. Please try again."
     },
     "pdfHighlights": {
         "title": "PDF Highlights",

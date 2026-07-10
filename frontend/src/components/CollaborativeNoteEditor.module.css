@@ -1,0 +1,191 @@
+/**
+ * CollaborativeNoteEditor - real-time collaborative note editing (F14).
+ * Token-based; no raw hex, no !important. Two-column layout: editor + side
+ * collaborator panel.
+ */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+/* ----------------------- Header ----------------------- */
+.header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.headerLead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.headerIcon {
+    color: var(--accent);
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+/* ----------------------- Two-column layout ----------------------- */
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: var(--space-4);
+    align-items: start;
+}
+
+.editorPane {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.titleInput {
+    width: 100%;
+}
+
+.contentField {
+    width: 100%;
+    min-height: 320px;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    resize: vertical;
+}
+
+.syncLabel {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* ----------------------- Collaborator panel ----------------------- */
+.collabPane {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background: var(--surface-sunken);
+    border-radius: var(--radius-input);
+    position: sticky;
+    top: var(--space-4);
+}
+
+.collabHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.collabTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.collabEmpty {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.collabList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.collabItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-input);
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    transition: border-color var(--motion-fast) var(--motion-ease);
+}
+
+.collabItem:hover {
+    border-color: var(--accent);
+}
+
+.collabName {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.collabHint {
+    margin: 0;
+    padding-top: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+}
+
+/* ----------------------- Motion + responsive ----------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .collabItem {
+        transition: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .collabPane {
+        position: static;
+    }
+}
