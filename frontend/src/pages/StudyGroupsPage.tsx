@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogContent,
 } from "@fluentui/react-components";
-import { PeopleCommunity24Regular, Chat24Regular } from "@fluentui/react-icons";
+import { PeopleCommunity24Regular, Chat24Regular, Calendar24Regular, Whiteboard24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
     getStudyGroups,
@@ -20,6 +20,7 @@ import Seo from "../components/Seo";
 import { CreateStudyGroupDialog } from "../components/CreateStudyGroupDialog";
 import { StudyGroupChat } from "../components/StudyGroupChat";
 import { GroupEvents } from "../components/GroupEvents";
+import { Whiteboards } from "../components/Whiteboard";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { Button } from "../components/ui/Button";
@@ -38,6 +39,7 @@ export default function StudyGroupsPage() {
 
     const [chatGroup, setChatGroup] = useState<StudyGroup | null>(null);
     const [eventsGroup, setEventsGroup] = useState<StudyGroup | null>(null);
+    const [whiteboardGroup, setWhiteboardGroup] = useState<StudyGroup | null>(null);
 
     const handleJoin = async (id: number) => {
         await joinStudyGroup(id);
@@ -118,6 +120,22 @@ export default function StudyGroupsPage() {
                             >
                                 {t("groupChat.open")}
                             </Button>
+                            <Button
+                                variant="subtle"
+                                size="small"
+                                icon={<Calendar24Regular />}
+                                onClick={() => setEventsGroup(group)}
+                            >
+                                {t("groupEvents.title")}
+                            </Button>
+                            <Button
+                                variant="subtle"
+                                size="small"
+                                icon={<Whiteboard24Regular />}
+                                onClick={() => setWhiteboardGroup(group)}
+                            >
+                                {t("whiteboards.title")}
+                            </Button>
                         </div>
                     </Card>
                 ))}
@@ -154,6 +172,24 @@ export default function StudyGroupsPage() {
                         </DialogTitle>
                         <DialogContent>
                             {eventsGroup && <GroupEvents groupId={eventsGroup.id} />}
+                        </DialogContent>
+                    </DialogBody>
+                </DialogSurface>
+            </Dialog>
+
+            <Dialog
+                open={whiteboardGroup !== null}
+                onOpenChange={(_: unknown, d: { open: boolean }) => {
+                    if (!d.open) setWhiteboardGroup(null);
+                }}
+            >
+                <DialogSurface>
+                    <DialogBody>
+                        <DialogTitle>
+                            {whiteboardGroup ? `${t("whiteboards.title")} — ${whiteboardGroup.name}` : t("whiteboards.title")}
+                        </DialogTitle>
+                        <DialogContent>
+                            {whiteboardGroup && <Whiteboards groupId={whiteboardGroup.id} />}
                         </DialogContent>
                     </DialogBody>
                 </DialogSurface>
