@@ -30,6 +30,7 @@ import {
     ChatMultiple24Regular,
     CalendarClock24Regular,
     List24Regular,
+    ChartMultiple24Regular,
     WeatherMoon24Regular,
     WeatherSunny24Regular,
     Eye24Regular,
@@ -87,6 +88,7 @@ const getNavSections = (
         { path: "/messages", label: t("nav.messages"), icon: <ChatMultiple24Regular /> },
         { path: "/review", label: t("nav.review"), icon: <CalendarClock24Regular /> },
         { path: "/playlists", label: t("nav.playlists"), icon: <List24Regular /> },
+        { path: "/study-stats", label: t("nav.studyStats"), icon: <ChartMultiple24Regular /> },
     ];
     const accountItems: NavItem[] = [
         { path: "/profile", label: t("nav.profile"), icon: <Person24Regular /> },
