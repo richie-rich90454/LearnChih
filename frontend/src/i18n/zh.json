@@ -773,7 +773,14 @@
         "created": "笔记已创建。",
         "deleted": "笔记已删除。",
         "backlinks": "引用此笔记",
-        "backlinksEmpty": "没有笔记链接到这篇笔记。"
+        "backlinksEmpty": "没有笔记链接到这篇笔记。",
+        "templates": "模板",
+        "templateGallery": "笔记模板",
+        "templateError": "加载模板失败，请重试。",
+        "templateEmpty": "暂无可用模板。",
+        "deleteTemplate": "删除模板",
+        "saveCurrentAsTemplate": "将当前笔记保存为模板",
+        "templateSaved": "模板已保存。"
     },
     "profile": {
         "title": "个人资料",

@@ -1,0 +1,119 @@
+/**
+ * TemplateGallery - dialog grid of note templates (F11). Token-based; no raw
+ * hex, no !important.
+ */
+
+.surface {
+    max-width: 640px;
+    width: 100%;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-6);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-3);
+}
+
+.card {
+    position: relative;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--surface-2);
+    transition: border-color var(--motion-fast) var(--motion-ease),
+        box-shadow var(--motion-fast) var(--motion-ease);
+}
+
+.card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-card);
+}
+
+.cardButton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 100%;
+    text-align: left;
+    padding: var(--space-3);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: var(--font-sans);
+}
+
+.cardButton:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.cardName {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cardPreview {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 120px;
+    overflow: hidden;
+}
+
+.deleteBtn {
+    position: absolute;
+    top: var(--space-1);
+    right: var(--space-1);
+    opacity: 0;
+    transition: opacity var(--motion-fast) var(--motion-ease);
+}
+
+.card:hover .deleteBtn {
+    opacity: 1;
+}
+
+.error,
+.empty {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    text-align: center;
+    padding: var(--space-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .deleteBtn {
+        transition: none;
+    }
+}

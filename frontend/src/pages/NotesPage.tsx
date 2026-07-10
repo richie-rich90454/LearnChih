@@ -30,6 +30,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { BacklinksPanel } from "@/components/BacklinksPanel";
+import { TemplateGallery } from "@/components/TemplateGallery";
 import styles from "./NotesPage.module.css";
 
 const WIKILINK_RE = /\[\[([^\]]+)\]\]/g;
@@ -98,7 +99,11 @@ export default function NotesPage() {
     }, [selectedId, selected?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const createMutation = useMutation({
-        mutationFn: () => createNote({ title: t("notes.untitled"), content: "" }),
+        mutationFn: (vars?: { title?: string; content?: string }) =>
+            createNote({
+                title: vars?.title ?? t("notes.untitled"),
+                content: vars?.content ?? "",
+            }),
         onSuccess: (res) => {
             queryClient.invalidateQueries({ queryKey: ["notes"] });
             setSelectedId(res.data.id);
@@ -174,6 +179,10 @@ export default function NotesPage() {
         }
     };
 
+    const handleTemplatePick = (content: string, name: string) => {
+        createMutation.mutate({ title: name, content });
+    };
+
     const isLoading = query.isLoading;
     const isError = query.isError;
     const segments = useMemo(
@@ -201,7 +210,7 @@ export default function NotesPage() {
                 <Button
                     variant="primary"
                     icon={<Add24Regular />}
-                    onClick={() => createMutation.mutate()}
+                    onClick={() => createMutation.mutate(undefined)}
                     loading={createMutation.isPending}
                 >
                     {t("notes.newNote")}
@@ -283,6 +292,11 @@ export default function NotesPage() {
                                             {t("notes.unsaved")}
                                         </Badge>
                                     )}
+                                    <TemplateGallery
+                                        onPick={handleTemplatePick}
+                                        currentTitle={draftTitle}
+                                        currentContent={draftContent}
+                                    />
                                     <Button
                                         variant="subtle"
                                         size="small"

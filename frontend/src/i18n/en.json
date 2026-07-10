@@ -789,7 +789,14 @@
         "created": "Note created.",
         "deleted": "Note deleted.",
         "backlinks": "Linked from",
-        "backlinksEmpty": "No notes link to this note."
+        "backlinksEmpty": "No notes link to this note.",
+        "templates": "Templates",
+        "templateGallery": "Note templates",
+        "templateError": "Failed to load templates. Please try again.",
+        "templateEmpty": "No templates available yet.",
+        "deleteTemplate": "Delete template",
+        "saveCurrentAsTemplate": "Save current as template",
+        "templateSaved": "Template saved."
     },
     "profile": {
         "title": "Profile",
