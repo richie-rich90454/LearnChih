@@ -1,0 +1,216 @@
+/**
+ * PdfHighlightPanel - highlight management for PDF resources (F12).
+ * Token-based; no raw hex, no !important. Highlight swatch colors are
+ * defined as local custom properties on the panel root.
+ */
+
+.panel {
+    --highlight-yellow: rgba(250, 204, 21, 0.35);
+    --highlight-green: rgba(34, 197, 94, 0.35);
+    --highlight-blue: rgba(59, 130, 246, 0.35);
+    --highlight-pink: rgba(236, 72, 153, 0.35);
+    --highlight-orange: rgba(249, 115, 22, 0.35);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.headerLead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.headerIcon {
+    color: var(--accent);
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Add form ----------------------- */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: var(--surface-sunken);
+    border-radius: var(--radius-input);
+}
+
+.formRow {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.pageInput {
+    width: 120px;
+}
+
+.colorPicker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.colorLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+}
+
+.colorSwatches {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.swatch,
+.swatchActive {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-pill);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease);
+}
+
+.swatch:hover {
+    transform: scale(1.1);
+}
+
+.swatchActive {
+    border-color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+.textArea,
+.noteArea {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+}
+
+.textArea {
+    min-height: 80px;
+}
+
+.noteArea {
+    min-height: 48px;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+/* ----------------------- Highlight list ----------------------- */
+.empty {
+    margin: 0;
+    padding: var(--space-4) var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.highlightItem {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    background: var(--surface-2);
+    transition: border-color var(--motion-fast) var(--motion-ease);
+}
+
+.highlightItem:hover {
+    border-color: var(--border-strong);
+}
+
+.highlightHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.colorDot {
+    width: 14px;
+    height: 14px;
+    border-radius: var(--radius-pill);
+    flex-shrink: 0;
+}
+
+.deleteBtn {
+    margin-left: auto;
+}
+
+.highlightText {
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    border-left: 3px solid var(--accent);
+    background: var(--surface-sunken);
+    border-radius: 0 var(--radius-input) var(--radius-input) 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.highlightNote {
+    width: 100%;
+    min-height: 40px;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+}
+
+/* ----------------------- Motion ----------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .swatch,
+    .swatchActive,
+    .highlightItem {
+        transition: none;
+    }
+}

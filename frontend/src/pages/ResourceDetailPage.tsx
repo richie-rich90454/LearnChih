@@ -54,6 +54,7 @@ import { useHeadingAnchors } from "@/components/HeadingAnchor";
 import { ShareButton } from "@/components/ShareButton";
 import { QrShare } from "@/components/QrShare";
 import { recordLastVisited } from "@/components/ResumeCard";
+import { PdfHighlightPanel } from "@/components/PdfHighlightPanel";
 import styles from "./Detail.module.css";
 
 function cx(...parts: Array<string | false | undefined | null>): string {
@@ -436,6 +437,11 @@ export default function ResourceDetailPage() {
             {/* AI quiz generation (F5) */}
             {authenticated && resource && (
                 <AiQuizGenerator resourceId={resource.id} />
+            )}
+
+            {/* PDF highlights (F12) */}
+            {authenticated && resource && (
+                <PdfHighlightPanel resourceId={resource.id} />
             )}
 
             {/* Thread / Discussion */}

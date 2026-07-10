@@ -798,6 +798,19 @@
         "saveCurrentAsTemplate": "Save current as template",
         "templateSaved": "Template saved."
     },
+    "pdfHighlights": {
+        "title": "PDF Highlights",
+        "subtitle": "Save and annotate key passages from this resource.",
+        "add": "Add highlight",
+        "pageNumber": "Page",
+        "color": "Color",
+        "textPlaceholder": "Paste or type the highlighted text...",
+        "notePlaceholder": "Add a note (optional)...",
+        "empty": "No highlights yet. Add one to start building your annotation set.",
+        "errorTitle": "Couldn't load highlights",
+        "errorDescription": "We couldn't load your highlights. Please try again.",
+        "page": "p."
+    },
     "profile": {
         "title": "Profile",
         "editProfile": "Edit Profile",
