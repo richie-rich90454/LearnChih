@@ -439,6 +439,16 @@
         "colIp": "IP 地址",
         "colTime": "时间"
     },
+    "featureFlags": {
+        "title": "功能开关",
+        "subtitle": "开启或关闭平台功能。更改会立即在全平台生效。",
+        "loadError": "加载功能开关失败",
+        "noFlags": "尚未配置任何功能开关。",
+        "enabled": "已启用",
+        "disabled": "已禁用",
+        "toggleAriaLabel": "切换功能开关 {{key}}",
+        "lastUpdated": "最后更新于 {{time}}"
+    },
     "status": {
         "pending": "待处理",
         "resolved": "已解决",

@@ -455,6 +455,16 @@
         "colIp": "IP Address",
         "colTime": "Time"
     },
+    "featureFlags": {
+        "title": "Feature Flags",
+        "subtitle": "Toggle platform features on or off. Changes apply immediately across the platform.",
+        "loadError": "Failed to load feature flags",
+        "noFlags": "No feature flags configured.",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "toggleAriaLabel": "Toggle feature flag {{key}}",
+        "lastUpdated": "Last updated {{time}}"
+    },
     "status": {
         "pending": "Pending",
         "resolved": "Resolved",
