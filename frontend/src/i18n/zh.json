@@ -378,6 +378,28 @@
         "linkHealth": "系统健康",
         "linkHealthDesc": "监控数据库、内存与运行时间"
     },
+    "adminUsers": {
+        "title": "用户管理",
+        "searchPlaceholder": "按姓名或邮箱搜索...",
+        "loadError": "加载用户失败",
+        "noUsers": "未找到用户。",
+        "colUser": "用户",
+        "colRole": "角色",
+        "colStatus": "状态",
+        "colCredits": "积分",
+        "colVerified": "已验证",
+        "colJoined": "加入时间",
+        "role": {
+            "student": "学生",
+            "moderator": "版主",
+            "admin": "管理员"
+        },
+        "status": {
+            "active": "正常",
+            "suspended": "已暂停",
+            "banned": "已封禁"
+        }
+    },
     "status": {
         "pending": "待处理",
         "resolved": "已解决",
@@ -873,5 +895,19 @@
         "resourcesDescription": "查找由同学贡献的笔记、往年试卷、教材和教程。",
         "channelsDescription": "加入学科讨论，提问并与同伴协作。",
         "leaderboardDescription": "查看顶级贡献者，并通过分享资源和帮助社区赚取积分。"
+    },
+    "studyBuddy": {
+        "title": "学习伙伴",
+        "subtitle": "根据契合度排序、与你有共同学科的学习者",
+        "compatibility": "契合度",
+        "sharedSubjects_one": "{{count}} 个共同学科",
+        "sharedSubjects_other": "{{count}} 个共同学科",
+        "accept": "接受",
+        "decline": "拒绝",
+        "emptyTitle": "暂无推荐",
+        "emptyDescription": "在个人资料中添加学科，即可找到志同道合的学习伙伴。",
+        "errorTitle": "无法加载推荐",
+        "errorDescription": "暂时无法加载学习伙伴推荐，请稍后重试。",
+        "acceptError": "无法发送连接请求，请稍后重试。"
     }
 }

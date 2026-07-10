@@ -48,6 +48,11 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    @Builder.Default
+    private UserStatus accountStatus = UserStatus.ACTIVE;
+
     @Column(nullable = false)
     private Boolean verified;
 
@@ -102,6 +107,9 @@ public class User {
         updatedAt = LocalDateTime.now();
         if (credits == null) {
             credits = 0;
+        }
+        if (accountStatus == null) {
+            accountStatus = UserStatus.ACTIVE;
         }
         if (verified == null) {
             verified = false;

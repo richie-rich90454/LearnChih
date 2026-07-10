@@ -35,6 +35,7 @@ const FlashcardsPage = lazy(() => import("./pages/FlashcardsPage"));
 const QuizPage = lazy(() => import("./pages/QuizPage"));
 const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
 const AdminDashboardPage = lazy(() => import("./pages/AdminDashboardPage"));
+const AdminUsersPage = lazy(() => import("./pages/AdminUsersPage"));
 const ModerationPage = lazy(() => import("./pages/ModerationPage"));
 const ApiDocsPage = lazy(() => import("./pages/ApiDocsPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
@@ -46,6 +47,7 @@ const PlaylistsPage = lazy(() => import("./pages/PlaylistsPage"));
 const CourseDetailPage = lazy(() => import("./pages/CourseDetailPage"));
 const ConceptMapPage = lazy(() => import("./pages/ConceptMapPage"));
 const StudyStatsPage = lazy(() => import("./pages/StudyStatsPage"));
+const StudyBuddyPage = lazy(() => import("./pages/StudyBuddyPage"));
 const NotesPage = lazy(() => import("./pages/NotesPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
@@ -217,9 +219,11 @@ function AppShell() {
                         <Route path="/playlists" element={<PlaylistsPage />} />
                         <Route path="/concept-map" element={<ConceptMapPage />} />
                         <Route path="/study-stats" element={<StudyStatsPage />} />
+                        <Route path="/study-buddy" element={<StudyBuddyPage />} />
                         <Route path="/courses/:id" element={<CourseDetailPage />} />
                         <Route path="/messages" element={<MessagesPage />} />
                         <Route path="/admin" element={<AdminDashboardPage />} />
+                        <Route path="/admin/users" element={<AdminUsersPage />} />
                         <Route path="/moderation" element={<ModerationPage />} />
                     </Route>
                 </Route>

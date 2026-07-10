@@ -394,6 +394,28 @@
         "linkHealth": "System Health",
         "linkHealthDesc": "Monitor database, memory, and uptime"
     },
+    "adminUsers": {
+        "title": "User Management",
+        "searchPlaceholder": "Search by name or email...",
+        "loadError": "Failed to load users",
+        "noUsers": "No users found.",
+        "colUser": "User",
+        "colRole": "Role",
+        "colStatus": "Status",
+        "colCredits": "Credits",
+        "colVerified": "Verified",
+        "colJoined": "Joined",
+        "role": {
+            "student": "Student",
+            "moderator": "Moderator",
+            "admin": "Admin"
+        },
+        "status": {
+            "active": "Active",
+            "suspended": "Suspended",
+            "banned": "Banned"
+        }
+    },
     "status": {
         "pending": "Pending",
         "resolved": "Resolved",
@@ -872,5 +894,19 @@
         "resourcesDescription": "Find notes, past papers, textbooks, and tutorials contributed by students like you.",
         "channelsDescription": "Join subject-specific discussions, ask questions, and collaborate with peers.",
         "leaderboardDescription": "See top contributors and earn credits by sharing resources and helping the community."
+    },
+    "studyBuddy": {
+        "title": "Study buddies",
+        "subtitle": "Learners who share your subjects, ranked by compatibility",
+        "compatibility": "compatibility",
+        "sharedSubjects_one": "{{count}} shared subject",
+        "sharedSubjects_other": "{{count}} shared subjects",
+        "accept": "Accept",
+        "decline": "Decline",
+        "emptyTitle": "No suggestions yet",
+        "emptyDescription": "Add subjects to your profile to find study buddies with shared goals.",
+        "errorTitle": "Couldn't load suggestions",
+        "errorDescription": "We couldn't load your study-buddy suggestions right now. Please try again.",
+        "acceptError": "Couldn't send the connection request. Please try again."
     }
 }
