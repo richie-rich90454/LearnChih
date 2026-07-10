@@ -771,7 +771,9 @@
         "unsaved": "未保存",
         "saved": "笔记已保存。",
         "created": "笔记已创建。",
-        "deleted": "笔记已删除。"
+        "deleted": "笔记已删除。",
+        "backlinks": "引用此笔记",
+        "backlinksEmpty": "没有笔记链接到这篇笔记。"
     },
     "profile": {
         "title": "个人资料",

@@ -263,6 +263,7 @@ export default function App() {
             prefetchRoute("course-detail", () => import("./pages/CourseDetailPage"));
             prefetchRoute("messages", () => import("./pages/MessagesPage"));
             prefetchRoute("notes", () => import("./pages/NotesPage"));
+            prefetchRoute("cohorts", () => import("./pages/CohortsPage"));
         };
         if (typeof window.requestIdleCallback === "function") {
             window.requestIdleCallback(run);

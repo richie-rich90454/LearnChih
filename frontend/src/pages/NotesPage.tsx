@@ -29,6 +29,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
+import { BacklinksPanel } from "@/components/BacklinksPanel";
 import styles from "./NotesPage.module.css";
 
 const WIKILINK_RE = /\[\[([^\]]+)\]\]/g;
@@ -363,6 +364,12 @@ export default function NotesPage() {
                                     )}
                                 </div>
                             </div>
+
+                            <BacklinksPanel
+                                currentTitle={selected.title}
+                                notes={notes}
+                                onSelect={handleSelect}
+                            />
                         </Card>
                     )}
                 </section>

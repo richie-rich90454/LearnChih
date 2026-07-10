@@ -787,7 +787,9 @@
         "unsaved": "Unsaved",
         "saved": "Note saved.",
         "created": "Note created.",
-        "deleted": "Note deleted."
+        "deleted": "Note deleted.",
+        "backlinks": "Linked from",
+        "backlinksEmpty": "No notes link to this note."
     },
     "profile": {
         "title": "Profile",
