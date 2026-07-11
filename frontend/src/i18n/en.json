@@ -179,7 +179,8 @@
         "notes": "Notes",
         "notesPlaceholder": "Take notes while you read... (saved automatically)",
         "splitView": "Split view",
-        "splitViewExit": "Exit split view"
+        "splitViewExit": "Exit split view",
+        "exportAnki": "Export to Anki"
     },
     "channels": {
         "title": "Channels",
@@ -501,7 +502,17 @@
         "copyNow": "Copy your new key now — it won't be shown again.",
         "copy": "Copy",
         "copied": "Copied",
-        "untitled": "Untitled"
+        "untitled": "Untitled",
+        "rateLimit": "Rate Limit",
+        "rateLimitTitle": "Rate Limit & Usage",
+        "fieldPerMinute": "Requests per minute",
+        "fieldPerHour": "Requests per hour",
+        "fieldPerDay": "Requests per day",
+        "currentUsage": "Current usage",
+        "usageMinute": "Last minute",
+        "usageHour": "Last hour",
+        "usageDay": "Last 24h",
+        "usageTotal": "Total"
     },
     "maintenanceBanner": {
         "title": "Maintenance Notice",

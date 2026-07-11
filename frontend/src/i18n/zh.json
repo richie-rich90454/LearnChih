@@ -163,7 +163,8 @@
         "notes": "笔记",
         "notesPlaceholder": "边读边记笔记……（自动保存）",
         "splitView": "分屏视图",
-        "splitViewExit": "退出分屏视图"
+        "splitViewExit": "退出分屏视图",
+        "exportAnki": "导出到 Anki"
     },
     "channels": {
         "title": "频道",

@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dropdown, Option, Spinner, MessageBar, MessageBarBody } from "@fluentui/react-components";
-import { ArrowLeft24Regular, Sparkle24Regular, Share24Regular } from "@fluentui/react-icons";
+import { ArrowLeft24Regular, Sparkle24Regular, Share24Regular, ArrowDownload24Regular } from "@fluentui/react-icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useDecks } from "../hooks/useFlashcards";
 import FlashcardDeck from "../components/FlashcardDeck";
 import ShareDeckDialog from "../components/ShareDeckDialog";
 import { getSharedWithMe, revokeSharedDeck, type SharedDeck } from "../api/sharedDecks";
+import { exportDeckToAnki } from "../api/ankiExport";
 import Seo from "../components/Seo";
 import { EmptyState } from "../components/EmptyState";
 import { Button } from "@/components/ui/Button";
@@ -35,6 +36,11 @@ export default function FlashcardsPage() {
                 queryKey: ["sharedDecks", "shared-with-me"],
             });
         },
+    });
+
+    const exportMutation = useMutation({
+        mutationFn: (deck: { id: number; name: string }) =>
+            exportDeckToAnki(deck.id, deck.name),
     });
 
     const deckOptions = decks?.map((d) => ({ value: String(d.id), label: d.name })) || [];
@@ -118,6 +124,17 @@ export default function FlashcardsPage() {
                                 </p>
                             </button>
                             <ShareDeckDialog deckId={deck.id} deckName={deck.name} />
+                            <Button
+                                variant="subtle"
+                                size="small"
+                                icon={<ArrowDownload24Regular />}
+                                onClick={() =>
+                                    exportMutation.mutate({ id: deck.id, name: deck.name })
+                                }
+                                disabled={exportMutation.isPending}
+                            >
+                                {t("flashcards.exportAnki")}
+                            </Button>
                         </div>
                     </Card>
                 ))}
