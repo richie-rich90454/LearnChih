@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { ResumeCard } from "@/components/ResumeCard";
+import { StreakFreeze } from "@/components/StreakFreeze";
 import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 import { PomodoroTimer } from "@/components/PomodoroTimer";
 import { BuddyMatch } from "@/components/BuddyMatch";
@@ -111,6 +112,9 @@ export default function DashboardPage() {
 
             {/* Continue where you left off */}
             <ResumeCard />
+
+            {/* Learning streak freeze (F20) */}
+            <StreakFreeze />
 
             {/* Onboarding checklist */}
             <OnboardingChecklist />

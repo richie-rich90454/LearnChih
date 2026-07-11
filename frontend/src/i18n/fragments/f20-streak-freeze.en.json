@@ -1,0 +1,11 @@
+{
+    "streakFreeze": {
+        "title": "Streak Freeze",
+        "description": "Protect your streak on a missed day.",
+        "streakValue": "{{count}} day(s)",
+        "usedThisWeek": "Freezes used this week",
+        "usedCount": "{{used}}/{{max}}",
+        "freezeToday": "Freeze today",
+        "noFreezeHint": "You've used this week's freeze. It refreshes Monday."
+    }
+}

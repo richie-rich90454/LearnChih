@@ -1,0 +1,11 @@
+{
+    "streakFreeze": {
+        "title": "连续学习冻结",
+        "description": "在缺席的日子保护你的连续学习记录。",
+        "streakValue": "{{count}} 天",
+        "usedThisWeek": "本周已用冻结",
+        "usedCount": "{{used}}/{{max}}",
+        "freezeToday": "冻结今天",
+        "noFreezeHint": "本周的冻结已用完，将在周一重置。"
+    }
+}
