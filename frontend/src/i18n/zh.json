@@ -1231,6 +1231,17 @@
         "emptyTitle": "暂无推荐",
         "emptyDescription": "浏览并互动一些资源，我们会在这里为你推荐相似内容。"
     },
+    "dueToday": {
+        "title": "今日待办",
+        "subtitle": "统一复习队列：抽认卡、测验和计划复习",
+        "typeFlashcard": "抽认卡",
+        "typeReview": "复习",
+        "typeQuiz": "测验",
+        "emptyTitle": "今日无待办",
+        "emptyDescription": "你已全部完成！新的待办项到期后会显示在这里。",
+        "errorTitle": "加载今日待办失败",
+        "errorDescription": "请重试。"
+    },
     "draftsInbox": {
         "title": "草稿",
         "subtitle": "在一处继续编写任何草稿",

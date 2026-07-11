@@ -1248,6 +1248,17 @@
         "error": "Couldn't load recommendations right now.",
         "emptyTitle": "No recommendations yet",
         "emptyDescription": "Interact with some resources and we'll suggest similar ones here."
+    },
+    "dueToday": {
+        "title": "Due today",
+        "subtitle": "Your unified review queue: flashcards, quizzes, and scheduled reviews",
+        "typeFlashcard": "Flashcard",
+        "typeReview": "Review",
+        "typeQuiz": "Quiz",
+        "emptyTitle": "Nothing due today",
+        "emptyDescription": "You're all caught up! New items will appear here when they're due.",
+        "errorTitle": "Failed to load due-today queue",
+        "errorDescription": "Please try again."
     }
 }
 

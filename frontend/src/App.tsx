@@ -55,6 +55,7 @@ const StudyBuddyPage = lazy(() => import("./pages/StudyBuddyPage"));
 const CohortsPage = lazy(() => import("./pages/CohortsPage"));
 const NotesPage = lazy(() => import("./pages/NotesPage"));
 const DraftsInboxPage = lazy(() => import("./pages/DraftsInboxPage"));
+const DueTodayPage = lazy(() => import("./pages/DueTodayPage"));
 const SystemHealthPage = lazy(() => import("./pages/SystemHealthPage"));
 const ApiKeysPage = lazy(() => import("./pages/ApiKeysPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
@@ -229,6 +230,7 @@ function AppShell() {
                         <Route path="/study-stats" element={<StudyStatsPage />} />
                         <Route path="/notes" element={<NotesPage />} />
                         <Route path="/drafts" element={<DraftsInboxPage />} />
+                        <Route path="/due-today" element={<DueTodayPage />} />
                         <Route path="/study-buddy" element={<StudyBuddyPage />} />
                         <Route path="/cohorts" element={<CohortsPage />} />
                         <Route path="/courses/:id" element={<CourseDetailPage />} />
