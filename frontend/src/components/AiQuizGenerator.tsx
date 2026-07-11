@@ -11,11 +11,13 @@ import {
     generateAiQuiz,
     saveAiQuiz,
     type GeneratedQuizQuestion,
+    type QuizMode,
 } from "../api/aiQuiz";
 import { Card } from "./ui/Card";
 import { Button } from "./ui/Button";
 import { Badge } from "./ui/Badge";
 import { Input } from "./ui/Input";
+import { Select, Option } from "./ui/Select";
 import styles from "./AiQuizGenerator.module.css";
 
 type Status =
@@ -42,6 +44,8 @@ export default function AiQuizGenerator({
     const [questions, setQuestions] = useState<GeneratedQuizQuestion[]>([]);
     const [quizTitle, setQuizTitle] = useState("");
     const [status, setStatus] = useState<Status>("idle");
+    const [mode, setMode] = useState<QuizMode>("TIMED");
+    const [timeLimit, setTimeLimit] = useState("300");
 
     const generateMutation = useMutation({
         mutationFn: () => generateAiQuiz(resourceId).then((r) => r.data),
@@ -59,7 +63,13 @@ export default function AiQuizGenerator({
 
     const saveMutation = useMutation({
         mutationFn: () =>
-            saveAiQuiz(resourceId, quizTitle, questions).then((r) => r.data),
+            saveAiQuiz(resourceId, {
+                quizTitle,
+                questions,
+                mode,
+                timeLimitSeconds:
+                    mode === "TIMED" ? Number(timeLimit) || undefined : undefined,
+            }).then((r) => r.data),
         onMutate: () => setStatus("saving"),
         onSuccess: () => setStatus("saved"),
         onError: () => setStatus("error"),
@@ -69,6 +79,8 @@ export default function AiQuizGenerator({
         setQuestions([]);
         setQuizTitle("");
         setStatus("idle");
+        setMode("TIMED");
+        setTimeLimit("300");
     };
 
     const showResults =
@@ -182,6 +194,28 @@ export default function AiQuizGenerator({
                                 placeholder={t("aiQuiz.quizTitle")}
                                 wrapperClassName={styles.quizTitleInput}
                             />
+                            <Select
+                                value={mode}
+                                onChange={(_, data) =>
+                                    setMode((data.value as QuizMode) ?? "TIMED")
+                                }
+                                wrapperClassName={styles.modeSelect}
+                                aria-label={t("quizzes.modeLabel")}
+                            >
+                                <Option value="TIMED">{t("quizzes.modeTimed")}</Option>
+                                <Option value="MASTERY">{t("quizzes.modeMastery")}</Option>
+                                <Option value="ADAPTIVE">{t("quizzes.modeAdaptive")}</Option>
+                            </Select>
+                            {mode === "TIMED" && (
+                                <Input
+                                    type="number"
+                                    value={timeLimit}
+                                    onChange={(_, data) => setTimeLimit(data.value)}
+                                    placeholder={t("quizzes.timeLimitLabel")}
+                                    wrapperClassName={styles.timeLimitInput}
+                                    aria-label={t("quizzes.timeLimitLabel")}
+                                />
+                            )}
                             <Button
                                 variant="primary"
                                 onClick={() => saveMutation.mutate()}

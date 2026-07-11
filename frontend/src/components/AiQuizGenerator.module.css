@@ -207,6 +207,16 @@
     min-width: 0;
 }
 
+.modeSelect {
+    flex: 0 1 200px;
+    min-width: 0;
+}
+
+.timeLimitInput {
+    flex: 0 1 140px;
+    min-width: 0;
+}
+
 /* ----------------------- Motion + responsive ----------------------- */
 @media (prefers-reduced-motion: reduce) {
     .question {

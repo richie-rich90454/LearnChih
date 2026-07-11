@@ -19,6 +19,12 @@ import java.time.LocalDateTime;
 @Builder
 public class Quiz {
 
+    public enum Mode {
+        TIMED,
+        MASTERY,
+        ADAPTIVE
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,11 +35,22 @@ public class Quiz {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private Mode mode = Mode.TIMED;
+
+    @Column(name = "time_limit_seconds")
+    private Integer timeLimitSeconds;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        if (mode == null) {
+            mode = Mode.TIMED;
+        }
     }
 }

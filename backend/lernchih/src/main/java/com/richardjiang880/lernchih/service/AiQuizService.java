@@ -63,7 +63,12 @@ public class AiQuizService {
                 ? "AI Quiz"
                 : request.quizTitle().trim();
 
-        Quiz quiz = Quiz.builder().title(title).build();
+        Quiz.Mode mode = request.mode() == null ? Quiz.Mode.TIMED : request.mode();
+        Quiz quiz = Quiz.builder()
+                .title(title)
+                .mode(mode)
+                .timeLimitSeconds(request.timeLimitSeconds())
+                .build();
         quiz = quizRepository.save(quiz);
 
         List<QuizQuestion> toSave = new ArrayList<>();

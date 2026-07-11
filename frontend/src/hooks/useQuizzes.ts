@@ -1,6 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import api from "../api/axios";
+import type { QuizMode } from "../api/aiQuiz";
+
+export type { QuizMode };
 
 /**
  * A single multiple-choice question within a quiz.
@@ -13,6 +16,7 @@ export interface QuizQuestion {
     options: string[];
     /** Index of the correct option. Returned by server on submission review. */
     correctOptionIndex?: number;
+    explanation?: string;
 }
 
 /**
@@ -23,6 +27,8 @@ export interface Quiz {
     id: number;
     title: string;
     description?: string;
+    mode?: QuizMode;
+    timeLimitSeconds?: number | null;
     passingScore?: number;
     questions: QuizQuestion[];
 }
