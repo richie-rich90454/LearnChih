@@ -26,6 +26,7 @@ import {
     SignOut24Regular,
     SlideLayout24Regular,
     QuestionCircle24Regular,
+    Apps24Regular,
     PeopleTeam24Regular,
     ChatMultiple24Regular,
     CalendarClock24Regular,

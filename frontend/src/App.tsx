@@ -34,6 +34,7 @@ const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const NotificationsPage = lazy(() => import("./pages/NotificationsPage"));
 const FlashcardsPage = lazy(() => import("./pages/FlashcardsPage"));
 const QuizPage = lazy(() => import("./pages/QuizPage"));
+const QuestionBankPage = lazy(() => import("./pages/QuestionBankPage"));
 const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
 const AdminDashboardPage = lazy(() => import("./pages/AdminDashboardPage"));
 const AdminUsersPage = lazy(() => import("./pages/AdminUsersPage"));
