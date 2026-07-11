@@ -1,0 +1,8 @@
+{
+    "difficultyRating": {
+        "title": "Rate the difficulty",
+        "ariaLabel": "Difficulty rating",
+        "starAria": "{{value}} out of 5",
+        "youRated": "You rated: {{rating}}/5"
+    }
+}

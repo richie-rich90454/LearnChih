@@ -1,0 +1,73 @@
+/**
+ * DifficultyRating - 5-star self-rating widget (F22). Token-based; no raw hex,
+ * no !important.
+ */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.stars {
+    display: inline-flex;
+    gap: var(--space-1);
+}
+
+.starsStatic {
+    display: inline-flex;
+    gap: var(--space-1);
+}
+
+.starButton {
+    appearance: none;
+    background: transparent;
+    border: none;
+    padding: var(--space-1);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-button);
+    color: var(--text-secondary);
+    transition: color var(--motion-fast) var(--motion-ease), background var(--motion-fast) var(--motion-ease);
+}
+
+.starButton:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.starButton:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+}
+
+.starFilled {
+    color: var(--accent);
+}
+
+.starEmpty {
+    color: var(--text-disabled);
+}
+
+.rated {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .starButton {
+        transition: none;
+    }
+}

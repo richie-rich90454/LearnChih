@@ -56,6 +56,7 @@ import { QrShare } from "@/components/QrShare";
 import { recordLastVisited } from "@/components/ResumeCard";
 import { PdfHighlightPanel } from "@/components/PdfHighlightPanel";
 import { AnnotationPanel } from "@/components/AnnotationPanel";
+import { DifficultyRating } from "@/components/DifficultyRating";
 import styles from "./Detail.module.css";
 
 function cx(...parts: Array<string | false | undefined | null>): string {
@@ -449,6 +450,9 @@ export default function ResourceDetailPage() {
             {authenticated && resource && (
                 <AnnotationPanel resourceId={resource.id} />
             )}
+
+            {/* Resource difficulty self-rating (F22) */}
+            {resource && <DifficultyRating resourceId={resource.id} />}
 
             {/* Thread / Discussion */}
             <section className={styles.thread} aria-label={t("resources.discussion")}>

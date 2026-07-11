@@ -1,0 +1,8 @@
+{
+    "difficultyRating": {
+        "title": "评价难度",
+        "ariaLabel": "难度评分",
+        "starAria": "{{value}} 星，满分 5 星",
+        "youRated": "你的评分：{{rating}}/5"
+    }
+}
