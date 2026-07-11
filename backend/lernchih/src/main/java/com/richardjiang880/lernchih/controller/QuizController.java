@@ -1,5 +1,6 @@
 package com.richardjiang880.lernchih.controller;
 
+import com.richardjiang880.lernchih.dto.QuizDtos.QuizAnalyticsResponse;
 import com.richardjiang880.lernchih.dto.QuizDtos.QuizResponse;
 import com.richardjiang880.lernchih.dto.QuizDtos.SubmitRequest;
 import com.richardjiang880.lernchih.dto.QuizDtos.SubmitResponse;
@@ -52,6 +53,15 @@ public class QuizController {
             @RequestBody SubmitRequest request) {
         User user = getUserFromDetails(userDetails);
         SubmitResponse response = quizService.submit(user.getId(), id, request);
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/analytics")
+    public ResponseEntity<QuizAnalyticsResponse> analytics(@PathVariable Long id) {
+        QuizAnalyticsResponse response = quizService.getAnalytics(id);
         if (response == null) {
             return ResponseEntity.notFound().build();
         }

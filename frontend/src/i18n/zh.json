@@ -695,7 +695,14 @@
         "modeTimed": "限时",
         "modeMastery": "掌握",
         "modeAdaptive": "自适应",
-        "timeLimitLabel": "限时（秒）"
+        "timeLimitLabel": "限时（秒）",
+        "analyticsTitle": "题目分析",
+        "analyticsLoading": "加载分析中...",
+        "analyticsEmpty": "暂无分析数据",
+        "analyticsEmptyDescription": "至少完成一次测验后才会显示分析数据。",
+        "difficulty": "正确率 {{pct}}%",
+        "attempts": "{{count}} 次作答",
+        "discrimination": "区分度：{{value}}"
     },
     "leaderboard": {
         "title": "排行榜",

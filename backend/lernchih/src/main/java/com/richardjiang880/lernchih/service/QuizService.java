@@ -3,6 +3,8 @@ package com.richardjiang880.lernchih.service;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 import com.richardjiang880.lernchih.dto.QuizDtos.AnswerDetail;
+import com.richardjiang880.lernchih.dto.QuizDtos.QuestionAnalytics;
+import com.richardjiang880.lernchih.dto.QuizDtos.QuizAnalyticsResponse;
 import com.richardjiang880.lernchih.dto.QuizDtos.QuizAnswer;
 import com.richardjiang880.lernchih.dto.QuizDtos.QuizQuestionResponse;
 import com.richardjiang880.lernchih.dto.QuizDtos.QuizResponse;
@@ -10,7 +12,9 @@ import com.richardjiang880.lernchih.dto.QuizDtos.SubmitRequest;
 import com.richardjiang880.lernchih.dto.QuizDtos.SubmitResponse;
 import com.richardjiang880.lernchih.model.Quiz;
 import com.richardjiang880.lernchih.model.QuizQuestion;
+import com.richardjiang880.lernchih.model.QuizQuestionStat;
 import com.richardjiang880.lernchih.repository.QuizQuestionRepository;
+import com.richardjiang880.lernchih.repository.QuizQuestionStatRepository;
 import com.richardjiang880.lernchih.repository.QuizRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,13 +40,16 @@ public class QuizService {
 
     private final QuizRepository quizRepository;
     private final QuizQuestionRepository quizQuestionRepository;
+    private final QuizQuestionStatRepository statRepository;
     private final ObjectMapper objectMapper;
 
     public QuizService(QuizRepository quizRepository,
                        QuizQuestionRepository quizQuestionRepository,
+                       QuizQuestionStatRepository statRepository,
                        ObjectMapper objectMapper) {
         this.quizRepository = quizRepository;
         this.quizQuestionRepository = quizQuestionRepository;
+        this.statRepository = statRepository;
         this.objectMapper = objectMapper;
     }
 
@@ -103,7 +110,72 @@ public class QuizService {
         int total = questions.size();
         double pct = total == 0 ? 0.0 : (score * 100.0) / total;
         boolean passed = total > 0 && pct >= PASS_THRESHOLD * 100.0;
+
+        recordStats(details, score);
+
         return new SubmitResponse(quizId, score, total, pct, passed, details);
+    }
+
+    @Transactional(readOnly = true)
+    public QuizAnalyticsResponse getAnalytics(Long quizId) {
+        Quiz quiz = quizRepository.findById(quizId).orElse(null);
+        if (quiz == null) {
+            return null;
+        }
+        List<QuizQuestion> questions = quizQuestionRepository.findByQuizId(quizId);
+        List<QuizQuestionStat> stats = statRepository.findByQuestionIdIn(
+                questions.stream().map(QuizQuestion::getId).toList());
+        Map<Long, QuizQuestionStat> statByQid = new HashMap<>();
+        for (QuizQuestionStat s : stats) {
+            statByQid.put(s.getQuestionId(), s);
+        }
+
+        List<QuestionAnalytics> out = new ArrayList<>(questions.size());
+        for (QuizQuestion q : questions) {
+            QuizQuestionStat s = statByQid.get(q.getId());
+            int attempted = s == null ? 0 : s.getTimesAttempted();
+            int correct = s == null ? 0 : s.getTimesCorrect();
+            double difficulty = attempted == 0 ? 0.0 : (double) correct / attempted;
+            double discrimination = computeDiscrimination(s);
+            out.add(new QuestionAnalytics(
+                    q.getId(),
+                    q.getQuestion(),
+                    attempted,
+                    correct,
+                    difficulty,
+                    discrimination));
+        }
+        return new QuizAnalyticsResponse(quizId, quiz.getTitle(), out);
+    }
+
+    private void recordStats(List<AnswerDetail> details, int score) {
+        for (AnswerDetail d : details) {
+            QuizQuestionStat s = statRepository.findByQuestionId(d.questionId())
+                    .orElseGet(() -> QuizQuestionStat.builder()
+                            .questionId(d.questionId())
+                            .build());
+            s.setTimesAttempted(s.getTimesAttempted() + 1);
+            if (d.correct()) {
+                s.setTimesCorrect(s.getTimesCorrect() + 1);
+                s.setSumScoreCorrect(s.getSumScoreCorrect() + score);
+            } else {
+                s.setSumScoreWrong(s.getSumScoreWrong() + score);
+            }
+            statRepository.save(s);
+        }
+    }
+
+    private double computeDiscrimination(QuizQuestionStat s) {
+        if (s == null || s.getTimesCorrect() == 0 || s.getTimesAttempted() == s.getTimesCorrect()) {
+            return 0.0;
+        }
+        int wrong = s.getTimesAttempted() - s.getTimesCorrect();
+        if (wrong == 0) {
+            return 0.0;
+        }
+        double avgCorrect = (double) s.getSumScoreCorrect() / s.getTimesCorrect();
+        double avgWrong = (double) s.getSumScoreWrong() / wrong;
+        return avgCorrect - avgWrong;
     }
 
     private QuizResponse toResponse(Quiz quiz, List<QuizQuestion> questions, boolean revealAnswers) {

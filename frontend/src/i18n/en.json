@@ -711,7 +711,14 @@
         "modeTimed": "Timed",
         "modeMastery": "Mastery",
         "modeAdaptive": "Adaptive",
-        "timeLimitLabel": "Time limit (seconds)"
+        "timeLimitLabel": "Time limit (seconds)",
+        "analyticsTitle": "Question analytics",
+        "analyticsLoading": "Loading analytics...",
+        "analyticsEmpty": "No analytics yet",
+        "analyticsEmptyDescription": "Analytics appear after the quiz is taken at least once.",
+        "difficulty": "{{pct}}% correct",
+        "attempts": "{{count}} attempts",
+        "discrimination": "Discrimination: {{value}}"
     },
     "leaderboard": {
         "title": "Leaderboard",

@@ -5,6 +5,7 @@ import { ArrowLeft24Regular, QuestionCircle24Regular } from "@fluentui/react-ico
 import { useTranslation } from "react-i18next";
 import { useQuizzes } from "../hooks/useQuizzes";
 import QuizWidget from "../components/QuizWidget";
+import QuizAnalyticsPanel from "../components/QuizAnalyticsPanel";
 import Seo from "../components/Seo";
 import { EmptyState } from "../components/EmptyState";
 import { Button } from "@/components/ui/Button";
@@ -87,7 +88,12 @@ export default function QuizPage() {
                     </Card>
                 ))}
 
-            {selectedQuizId && <QuizWidget quizId={selectedQuizId} />}
+            {selectedQuizId && (
+                <>
+                    <QuizWidget quizId={selectedQuizId} />
+                    <QuizAnalyticsPanel quizId={selectedQuizId} />
+                </>
+            )}
         </main>
     );
 }

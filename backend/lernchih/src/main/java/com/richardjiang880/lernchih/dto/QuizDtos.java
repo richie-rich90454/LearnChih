@@ -65,4 +65,21 @@ public final class QuizDtos {
             List<AnswerDetail> details
     ) {
     }
+
+    public record QuestionAnalytics(
+            Long questionId,
+            String question,
+            int timesAttempted,
+            int timesCorrect,
+            double difficulty,
+            double discrimination
+    ) {
+    }
+
+    public record QuizAnalyticsResponse(
+            Long quizId,
+            String title,
+            List<QuestionAnalytics> questions
+    ) {
+    }
 }

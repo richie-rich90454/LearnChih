@@ -86,3 +86,30 @@ export function useSubmitQuiz(quizId: string | number | undefined) {
         },
     });
 }
+
+/** Per-question analytics (F17). */
+export interface QuestionAnalytics {
+    questionId: number;
+    question: string;
+    timesAttempted: number;
+    timesCorrect: number;
+    /** Proportion correct (0-1). Lower = harder. */
+    difficulty: number;
+    /** avg(score|correct) - avg(score|wrong). Higher = better discriminator. */
+    discrimination: number;
+}
+
+export interface QuizAnalytics {
+    quizId: number;
+    title: string;
+    questions: QuestionAnalytics[];
+}
+
+/** Fetches aggregate analytics for a quiz (F17). */
+export function useQuizAnalytics(id: string | number | undefined) {
+    return useQuery<QuizAnalytics>({
+        queryKey: ["quiz-analytics", id],
+        queryFn: () => api.get<QuizAnalytics>(`/quizzes/${id}/analytics`).then((r) => r.data),
+        enabled: !!id,
+    });
+}
