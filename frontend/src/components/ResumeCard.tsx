@@ -88,18 +88,20 @@ export function ResumeCard() {
 
     return (
         <Card padding="lg" className={styles.card}>
-            <div className={styles.body}>
-                <p className={styles.label}>{t("dashboard.continueWhereYouLeftOff")}</p>
-                <p className={styles.title}>{entry.title}</p>
-                <p className={styles.time}>{timeAgo(entry.timestamp, i18n.language)}</p>
+            <div className={styles.inner}>
+                <div className={styles.body}>
+                    <p className={styles.label}>{t("dashboard.continueWhereYouLeftOff")}</p>
+                    <p className={styles.title}>{entry.title}</p>
+                    <p className={styles.time}>{timeAgo(entry.timestamp, i18n.language)}</p>
+                </div>
+                <Button
+                    variant="primary"
+                    icon={<ArrowRight24Regular />}
+                    onClick={() => navigate(entry.path)}
+                >
+                    {t("dashboard.continue")}
+                </Button>
             </div>
-            <Button
-                variant="primary"
-                icon={<ArrowRight24Regular />}
-                onClick={() => navigate(entry.path)}
-            >
-                {t("dashboard.continue")}
-            </Button>
         </Card>
     );
 }
