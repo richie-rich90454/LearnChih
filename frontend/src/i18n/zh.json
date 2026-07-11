@@ -648,7 +648,27 @@
         "clearSelection": "清除选择",
         "deleteSelected": "删除所选",
         "selectedCount": "已选 {{count}} 项",
-        "selectItem": "选择 {{title}}"
+        "selectItem": "选择 {{title}}",
+        "moveTo": "将 {{title}} 移动到文件夹",
+        "moveToRoot": "未分类（根目录）",
+        "moveToCurrent": "将所选移动到此",
+        "emptyFolderTitle": "此文件夹中没有书签",
+        "emptyFolderDescription": "使用每行的菜单将书签移至此处，或选择其他文件夹。"
+    },
+    "bookmarkFolders": {
+        "navLabel": "书签文件夹",
+        "heading": "文件夹",
+        "add": "新建文件夹",
+        "addRoot": "添加根文件夹",
+        "childPlaceholder": "文件夹名称",
+        "renameLabel": "文件夹名称",
+        "rename": "重命名 {{name}}",
+        "delete": "删除 {{name}}",
+        "addChild": "在 {{name}} 下添加子文件夹",
+        "collapse": "折叠 {{name}}",
+        "expand": "展开 {{name}}",
+        "allBookmarks": "全部书签",
+        "emptyHint": "暂无文件夹。在上方创建一个。"
     },
     "anchorLinks": {
         "linkCopied": "链接已复制",

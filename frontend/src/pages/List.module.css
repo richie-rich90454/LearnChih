@@ -270,6 +270,46 @@
     gap: var(--space-1);
 }
 
+/* Per-row "move to folder" dropdown menu (F76). */
+.moveMenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: var(--space-1);
+    min-width: 200px;
+    max-height: 280px;
+    overflow-y: auto;
+    background-color: var(--surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    box-shadow: var(--shadow-lift);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-1);
+}
+
+.moveMenuItem {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: var(--space-1) var(--space-2);
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    border-radius: var(--radius-input);
+    transition: background-color var(--motion-fast) var(--motion-ease);
+}
+
+.moveMenuItem:hover,
+.moveMenuItem:focus-visible {
+    background-color: var(--surface-sunken);
+    outline: none;
+}
+
 /* ----------------------- Table (Leaderboard) ----------------------- */
 .tableWrap {
     overflow-x: auto;

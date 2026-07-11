@@ -1,0 +1,153 @@
+/**
+ * BookmarkFolders - tree sidebar for nested bookmark folders (F76).
+ * Token-based; no !important. Respects prefers-reduced-motion via the
+ * global guard in index.css.
+ */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    min-width: 220px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.heading {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.tree,
+.children {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.children {
+    padding-left: calc(var(--space-4));
+}
+
+.node {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-input);
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition:
+        background-color var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease);
+}
+
+.row:hover {
+    background-color: var(--surface-sunken);
+}
+
+.row:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.rowSelected {
+    background-color: var(--accent-subtle, var(--surface-sunken));
+    border-color: var(--accent);
+}
+
+.expandBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius-input);
+    flex-shrink: 0;
+}
+
+.expandBtn:hover {
+    color: var(--text-primary);
+}
+
+.expandBtn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    text-align: left;
+    cursor: pointer;
+}
+
+.label:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.rowActions {
+    display: none;
+    align-items: center;
+    gap: var(--space-1);
+    flex-shrink: 0;
+}
+
+.row:hover .rowActions,
+.row:focus-within .rowActions {
+    display: flex;
+}
+
+.addChildRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-left: calc(var(--space-4));
+}
+
+.emptyHint {
+    margin: 0;
+    padding: var(--space-2);
+    color: var(--text-tertiary);
+    font-size: var(--font-size-xs);
+    font-style: italic;
+}

@@ -664,7 +664,27 @@
         "clearSelection": "Clear selection",
         "deleteSelected": "Delete selected",
         "selectedCount": "{{count}} selected",
-        "selectItem": "Select {{title}}"
+        "selectItem": "Select {{title}}",
+        "moveTo": "Move {{title}} to folder",
+        "moveToRoot": "Unfiled (root)",
+        "moveToCurrent": "Move selected here",
+        "emptyFolderTitle": "No bookmarks in this folder",
+        "emptyFolderDescription": "Move bookmarks here using the per-row menu, or select a different folder."
+    },
+    "bookmarkFolders": {
+        "navLabel": "Bookmark folders",
+        "heading": "Folders",
+        "add": "New folder",
+        "addRoot": "Add root folder",
+        "childPlaceholder": "Folder name",
+        "renameLabel": "Folder name",
+        "rename": "Rename {{name}}",
+        "delete": "Delete {{name}}",
+        "addChild": "Add child folder to {{name}}",
+        "collapse": "Collapse {{name}}",
+        "expand": "Expand {{name}}",
+        "allBookmarks": "All bookmarks",
+        "emptyHint": "No folders yet. Create one above."
     },
     "anchorLinks": {
         "linkCopied": "Link copied",
