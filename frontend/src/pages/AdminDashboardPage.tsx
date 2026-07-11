@@ -279,6 +279,11 @@ export default function AdminDashboardPage() {
             label: t("adminDashboard.linkHealth"),
             description: t("adminDashboard.linkHealthDesc"),
         },
+        {
+            to: "/admin/api-keys",
+            label: t("adminDashboard.linkApiKeys"),
+            description: t("adminDashboard.linkApiKeysDesc"),
+        },
     ];
 
     if (!isAdmin) {

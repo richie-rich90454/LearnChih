@@ -482,6 +482,27 @@
         "lastUpdated": "Last updated",
         "autoRefresh": "Auto-refreshes every 30s"
     },
+    "apiKeys": {
+        "title": "API Keys",
+        "subtitle": "Manage API keys with scoped permissions (read, write, admin).",
+        "create": "New API Key",
+        "createTitle": "Create API Key",
+        "createConfirm": "Generate Key",
+        "fieldName": "Key name",
+        "fieldNamePlaceholder": "e.g. CI integration",
+        "fieldScopes": "Scopes",
+        "scopes": { "read": "Read", "write": "Write", "admin": "Admin" },
+        "loadError": "Failed to load API keys",
+        "noKeys": "No API keys configured.",
+        "revoked": "Revoked",
+        "revoke": "Revoke",
+        "createdAt": "Created",
+        "lastUsed": "Last used",
+        "copyNow": "Copy your new key now — it won't be shown again.",
+        "copy": "Copy",
+        "copied": "Copied",
+        "untitled": "Untitled"
+    },
     "maintenanceBanner": {
         "title": "Maintenance Notice",
         "dismiss": "Dismiss"

@@ -26,6 +26,13 @@ public class ApiKey {
     @Column
     private String name;
 
+    /**
+     * Comma-separated list of scopes granted to this key
+     * (e.g. {@code "read,write,admin"}).
+     */
+    @Column
+    private String scopes;
+
     @Column(name = "last_used_at")
     private LocalDateTime lastUsedAt;
 
@@ -35,6 +42,9 @@ public class ApiKey {
     @Column(nullable = false)
     @Builder.Default
     private Boolean revoked = false;
+
+    @Column(name = "revoked_at")
+    private LocalDateTime revokedAt;
 
     @PrePersist
     protected void onCreate() {

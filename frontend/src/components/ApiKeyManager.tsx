@@ -38,7 +38,7 @@ export default function ApiKeyManager() {
     const styles = useStyles();
     const queryClient = useQueryClient();
     const [newKeyName, setNewKeyName] = useState("");
-    const [copiedId, setCopiedId] = useState<string | null>(null);
+    const [copiedId, setCopiedId] = useState<number | null>(null);
 
     const { data: keys = [], isLoading } = useQuery<ApiKey[]>({
         queryKey: ["apiKeys"],
@@ -46,7 +46,7 @@ export default function ApiKeyManager() {
     });
 
     const createMutation = useMutation({
-        mutationFn: () => createApiKey(newKeyName),
+        mutationFn: () => createApiKey(newKeyName, ["read"]),
         onSuccess: () => {
             setNewKeyName("");
             queryClient.invalidateQueries({ queryKey: ["apiKeys"] });
@@ -54,13 +54,13 @@ export default function ApiKeyManager() {
     });
 
     const revokeMutation = useMutation({
-        mutationFn: (id: string) => revokeApiKey(id),
+        mutationFn: (id: number) => revokeApiKey(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ["apiKeys"] }),
     });
 
-    const handleCopy = (key: ApiKey) => {
-        navigator.clipboard.writeText(key.key).then(() => {
-            setCopiedId(key.id);
+    const handleCopyPlaintext = (plaintext: string) => {
+        navigator.clipboard.writeText(plaintext).then(() => {
+            setCopiedId(-1);
             setTimeout(() => setCopiedId(null), 2000);
         });
     };
@@ -98,8 +98,19 @@ export default function ApiKeyManager() {
             {createMutation.data?.data && (
                 <MessageBar intent="success">
                     <MessageBarBody>
-                        Key generated: <code>{createMutation.data.data.key}</code>. Copy it now — it
+                        Key generated:{" "}
+                        <code>{createMutation.data.data.plaintext}</code>. Copy it now — it
                         won&apos;t be shown again.
+                        <Button
+                            appearance="subtle"
+                            size="small"
+                            icon={<Copy24Regular />}
+                            onClick={() =>
+                                handleCopyPlaintext(createMutation.data!.data.plaintext)
+                            }
+                        >
+                            {copiedId === -1 ? "Copied" : "Copy"}
+                        </Button>
                     </MessageBarBody>
                 </MessageBar>
             )}
@@ -127,9 +138,7 @@ export default function ApiKeyManager() {
                                     <TableCellLayout>{key.name}</TableCellLayout>
                                 </TableCell>
                                 <TableCell>
-                                    <code>
-                                        {key.prefix}...{copiedId === key.id ? " copied" : ""}
-                                    </code>
+                                    <code>{key.prefix}</code>
                                 </TableCell>
                                 <TableCell>
                                     {new Date(key.createdAt).toLocaleDateString()}
@@ -140,21 +149,13 @@ export default function ApiKeyManager() {
                                     >
                                         <Button
                                             appearance="subtle"
-                                            icon={<Copy24Regular />}
-                                            size="small"
-                                            onClick={() => handleCopy(key)}
-                                        >
-                                            Copy
-                                        </Button>
-                                        <Button
-                                            appearance="subtle"
                                             icon={<Delete24Regular />}
                                             size="small"
                                             color="danger"
                                             onClick={() => revokeMutation.mutate(key.id)}
-                                            disabled={revokeMutation.isPending}
+                                            disabled={revokeMutation.isPending || key.revoked}
                                         >
-                                            Revoke
+                                            {key.revoked ? "Revoked" : "Revoke"}
                                         </Button>
                                     </div>
                                 </TableCell>

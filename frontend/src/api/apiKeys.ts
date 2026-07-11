@@ -1,19 +1,36 @@
 import type { AxiosResponse } from "axios";
 import api from "./axios";
 
+/** Scope granted to an API key. */
+export type ApiKeyScope = "read" | "write" | "admin";
+
+/** API key as exposed by the admin endpoints (never contains the raw key). */
 export interface ApiKey {
-    id: string;
+    id: number;
+    userId: number;
     name: string;
-    key: string;
     prefix: string;
+    scopes: ApiKeyScope[];
+    revoked: boolean;
     createdAt: string;
-    lastUsedAt?: string;
+    revokedAt: string | null;
+    lastUsedAt: string | null;
 }
 
-export const getApiKeys = (): Promise<AxiosResponse<ApiKey[]>> => api.get<ApiKey[]>("/api-keys");
+/** Returned once, immediately after creating a key, so it can be copied. */
+export interface CreatedApiKey {
+    key: ApiKey;
+    plaintext: string;
+}
 
-export const createApiKey = (name: string): Promise<AxiosResponse<ApiKey>> =>
-    api.post<ApiKey>("/api-keys", { name });
+export const getApiKeys = (userId?: number): Promise<AxiosResponse<ApiKey[]>> =>
+    api.get<ApiKey[]>("/admin/api-keys", { params: userId ? { userId } : {} });
 
-export const revokeApiKey = (id: string): Promise<AxiosResponse<void>> =>
-    api.delete<void>(`/api-keys/${id}`);
+export const createApiKey = (
+    name: string,
+    scopes: ApiKeyScope[],
+): Promise<AxiosResponse<CreatedApiKey>> =>
+    api.post<CreatedApiKey>("/admin/api-keys", { name, scopes });
+
+export const revokeApiKey = (id: number): Promise<AxiosResponse<void>> =>
+    api.delete<void>(`/admin/api-keys/${id}`);

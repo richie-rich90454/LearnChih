@@ -466,6 +466,27 @@
         "lastUpdated": "最后更新",
         "autoRefresh": "每 30 秒自动刷新"
     },
+    "apiKeys": {
+        "title": "API 密钥",
+        "subtitle": "管理具有范围权限（读取、写入、管理员）的 API 密钥。",
+        "create": "新建 API 密钥",
+        "createTitle": "创建 API 密钥",
+        "createConfirm": "生成密钥",
+        "fieldName": "密钥名称",
+        "fieldNamePlaceholder": "例如 CI 集成",
+        "fieldScopes": "权限范围",
+        "scopes": { "read": "读取", "write": "写入", "admin": "管理员" },
+        "loadError": "加载 API 密钥失败",
+        "noKeys": "暂无 API 密钥。",
+        "revoked": "已撤销",
+        "revoke": "撤销",
+        "createdAt": "创建时间",
+        "lastUsed": "最后使用",
+        "copyNow": "请立即复制您的新密钥——它不会再次显示。",
+        "copy": "复制",
+        "copied": "已复制",
+        "untitled": "未命名"
+    },
     "maintenanceBanner": {
         "title": "维护通知",
         "dismiss": "关闭"
