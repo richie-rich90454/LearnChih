@@ -1,0 +1,142 @@
+/**
+ * DailyGoalRing - circular SVG progress ring for the daily study goal (F21).
+ * Token-based; no raw hex, no !important. The design-system Card primitive
+ * owns the surface, border, radius, and shadow.
+ */
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+}
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.headerText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.body {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+}
+
+.ring {
+    width: 160px;
+    height: 160px;
+    flex-shrink: 0;
+    display: block;
+}
+
+.ringTrack {
+    stroke: var(--surface-sunken);
+}
+
+.ringFill {
+    stroke: var(--accent);
+    transition: stroke-dashoffset var(--motion-base) var(--motion-ease);
+}
+
+.ringFillStatic {
+    stroke: var(--accent);
+    transition: none;
+}
+
+.ringText {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: var(--font-weight-bold);
+    fill: var(--text-primary);
+}
+
+.ringSubtext {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    fill: var(--text-secondary);
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    flex: 1 1 200px;
+    min-width: 200px;
+}
+
+.goalRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.goalLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.goalInput {
+    width: 90px;
+}
+
+.progressText {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .body {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ring {
+        align-self: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ringFill {
+        transition: none;
+    }
+}

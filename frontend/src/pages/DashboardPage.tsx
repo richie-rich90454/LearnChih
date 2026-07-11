@@ -22,6 +22,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { ResumeCard } from "@/components/ResumeCard";
 import { StreakFreeze } from "@/components/StreakFreeze";
+import { DailyGoalRing } from "@/components/DailyGoalRing";
 import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 import { PomodoroTimer } from "@/components/PomodoroTimer";
 import { BuddyMatch } from "@/components/BuddyMatch";
@@ -115,6 +116,9 @@ export default function DashboardPage() {
 
             {/* Learning streak freeze (F20) */}
             <StreakFreeze />
+
+            {/* Daily study goal + progress ring (F21) */}
+            <DailyGoalRing />
 
             {/* Onboarding checklist */}
             <OnboardingChecklist />

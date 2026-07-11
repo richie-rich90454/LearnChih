@@ -1,0 +1,12 @@
+{
+    "dailyGoal": {
+        "title": "Daily Goal",
+        "description": "Track your daily study minutes.",
+        "goalLabel": "Goal (min)",
+        "goalAria": "Daily goal in minutes",
+        "log25": "Log 25 min",
+        "minutes": "min",
+        "progress": "{{done}} / {{goal}} min ({{pct}}%)",
+        "progressAria": "{{percent}}% of daily goal"
+    }
+}

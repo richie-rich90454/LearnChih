@@ -1,0 +1,12 @@
+{
+    "dailyGoal": {
+        "title": "每日目标",
+        "description": "追踪你每天的学习时长。",
+        "goalLabel": "目标（分钟）",
+        "goalAria": "以分钟为单位的每日目标",
+        "log25": "记录 25 分钟",
+        "minutes": "分钟",
+        "progress": "{{done}} / {{goal}} 分钟 ({{pct}}%)",
+        "progressAria": "每日目标的 {{percent}}%"
+    }
+}
