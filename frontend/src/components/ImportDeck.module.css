@@ -1,0 +1,101 @@
+/**
+ * ImportDeck - file upload deck importer (F27). Token-based; no raw hex, no
+ * !important.
+ */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.hiddenInput {
+    display: none;
+}
+
+.fileName {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.error {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--status-danger);
+}
+
+.notice {
+    margin: 0;
+    padding: var(--space-3);
+    background: var(--status-warning-soft);
+    color: var(--status-warning);
+    border-radius: var(--radius-input);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+}
+
+.preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.previewLabel {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    overflow: hidden;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+}
+
+.th {
+    text-align: left;
+    padding: var(--space-2) var(--space-3);
+    background: var(--surface-sunken);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.td {
+    text-align: left;
+    padding: var(--space-2) var(--space-3);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-subtle);
+    word-break: break-word;
+}
+
+.table tbody tr:last-child .td {
+    border-bottom: none;
+}
+
+.totalCount {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.noAnim {
+    transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .noAnim {
+        transition: none;
+    }
+}

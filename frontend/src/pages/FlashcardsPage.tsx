@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Dropdown, Option, Spinner, MessageBar, MessageBarBody } from "@fluentui/react-components";
-import { ArrowLeft24Regular, Sparkle24Regular, Share24Regular, ArrowDownload24Regular } from "@fluentui/react-icons";
+import { Dropdown, Option, Spinner, MessageBar, MessageBarBody, Dialog, DialogTrigger, DialogSurface, DialogBody, DialogTitle, DialogContent, DialogActions } from "@fluentui/react-components";
+import { ArrowLeft24Regular, Sparkle24Regular, Share24Regular, ArrowDownload24Regular, ArrowUpload24Regular } from "@fluentui/react-icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useDecks } from "../hooks/useFlashcards";
 import FlashcardDeck from "../components/FlashcardDeck";
 import ShareDeckDialog from "../components/ShareDeckDialog";
+import ImportDeck from "../components/ImportDeck";
 import { getSharedWithMe, revokeSharedDeck, type SharedDeck } from "../api/sharedDecks";
 import { exportDeckToAnki } from "../api/ankiExport";
 import Seo from "../components/Seo";
@@ -23,6 +24,7 @@ export default function FlashcardsPage() {
     const queryClient = useQueryClient();
     const { data: decks, isLoading } = useDecks();
     const [selectedDeckId, setSelectedDeckId] = useState<string | undefined>();
+    const [importOpen, setImportOpen] = useState<boolean>(false);
 
     const sharedWithMeQuery = useQuery<SharedDeck[]>({
         queryKey: ["sharedDecks", "shared-with-me"],
@@ -65,6 +67,37 @@ export default function FlashcardsPage() {
                     {t("common.back")}
                 </Button>
                 <h1 className={styles.title}>{t("flashcards.title")}</h1>
+                <Dialog
+                    open={importOpen}
+                    onOpenChange={(_, data) => setImportOpen(data.open)}
+                >
+                    <DialogTrigger disableButtonEnhancement>
+                        <Button
+                            variant="primary"
+                            icon={<ArrowUpload24Regular />}
+                        >
+                            {t("importDeck.button", "Import deck")}
+                        </Button>
+                    </DialogTrigger>
+                    <DialogSurface>
+                        <DialogBody>
+                            <DialogTitle>
+                                {t("importDeck.dialogTitle", "Import deck")}
+                            </DialogTitle>
+                            <DialogContent>
+                                <ImportDeck />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button
+                                    variant="subtle"
+                                    onClick={() => setImportOpen(false)}
+                                >
+                                    {t("common.close", "Close")}
+                                </Button>
+                            </DialogActions>
+                        </DialogBody>
+                    </DialogSurface>
+                </Dialog>
             </div>
 
             <div className={styles.deckSelector}>

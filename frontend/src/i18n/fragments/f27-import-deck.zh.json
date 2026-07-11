@@ -1,0 +1,15 @@
+{
+    "importDeck": {
+        "button": "导入卡组",
+        "dialogTitle": "导入卡组",
+        "chooseFile": "选择文件",
+        "selectedFile": "已选择",
+        "unsupportedType": "请选择 .csv 或 .apkg 文件。",
+        "readError": "无法读取该文件。",
+        "apkgNotice": "Anki 包导入需要后端支持 — 无法预览。",
+        "preview": "预览（前 5 张卡片）",
+        "front": "正面",
+        "back": "背面",
+        "totalCards": "已解析 {{count}} 张卡片"
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "importDeck": {
+        "button": "Import deck",
+        "dialogTitle": "Import deck",
+        "chooseFile": "Choose file",
+        "selectedFile": "Selected",
+        "unsupportedType": "Please select a .csv or .apkg file.",
+        "readError": "Could not read the file.",
+        "apkgNotice": "Anki package import requires backend support — preview unavailable.",
+        "preview": "Preview (first 5 cards)",
+        "front": "Front",
+        "back": "Back",
+        "totalCards": "{{count}} cards parsed"
+    }
+}
