@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogContent,
 } from "@fluentui/react-components";
-import { PeopleCommunity24Regular, Chat24Regular, Calendar24Regular, Whiteboard24Regular, Call24Regular } from "@fluentui/react-icons";
+import { PeopleCommunity24Regular, Chat24Regular, Calendar24Regular, Whiteboard24Regular, Call24Regular, ShareScreenStart24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
     getStudyGroups,
@@ -22,6 +22,7 @@ import { StudyGroupChat } from "../components/StudyGroupChat";
 import { GroupEvents } from "../components/GroupEvents";
 import { Whiteboards } from "../components/Whiteboard";
 import { VoiceRooms } from "../components/VoiceRoom";
+import { ScreenShares } from "../components/ScreenShare";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { Button } from "../components/ui/Button";
@@ -42,6 +43,7 @@ export default function StudyGroupsPage() {
     const [eventsGroup, setEventsGroup] = useState<StudyGroup | null>(null);
     const [whiteboardGroup, setWhiteboardGroup] = useState<StudyGroup | null>(null);
     const [voiceRoomGroup, setVoiceRoomGroup] = useState<StudyGroup | null>(null);
+    const [screenShareGroup, setScreenShareGroup] = useState<StudyGroup | null>(null);
 
     const handleJoin = async (id: number) => {
         await joinStudyGroup(id);
@@ -146,6 +148,14 @@ export default function StudyGroupsPage() {
                             >
                                 {t("voiceRooms.title")}
                             </Button>
+                            <Button
+                                variant="subtle"
+                                size="small"
+                                icon={<ShareScreenStart24Regular />}
+                                onClick={() => setScreenShareGroup(group)}
+                            >
+                                {t("screenShares.title")}
+                            </Button>
                         </div>
                     </Card>
                 ))}
@@ -218,6 +228,24 @@ export default function StudyGroupsPage() {
                         </DialogTitle>
                         <DialogContent>
                             {voiceRoomGroup && <VoiceRooms groupId={voiceRoomGroup.id} />}
+                        </DialogContent>
+                    </DialogBody>
+                </DialogSurface>
+            </Dialog>
+
+            <Dialog
+                open={screenShareGroup !== null}
+                onOpenChange={(_: unknown, d: { open: boolean }) => {
+                    if (!d.open) setScreenShareGroup(null);
+                }}
+            >
+                <DialogSurface>
+                    <DialogBody>
+                        <DialogTitle>
+                            {screenShareGroup ? `${t("screenShares.title")} — ${screenShareGroup.name}` : t("screenShares.title")}
+                        </DialogTitle>
+                        <DialogContent>
+                            {screenShareGroup && <ScreenShares groupId={screenShareGroup.id} />}
                         </DialogContent>
                     </DialogBody>
                 </DialogSurface>
