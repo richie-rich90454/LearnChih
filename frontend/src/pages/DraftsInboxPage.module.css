@@ -1,0 +1,12 @@
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-8);
+}
+
+.filterLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-right: var(--space-1);
+}

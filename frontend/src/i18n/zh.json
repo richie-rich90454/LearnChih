@@ -376,7 +376,9 @@
         "linkFeatureFlags": "功能开关",
         "linkFeatureFlagsDesc": "开启或关闭平台功能",
         "linkHealth": "系统健康",
-        "linkHealthDesc": "监控数据库、内存与运行时间"
+        "linkHealthDesc": "监控数据库、内存与运行时间",
+        "linkApiKeys": "API 密钥",
+        "linkApiKeysDesc": "管理具有范围权限的 API 密钥"
     },
     "adminUsers": {
         "title": "用户管理",
@@ -1173,6 +1175,32 @@
         "levelLabel": "麦克风音量",
         "micDenied": "麦克风访问被拒绝。请开启麦克风权限以发言。",
         "micError": "无法访问麦克风，请检查设备。"
+    },
+    "recommendations": {
+        "title": "为你推荐",
+        "loading": "正在获取推荐...",
+        "error": "暂时无法加载推荐内容。",
+        "emptyTitle": "暂无推荐",
+        "emptyDescription": "浏览并互动一些资源，我们会在这里为你推荐相似内容。"
+    },
+    "draftsInbox": {
+        "title": "草稿",
+        "subtitle": "在一处继续编写任何草稿",
+        "description": "浏览并继续资源、频道和笔记中未完成的草稿。",
+        "resume": "继续",
+        "delete": "删除草稿",
+        "untitled": "无标题草稿",
+        "filterLabel": "显示：",
+        "filter": {
+            "ALL": "全部",
+            "NOTE": "笔记",
+            "RESOURCE": "资源",
+            "CHANNEL": "频道"
+        },
+        "emptyTitle": "暂无草稿",
+        "emptyDescription": "你开始的草稿会显示在这里，方便随时继续。",
+        "errorTitle": "加载草稿失败",
+        "errorDescription": "请重试。"
     }
 }
 

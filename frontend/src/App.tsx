@@ -54,7 +54,9 @@ const StudyStatsPage = lazy(() => import("./pages/StudyStatsPage"));
 const StudyBuddyPage = lazy(() => import("./pages/StudyBuddyPage"));
 const CohortsPage = lazy(() => import("./pages/CohortsPage"));
 const NotesPage = lazy(() => import("./pages/NotesPage"));
+const DraftsInboxPage = lazy(() => import("./pages/DraftsInboxPage"));
 const SystemHealthPage = lazy(() => import("./pages/SystemHealthPage"));
+const ApiKeysPage = lazy(() => import("./pages/ApiKeysPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function LoadingFallback() {
@@ -226,6 +228,7 @@ function AppShell() {
                         <Route path="/concept-map" element={<ConceptMapPage />} />
                         <Route path="/study-stats" element={<StudyStatsPage />} />
                         <Route path="/notes" element={<NotesPage />} />
+                        <Route path="/drafts" element={<DraftsInboxPage />} />
                         <Route path="/study-buddy" element={<StudyBuddyPage />} />
                         <Route path="/cohorts" element={<CohortsPage />} />
                         <Route path="/courses/:id" element={<CourseDetailPage />} />
@@ -236,6 +239,7 @@ function AppShell() {
                         <Route path="/admin/audit-log" element={<AuditLogPage />} />
                         <Route path="/admin/feature-flags" element={<FeatureFlagsPage />} />
                         <Route path="/admin/health" element={<SystemHealthPage />} />
+                        <Route path="/admin/api-keys" element={<ApiKeysPage />} />
                         <Route path="/moderation" element={<ModerationPage />} />
                     </Route>
                 </Route>

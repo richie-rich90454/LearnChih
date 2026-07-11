@@ -392,7 +392,9 @@
         "linkFeatureFlags": "Feature Flags",
         "linkFeatureFlagsDesc": "Toggle platform features on or off",
         "linkHealth": "System Health",
-        "linkHealthDesc": "Monitor database, memory, and uptime"
+        "linkHealthDesc": "Monitor database, memory, and uptime",
+        "linkApiKeys": "API Keys",
+        "linkApiKeysDesc": "Manage API keys with scoped permissions"
     },
     "adminUsers": {
         "title": "User Management",
@@ -1172,6 +1174,32 @@
         "levelLabel": "Microphone level",
         "micDenied": "Microphone access was denied. Enable mic permissions to speak.",
         "micError": "Could not access microphone. Please check your device."
+    },
+    "draftsInbox": {
+        "title": "Drafts",
+        "subtitle": "Resume any draft composition in one place",
+        "description": "Browse and resume your in-progress drafts across resources, channels, and notes.",
+        "resume": "Resume",
+        "delete": "Delete draft",
+        "untitled": "Untitled draft",
+        "filterLabel": "Show:",
+        "filter": {
+            "ALL": "All",
+            "NOTE": "Notes",
+            "RESOURCE": "Resources",
+            "CHANNEL": "Channels"
+        },
+        "emptyTitle": "No drafts yet",
+        "emptyDescription": "Drafts you start will appear here so you can pick up where you left off.",
+        "errorTitle": "Failed to load drafts",
+        "errorDescription": "Please try again."
+    },
+    "recommendations": {
+        "title": "Recommended for you",
+        "loading": "Finding recommendations...",
+        "error": "Couldn't load recommendations right now.",
+        "emptyTitle": "No recommendations yet",
+        "emptyDescription": "Interact with some resources and we'll suggest similar ones here."
     }
 }
 
