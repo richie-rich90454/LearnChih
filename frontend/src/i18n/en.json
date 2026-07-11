@@ -1298,6 +1298,10 @@
         "emptyDescription": "You're all caught up! New items will appear here when they're due.",
         "errorTitle": "Failed to load due-today queue",
         "errorDescription": "Please try again."
+    },
+    "workspace": {
+        "tabsAriaLabel": "Workspace tabs",
+        "closeTab": "Close {{title}}"
     }
 }
 

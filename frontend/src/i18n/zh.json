@@ -1299,6 +1299,10 @@
         "emptyDescription": "你开始的草稿会显示在这里，方便随时继续。",
         "errorTitle": "加载草稿失败",
         "errorDescription": "请重试。"
+    },
+    "workspace": {
+        "tabsAriaLabel": "工作区标签页",
+        "closeTab": "关闭 {{title}}"
     }
 }
 

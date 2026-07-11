@@ -96,30 +96,27 @@ export function WorkspaceTabs() {
     };
 
     return (
-        <div className={styles.tabBar} role="tablist" aria-label="Workspace tabs">
+        <nav aria-label={t("workspace.tabsAriaLabel")} className={styles.tabBar}>
             <div className={styles.scrollArea}>
                 {tabs.map((tab) => {
                     const active = isActive(tab.path);
                     return (
                         <div
                             key={tab.path}
-                            role="tab"
-                            tabIndex={0}
-                            aria-selected={active}
-                            className={cx(styles.tab, active && styles.tabActive)}
-                            onClick={() => navigate(tab.path)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter" || e.key === " ") {
-                                    e.preventDefault();
-                                    navigate(tab.path);
-                                }
-                            }}
+                            className={cx(styles.tabRow, active && styles.tabActive)}
                         >
-                            <span className={styles.tabLabel}>{tab.title}</span>
+                            <button
+                                type="button"
+                                aria-current={active ? "page" : undefined}
+                                className={styles.tab}
+                                onClick={() => navigate(tab.path)}
+                            >
+                                <span className={styles.tabLabel}>{tab.title}</span>
+                            </button>
                             <button
                                 type="button"
                                 className={styles.closeBtn}
-                                aria-label={`Close ${tab.title}`}
+                                aria-label={t("workspace.closeTab", { title: tab.title })}
                                 onClick={(e) => handleClose(e, tab.path)}
                             >
                                 <Dismiss24Regular />
@@ -128,7 +125,7 @@ export function WorkspaceTabs() {
                     );
                 })}
             </div>
-        </div>
+        </nav>
     );
 }
 

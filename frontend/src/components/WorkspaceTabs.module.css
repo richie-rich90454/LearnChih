@@ -8,7 +8,15 @@
  *   - Active tab: --accent bottom border + --text-primary.
  *   - Inactive tab: --text-secondary.
  *
- * Specificity: tab/close elements are plain divs/buttons (no Griffel), so
+ * DOM structure (a11y-compliant): each tab is a `.tabRow` flex container
+ * holding two SIBLING buttons — the navigation button (`.tab`) and the close
+ * button (`.closeBtn`). Sibling buttons (rather than a nested button inside
+ * a role="tab" div) avoid axe's "Interactive controls must not be nested"
+ * violation. The bar uses `<nav aria-label>` (not role="tablist") because
+ * workspace tabs navigate routes rather than controlling tabpanels, so the
+ * ARIA tab pattern does not apply; the active tab uses `aria-current="page"`.
+ *
+ * Specificity: tab/close elements are plain buttons (no Griffel), so
  * single-class selectors at (0,1,0) suffice.
  */
 
@@ -27,12 +35,10 @@
     scrollbar-width: thin;
 }
 
-.tab {
+.tabRow {
     display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
+    align-items: stretch;
     flex-shrink: 0;
-    padding: var(--space-2) var(--space-3);
     border-right: 1px solid var(--border-subtle);
     border-bottom: 3px solid transparent;
     background-color: transparent;
@@ -40,12 +46,27 @@
     font-family: var(--font-sans);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-base);
-    cursor: pointer;
     white-space: nowrap;
     transition:
         background-color var(--motion-fast) var(--motion-ease),
         color var(--motion-fast) var(--motion-ease),
         border-color var(--motion-fast) var(--motion-ease);
+}
+
+.tab {
+    display: inline-flex;
+    align-items: center;
+    flex: 1 1 auto;
+    padding: var(--space-2) var(--space-3);
+    border: none;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        background-color var(--motion-fast) var(--motion-ease),
+        color var(--motion-fast) var(--motion-ease);
 }
 
 .tab:hover {
@@ -65,9 +86,11 @@
     font-weight: var(--font-weight-semibold);
 }
 
-.tabActive:hover {
-    color: var(--text-primary);
+/* Keep the active tab's background stable when its nav button is hovered,
+   so the accent strip doesn't visually flash to the sunken hover color. */
+.tabActive .tab:hover {
     background-color: var(--surface-1);
+    color: var(--text-primary);
 }
 
 .tabLabel {
@@ -80,6 +103,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    align-self: center;
+    margin-right: var(--space-2);
     width: 18px;
     height: 18px;
     padding: 0;
@@ -101,4 +126,12 @@
 .closeBtn:focus-visible {
     outline: 2px solid transparent;
     box-shadow: var(--shadow-focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tabRow,
+    .tab,
+    .closeBtn {
+        transition: none;
+    }
 }
