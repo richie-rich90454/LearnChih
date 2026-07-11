@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogContent,
 } from "@fluentui/react-components";
-import { PeopleCommunity24Regular, Chat24Regular, Calendar24Regular, Whiteboard24Regular } from "@fluentui/react-icons";
+import { PeopleCommunity24Regular, Chat24Regular, Calendar24Regular, Whiteboard24Regular, Call24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
     getStudyGroups,
@@ -21,6 +21,7 @@ import { CreateStudyGroupDialog } from "../components/CreateStudyGroupDialog";
 import { StudyGroupChat } from "../components/StudyGroupChat";
 import { GroupEvents } from "../components/GroupEvents";
 import { Whiteboards } from "../components/Whiteboard";
+import { VoiceRooms } from "../components/VoiceRoom";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { Button } from "../components/ui/Button";
@@ -40,6 +41,7 @@ export default function StudyGroupsPage() {
     const [chatGroup, setChatGroup] = useState<StudyGroup | null>(null);
     const [eventsGroup, setEventsGroup] = useState<StudyGroup | null>(null);
     const [whiteboardGroup, setWhiteboardGroup] = useState<StudyGroup | null>(null);
+    const [voiceRoomGroup, setVoiceRoomGroup] = useState<StudyGroup | null>(null);
 
     const handleJoin = async (id: number) => {
         await joinStudyGroup(id);
@@ -136,6 +138,14 @@ export default function StudyGroupsPage() {
                             >
                                 {t("whiteboards.title")}
                             </Button>
+                            <Button
+                                variant="subtle"
+                                size="small"
+                                icon={<Call24Regular />}
+                                onClick={() => setVoiceRoomGroup(group)}
+                            >
+                                {t("voiceRooms.title")}
+                            </Button>
                         </div>
                     </Card>
                 ))}
@@ -190,6 +200,24 @@ export default function StudyGroupsPage() {
                         </DialogTitle>
                         <DialogContent>
                             {whiteboardGroup && <Whiteboards groupId={whiteboardGroup.id} />}
+                        </DialogContent>
+                    </DialogBody>
+                </DialogSurface>
+            </Dialog>
+
+            <Dialog
+                open={voiceRoomGroup !== null}
+                onOpenChange={(_: unknown, d: { open: boolean }) => {
+                    if (!d.open) setVoiceRoomGroup(null);
+                }}
+            >
+                <DialogSurface>
+                    <DialogBody>
+                        <DialogTitle>
+                            {voiceRoomGroup ? `${t("voiceRooms.title")} — ${voiceRoomGroup.name}` : t("voiceRooms.title")}
+                        </DialogTitle>
+                        <DialogContent>
+                            {voiceRoomGroup && <VoiceRooms groupId={voiceRoomGroup.id} />}
                         </DialogContent>
                     </DialogBody>
                 </DialogSurface>
