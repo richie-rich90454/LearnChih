@@ -9,6 +9,8 @@ import {
     Search24Regular,
     ArrowClockwise24Regular,
     PeopleTeam24Regular,
+    DocumentPdf24Regular,
+    DocumentChevronDouble24Regular,
 } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
@@ -33,6 +35,7 @@ import { Input } from "@/components/ui/Input";
 import { BacklinksPanel } from "@/components/BacklinksPanel";
 import { TemplateGallery } from "@/components/TemplateGallery";
 import { CollaborativeNoteEditor } from "@/components/CollaborativeNoteEditor";
+import { exportNoteMarkdown, exportNotePdf } from "@/api/noteExport";
 import styles from "./NotesPage.module.css";
 
 const WIKILINK_RE = /\[\[([^\]]+)\]\]/g;
@@ -329,6 +332,26 @@ export default function NotesPage() {
                                         onClick={handleEnterCollab}
                                     >
                                         {t("notes.collaborate")}
+                                    </Button>
+                                    <Button
+                                        variant="subtle"
+                                        size="small"
+                                        icon={<DocumentChevronDouble24Regular />}
+                                        onClick={() =>
+                                            exportNoteMarkdown(selected.id, draftTitle)
+                                        }
+                                    >
+                                        {t("notes.exportMarkdown")}
+                                    </Button>
+                                    <Button
+                                        variant="subtle"
+                                        size="small"
+                                        icon={<DocumentPdf24Regular />}
+                                        onClick={() =>
+                                            exportNotePdf(selected.id, draftTitle)
+                                        }
+                                    >
+                                        {t("notes.exportPdf")}
                                     </Button>
                                     <Button
                                         variant="subtle"

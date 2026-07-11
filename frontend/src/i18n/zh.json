@@ -933,7 +933,9 @@
         "deleteTemplate": "删除模板",
         "saveCurrentAsTemplate": "将当前笔记保存为模板",
         "templateSaved": "模板已保存。",
-        "collaborate": "协作"
+        "collaborate": "协作",
+        "exportMarkdown": "导出 Markdown",
+        "exportPdf": "导出 PDF"
     },
     "collaboration": {
         "title": "协作编辑",
@@ -1262,6 +1264,22 @@
         "levelLabel": "麦克风音量",
         "micDenied": "麦克风访问被拒绝。请开启麦克风权限以发言。",
         "micError": "无法访问麦克风，请检查设备。"
+    },
+    "screenShares": {
+        "title": "屏幕共享",
+        "subtitle": "与学习小组成员共享你的屏幕",
+        "startSharing": "开始共享",
+        "stopSharing": "停止共享",
+        "endSession": "结束会话",
+        "endConfirm": "结束此屏幕共享会话？观看者将无法再看到你的屏幕。",
+        "noSessions": "暂无屏幕共享会话。开始一个来共享你的屏幕！",
+        "errorTitle": "加载屏幕共享失败",
+        "errorDescription": "请重试。",
+        "live": "直播中",
+        "ended": "已结束",
+        "permissionDenied": "屏幕捕获权限被拒绝。请启用权限以共享屏幕。",
+        "screenError": "无法捕获屏幕。请检查浏览器设置。",
+        "previewLabel": "你共享的屏幕"
     },
     "recommendations": {
         "title": "为你推荐",

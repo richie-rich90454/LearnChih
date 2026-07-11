@@ -949,7 +949,9 @@
         "deleteTemplate": "Delete template",
         "saveCurrentAsTemplate": "Save current as template",
         "templateSaved": "Template saved.",
-        "collaborate": "Collaborate"
+        "collaborate": "Collaborate",
+        "exportMarkdown": "Export Markdown",
+        "exportPdf": "Export PDF"
     },
     "collaboration": {
         "title": "Collaborative editing",
@@ -1261,6 +1263,22 @@
         "levelLabel": "Microphone level",
         "micDenied": "Microphone access was denied. Enable mic permissions to speak.",
         "micError": "Could not access microphone. Please check your device."
+    },
+    "screenShares": {
+        "title": "Screen Share",
+        "subtitle": "Share your screen with study group members",
+        "startSharing": "Start Sharing",
+        "stopSharing": "Stop Sharing",
+        "endSession": "End Session",
+        "endConfirm": "End this screen-share session? Viewers will no longer see your screen.",
+        "noSessions": "No screen-share sessions yet. Start one to share your screen!",
+        "errorTitle": "Failed to load screen shares",
+        "errorDescription": "Please try again.",
+        "live": "Live",
+        "ended": "Ended",
+        "permissionDenied": "Screen capture permission was denied. Enable it to share your screen.",
+        "screenError": "Could not capture screen. Please check your browser settings.",
+        "previewLabel": "Your shared screen"
     },
     "draftsInbox": {
         "title": "Drafts",
