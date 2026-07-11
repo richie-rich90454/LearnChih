@@ -24,6 +24,7 @@ import { ResumeCard } from "@/components/ResumeCard";
 import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 import { PomodoroTimer } from "@/components/PomodoroTimer";
 import { BuddyMatch } from "@/components/BuddyMatch";
+import { RecommendedResources } from "@/components/RecommendedResources";
 import styles from "./DashboardPage.module.css";
 
 export default function DashboardPage() {
@@ -116,6 +117,9 @@ export default function DashboardPage() {
 
             {/* Study-buddy suggestions (F39) */}
             <BuddyMatch />
+
+            {/* Content-based resource recommendations (F23) */}
+            <RecommendedResources />
 
             {/* Quick stats */}
             <div className={styles.statsRow}>
