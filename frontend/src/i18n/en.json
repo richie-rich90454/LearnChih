@@ -659,7 +659,12 @@
         "remove": "Remove bookmark",
         "resource": "Resource #{{id}}",
         "bookmarkAdded": "Bookmark added",
-        "bookmarkRemoved": "Bookmark removed"
+        "bookmarkRemoved": "Bookmark removed",
+        "selectAll": "Select all",
+        "clearSelection": "Clear selection",
+        "deleteSelected": "Delete selected",
+        "selectedCount": "{{count}} selected",
+        "selectItem": "Select {{title}}"
     },
     "anchorLinks": {
         "linkCopied": "Link copied",

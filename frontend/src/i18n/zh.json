@@ -643,7 +643,12 @@
         "remove": "移除书签",
         "resource": "资源 #{{id}}",
         "bookmarkAdded": "已添加书签",
-        "bookmarkRemoved": "已移除书签"
+        "bookmarkRemoved": "已移除书签",
+        "selectAll": "全选",
+        "clearSelection": "清除选择",
+        "deleteSelected": "删除所选",
+        "selectedCount": "已选 {{count}} 项",
+        "selectItem": "选择 {{title}}"
     },
     "anchorLinks": {
         "linkCopied": "链接已复制",

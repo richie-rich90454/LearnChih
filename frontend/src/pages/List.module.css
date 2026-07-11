@@ -237,6 +237,39 @@
     border-color: var(--accent);
 }
 
+/* Batch-action bar shown above the list when one or more items are selected.
+   Token-based; no !important; respects reduced motion via global guard. */
+.batchBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--surface-sunken);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+}
+
+.batchBarLead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+}
+
+.batchBarActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+}
+
+.batchSelectAll {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
 /* ----------------------- Table (Leaderboard) ----------------------- */
 .tableWrap {
     overflow-x: auto;
