@@ -465,6 +465,21 @@
         "toggleAriaLabel": "Toggle feature flag {{key}}",
         "lastUpdated": "Last updated {{time}}"
     },
+    "systemHealth": {
+        "title": "System Health",
+        "subtitle": "Live snapshot of database, memory, disk, and uptime.",
+        "dbStatus": "Database",
+        "memory": "Memory",
+        "disk": "Disk",
+        "uptime": "Uptime",
+        "diskFree": "Free space available",
+        "sinceBoot": "Since boot",
+        "activeUsers": "Active users",
+        "used": "used",
+        "loadError": "Failed to load system health",
+        "lastUpdated": "Last updated",
+        "autoRefresh": "Auto-refreshes every 30s"
+    },
     "maintenanceBanner": {
         "title": "Maintenance Notice",
         "dismiss": "Dismiss"
@@ -645,6 +660,29 @@
         "selectDeck": "Select a deck",
         "loadingDecks": "Loading decks...",
         "cardsDue": "{{cards}} cards · {{due}} due"
+    },
+    "shareDeck": {
+        "title": "Share deck",
+        "trigger": "Share",
+        "deckName": "Deck: {{name}}",
+        "recipientLabel": "Recipient",
+        "recipientPlaceholder": "Email or username",
+        "permissionLabel": "Permission",
+        "permissionView": "View (read-only review)",
+        "permissionEdit": "Edit (add and remove cards)",
+        "submit": "Share deck",
+        "errorGeneric": "Couldn't share the deck. Check the recipient and try again.",
+        "sharedWithMeTitle": "Shared with me",
+        "sharedWithMeEmpty": "No decks have been shared with you yet.",
+        "sharedByTitle": "Shared by me",
+        "sharedByEmpty": "You haven't shared any decks yet.",
+        "sharedBy": "Shared by {{name}}",
+        "sharedWith": "Shared with {{name}}",
+        "permissionBadgeView": "View",
+        "permissionBadgeEdit": "Edit",
+        "revoke": "Revoke",
+        "open": "Open",
+        "loading": "Loading shared decks..."
     },
     "quizzes": {
         "title": "Quizzes",
@@ -1108,6 +1146,32 @@
         "errorDescription": "Please try again.",
         "deleteEvent": "Delete",
         "deleteConfirm": "Delete this event? This action cannot be undone."
+    },
+    "voiceRooms": {
+        "title": "Voice Rooms",
+        "subtitle": "Drop into a live audio room with your group",
+        "createButton": "New Room",
+        "createTitle": "Create Voice Room",
+        "createConfirm": "Create",
+        "createError": "Failed to create voice room",
+        "fieldName": "Room name",
+        "fieldNamePlaceholder": "e.g. Final exam cram session",
+        "noRooms": "No voice rooms yet. Create one to start talking!",
+        "errorTitle": "Failed to load voice rooms",
+        "errorDescription": "Please try again.",
+        "join": "Join",
+        "leave": "Leave",
+        "mute": "Mute",
+        "unmute": "Unmute",
+        "endRoom": "End Room",
+        "endConfirm": "End this voice room? Members will be disconnected.",
+        "live": "Live",
+        "ended": "Ended",
+        "participants": "Participants",
+        "you": "You",
+        "levelLabel": "Microphone level",
+        "micDenied": "Microphone access was denied. Enable mic permissions to speak.",
+        "micError": "Could not access microphone. Please check your device."
     }
 }
 

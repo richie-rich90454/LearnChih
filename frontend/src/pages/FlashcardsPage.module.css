@@ -1,9 +1,8 @@
 /**
  * FlashcardsPage - co-located CSS Module. The design-system Card / Button
  * primitives carry their own token-based visuals; this module owns the page
- * layout, header row, deck selector row, and deck card stack. The Fluent
- * Dropdown (combobox) is retained for its listbox behavior. Token-based;
- * no !important.
+ * layout, header row, deck selector row, deck card stack, and the
+ * shared-with-me section (F15). Token-based; no !important.
  */
 .container {
     display: flex;
@@ -40,6 +39,37 @@
     gap: var(--space-1);
 }
 
+/* F15: each deck card now hosts the deck (clickable) + a Share button.
+   The row lays them out side-by-side with the share action right-aligned. */
+.deckCardRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    width: 100%;
+}
+
+.deckCardButton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+    flex: 1 1 auto;
+    background: none;
+    border: none;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+    border-radius: var(--radius-input);
+}
+
+.deckCardButton:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 .deckTitle {
     margin: 0;
     font-family: var(--font-sans);
@@ -55,4 +85,67 @@
     font-size: var(--font-size-sm);
     line-height: var(--line-height-base);
     color: var(--text-secondary);
+}
+
+/* ---------------- Shared with me section (F15) ---------------- */
+.sharedSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.sharedEmpty {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+    padding: var(--space-3);
+    border-radius: var(--radius-card);
+    background-color: var(--surface-sunken);
+}
+
+.sharedCard {
+    display: flex;
+    flex-direction: column;
+}
+
+.sharedActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+@media (max-width: 560px) {
+    .deckCardRow {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sharedActions {
+        justify-content: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .deckCardButton {
+        transition: none;
+    }
 }

@@ -449,6 +449,21 @@
         "toggleAriaLabel": "切换功能开关 {{key}}",
         "lastUpdated": "最后更新于 {{time}}"
     },
+    "systemHealth": {
+        "title": "系统健康",
+        "subtitle": "数据库、内存、磁盘和运行时间的实时快照。",
+        "dbStatus": "数据库",
+        "memory": "内存",
+        "disk": "磁盘",
+        "uptime": "运行时长",
+        "diskFree": "可用空间",
+        "sinceBoot": "自启动以来",
+        "activeUsers": "活跃用户",
+        "used": "已使用",
+        "loadError": "加载系统健康信息失败",
+        "lastUpdated": "最后更新",
+        "autoRefresh": "每 30 秒自动刷新"
+    },
     "maintenanceBanner": {
         "title": "维护通知",
         "dismiss": "关闭"
@@ -629,6 +644,29 @@
         "selectDeck": "选择卡组",
         "loadingDecks": "加载卡组中...",
         "cardsDue": "{{cards}} 张卡片 · {{due}} 张到期"
+    },
+    "shareDeck": {
+        "title": "分享卡组",
+        "trigger": "分享",
+        "deckName": "卡组：{{name}}",
+        "recipientLabel": "接收者",
+        "recipientPlaceholder": "邮箱或用户名",
+        "permissionLabel": "权限",
+        "permissionView": "查看（只读复习）",
+        "permissionEdit": "编辑（添加和删除卡片）",
+        "submit": "分享卡组",
+        "errorGeneric": "无法分享该卡组，请检查接收者后重试。",
+        "sharedWithMeTitle": "分享给我的",
+        "sharedWithMeEmpty": "还没有人向你分享卡组。",
+        "sharedByTitle": "我分享的",
+        "sharedByEmpty": "你还没有分享过任何卡组。",
+        "sharedBy": "由 {{name}} 分享",
+        "sharedWith": "分享给 {{name}}",
+        "permissionBadgeView": "查看",
+        "permissionBadgeEdit": "编辑",
+        "revoke": "撤销",
+        "open": "打开",
+        "loading": "加载分享卡组中..."
     },
     "quizzes": {
         "title": "测验",
@@ -1109,6 +1147,32 @@
         "errorDescription": "请重试。",
         "deleteEvent": "删除",
         "deleteConfirm": "确认删除此活动？此操作无法撤销。"
+    },
+    "voiceRooms": {
+        "title": "语音房间",
+        "subtitle": "加入小组的实时语音房间",
+        "createButton": "新建房间",
+        "createTitle": "创建语音房间",
+        "createConfirm": "创建",
+        "createError": "创建语音房间失败",
+        "fieldName": "房间名称",
+        "fieldNamePlaceholder": "例如：期末冲刺复习",
+        "noRooms": "还没有语音房间，创建一个开始通话吧！",
+        "errorTitle": "加载语音房间失败",
+        "errorDescription": "请重试。",
+        "join": "加入",
+        "leave": "离开",
+        "mute": "静音",
+        "unmute": "取消静音",
+        "endRoom": "结束房间",
+        "endConfirm": "结束此语音房间？成员将被断开连接。",
+        "live": "直播中",
+        "ended": "已结束",
+        "participants": "参与者",
+        "you": "你",
+        "levelLabel": "麦克风音量",
+        "micDenied": "麦克风访问被拒绝。请开启麦克风权限以发言。",
+        "micError": "无法访问麦克风，请检查设备。"
     }
 }
 

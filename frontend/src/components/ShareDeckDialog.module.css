@@ -1,0 +1,60 @@
+/**
+ * ShareDeckDialog - co-located CSS Module (F15). The Fluent Dialog surface
+ * owns the modal chrome; this module only tunes the body layout, deck-name
+ * hint, and form-field spacing inside the dialog.
+ */
+
+.surface {
+    max-width: 480px;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.deckName {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-input);
+    background-color: var(--surface-sunken);
+}
+
+.recipientInput {
+    width: 100%;
+}
+
+.permissionSelect {
+    width: 100%;
+}
+
+.footer {
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+@media (max-width: 560px) {
+    .surface {
+        max-width: calc(100vw - var(--space-6));
+    }
+}
