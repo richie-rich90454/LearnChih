@@ -63,6 +63,15 @@ public class ApiKeyService {
                 .map(ApiKey::getUserId);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<ApiKey> verifyApiKeyEntity(String rawKey) {
+        if (rawKey == null || rawKey.isBlank()) {
+            return Optional.empty();
+        }
+        return apiKeyRepository.findByKeyHash(sha256Hex(rawKey))
+                .filter(key -> !key.getRevoked());
+    }
+
     @Transactional
     public void recordUsage(String rawKey) {
         apiKeyRepository.findByKeyHash(sha256Hex(rawKey))

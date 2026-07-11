@@ -210,11 +210,52 @@
     color: var(--text-primary);
 }
 
+.keyActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.rateLimitForm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.usageBox {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    background-color: var(--surface-sunken);
+    padding: var(--space-3);
+    border-radius: var(--radius-card);
+}
+
+.usageLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.usageGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
 @media (max-width: 640px) {
     .page {
         gap: var(--space-4);
     }
     .headerAction {
         margin-left: 0;
+    }
+    .usageGrid {
+        grid-template-columns: 1fr;
     }
 }

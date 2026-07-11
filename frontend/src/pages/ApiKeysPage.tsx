@@ -11,10 +11,17 @@ import {
     MessageBarBody,
     Spinner,
 } from "@fluentui/react-components";
-import { Key24Regular, Add24Regular, Delete24Regular, Copy24Regular } from "@fluentui/react-icons";
+import { Key24Regular, Add24Regular, Delete24Regular, Copy24Regular, Gauge24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import useAuthStore from "@/store/authStore";
-import { useAdminApiKeys, useCreateApiKey, useRevokeApiKey } from "@/hooks/useApiKeys";
+import {
+    useAdminApiKeys,
+    useCreateApiKey,
+    useRevokeApiKey,
+    useApiKeyRateLimit,
+    useSetApiKeyRateLimit,
+    useApiKeyUsage,
+} from "@/hooks/useApiKeys";
 import type { ApiKeyScope } from "@/api/apiKeys";
 import Seo from "@/components/Seo";
 import { SkeletonList } from "@/components/Skeleton";
@@ -32,6 +39,129 @@ function scopeBadgeVariant(scope: ApiKeyScope): BadgeVariant {
     return "neutral";
 }
 
+function RateLimitDialog({
+    keyId,
+    open,
+    onOpenChange,
+}: {
+    keyId: number | null;
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+}) {
+    const { t } = useTranslation();
+    const { data: limit } = useApiKeyRateLimit(open ? keyId : null);
+    const { data: usage } = useApiKeyUsage(open ? keyId : null);
+    const setLimit = useSetApiKeyRateLimit();
+
+    const [perMinute, setPerMinute] = useState("60");
+    const [perHour, setPerHour] = useState("1000");
+    const [perDay, setPerDay] = useState("10000");
+    const [seeded, setSeeded] = useState(false);
+
+    if (limit && !seeded) {
+        setPerMinute(String(limit.requestsPerMinute));
+        setPerHour(String(limit.requestsPerHour));
+        setPerDay(String(limit.requestsPerDay));
+        setSeeded(true);
+    }
+
+    const handleSave = () => {
+        if (keyId === null) return;
+        setLimit.mutate(
+            {
+                id: keyId,
+                requestsPerMinute: Number(perMinute) || 0,
+                requestsPerHour: Number(perHour) || 0,
+                requestsPerDay: Number(perDay) || 0,
+            },
+            { onSuccess: () => onOpenChange(false) },
+        );
+    };
+
+    const handleClose = () => {
+        setSeeded(false);
+        onOpenChange(false);
+    };
+
+    return (
+        <Dialog
+            open={open}
+            onOpenChange={(_, d) => {
+                if (!d.open) handleClose();
+            }}
+        >
+            <DialogSurface>
+                <DialogBody>
+                    <DialogTitle>{t("apiKeys.rateLimitTitle")}</DialogTitle>
+                    <DialogContent>
+                        <div className={styles.rateLimitForm}>
+                            <Input
+                                label={t("apiKeys.fieldPerMinute")}
+                                type="number"
+                                value={perMinute}
+                                onChange={(_, d) => setPerMinute(d.value)}
+                            />
+                            <Input
+                                label={t("apiKeys.fieldPerHour")}
+                                type="number"
+                                value={perHour}
+                                onChange={(_, d) => setPerHour(d.value)}
+                            />
+                            <Input
+                                label={t("apiKeys.fieldPerDay")}
+                                type="number"
+                                value={perDay}
+                                onChange={(_, d) => setPerDay(d.value)}
+                            />
+                            {usage && (
+                                <div className={styles.usageBox}>
+                                    <span className={styles.usageLabel}>
+                                        {t("apiKeys.currentUsage")}
+                                    </span>
+                                    <div className={styles.usageGrid}>
+                                        <span>
+                                            {t("apiKeys.usageMinute")}:{" "}
+                                            <strong>{usage.minute}</strong>
+                                        </span>
+                                        <span>
+                                            {t("apiKeys.usageHour")}:{" "}
+                                            <strong>{usage.hour}</strong>
+                                        </span>
+                                        <span>
+                                            {t("apiKeys.usageDay")}:{" "}
+                                            <strong>{usage.day}</strong>
+                                        </span>
+                                        <span>
+                                            {t("apiKeys.usageTotal")}:{" "}
+                                            <strong>{usage.total}</strong>
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="outline" onClick={handleClose}>
+                            {t("common.cancel")}
+                        </Button>
+                        <Button
+                            variant="primary"
+                            onClick={handleSave}
+                            disabled={setLimit.isPending}
+                        >
+                            {setLimit.isPending ? (
+                                <Spinner size="tiny" />
+                            ) : (
+                                t("common.save")
+                            )}
+                        </Button>
+                    </DialogActions>
+                </DialogBody>
+            </DialogSurface>
+        </Dialog>
+    );
+}
+
 export default function ApiKeysPage() {
     const { t } = useTranslation();
     const user = useAuthStore((s) => s.user);
@@ -45,6 +175,7 @@ export default function ApiKeysPage() {
     const [name, setName] = useState("");
     const [scopes, setScopes] = useState<ApiKeyScope[]>(["read"]);
     const [copied, setCopied] = useState(false);
+    const [rateLimitKeyId, setRateLimitKeyId] = useState<number | null>(null);
 
     if (!isAdmin) {
         return (
@@ -171,15 +302,25 @@ export default function ApiKeysPage() {
                                         )}
                                     </div>
                                     {!key.revoked && (
-                                        <Button
-                                            variant="subtle"
-                                            size="small"
-                                            icon={<Delete24Regular />}
-                                            onClick={() => revokeKey.mutate(key.id)}
-                                            disabled={revokeKey.isPending}
-                                        >
-                                            {t("apiKeys.revoke")}
-                                        </Button>
+                                        <div className={styles.keyActions}>
+                                            <Button
+                                                variant="ghost"
+                                                size="small"
+                                                icon={<Gauge24Regular />}
+                                                onClick={() => setRateLimitKeyId(key.id)}
+                                            >
+                                                {t("apiKeys.rateLimit")}
+                                            </Button>
+                                            <Button
+                                                variant="subtle"
+                                                size="small"
+                                                icon={<Delete24Regular />}
+                                                onClick={() => revokeKey.mutate(key.id)}
+                                                disabled={revokeKey.isPending}
+                                            >
+                                                {t("apiKeys.revoke")}
+                                            </Button>
+                                        </div>
                                     )}
                                 </div>
                                 <div className={styles.scopeRow}>
@@ -272,6 +413,14 @@ export default function ApiKeysPage() {
                     </DialogBody>
                 </DialogSurface>
             </Dialog>
+
+            <RateLimitDialog
+                keyId={rateLimitKeyId}
+                open={rateLimitKeyId !== null}
+                onOpenChange={(open) => {
+                    if (!open) setRateLimitKeyId(null);
+                }}
+            />
         </div>
     );
 }
