@@ -54,6 +54,7 @@ const StudyStatsPage = lazy(() => import("./pages/StudyStatsPage"));
 const StudyBuddyPage = lazy(() => import("./pages/StudyBuddyPage"));
 const CohortsPage = lazy(() => import("./pages/CohortsPage"));
 const NotesPage = lazy(() => import("./pages/NotesPage"));
+const SystemHealthPage = lazy(() => import("./pages/SystemHealthPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function LoadingFallback() {
@@ -234,6 +235,7 @@ function AppShell() {
                         <Route path="/admin/moderation" element={<ModerationQueuePage />} />
                         <Route path="/admin/audit-log" element={<AuditLogPage />} />
                         <Route path="/admin/feature-flags" element={<FeatureFlagsPage />} />
+                        <Route path="/admin/health" element={<SystemHealthPage />} />
                         <Route path="/moderation" element={<ModerationPage />} />
                     </Route>
                 </Route>
