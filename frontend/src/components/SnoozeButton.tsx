@@ -129,6 +129,7 @@ export function SnoozeButton() {
                         className={styles.customInput}
                         size="small"
                         min={1}
+                        aria-label={t("snooze.customHours", "hours")}
                     />
                     <span className={styles.customLabel}>
                         {t("snooze.customHours", "hours")}
