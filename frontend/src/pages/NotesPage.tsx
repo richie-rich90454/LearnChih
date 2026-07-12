@@ -257,9 +257,14 @@ export default function NotesPage() {
                             placeholder={t("notes.searchPlaceholder")}
                             contentBefore={<Search24Regular />}
                             wrapperClassName={styles.searchInput}
+                            aria-label={t("common.search")}
                         />
                     </div>
-                    {isLoading && <Spinner size="small" />}
+                    {isLoading && (
+                        <div role="status" aria-live="polite">
+                            <Spinner size="small" />
+                        </div>
+                    )}
                     {isError && (
                         <ErrorState
                             title={t("error.dashboardTitle")}
