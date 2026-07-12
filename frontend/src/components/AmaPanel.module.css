@@ -1,0 +1,175 @@
+/**
+ * AmaPanel (F48). Token-based; no raw hex, no !important. The design-system
+ * Card primitive owns the surface; these rules own the question/answer layout.
+ */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.icon {
+    display: inline-flex;
+    color: var(--accent);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+    flex: 1 1 auto;
+}
+
+.composer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.textArea {
+    width: 100%;
+    resize: vertical;
+    min-height: 56px;
+    padding: var(--space-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-input);
+    background-color: var(--surface-1);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+}
+
+.textArea:focus {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.question {
+    padding: var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    background-color: var(--surface-2);
+    transition:
+        border-color var(--motion-fast) var(--motion-ease),
+        background-color var(--motion-fast) var(--motion-ease);
+}
+
+.questionPinned {
+    padding: var(--space-3);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-input);
+    background-color: var(--accent-soft);
+    transition:
+        border-color var(--motion-fast) var(--motion-ease),
+        background-color var(--motion-fast) var(--motion-ease);
+}
+
+.questionTop {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.questionBody {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.questionText {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    line-height: var(--line-height-base);
+}
+
+.questionMeta {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.answer {
+    margin-top: var(--space-2);
+    margin-inline-start: calc(var(--control-height-md) + var(--space-2));
+    padding: var(--space-2);
+    border-inline-start: 3px solid var(--accent);
+    background-color: var(--surface-sunken);
+    border-radius: var(--radius-input);
+}
+
+.answerLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--accent);
+}
+
+.answerText {
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    line-height: var(--line-height-base);
+}
+
+.answerComposer {
+    margin-top: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.answerActions {
+    display: flex;
+    gap: var(--space-2);
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.ownerActions {
+    margin-top: var(--space-1);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.noAnim {
+    transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .question,
+    .questionPinned {
+        transition: none;
+    }
+    .noAnim {
+        transition: none;
+    }
+}

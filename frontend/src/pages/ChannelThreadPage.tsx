@@ -14,6 +14,7 @@ import { PresenceIndicator } from "@/components/PresenceIndicator";
 import { MarkdownPreview } from "@/components/MarkdownPreview";
 import { ThreadBadges } from "@/components/ThreadBadges";
 import { ReactionPicker } from "@/components/ReactionPicker";
+import { AmaPanel } from "@/components/AmaPanel";
 import { ErrorState } from "@/components/ErrorState";
 import ReportButton from "@/components/ReportButton";
 import { discussionForumPostingSchema, breadcrumbSchema } from "@/components/jsonLd";
@@ -248,6 +249,13 @@ export default function ChannelThreadPage() {
                     }}
                 />
             </Card>
+
+            {threadId && (
+                <AmaPanel
+                    threadId={Number(threadId)}
+                    isOwner={isAdmin || thread?.userId === user?.userId}
+                />
+            )}
 
             {/* New post */}
             {authenticated ? (

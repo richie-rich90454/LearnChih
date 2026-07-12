@@ -1,0 +1,14 @@
+{
+    "ama": {
+        "title": "Ask Me Anything",
+        "questions": "questions",
+        "askPlaceholder": "Ask a question...",
+        "ask": "Ask",
+        "upvote": "Upvote",
+        "pinned": "Pinned",
+        "answer": "Answer",
+        "answerPlaceholder": "Write your answer...",
+        "pinAnswer": "Pin answer",
+        "unpin": "Unpin"
+    }
+}

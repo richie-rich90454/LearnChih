@@ -1,0 +1,14 @@
+{
+    "ama": {
+        "title": "向我提问",
+        "questions": "个问题",
+        "askPlaceholder": "提出你的问题...",
+        "ask": "提问",
+        "upvote": "点赞",
+        "pinned": "已置顶",
+        "answer": "回答",
+        "answerPlaceholder": "写下你的回答...",
+        "pinAnswer": "置顶回答",
+        "unpin": "取消置顶"
+    }
+}
