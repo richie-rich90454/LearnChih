@@ -3,6 +3,14 @@ import { useEffect, type RefObject } from "react";
 const FOCUSABLE =
     'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+// B28: Audit note. No element inside the trapped container carries both
+// `aria-hidden="true"` and a non-negative tabindex, so focusable elements
+// remain reachable by assistive tech. Dialog.tsx renders only visible
+// controls (Button/DialogContent) without aria-hidden; the canvas overlays
+// in MilestoneConfetti/ThemeTransition use aria-hidden but are non-focusable
+// (no tabindex). If a future consumer adds aria-hidden to a focusable node,
+// set tabIndex={-1} on it so it is skipped by the selector above.
+
 export function useFocusTrap<T extends HTMLElement>(ref: RefObject<T>, active: boolean) {
     useEffect(() => {
         if (!active || !ref.current) return;
