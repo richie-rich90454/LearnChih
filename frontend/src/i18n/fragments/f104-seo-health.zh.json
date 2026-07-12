@@ -1,0 +1,25 @@
+{
+    "seoHealth": {
+        "title": "SEO 健康",
+        "status": {
+            "good": "良好",
+            "warning": "警告",
+            "bad": "严重"
+        },
+        "overall": {
+            "good": "健康",
+            "warning": "需关注",
+            "bad": "严重"
+        },
+        "metrics": {
+            "missingMeta": "缺失 meta 描述",
+            "missingCanonical": "缺失 canonical URL",
+            "brokenLinks": "失效链接",
+            "missingAltText": "缺失 alt 文本",
+            "lcpScore": "LCP 分数",
+            "clsScore": "CLS 分数",
+            "indexablePages": "可索引页面",
+            "robotsBlocked": "被 robots 屏蔽页面"
+        }
+    }
+}

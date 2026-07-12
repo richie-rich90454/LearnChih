@@ -1,0 +1,25 @@
+{
+    "seoHealth": {
+        "title": "SEO health",
+        "status": {
+            "good": "Good",
+            "warning": "Warning",
+            "bad": "Critical"
+        },
+        "overall": {
+            "good": "Healthy",
+            "warning": "Needs attention",
+            "bad": "Critical"
+        },
+        "metrics": {
+            "missingMeta": "Missing meta descriptions",
+            "missingCanonical": "Missing canonical URLs",
+            "brokenLinks": "Broken links",
+            "missingAltText": "Missing alt text",
+            "lcpScore": "LCP score",
+            "clsScore": "CLS score",
+            "indexablePages": "Indexable pages",
+            "robotsBlocked": "Robots-blocked pages"
+        }
+    }
+}
