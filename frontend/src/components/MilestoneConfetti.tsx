@@ -13,6 +13,9 @@ interface MilestoneConfettiProps {
  * Renders a one-shot confetti burst on a fixed canvas overlay when `active`
  * becomes true. Simulates gravity, drag, and rotation for a more genuine
  * celebration feel. Disabled for reduced motion.
+ * B47: Under prefers-reduced-motion the effect early-returns before spawning
+ * particles/tweens and the component renders null, so no canvas or animation
+ * is created — the milestone is acknowledged without motion.
  */
 export function MilestoneConfetti({
     active = false,
