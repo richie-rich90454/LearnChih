@@ -19,9 +19,80 @@ function getSavedLang(): SupportedLang {
     return "en";
 }
 
-const resources = {
-    en: { translation: en },
-    zh: { translation: zh },
+// Auto-discover and deep-merge per-feature i18n fragments. Each fragment file
+// is a JSON object with top-level namespace keys (e.g. `webhookCatalog`).
+// Vite's `import.meta.glob` runs at build time and bundles the JSON eagerly so
+// the merged resources are available synchronously on first render.
+type TranslationRecord = Record<string, unknown>;
+type LangCode = "en" | "zh";
+
+const enFragments = import.meta.glob<TranslationRecord>(
+    "./fragments/*.en.json",
+    { eager: true, import: "default" },
+);
+const zhFragments = import.meta.glob<TranslationRecord>(
+    "./fragments/*.zh.json",
+    { eager: true, import: "default" },
+);
+
+/**
+ * Deep-merges `source` into `target`, returning a new object. Arrays and
+ * primitives are overwritten; nested objects are merged recursively. Used to
+ * fold per-feature i18n fragment files into the main translation bundle.
+ */
+function deepMerge(
+    target: TranslationRecord,
+    source: TranslationRecord,
+): TranslationRecord {
+    const out: TranslationRecord = { ...target };
+    for (const key of Object.keys(source)) {
+        const srcVal = source[key];
+        const tgtVal = out[key];
+        if (
+            srcVal &&
+            typeof srcVal === "object" &&
+            !Array.isArray(srcVal) &&
+            tgtVal &&
+            typeof tgtVal === "object" &&
+            !Array.isArray(tgtVal)
+        ) {
+            out[key] = deepMerge(
+                tgtVal as TranslationRecord,
+                srcVal as TranslationRecord,
+            );
+        } else {
+            out[key] = srcVal;
+        }
+    }
+    return out;
+}
+
+/**
+ * Combines the base translation resource with every fragment glob result for
+ * the given language. Fragments are processed in sorted filename order so the
+ * merge is deterministic regardless of file-system enumeration order.
+ */
+function composeResources(
+    base: TranslationRecord,
+    fragmentGlob: Record<string, TranslationRecord>,
+): TranslationRecord {
+    const sortedPaths = Object.keys(fragmentGlob).sort();
+    let merged = base;
+    for (const path of sortedPaths) {
+        const fragment = fragmentGlob[path];
+        if (fragment && typeof fragment === "object") {
+            merged = deepMerge(merged, fragment);
+        }
+    }
+    return merged;
+}
+
+const enMerged = composeResources(en as TranslationRecord, enFragments);
+const zhMerged = composeResources(zh as TranslationRecord, zhFragments);
+
+const resources: Record<LangCode, { translation: TranslationRecord }> = {
+    en: { translation: enMerged },
+    zh: { translation: zhMerged },
 };
 
 const i18nConfig = {

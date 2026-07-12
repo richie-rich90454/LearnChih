@@ -59,6 +59,19 @@ const DraftsInboxPage = lazy(() => import("./pages/DraftsInboxPage"));
 const DueTodayPage = lazy(() => import("./pages/DueTodayPage"));
 const SystemHealthPage = lazy(() => import("./pages/SystemHealthPage"));
 const ApiKeysPage = lazy(() => import("./pages/ApiKeysPage"));
+const WebhooksPage = lazy(() => import("./pages/WebhooksPage"));
+const TwoFactorPolicyPage = lazy(() => import("./pages/TwoFactorPolicyPage"));
+const SessionsPage = lazy(() => import("./pages/SessionsPage"));
+const SuspiciousLoginsPage = lazy(() => import("./pages/SuspiciousLoginsPage"));
+const PasswordBreachCheckPage = lazy(() => import("./pages/PasswordBreachCheckPage"));
+const EmailDomainPolicyPage = lazy(() => import("./pages/EmailDomainPolicyPage"));
+const ReportTrendsPage = lazy(() => import("./pages/ReportTrendsPage"));
+const SeoHealthPage = lazy(() => import("./pages/SeoHealthPage"));
+const BackupStatusPage = lazy(() => import("./pages/BackupStatusPage"));
+const RateLimitDashboardPage = lazy(() => import("./pages/RateLimitDashboardPage"));
+const DataExportQueuePage = lazy(() => import("./pages/DataExportQueuePage"));
+const AccountDeletionQueuePage = lazy(() => import("./pages/AccountDeletionQueuePage"));
+const OAuthAccountsPage = lazy(() => import("./pages/OAuthAccountsPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function LoadingFallback() {
@@ -243,6 +256,19 @@ function AppShell() {
                         <Route path="/admin/feature-flags" element={<FeatureFlagsPage />} />
                         <Route path="/admin/health" element={<SystemHealthPage />} />
                         <Route path="/admin/api-keys" element={<ApiKeysPage />} />
+                        <Route path="/admin/webhooks" element={<WebhooksPage />} />
+                        <Route path="/admin/2fa-policy" element={<TwoFactorPolicyPage />} />
+                        <Route path="/admin/sessions" element={<SessionsPage />} />
+                        <Route path="/admin/suspicious-logins" element={<SuspiciousLoginsPage />} />
+                        <Route path="/admin/breach-check" element={<PasswordBreachCheckPage />} />
+                        <Route path="/admin/email-domains" element={<EmailDomainPolicyPage />} />
+                        <Route path="/admin/report-trends" element={<ReportTrendsPage />} />
+                        <Route path="/admin/seo-health" element={<SeoHealthPage />} />
+                        <Route path="/admin/backups" element={<BackupStatusPage />} />
+                        <Route path="/admin/rate-limits" element={<RateLimitDashboardPage />} />
+                        <Route path="/admin/data-exports" element={<DataExportQueuePage />} />
+                        <Route path="/admin/account-deletions" element={<AccountDeletionQueuePage />} />
+                        <Route path="/admin/oauth-accounts" element={<OAuthAccountsPage />} />
                         <Route path="/moderation" element={<ModerationPage />} />
                     </Route>
                 </Route>
