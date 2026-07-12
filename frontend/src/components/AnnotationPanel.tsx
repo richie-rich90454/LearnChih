@@ -113,6 +113,7 @@ export function AnnotationPanel({ resourceId }: AnnotationPanelProps) {
                         value={formQuote}
                         onChange={(e) => setFormQuote(e.target.value)}
                         placeholder={t("annotations.quotePlaceholder")}
+                        aria-label={t("annotations.quotePlaceholder")}
                         className={styles.quoteArea}
                         resize="vertical"
                     />
@@ -120,6 +121,7 @@ export function AnnotationPanel({ resourceId }: AnnotationPanelProps) {
                         value={formContent}
                         onChange={(e) => setFormContent(e.target.value)}
                         placeholder={t("annotations.contentPlaceholder")}
+                        aria-label={t("annotations.contentPlaceholder")}
                         className={styles.contentArea}
                         resize="vertical"
                     />
