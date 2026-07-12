@@ -216,7 +216,11 @@ export default function PlaylistsPage() {
                 />
             )}
 
-            {listQuery.isLoading && <Spinner label={t("common.loading")} />}
+            {listQuery.isLoading && (
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner label={t("common.loading")} />
+                </div>
+            )}
 
             {!listQuery.isLoading && !listQuery.isError && playlists.length === 0 && (
                 <EmptyState
