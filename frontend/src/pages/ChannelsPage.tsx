@@ -17,7 +17,7 @@ import {
     MessageBarBody,
     Field,
 } from "@fluentui/react-components";
-import { Add24Regular, Chat24Regular } from "@fluentui/react-icons";
+import { Add24Regular, Chat24Regular, Folder24Regular, FolderAdd24Regular, ChevronRight24Regular, Dismiss24Regular } from "@fluentui/react-icons";
 import { useChannels, useChannel, useCreateChannelThread } from "@/hooks/useChannels";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useTranslation } from "react-i18next";
@@ -32,7 +32,9 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import useAuthStore from "@/store/authStore";
+import { useChannelFoldersStore } from "@/store/channelFoldersStore";
 import styles from "./List.module.css";
+import folderStyles from "./ChannelFolders.module.css";
 
 export default function ChannelsPage() {
     const { t } = useTranslation();
@@ -45,6 +47,33 @@ export default function ChannelsPage() {
     const createThread = useCreateChannelThread(selectedChannelId);
     const { isAuthenticated } = useAuthStore();
     const authenticated = isAuthenticated();
+
+    const foldersMap = useChannelFoldersStore((s) => s.folders);
+    const createFolder = useChannelFoldersStore((s) => s.createFolder);
+    const deleteFolder = useChannelFoldersStore((s) => s.deleteFolder);
+    const addChannelToFolder = useChannelFoldersStore((s) => s.addChannelToFolder);
+    const removeChannelFromFolder = useChannelFoldersStore((s) => s.removeChannelFromFolder);
+
+    const folders = useMemo(() => Object.values(foldersMap), [foldersMap]);
+    const folderedChannelIds = useMemo(() => {
+        const ids = new Set<number>();
+        for (const f of folders) {
+            for (const cid of f.channelIds) ids.add(cid);
+        }
+        return ids;
+    }, [folders]);
+
+    const [newFolderName, setNewFolderName] = useState("");
+    const [collapsedFolders, setCollapsedFolders] = useState<Record<string, boolean>>({});
+
+    const handleCreateFolder = () => {
+        if (!newFolderName.trim()) return;
+        createFolder(newFolderName.trim());
+        setNewFolderName("");
+    };
+
+    const toggleFolder = (id: string) =>
+        setCollapsedFolders((prev) => ({ ...prev, [id]: !prev[id] }));
 
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
     const [threadTitle, setThreadTitle] = useState<string>("");
@@ -227,33 +256,170 @@ export default function ChannelsPage() {
             {!isLoading && !isError && channelList.length > 0 && (
             <div className={styles.split}>
                 {/* Channel list */}
-                <StaggerReveal className={`${styles.list} ${styles.splitAside}`}>
-                    {channelList.map((channel) => (
-                        <HoverLift key={channel.id}>
-                            <article>
-                                <Card
-                                    className={`${styles.item} ${styles.itemClickable}${
-                                        selectedChannelId === channel.id
-                                            ? ` ${styles.itemSelected}`
-                                            : ""
-                                    }`}
-                                    padding="md"
-                                    onClick={() => setSelectedChannelId(channel.id)}
-                                >
-                                    <div className={styles.itemHeader}>
-                                        <h3 className={styles.itemTitle}>{channel.name}</h3>
+                <div className={`${styles.list} ${styles.splitAside}`}>
+                    {/* Folder management (F50) */}
+                    <div className={folderStyles.newFolderRow}>
+                        <input
+                            className={folderStyles.newFolderInput}
+                            value={newFolderName}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setNewFolderName(e.target.value)
+                            }
+                            placeholder={t("channelFolders.newFolderPlaceholder", "New folder name")}
+                            aria-label={t("channelFolders.newFolderPlaceholder", "New folder name")}
+                        />
+                        <Button
+                            variant="outline"
+                            size="small"
+                            icon={<FolderAdd24Regular />}
+                            onClick={handleCreateFolder}
+                            disabled={!newFolderName.trim()}
+                        >
+                            {t("channelFolders.createFolder", "New folder")}
+                        </Button>
+                    </div>
+
+                    {/* Collapsible folder sections */}
+                    {folders.map((folder) => {
+                        const collapsed = collapsedFolders[folder.id] ?? false;
+                        const folderChannels = folder.channelIds
+                            .map((cid) => channelList.find((c) => c.id === cid))
+                            .filter((c): c is Channel => Boolean(c));
+                        return (
+                            <section key={folder.id} className={folderStyles.foldersSection}>
+                                <div className={folderStyles.folderHeader}>
+                                    <button
+                                        type="button"
+                                        className={folderStyles.folderHeaderButton}
+                                        onClick={() => toggleFolder(folder.id)}
+                                        aria-expanded={!collapsed}
+                                    >
+                                        <span className={folderStyles.folderIcon}>
+                                            <Folder24Regular />
+                                        </span>
+                                        <span>{folder.name}</span>
                                         <Badge variant="neutral" size="small">
-                                            {channel.threadCount ?? 0} {t("channels.threads")}
+                                            {folderChannels.length}
                                         </Badge>
+                                        <span
+                                            className={
+                                                collapsed
+                                                    ? folderStyles.chevronIcon
+                                                    : `${folderStyles.chevronIcon} ${folderStyles.chevronExpanded}`
+                                            }
+                                        >
+                                            <ChevronRight24Regular />
+                                        </span>
+                                    </button>
+                                    <Button
+                                        variant="subtle"
+                                        size="small"
+                                        icon={<Dismiss24Regular />}
+                                        onClick={() => deleteFolder(folder.id)}
+                                        aria-label={t("channelFolders.deleteFolder", "Delete folder")}
+                                    />
+                                </div>
+                                {!collapsed && (
+                                    <div className={folderStyles.folderBody}>
+                                        {folderChannels.length === 0 && (
+                                            <p className={styles.itemBody}>
+                                                {t("channelFolders.emptyFolder", "No channels in this folder.")}
+                                            </p>
+                                        )}
+                                        {folderChannels.map((channel) => (
+                                            <div key={channel.id} className={folderStyles.folderItemRow}>
+                                                <HoverLift>
+                                                    <Card
+                                                        className={`${styles.item} ${styles.itemClickable}${
+                                                            selectedChannelId === channel.id
+                                                                ? ` ${styles.itemSelected}`
+                                                                : ""
+                                                        }`}
+                                                        padding="sm"
+                                                        onClick={() => setSelectedChannelId(channel.id)}
+                                                    >
+                                                        <span className={styles.itemTitle}>{channel.name}</span>
+                                                    </Card>
+                                                </HoverLift>
+                                                <Button
+                                                    variant="subtle"
+                                                    size="small"
+                                                    icon={<Dismiss24Regular />}
+                                                    onClick={() =>
+                                                        removeChannelFromFolder(folder.id, channel.id)
+                                                    }
+                                                    aria-label={t(
+                                                        "channelFolders.removeFromFolder",
+                                                        "Remove from folder",
+                                                    )}
+                                                />
+                                            </div>
+                                        ))}
                                     </div>
-                                    {channel.description && (
-                                        <p className={styles.itemBody}>{channel.description}</p>
-                                    )}
-                                </Card>
-                            </article>
-                        </HoverLift>
-                    ))}
-                </StaggerReveal>
+                                )}
+                            </section>
+                        );
+                    })}
+
+                    {/* Channels not in any folder */}
+                    <StaggerReveal>
+                        {channelList
+                            .filter((c) => !folderedChannelIds.has(c.id))
+                            .map((channel) => (
+                                <HoverLift key={channel.id}>
+                                    <article>
+                                        <Card
+                                            className={`${styles.item} ${styles.itemClickable}${
+                                                selectedChannelId === channel.id
+                                                    ? ` ${styles.itemSelected}`
+                                                    : ""
+                                            }`}
+                                            padding="md"
+                                            onClick={() => setSelectedChannelId(channel.id)}
+                                        >
+                                            <div className={styles.itemHeader}>
+                                                <h3 className={styles.itemTitle}>{channel.name}</h3>
+                                                <Badge variant="neutral" size="small">
+                                                    {channel.threadCount ?? 0} {t("channels.threads")}
+                                                </Badge>
+                                            </div>
+                                            {channel.description && (
+                                                <p className={styles.itemBody}>{channel.description}</p>
+                                            )}
+                                            {folders.length > 0 && (
+                                                <div
+                                                    className={folderStyles.newFolderRow}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                >
+                                                    <span className={folderStyles.addToFolderLabel}>
+                                                        {t("channelFolders.addToFolder", "Add to folder")}
+                                                    </span>
+                                                    <Dropdown
+                                                        size="small"
+                                                        placeholder={t(
+                                                            "channelFolders.chooseFolder",
+                                                            "Choose folder",
+                                                        )}
+                                                        onOptionSelect={(_: unknown, data: { optionValue?: string }) => {
+                                                            if (data.optionValue) {
+                                                                addChannelToFolder(data.optionValue, channel.id);
+                                                            }
+                                                        }}
+                                                    >
+                                                        {folders.map((f) => (
+                                                            <Option key={f.id} value={f.id}>
+                                                                {f.name}
+                                                            </Option>
+                                                        ))}
+                                                    </Dropdown>
+                                                </div>
+                                            )}
+                                        </Card>
+                                    </article>
+                                </HoverLift>
+                            ))}
+                    </StaggerReveal>
+                </div>
 
                 {/* Threads for selected channel */}
                 {selectedChannelId && (

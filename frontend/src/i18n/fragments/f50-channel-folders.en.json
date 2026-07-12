@@ -1,0 +1,11 @@
+{
+    "channelFolders": {
+        "newFolderPlaceholder": "New folder name",
+        "createFolder": "New folder",
+        "deleteFolder": "Delete folder",
+        "emptyFolder": "No channels in this folder.",
+        "addToFolder": "Add to folder",
+        "chooseFolder": "Choose folder",
+        "removeFromFolder": "Remove from folder"
+    }
+}

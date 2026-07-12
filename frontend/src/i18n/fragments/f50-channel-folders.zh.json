@@ -1,0 +1,11 @@
+{
+    "channelFolders": {
+        "newFolderPlaceholder": "新文件夹名称",
+        "createFolder": "新建文件夹",
+        "deleteFolder": "删除文件夹",
+        "emptyFolder": "此文件夹中没有频道。",
+        "addToFolder": "添加到文件夹",
+        "chooseFolder": "选择文件夹",
+        "removeFromFolder": "从文件夹移除"
+    }
+}

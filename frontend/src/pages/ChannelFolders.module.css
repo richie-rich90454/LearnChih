@@ -1,0 +1,109 @@
+/**
+ * Channel folders (F50). Token-based; no raw hex, no !important. These rules
+ * own the folder section styling rendered inside the Channels page sidebar.
+ */
+
+.foldersSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-block-end: var(--space-3);
+}
+
+.folderHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.folderHeaderButton {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex: 1 1 auto;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    padding: var(--space-1) 0;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-align: start;
+}
+
+.folderHeaderButton:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+    border-radius: var(--radius-input);
+}
+
+.folderIcon {
+    display: inline-flex;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.chevronIcon {
+    display: inline-flex;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    transition: transform var(--motion-fast) var(--motion-ease);
+}
+
+.chevronExpanded {
+    transform: rotate(90deg);
+}
+
+.folderBody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--border-subtle);
+    margin-inline-start: var(--space-1);
+}
+
+.folderItemRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.newFolderRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.newFolderInput {
+    flex: 1 1 auto;
+    min-width: 120px;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-input);
+    background-color: var(--surface-1);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+}
+
+.newFolderInput:focus {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+}
+
+.addToFolderLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chevronIcon {
+        transition: none;
+    }
+}
