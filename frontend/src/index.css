@@ -37,6 +37,17 @@ body {
     min-height: 100vh;
 }
 
+/* B22: landscape phone font scaling. On short landscape viewports (e.g. a
+   phone rotated to landscape) the default 16px root font-size makes UI text
+   too large relative to the available height, crowding headers and forms.
+   Scaling the root em down to 14px keeps text readable and proportional.
+   All rem-based tokens/spacing scale with this, so no per-rule overrides. */
+@media (max-height: 480px) and (orientation: landscape) {
+    html {
+        font-size: 14px;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
