@@ -1,0 +1,76 @@
+/**
+ * ReputationGraph (F60). Token-based; no !important, no raw hex.
+ * SVG line graph for reputation history.
+ */
+
+.container {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+}
+
+.label {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2);
+}
+
+.svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.gridLine {
+    stroke: var(--border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+}
+
+.axisText {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    fill: var(--text-secondary);
+}
+
+.dot {
+    fill: var(--accent);
+    stroke: var(--surface-2);
+    stroke-width: 2;
+    cursor: pointer;
+    transition: r var(--motion-fast) var(--motion-ease);
+}
+
+.dot:hover {
+    r: 5;
+}
+
+.lineAnimated {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawLine var(--motion-slow) var(--motion-ease) forwards;
+}
+
+.lineStatic {
+    opacity: 1;
+}
+
+@keyframes drawLine {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.empty {
+    padding: var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+}

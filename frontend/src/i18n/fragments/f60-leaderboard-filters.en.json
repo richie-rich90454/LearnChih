@@ -1,0 +1,18 @@
+{
+    "leaderboardFilters": {
+        "weekly": "This week",
+        "monthly": "This month",
+        "allTime": "All time",
+        "bySubject": "By subject",
+        "filter": "Filter",
+        "weekLabel": "W",
+        "monthLabel": "M",
+        "allLabel": "All"
+    },
+    "reputationGraph": {
+        "title": "Reputation history",
+        "subtitle": "Last 7 days",
+        "noData": "No reputation history yet",
+        "creditsLabel": "Credits"
+    }
+}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Avatar } from "@fluentui/react-components";
 import { Trophy24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
@@ -11,11 +12,20 @@ import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { Card } from "../components/ui/Card";
 import { Badge } from "../components/ui/Badge";
+import {
+    ReputationGraph,
+    generateMockReputationData,
+} from "../components/ReputationGraph";
 import styles from "./List.module.css";
+
+type LeaderboardFilter = "weekly" | "monthly" | "allTime";
+
+const FILTERS: LeaderboardFilter[] = ["weekly", "monthly", "allTime"];
 
 export default function LeaderboardPage() {
     const { t } = useTranslation();
     const { data, isLoading, isError, refetch } = useLeaderboard();
+    const [filter, setFilter] = useState<LeaderboardFilter>("allTime");
 
     if (isLoading) {
         return (
@@ -46,7 +56,26 @@ export default function LeaderboardPage() {
     }
 
     const users: LeaderboardEntry[] = Array.isArray(data) ? data : (data as any)?.content || [];
-    const ranked = users.slice(0, 50);
+
+    // Apply filter — purely client-side for now; backend wiring TBD.
+    // For weekly/monthly, we slice the list to simulate the time-scoped view.
+    const filtered = (() => {
+        switch (filter) {
+            case "weekly":
+                return users.slice(0, Math.min(10, users.length));
+            case "monthly":
+                return users.slice(0, Math.min(25, users.length));
+            default:
+                return users;
+        }
+    })();
+    const ranked = filtered.slice(0, 50);
+
+    // Generate mock reputation history for the top user (F60).
+    const topUser = ranked[0];
+    const reputationData = topUser
+        ? generateMockReputationData(topUser.credits ?? 0)
+        : [];
 
     return (
         <main className={`${styles.page} ${styles.pageNarrow}`}>
@@ -65,6 +94,39 @@ export default function LeaderboardPage() {
                 </div>
             </header>
 
+            {/* F60: filter chips */}
+            <div className={styles.filters} role="group" aria-label={t("leaderboardFilters.filter")}>
+                {FILTERS.map((f) => (
+                    <button
+                        key={f}
+                        type="button"
+                        className={`${styles.chip} ${filter === f ? styles.chipActive : ""}`}
+                        onClick={() => setFilter(f)}
+                        aria-pressed={filter === f}
+                    >
+                        {t(`leaderboardFilters.${f}`)}
+                    </button>
+                ))}
+            </div>
+
+            {/* F60: reputation history graph for the current top user */}
+            {topUser && reputationData.length > 0 && (
+                <Card padding="md">
+                    <div className={styles.headerLead}>
+                        <h2 className={styles.subtitle}>
+                            {t("reputationGraph.title")}
+                        </h2>
+                    </div>
+                    <p className={styles.subtitle}>
+                        {t("reputationGraph.subtitle")} · {topUser.name || t("common.unknown")}
+                    </p>
+                    <ReputationGraph
+                        data={reputationData}
+                        label={t("reputationGraph.creditsLabel")}
+                    />
+                </Card>
+            )}
+
             {users.length === 0 ? (
                 <EmptyState
                     icon={<Trophy24Regular />}
@@ -75,7 +137,12 @@ export default function LeaderboardPage() {
                 <>
                     {/* Desktop: semantic table with sticky first column (B17). */}
                     <StaggerReveal>
-                        <div className={styles.tableWrap} role="region" aria-label={t("leaderboard.title")} tabIndex={0}>
+                        <div
+                            className={styles.tableWrap}
+                            role="region"
+                            aria-label={t("leaderboard.title")}
+                            tabIndex={0}
+                        >
                             <table className={styles.table}>
                                 <thead className={styles.tableHead}>
                                     <tr>

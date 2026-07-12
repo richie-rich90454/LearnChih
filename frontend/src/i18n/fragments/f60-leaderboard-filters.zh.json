@@ -1,0 +1,18 @@
+{
+    "leaderboardFilters": {
+        "weekly": "本周",
+        "monthly": "本月",
+        "allTime": "全部时间",
+        "bySubject": "按学科",
+        "filter": "筛选",
+        "weekLabel": "周",
+        "monthLabel": "月",
+        "allLabel": "全部"
+    },
+    "reputationGraph": {
+        "title": "声望历史",
+        "subtitle": "最近 7 天",
+        "noData": "暂无声望历史",
+        "creditsLabel": "积分"
+    }
+}
