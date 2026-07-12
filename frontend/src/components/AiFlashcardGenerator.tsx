@@ -149,6 +149,7 @@ export default function AiFlashcardGenerator({
                                 value={deckName}
                                 onChange={(_, data) => setDeckName(data.value)}
                                 placeholder={t("aiFlashcards.deckName")}
+                                aria-label={t("aiFlashcards.deckName")}
                                 wrapperClassName={styles.deckInput}
                             />
                             <Button
