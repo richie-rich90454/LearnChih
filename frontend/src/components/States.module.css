@@ -120,7 +120,9 @@
 /* ----------------------- Loading state ----------------------- */
 /* The consumer mounts a Fluent Spinner (or a .shimmer skeleton block) inside
    .loading and a .loadingLabel span. role="status" + aria-live="polite" are
-   set on the root by the consumer (B31). */
+   set on the root by the consumer (B31).
+   B31: Toast regions elsewhere also use role="status" so assistive tech
+   announces non-critical updates; role="alert" is reserved for errors. */
 .loading {
     gap: var(--space-3);
 }
