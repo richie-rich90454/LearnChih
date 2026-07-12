@@ -20,6 +20,7 @@ import {
 import { Delete24Regular, Copy24Regular } from "@fluentui/react-icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getApiKeys, createApiKey, revokeApiKey, type ApiKey } from "../api/apiKeys";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
     container: {
@@ -37,6 +38,7 @@ const useStyles = makeStyles({
 export default function ApiKeyManager() {
     const styles = useStyles();
     const queryClient = useQueryClient();
+    const { t } = useTranslation();
     const [newKeyName, setNewKeyName] = useState("");
     const [copiedId, setCopiedId] = useState<number | null>(null);
 
@@ -115,7 +117,11 @@ export default function ApiKeyManager() {
                 </MessageBar>
             )}
 
-            {isLoading && <Spinner label="Loading API keys..." />}
+            {isLoading && (
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner label={t("common.loading")} />
+                </div>
+            )}
 
             {!isLoading && keys.length === 0 && (
                 <Text style={{ color: "var(--colorNeutralForeground3)" }}>No API keys yet.</Text>
