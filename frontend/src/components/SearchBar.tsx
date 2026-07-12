@@ -59,6 +59,27 @@ const useStyles = makeStyles({
         padding: tokens.spacingHorizontalM,
         color: tokens.colorNeutralForeground3,
     },
+    clearBtn: {
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2px",
+        border: "none",
+        borderRadius: tokens.borderRadiusSmall,
+        backgroundColor: "transparent",
+        color: tokens.colorNeutralForeground3,
+        cursor: "pointer",
+        minWidth: "20px",
+        minHeight: "20px",
+        "&:hover": {
+            color: tokens.colorNeutralForeground1,
+            backgroundColor: tokens.colorNeutralBackground1Hover,
+        },
+        "&:focus-visible": {
+            outline: `2px solid ${tokens.colorBrandStroke1}`,
+            outlineOffset: "1px",
+        },
+    },
 });
 
 interface SearchBarProps {
@@ -124,13 +145,17 @@ export function SearchBar({
                 contentBefore={<Search24Regular />}
                 contentAfter={
                     query ? (
-                        <Dismiss24Regular
-                            style={{ cursor: "pointer" }}
+                        <button
+                            type="button"
+                            className={styles.clearBtn}
+                            aria-label={t("search.clear")}
                             onClick={() => {
                                 setQuery("");
                                 setOpen(false);
                             }}
-                        />
+                        >
+                            <Dismiss24Regular />
+                        </button>
                     ) : isFetching ? (
                         <Spinner size="tiny" />
                     ) : null

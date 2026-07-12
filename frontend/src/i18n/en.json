@@ -228,7 +228,8 @@
         "ariaLabel": "Global search",
         "searching": "Searching...",
         "loadError": "Failed to load search results.",
-        "noResults": "No results for \"{{query}}\"."
+        "noResults": "No results for \"{{query}}\".",
+        "clear": "Clear search"
     },
     "savedSearches": {
         "title": "Saved searches",
