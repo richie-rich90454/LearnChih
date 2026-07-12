@@ -71,7 +71,11 @@ export default function StudyGroupsPage() {
                 </div>
             </header>
 
-            {isLoading && <Spinner label="Loading study groups..." />}
+            {isLoading && (
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner label={t("common.loading")} />
+                </div>
+            )}
             {isError && (
                 <ErrorState
                     icon={<PeopleCommunity24Regular />}
