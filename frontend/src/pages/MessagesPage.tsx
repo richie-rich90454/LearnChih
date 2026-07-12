@@ -75,7 +75,11 @@ export default function MessagesPage() {
                 {/* Conversation list */}
                 <aside className={styles.sidebar} aria-label={t("messages.conversations")}>
                     <div className={styles.sidebarHeader}>{t("messages.conversations")}</div>
-                    {conversations.isLoading && <Spinner size="tiny" />}
+                    {conversations.isLoading && (
+                        <div role="status" aria-live="polite">
+                            <Spinner size="tiny" />
+                        </div>
+                    )}
                     {conversations.data && conversations.data.length === 0 && (
                         <div className={styles.emptySidebar}>{t("messages.noConversations")}</div>
                     )}
@@ -141,7 +145,11 @@ export default function MessagesPage() {
                             </div>
 
                             <div className={styles.messages} role="log" aria-live="polite">
-                                {conversation.isLoading && <Spinner size="tiny" />}
+                                {conversation.isLoading && (
+                                    <div role="status" aria-live="polite">
+                                        <Spinner size="tiny" />
+                                    </div>
+                                )}
                                 {messages.length === 0 && !conversation.isLoading && (
                                     <div className={styles.emptyThread}>
                                         <p>{t("messages.emptyConversation")}</p>
