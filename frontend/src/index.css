@@ -153,7 +153,8 @@ pre,
     background-color: var(--surface-1);
 }
 
-/* Color contrast on sidebar nav button text.
+/* B5: Nav-button text contrast via triple-class selector (no !important).
+   Color contrast on sidebar nav button text.
    Fluent UI v9 Button with appearance="subtle" sets
    color: var(--colorNeutralForeground1) via the fui-Button class. This
    rule pins the theme-aware --text-primary token on the Text span inside
