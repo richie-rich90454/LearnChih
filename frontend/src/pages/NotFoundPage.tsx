@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft24Regular, Search24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import Seo from "../components/Seo";
@@ -8,6 +8,7 @@ import styles from "./NotFoundPage.module.css";
 
 export default function NotFoundPage() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     return (
         <main className={styles.page}>
@@ -19,16 +20,20 @@ export default function NotFoundPage() {
                 <h1 className={styles.title}>{t("notFound.title")}</h1>
                 <p className={stateStyles.emptyBody}>{t("notFound.message")}</p>
                 <div className={stateStyles.errorAction}>
-                    <Link to="/">
-                        <Button variant="primary" icon={<ArrowLeft24Regular />}>
-                            {t("notFound.backToHome")}
-                        </Button>
-                    </Link>
-                    <Link to="/resources">
-                        <Button variant="outline" icon={<Search24Regular />}>
-                            {t("notFound.searchResources")}
-                        </Button>
-                    </Link>
+                    <Button
+                        variant="primary"
+                        icon={<ArrowLeft24Regular />}
+                        onClick={() => navigate("/")}
+                    >
+                        {t("notFound.backToHome")}
+                    </Button>
+                    <Button
+                        variant="outline"
+                        icon={<Search24Regular />}
+                        onClick={() => navigate("/resources")}
+                    >
+                        {t("notFound.searchResources")}
+                    </Button>
                 </div>
             </div>
         </main>
