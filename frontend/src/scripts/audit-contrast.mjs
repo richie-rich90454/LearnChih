@@ -27,6 +27,7 @@ const TOKENS_PATH = path.resolve(
 
 // WCAG AA thresholds.
 const BODY_TEXT_MIN = 4.5; // normal text
+const LARGE_TEXT_UI_MIN = 3; // large text (>=18.66px bold / >=24px) + UI components
 
 // Pairs to audit. Each entry lists the foreground token, the background token
 // it is rendered on, and the theme block to read the values from. Only
@@ -47,6 +48,87 @@ const BODY_PAIRS = [
     { theme: "dark", fg: "--text-secondary", bg: "--surface-2", label: "secondary text on card" },
     { theme: "dark", fg: "--accent", bg: "--surface-1", label: "accent link on app bg" },
     { theme: "dark", fg: "--accent", bg: "--surface-2", label: "accent link on card" },
+];
+
+// B42: Large-text / UI-component pairs audited at the 3:1 threshold. These
+// cover status badge foregrounds on their soft tinted backgrounds (Badges use
+// >=14px medium weight; the tinted soft bg carries an alpha in dark mode so
+// the `backdrop` token is composited underneath) and text-on-accent for filled
+// buttons (UI graphics). 3:1 is the WCAG AA minimum for large text and for UI
+// component boundaries/graphics.
+const LARGE_UI_PAIRS = [
+    // Light theme — status badge fg on soft bg, text on accent fill.
+    {
+        theme: "light",
+        fg: "--status-success",
+        bg: "--status-success-soft",
+        backdrop: "--surface-1",
+        label: "success badge text on success-soft",
+    },
+    {
+        theme: "light",
+        fg: "--status-warning",
+        bg: "--status-warning-soft",
+        backdrop: "--surface-1",
+        label: "warning badge text on warning-soft",
+    },
+    {
+        theme: "light",
+        fg: "--status-danger",
+        bg: "--status-danger-soft",
+        backdrop: "--surface-1",
+        label: "danger badge text on danger-soft",
+    },
+    {
+        theme: "light",
+        fg: "--text-on-accent",
+        bg: "--accent-fill",
+        backdrop: "--surface-1",
+        label: "button text on accent fill",
+    },
+    {
+        theme: "light",
+        fg: "--accent",
+        bg: "--accent-soft",
+        backdrop: "--surface-1",
+        label: "accent text on accent-soft",
+    },
+    // Dark theme — soft backgrounds are rgba; composited over the dark surface.
+    {
+        theme: "dark",
+        fg: "--status-success",
+        bg: "--status-success-soft",
+        backdrop: "--surface-1",
+        label: "success badge text on success-soft",
+    },
+    {
+        theme: "dark",
+        fg: "--status-warning",
+        bg: "--status-warning-soft",
+        backdrop: "--surface-1",
+        label: "warning badge text on warning-soft",
+    },
+    {
+        theme: "dark",
+        fg: "--status-danger",
+        bg: "--status-danger-soft",
+        backdrop: "--surface-1",
+        label: "danger badge text on danger-soft",
+    },
+    {
+        theme: "dark",
+        fg: "--text-on-accent",
+        bg: "--accent-fill",
+        backdrop: "--surface-1",
+        label: "button text on accent fill",
+    },
+    {
+        theme: "dark",
+        fg: "--accent",
+        bg: "--accent-soft",
+        backdrop: "--surface-1",
+        label: "accent text on accent-soft",
+    },
 ];
 
 /**
@@ -150,6 +232,61 @@ function resolveColor(tokenName, theme, themes) {
     return parseColor(raw);
 }
 
+/**
+ * Resolve a (fg, bg, optional backdrop) pair into opaque fg/bg colors and
+ * return the WCAG contrast ratio. If bg carries alpha (dark-theme soft tints),
+ * it is composited over the `backdrop` token (defaulting to surface-1) so the
+ * effective background is used. fg alpha is then composited over the effective
+ * bg. Returns null if any token cannot be resolved.
+ */
+function resolvePair(pair, themes) {
+    const theme = themes[pair.theme];
+    if (!theme) return null;
+    const fg = resolveColor(pair.fg, theme, themes);
+    const bg = resolveColor(pair.bg, theme, themes);
+    if (!fg || !bg) return null;
+
+    // Backdrop defaults to surface-1; used to flatten alpha backgrounds.
+    const backdropToken = pair.backdrop ?? "--surface-1";
+    const backdrop =
+        resolveColor(backdropToken, theme, themes) ?? { r: 255, g: 255, b: 255, a: 1 };
+
+    const effectiveBg =
+        bg.a >= 1 ? { ...bg, a: 1 } : composite(bg, backdrop);
+    const effectiveFg =
+        fg.a >= 1 ? { ...fg, a: 1 } : composite(fg, effectiveBg);
+    return { ratio: contrastRatio(effectiveFg, effectiveBg) };
+}
+
+function runPass(header, pairs, threshold, themes) {
+    let failures = 0;
+    let checked = 0;
+    console.log(`[audit-contrast] ${header} (need ${threshold}:1)`);
+    for (const pair of pairs) {
+        const resolved = resolvePair(pair, themes);
+        if (!resolved) {
+            console.log(
+                `[audit-contrast] SKIP  ${pair.theme}: could not resolve ` +
+                    `${pair.fg}/${pair.bg}`,
+            );
+            continue;
+        }
+        const { ratio } = resolved;
+        const pass = ratio >= threshold;
+        checked += 1;
+        if (!pass) failures += 1;
+        const status = pass ? "PASS" : "FAIL";
+        console.log(
+            `[audit-contrast] ${status}  ${pair.theme} ${pair.label}: ` +
+                `${ratio.toFixed(2)}:1`,
+        );
+    }
+    console.log(
+        `[audit-contrast] ${checked} pair(s) checked, ${failures} failure(s).`,
+    );
+    return failures;
+}
+
 function main() {
     if (!fs.existsSync(TOKENS_PATH)) {
         console.error(`[audit-contrast] tokens.css not found at ${TOKENS_PATH}`);
@@ -158,40 +295,21 @@ function main() {
     const css = fs.readFileSync(TOKENS_PATH, "utf8");
     const themes = parseTokens(css);
 
-    let failures = 0;
-    let checked = 0;
-    console.log("[audit-contrast] body-text pairs (WCAG AA 4.5:1)");
-    for (const pair of BODY_PAIRS) {
-        const theme = themes[pair.theme];
-        if (!theme) {
-            console.log(`[audit-contrast] unknown theme: ${pair.theme}`);
-            continue;
-        }
-        let fg = resolveColor(pair.fg, theme, themes);
-        let bg = resolveColor(pair.bg, theme, themes);
-        if (!fg || !bg) {
-            console.log(
-                `[audit-contrast] ${pair.theme}: could not resolve ` +
-                    `${pair.fg}/${pair.bg}`,
-            );
-            continue;
-        }
-        // Composite any alpha onto the surface so the effective color is used.
-        fg = composite(fg, bg);
-        bg = composite(bg, { r: 0, g: 0, b: 0, a: 1 });
-
-        const ratio = contrastRatio(fg, bg);
-        const pass = ratio >= BODY_TEXT_MIN;
-        checked += 1;
-        if (!pass) failures += 1;
-        const status = pass ? "PASS" : "FAIL";
-        console.log(
-            `[audit-contrast] ${status}  ${pair.theme} ${pair.label}: ` +
-                `${ratio.toFixed(2)}:1 (need ${BODY_TEXT_MIN})`,
-        );
-    }
+    const bodyFailures = runPass(
+        "body-text pairs (WCAG AA)",
+        BODY_PAIRS,
+        BODY_TEXT_MIN,
+        themes,
+    );
+    const uiFailures = runPass(
+        "large-text / UI pairs (WCAG AA)",
+        LARGE_UI_PAIRS,
+        LARGE_TEXT_UI_MIN,
+        themes,
+    );
+    const totalFailures = bodyFailures + uiFailures;
     console.log(
-        `[audit-contrast] checked ${checked} body-text pair(s), ${failures} failure(s).`,
+        `[audit-contrast] total failures: ${totalFailures}`,
     );
     // Advisory: exit 0 so it can run as a one-off audit.
     process.exit(0);
