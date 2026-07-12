@@ -23,6 +23,7 @@ import { Badge } from "@/components/ui/Badge";
 import { ResumeCard } from "@/components/ResumeCard";
 import { StreakFreeze } from "@/components/StreakFreeze";
 import { DailyGoalRing } from "@/components/DailyGoalRing";
+import { SubjectMastery } from "@/components/SubjectMastery";
 import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 import { PomodoroTimer } from "@/components/PomodoroTimer";
 import { BuddyMatch } from "@/components/BuddyMatch";
@@ -119,6 +120,9 @@ export default function DashboardPage() {
 
             {/* Daily study goal + progress ring (F21) */}
             <DailyGoalRing />
+
+            {/* Per-user subject mastery levels (F30) */}
+            <SubjectMastery />
 
             {/* Onboarding checklist */}
             <OnboardingChecklist />

@@ -1,0 +1,10 @@
+{
+    "subjectMastery": {
+        "title": "Subject Mastery",
+        "description": "Set your mastery level for each subject.",
+        "notRated": "Not rated",
+        "level": "{{level}}/5",
+        "levelAria": "Mastery level for {{subject}}",
+        "dotAria": "{{value}} out of 5"
+    }
+}

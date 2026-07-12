@@ -1,0 +1,10 @@
+{
+    "subjectMastery": {
+        "title": "科目掌握度",
+        "description": "为每个科目设置你的掌握程度。",
+        "notRated": "未评分",
+        "level": "{{level}}/5",
+        "levelAria": "{{subject}} 的掌握程度",
+        "dotAria": "{{value}} 星，满分 5 星"
+    }
+}
