@@ -26,6 +26,9 @@
 .columns {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    /* B61: top-align columns so the brand, link, and legal columns share a
+       common baseline instead of stretching to the tallest column. */
+    align-items: start;
     gap: var(--space-8);
 }
 
