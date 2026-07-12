@@ -123,6 +123,15 @@ const initPromise = i18n.use(initReactI18next).init(i18nConfig).catch((error) =>
 // Keep the HTML lang attribute in sync with the active locale for
 // accessibility and SEO. This also centralizes locale persistence so callers
 // only need to invoke i18n.changeLanguage().
+//
+// CONVENTION (B95): Language persistence is centralised here — never write to
+// localStorage("lernchih-lang") from components. The language switcher in
+// AppLayout calls i18n.changeLanguage(next), which fires the "languageChanged"
+// event below; syncDocumentLang then (1) updates <html lang> for a11y/SEO and
+// (2) persists the choice to localStorage so the next session restores it via
+// getSavedLang() at the top of this module. This single source of truth
+// guarantees the restored locale, the document lang, and the persisted value
+// always agree.
 function syncDocumentLang(lng: string): void {
     if (typeof document !== "undefined") {
         document.documentElement.lang = lng;
