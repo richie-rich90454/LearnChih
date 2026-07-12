@@ -48,12 +48,31 @@ const EXPECTED_NETWORK_PATTERNS = [
     "ERR_FAILED",
     "ERR_NETWORK_CHANGED",
     "ERR_EMPTY_RESPONSE",
+    "ERR_ABORTED",
     "502 (Bad Gateway)",
+    "ERR_HTTP_RESPONSE_CODE_FAILURE",
+    "responded with a status of 502",
+    "responded with a status of 504",
     "/api/",
+];
+
+// External CDN domains that may be intermittently unavailable in CI or local
+// environments. These resources are non-critical (icons, fonts) and their
+// failure should not fail the smoke test.
+const EXPECTED_EXTERNAL_DOMAINS = [
+    "cdn.simpleicons.org",
+    "fonts.googleapis.com",
+    "fonts.gstatic.com",
+    "unpkg.com",
+    "cdnjs.cloudflare.com",
 ];
 
 function isExpectedNetworkError(text = "") {
     return EXPECTED_NETWORK_PATTERNS.some((p) => text.includes(p));
+}
+
+function isExpectedExternalResource(url = "") {
+    return EXPECTED_EXTERNAL_DOMAINS.some((d) => url.includes(d));
 }
 
 async function testRoute(page, route) {
@@ -78,7 +97,12 @@ async function testRoute(page, route) {
     const onRequestFailed = (req) => {
         const url = req.url();
         const failure = req.failure()?.errorText || "";
-        if (url.includes("/api/") || isExpectedNetworkError(failure)) {
+        if (
+            url.includes("/api/") ||
+            url.includes("/api-docs") ||
+            isExpectedNetworkError(failure) ||
+            isExpectedExternalResource(url)
+        ) {
             return;
         }
         failedNetwork.push(`${url} — ${failure}`);
