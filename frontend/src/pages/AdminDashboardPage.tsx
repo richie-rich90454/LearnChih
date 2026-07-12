@@ -284,6 +284,71 @@ export default function AdminDashboardPage() {
             label: t("adminDashboard.linkApiKeys"),
             description: t("adminDashboard.linkApiKeysDesc"),
         },
+        {
+            to: "/admin/webhooks",
+            label: t("adminDashboard.linkWebhooks", "Webhooks"),
+            description: t("adminDashboard.linkWebhooksDesc", "Webhook event catalog and subscriptions"),
+        },
+        {
+            to: "/admin/2fa-policy",
+            label: t("adminDashboard.link2faPolicy", "2FA policy"),
+            description: t("adminDashboard.link2faPolicyDesc", "Two-factor enforcement settings"),
+        },
+        {
+            to: "/admin/sessions",
+            label: t("adminDashboard.linkSessions", "Sessions"),
+            description: t("adminDashboard.linkSessionsDesc", "Active session management"),
+        },
+        {
+            to: "/admin/suspicious-logins",
+            label: t("adminDashboard.linkSuspiciousLogins", "Suspicious logins"),
+            description: t("adminDashboard.linkSuspiciousLoginsDesc", "Review suspicious login alerts"),
+        },
+        {
+            to: "/admin/breach-check",
+            label: t("adminDashboard.linkBreachCheck", "Breach check"),
+            description: t("adminDashboard.linkBreachCheckDesc", "Check passwords against known breaches"),
+        },
+        {
+            to: "/admin/email-domains",
+            label: t("adminDashboard.linkEmailDomains", "Email domains"),
+            description: t("adminDashboard.linkEmailDomainsDesc", "Allowlist and denylist email domains"),
+        },
+        {
+            to: "/admin/report-trends",
+            label: t("adminDashboard.linkReportTrends", "Report trends"),
+            description: t("adminDashboard.linkReportTrendsDesc", "Content report trends over time"),
+        },
+        {
+            to: "/admin/seo-health",
+            label: t("adminDashboard.linkSeoHealth", "SEO health"),
+            description: t("adminDashboard.linkSeoHealthDesc", "SEO metrics and issues"),
+        },
+        {
+            to: "/admin/backups",
+            label: t("adminDashboard.linkBackups", "Backups"),
+            description: t("adminDashboard.linkBackupsDesc", "Backup and restore status"),
+        },
+        {
+            to: "/admin/rate-limits",
+            label: t("adminDashboard.linkRateLimits", "Rate limits"),
+            description: t("adminDashboard.linkRateLimitsDesc", "Rate-limit metrics per endpoint"),
+        },
+        {
+            to: "/admin/data-exports",
+            label: t("adminDashboard.linkDataExports", "Data exports"),
+            description: t("adminDashboard.linkDataExportsDesc", "GDPR data export job queue"),
+        },
+        {
+            to: "/admin/account-deletions",
+            label: t("adminDashboard.linkAccountDeletions", "Account deletions"),
+            description: t("adminDashboard.linkAccountDeletionsDesc", "Account deletion grace-period queue"),
+        },
+        {
+            to: "/admin/oauth-accounts",
+            label: t("adminDashboard.linkOauthAccounts", "OAuth accounts"),
+            description: t("adminDashboard.linkOauthAccountsDesc", "Connected OAuth accounts"),
+        },
     ];
 
     if (!isAdmin) {
