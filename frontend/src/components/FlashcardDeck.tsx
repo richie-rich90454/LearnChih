@@ -97,7 +97,7 @@ export default function FlashcardDeck({ deckId }: FlashcardDeckProps) {
         });
     };
 
-    if (isLoading) return <Spinner label="Loading flashcards..." />;
+    if (isLoading) return <div role="status" aria-live="polite" aria-label="Loading flashcards..."><Spinner label="Loading flashcards..." /></div>;
 
     if (!cards.length) {
         return (
