@@ -9,59 +9,68 @@
  * (0,1,0); doubled-class selectors (.link.link) reach (0,2,0) to win
  * color/font-size overrides regardless of stylesheet injection order.
  *
- * B18 (Footer link touch targets >=44px): every link is an inline-flex with
- * min-height: 44px and vertical centering so the tap target meets WCAG 2.5.5
- * on touch devices, replacing the previous 24px min-height.
+ * B18 (Footer link touch targets >=44px): on touch devices (max-width: 768px)
+ * every link is an inline-flex with min-height: 44px and vertical centering so
+ * the tap target meets WCAG 2.5.5. On desktop the footer is a compact single
+ * row so links use a comfortable 32px height to keep the bar slim (the
+ * original 44px-per-link vertical stack made the footer ~300px tall and ate
+ * too much of the content viewport).
  */
 
 .footer {
     display: flex;
     flex-direction: column;
-    gap: var(--space-6);
-    padding: var(--space-8) var(--space-6) var(--space-6);
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6) var(--space-2);
     background-color: var(--surface-2);
     border-top: 1px solid var(--border-subtle);
 }
 
+/* Compact single row: brand on the left, inline links on the right. */
 .columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    /* B61: top-align columns so the brand, link, and legal columns share a
-       common baseline instead of stretching to the tallest column. */
-    align-items: start;
-    gap: var(--space-8);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
 }
 
 .brandColumn {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    max-width: 220px;
+    align-items: center;
+    gap: var(--space-3);
+    max-width: 360px;
 }
 
 /* Fluent Text: doubled class beats Griffel atomic color/font-size. */
 .tagline.tagline {
     color: var(--text-secondary);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
     line-height: var(--line-height-base);
+    /* Clamp to one line so the brand column stays a single visual row. */
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
+/* Links render inline horizontally on desktop. */
 .linkColumn {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-1);
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
 }
 
-/* Fluent Link: doubled class beats Griffel atomic. B18: min-height 44px
-   makes the whole link a compliant touch target. */
+/* Fluent Link: doubled class beats Griffel atomic. Desktop uses a compact
+   32px height; the 44px touch target is restored on mobile below. */
 .link.link {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
+    min-height: 32px;
     padding-inline: var(--space-1);
     color: var(--text-secondary);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
     text-decoration: none;
     transition: color var(--motion-fast) var(--motion-ease);
 }
@@ -79,7 +88,7 @@
 
 /* Fluent Text: doubled class for the bottom copyright bar. */
 .copyright.copyright {
-    padding-top: var(--space-4);
+    padding-top: var(--space-2);
     border-top: 1px solid var(--border-subtle);
     color: var(--text-secondary);
     font-size: var(--font-size-xs);
@@ -87,12 +96,29 @@
 }
 
 @media (max-width: 768px) {
-    .columns {
-        grid-template-columns: 1fr;
-        gap: var(--space-4);
+    .footer {
+        padding: var(--space-4);
     }
 
-    .footer {
-        padding: var(--space-6) var(--space-4);
+    /* On mobile, stack columns vertically and restore 44px touch targets. */
+    .columns {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+    }
+
+    .linkColumn {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+
+    .link.link {
+        min-height: 44px;
+        font-size: var(--font-size-sm);
+    }
+
+    .tagline.tagline {
+        -webkit-line-clamp: 2;
     }
 }
