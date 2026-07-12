@@ -146,7 +146,11 @@ export default function StudyStatsPage() {
                 </Button>
             </header>
 
-            {isLoading && <Spinner label={t("studyStats.loading")} />}
+            {isLoading && (
+                <div role="status" aria-live="polite" aria-label={t("studyStats.loading")}>
+                    <Spinner label={t("studyStats.loading")} />
+                </div>
+            )}
 
             {isError && (
                 <ErrorState
