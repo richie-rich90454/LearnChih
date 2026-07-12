@@ -56,6 +56,15 @@ export interface InputProps extends Omit<FluentInputProps, "size"> {
     wrapperClassName?: string;
 }
 
+/*
+ * Form-state preservation convention (B70): On a failed submit, forms MUST
+ * preserve the user's entered field values so they can fix and resubmit
+ * without retyping. This is the default React behavior when state is held in
+ * `useState` (or a form library) and only the `error` prop toggles - the
+ * Input is a controlled/uncontrolled passthrough and never resets `value` on
+ * its own. Form handlers must NOT clear state on error; clear only on
+ * successful submit or an explicit user reset action.
+ */
 function cx(...parts: Array<string | false | undefined | null>): string {
     return parts.filter(Boolean).join(" ");
 }
