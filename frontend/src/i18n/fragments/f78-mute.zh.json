@@ -1,0 +1,14 @@
+{
+    "mute": {
+        "mute": "静音",
+        "unmute": "取消静音",
+        "duration30m": "30 分钟",
+        "duration1h": "1 小时",
+        "duration8h": "8 小时",
+        "duration24h": "24 小时",
+        "forever": "直到我取消",
+        "mutedUntil": "已静音至 {{time}}",
+        "mutedForever": "已静音",
+        "chooseDuration": "静音时长..."
+    }
+}

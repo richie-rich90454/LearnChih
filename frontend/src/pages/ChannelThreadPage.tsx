@@ -25,6 +25,7 @@ import { discussionForumPostingSchema, breadcrumbSchema } from "@/components/jso
 import { useBackgroundSync } from "@/hooks/useBackgroundSync";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { MuteButton } from "@/components/MuteButton";
 import { recordLastVisited } from "@/components/ResumeCard";
 import { ShareButton } from "@/components/ShareButton";
 import { ThreadSubscription } from "@/components/ThreadSubscription";
@@ -257,6 +258,9 @@ export default function ChannelThreadPage() {
                     <div className={styles.meta}>
                         <h1 className={styles.title}>{thread?.title || t("channels.threads")}</h1>
                         {threadId && <PresenceIndicator threadId={Number(threadId)} />}
+                        {threadId && (
+                            <MuteButton id={`thread:${threadId}`} type="thread" />
+                        )}
                     </div>
                     <p className={styles.metaItem}>
                         {t("channels.inChannel", { channel: channel?.name || t("channels.title") })}
