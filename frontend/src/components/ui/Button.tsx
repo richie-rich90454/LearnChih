@@ -8,6 +8,12 @@ import styles from "./Button.module.css";
  * Design-system Button variants. Each maps to a Fluent UI `appearance` for
  * behavior + a11y, while the co-located CSS Module owns the visual tokens.
  * `ghost` is the design-system name for Fluent's transparent appearance.
+ *
+ * Route-transition focus convention (B54): Focus loss during route
+ * transitions is handled by `components/PageTransition` (owned separately)
+ * which preserves the active element across the unmount/remount cycle.
+ * Buttons rendered inside a transitioning page keep working through the
+ * transition; this primitive does not need to manage transition focus.
  */
 export type ButtonVariant = "primary" | "subtle" | "outline" | "ghost";
 
