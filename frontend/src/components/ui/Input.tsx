@@ -7,6 +7,15 @@ import styles from "./Input.module.css";
 
 export type InputSize = "small" | "medium" | "large";
 
+/*
+ * Inline-validation convention (B67): Forms should validate fields inline
+ * (onBlur or onChange) and surface the first failing rule via the `error`
+ * prop of this Input. Passing a non-empty `error` flips the field into the
+ * error state (red border + `aria-invalid` + `role="alert"` message) so the
+ * user gets immediate feedback without a full submit round-trip. Clear
+ * `error` (pass `undefined`) once the field becomes valid.
+ */
+
 /**
  * Optional character counter. The caller owns the `current` value (typically
  * derived from a controlled `value` prop) so both controlled and uncontrolled
