@@ -7,6 +7,13 @@ interface PaginationProps {
     onPageChange: (page: number) => void;
 }
 
+/*
+ * Data-table convention (B59): Spec/data tables that use hairline borders
+ * become unreadable on narrow mobile viewports. On mobile, render the same
+ * rows as a stacked card grid (one Card per row, fields laid out vertically)
+ * instead of a hairline `<table>`. Pagination sits below whichever layout is
+ * active and uses the design-system `--space-*` tokens for spacing.
+ */
 export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
     const { t } = useTranslation();
     if (totalPages <= 1) return null;
