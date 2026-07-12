@@ -23,6 +23,13 @@ import {
  * pickVariant(). When adding a new lazy route, extend pickVariant() with a
  * matching branch (or fall back to the "default" shape) so the Suspense gap is
  * never a blank screen.
+ *
+ * CONVENTION (B88): Below-the-fold heavy widgets (e.g. charts, concept maps,
+ * collaborative editors, PDF panels) should be code-split with React.lazy()
+ * and wrapped in <Suspense fallback={<RouteSkeleton pathname={...} />}> so the
+ * initial route paint is not blocked by a large component bundle. Route-level
+ * lazy() is already applied to every page in App.tsx; apply the same pattern to
+ * heavyweight widgets mounted inside a page.
  */
 
 const useStyles = makeStyles({
