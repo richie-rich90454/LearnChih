@@ -6,6 +6,7 @@ import {
     tokens,
     Divider,
     Caption1,
+    Tooltip,
 } from "@fluentui/react-components";
 import {
     TextBold24Regular,
@@ -148,46 +149,51 @@ export function MarkdownEditor({
     return (
         <div className={styles.root}>
             <div className={styles.toolbar}>
-                <Button
-                    size="small"
-                    appearance="subtle"
-                    icon={<TextBold24Regular />}
-                    title={t("markdownEditor.bold")}
-                    aria-label={t("markdownEditor.bold")}
-                    onClick={() => wrapSelection("**", "**", "bold text")}
-                />
-                <Button
-                    size="small"
-                    appearance="subtle"
-                    icon={<TextItalic24Regular />}
-                    title={t("markdownEditor.italic")}
-                    aria-label={t("markdownEditor.italic")}
-                    onClick={() => wrapSelection("*", "*", "italic text")}
-                />
-                <Button
-                    size="small"
-                    appearance="subtle"
-                    icon={<Link24Regular />}
-                    title={t("markdownEditor.insertLink")}
-                    aria-label={t("markdownEditor.insertLink")}
-                    onClick={() => wrapSelection("[", "](https://)", "link text")}
-                />
-                <Button
-                    size="small"
-                    appearance="subtle"
-                    icon={<Image24Regular />}
-                    title={t("markdownEditor.insertImage")}
-                    aria-label={t("markdownEditor.insertImage")}
-                    onClick={() => insertAtCursor("\n![alt text](https://image-url)\n")}
-                />
-                <Button
-                    size="small"
-                    appearance="subtle"
-                    icon={<Code24Regular />}
-                    title={t("markdownEditor.insertCodeBlock")}
-                    aria-label={t("markdownEditor.insertCodeBlock")}
-                    onClick={() => insertAtCursor("\n```\ncode\n```\n")}
-                />
+                <Tooltip content={t("markdownEditor.bold")} relationship="label">
+                    <Button
+                        size="small"
+                        appearance="subtle"
+                        icon={<TextBold24Regular />}
+                        aria-label={t("markdownEditor.bold")}
+                        onClick={() => wrapSelection("**", "**", "bold text")}
+                    />
+                </Tooltip>
+                <Tooltip content={t("markdownEditor.italic")} relationship="label">
+                    <Button
+                        size="small"
+                        appearance="subtle"
+                        icon={<TextItalic24Regular />}
+                        aria-label={t("markdownEditor.italic")}
+                        onClick={() => wrapSelection("*", "*", "italic text")}
+                    />
+                </Tooltip>
+                <Tooltip content={t("markdownEditor.insertLink")} relationship="label">
+                    <Button
+                        size="small"
+                        appearance="subtle"
+                        icon={<Link24Regular />}
+                        aria-label={t("markdownEditor.insertLink")}
+                        onClick={() => wrapSelection("[", "](https://)", "link text")}
+                    />
+                </Tooltip>
+                <Tooltip content={t("markdownEditor.insertImage")} relationship="label">
+                    <Button
+                        size="small"
+                        appearance="subtle"
+                        icon={<Image24Regular />}
+                        aria-label={t("markdownEditor.insertImage")}
+                        onClick={() => insertAtCursor("\n![alt text](https://image-url)\n")}
+                    />
+                </Tooltip>
+                <Tooltip content={t("markdownEditor.insertCodeBlock")} relationship="label">
+                    <Button
+                        size="small"
+                        appearance="subtle"
+                        icon={<Code24Regular />}
+                        aria-label={t("markdownEditor.insertCodeBlock")}
+                        onClick={() => insertAtCursor("\n```\ncode\n```\n")}
+                    />
+                </Tooltip>
                 <Divider vertical style={{ height: "24px" }} />
                 <Button
                     size="small"
