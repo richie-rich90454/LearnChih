@@ -56,6 +56,10 @@ export function Dialog({
                         levels (no <h4> immediately after the title) so the
                         document outline stays valid for screen-reader nav. */}
                     <DialogTitle className={styles.title}>{title}</DialogTitle>
+                    {/* B32: If DialogContent is repurposed to surface async form
+                        errors or validation feedback, wrap it in an element
+                        with aria-live="polite" so screen readers announce the
+                        update. See States.module.css .inlineError. */}
                     <DialogContent className={styles.content}>{content}</DialogContent>
                     <DialogActions className={styles.footer}>
                         {footer ?? (
