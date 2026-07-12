@@ -1,5 +1,19 @@
 import { Helmet } from "react-helmet-async";
 
+/**
+ * SEO + document title component (B82).
+ *
+ * Renders `<title>`, meta description, canonical URL, Open Graph, Twitter
+ * card, hreflang alternates, and JSON-LD structured data via react-helmet-async.
+ *
+ * CONVENTION (B82): Every routed page MUST render `<Seo title="..." />` at the
+ * top of its tree so the browser tab and document title stay in sync with the
+ * current route. Pages that omit <Seo> leave the previous route's title in the
+ * tab, which confuses screen-reader users and breaks SEO/history entries.
+ * Always provide a human-readable `title` and a `canonicalPath` matching the
+ * route; optional props (description, jsonLd, hreflang) enrich as needed.
+ */
+
 export interface SeoProps {
     title: string;
     description?: string;
