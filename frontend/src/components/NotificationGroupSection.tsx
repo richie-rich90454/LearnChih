@@ -99,7 +99,7 @@ export function NotificationGroupSection({
                     </p>
                 ) : (
                     notifications.map((n) => (
-                        <div key={n.id} onClick={() => onItemClick(n.id, n.link)}>
+                        <div key={n.id}>
                             {renderRow(n)}
                         </div>
                     ))
