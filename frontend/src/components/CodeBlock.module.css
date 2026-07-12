@@ -50,6 +50,8 @@
 }
 
 .body {
+    /* B16: Wide code blocks scroll horizontally instead of overflowing the
+       container, preventing layout breakage on long lines. */
     overflow-x: auto;
 }
 
