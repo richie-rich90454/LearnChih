@@ -1,0 +1,18 @@
+{
+    "polls": {
+        "widgetTitle": "投票",
+        "vote": "投票",
+        "votes": "票",
+        "voteSingular": "票",
+        "voteFailed": "投票失败。",
+        "modeSingle": "单选",
+        "modeRanking": "排名",
+        "modeOpenEnded": "开放问答",
+        "rankingHint": "拖动重新排序后提交。",
+        "submitRanking": "提交排名",
+        "rankingSubmitted": "你的排名已提交。",
+        "openEndedPlaceholder": "输入你的回答...",
+        "submitAnswer": "提交回答",
+        "answerSubmitted": "你的回答已提交。"
+    }
+}

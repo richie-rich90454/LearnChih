@@ -1,0 +1,18 @@
+{
+    "polls": {
+        "widgetTitle": "Poll",
+        "vote": "Vote",
+        "votes": "votes",
+        "voteSingular": "vote",
+        "voteFailed": "Failed to register your vote.",
+        "modeSingle": "Single choice",
+        "modeRanking": "Ranking",
+        "modeOpenEnded": "Open-ended",
+        "rankingHint": "Drag to reorder, then submit.",
+        "submitRanking": "Submit ranking",
+        "rankingSubmitted": "Your ranking was submitted.",
+        "openEndedPlaceholder": "Type your answer...",
+        "submitAnswer": "Submit answer",
+        "answerSubmitted": "Your answer was submitted."
+    }
+}

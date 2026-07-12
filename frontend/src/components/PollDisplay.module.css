@@ -1,0 +1,218 @@
+/**
+ * PollDisplay (F46). Token-based; no raw hex, no !important. Owns the poll
+ * surface and result bars; the design-system Button / Badge own the controls.
+ */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    background-color: var(--surface-2);
+}
+
+.questionRow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.question {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-base);
+}
+
+.hint {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.optionRow {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.optionTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.optionText {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+}
+
+.optionChosen {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--accent);
+}
+
+.optionCount {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.barTrack {
+    height: 8px;
+    width: 100%;
+    background-color: var(--surface-sunken);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+}
+
+.barFill {
+    height: 100%;
+    background-color: var(--accent-fill);
+    transition: width var(--motion-base) var(--motion-ease);
+}
+
+.barFillStatic {
+    height: 100%;
+    background-color: var(--accent-fill);
+    transition: none;
+}
+
+.totalVotes {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+/* ----------------------- Ranking mode ------------------------------------- */
+
+.rankList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.rankItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    background-color: var(--surface-2);
+    cursor: grab;
+    transition:
+        border-color var(--motion-fast) var(--motion-ease),
+        background-color var(--motion-fast) var(--motion-ease);
+}
+
+.rankItem:hover {
+    border-color: var(--border-strong);
+    background-color: var(--surface-sunken);
+}
+
+.rankItemDragging {
+    opacity: 0.5;
+    border: 1px dashed var(--accent);
+    border-radius: var(--radius-input);
+    background-color: var(--accent-soft);
+    padding: var(--space-2) var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: grabbing;
+}
+
+.rankPosition {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    border-radius: var(--radius-pill);
+    background-color: var(--accent-soft);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    flex-shrink: 0;
+}
+
+.rankText {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+}
+
+.rankHandle {
+    color: var(--text-disabled);
+    font-family: var(--font-mono);
+    user-select: none;
+    letter-spacing: 2px;
+    transition: color var(--motion-fast) var(--motion-ease);
+}
+
+.rankItem:hover .rankHandle {
+    color: var(--text-secondary);
+}
+
+.rankHandleStatic {
+    color: var(--text-disabled);
+    font-family: var(--font-mono);
+    user-select: none;
+    letter-spacing: 2px;
+    transition: none;
+}
+
+/* ----------------------- Open-ended mode ---------------------------------- */
+
+.openEndedRow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.textArea {
+    width: 100%;
+    resize: vertical;
+    min-height: 72px;
+    padding: var(--space-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-input);
+    background-color: var(--surface-1);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+}
+
+.textArea:focus {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .barFill,
+    .rankItem,
+    .rankHandle {
+        transition: none;
+    }
+}
