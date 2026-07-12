@@ -31,6 +31,10 @@ export function PageTransition({ children, className }: PageTransitionProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
+        // B44: Reduced-motion short-circuit. Under prefers-reduced-motion the
+        // fade/translate enter animation is skipped entirely so the page
+        // renders instantly with no motion. This complements the global
+        // index.css duration collapse by never scheduling a GSAP tween.
         if (reduced || !containerRef.current) return;
 
         const container = containerRef.current;
