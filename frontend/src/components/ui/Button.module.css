@@ -129,3 +129,15 @@
 .button.loading {
     cursor: progress;
 }
+
+/* ----------------------- Button group (B60) ------------------------------- */
+/* Wrap a row of Buttons in a container with `.group` for consistent
+   inter-button spacing. Uses the design-system `--space-2` (8px) token so
+   every button group across the app shares one rhythm. `flex-wrap` lets the
+   group reflow on narrow viewports; align-items keeps baselines tidy. */
+.group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+}
