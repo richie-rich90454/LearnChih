@@ -1,8 +1,10 @@
 package com.richardjiang880.lernchih.security;
 
+import com.richardjiang880.lernchih.model.ApiKey;
 import com.richardjiang880.lernchih.model.User;
 import com.richardjiang880.lernchih.repository.UserRepository;
 import com.richardjiang880.lernchih.service.ApiKeyService;
+import com.richardjiang880.lernchih.service.ApiKeyRateLimitService;
 import jakarta.servlet.FilterChain;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +32,9 @@ class ApiKeyAuthFilterTest {
     private ApiKeyService apiKeyService;
 
     @Mock
+    private ApiKeyRateLimitService rateLimitService;
+
+    @Mock
     private UserDetailsService userDetailsService;
 
     @Mock
@@ -42,7 +47,7 @@ class ApiKeyAuthFilterTest {
 
     @BeforeEach
     void setUp() {
-        filter = new ApiKeyAuthFilter(apiKeyService, userDetailsService, userRepository);
+        filter = new ApiKeyAuthFilter(apiKeyService, rateLimitService, userDetailsService, userRepository);
         SecurityContextHolder.clearContext();
     }
 
@@ -54,13 +59,19 @@ class ApiKeyAuthFilterTest {
     @Test
     void validApiKeySetsAuthentication() throws Exception {
         User user = User.builder().id(1L).email("alice@example.com").build();
+        ApiKey apiKey = new ApiKey();
+        apiKey.setId(10L);
+        apiKey.setUserId(1L);
+        apiKey.setKeyHash("hash");
+        apiKey.setRevoked(false);
         UserDetails details = org.springframework.security.core.userdetails.User
                 .withUsername("alice@example.com")
                 .password("p")
                 .roles("STUDENT")
                 .build();
 
-        when(apiKeyService.verifyApiKey("valid-key")).thenReturn(Optional.of(1L));
+        when(apiKeyService.verifyApiKeyEntity("valid-key")).thenReturn(Optional.of(apiKey));
+        when(rateLimitService.checkAndRecord(10L)).thenReturn(true);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userDetailsService.loadUserByUsername("alice@example.com")).thenReturn(details);
 
@@ -88,7 +99,13 @@ class ApiKeyAuthFilterTest {
 
     @Test
     void unknownApiKeyUserThrowsIllegalStateException() throws Exception {
-        when(apiKeyService.verifyApiKey("orphan-key")).thenReturn(Optional.of(99L));
+        ApiKey orphanKey = new ApiKey();
+        orphanKey.setId(99L);
+        orphanKey.setUserId(99L);
+        orphanKey.setRevoked(false);
+
+        when(apiKeyService.verifyApiKeyEntity("orphan-key")).thenReturn(Optional.of(orphanKey));
+        when(rateLimitService.checkAndRecord(99L)).thenReturn(true);
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/test");
