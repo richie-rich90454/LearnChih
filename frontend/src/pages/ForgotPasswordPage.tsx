@@ -4,6 +4,7 @@ import { MessageBar, MessageBarBody, Spinner } from "@fluentui/react-components"
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { forgotPassword } from "../api/password";
+import { useFocusFirstInput } from "../hooks/useFocusFirstInput";
 import Seo from "../components/Seo";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
@@ -14,6 +15,7 @@ export default function ForgotPasswordPage() {
     const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [submitted, setSubmitted] = useState(false);
+    useFocusFirstInput();
 
     const mutation = useMutation({
         mutationFn: () => forgotPassword({ email }),

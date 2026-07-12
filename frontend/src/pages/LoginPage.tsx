@@ -8,6 +8,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Link, useSearchParams } from "react-router-dom";
 import { useLogin } from "../hooks/useAuth";
+import { useFocusFirstInput } from "../hooks/useFocusFirstInput";
 import Seo from "../components/Seo";
 import OAuthButtons from "../components/OAuthButtons";
 import { Button } from "../components/ui/Button";
@@ -22,6 +23,7 @@ export default function LoginPage() {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const loginMutation = useLogin(redirect);
+    useFocusFirstInput();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

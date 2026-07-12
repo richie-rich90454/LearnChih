@@ -8,6 +8,7 @@ import {
 } from "@fluentui/react-components";
 import { useTranslation } from "react-i18next";
 import { useRegister } from "../hooks/useAuth";
+import { useFocusFirstInput } from "../hooks/useFocusFirstInput";
 import Seo from "../components/Seo";
 import OAuthButtons from "../components/OAuthButtons";
 import { Button } from "../components/ui/Button";
@@ -22,6 +23,7 @@ export default function RegisterPage() {
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const registerMutation = useRegister();
+    useFocusFirstInput();
 
     const [validationError, setValidationError] = useState<string>("");
 

@@ -4,6 +4,7 @@ import { MessageBar, MessageBarBody, Spinner } from "@fluentui/react-components"
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { resetPassword } from "../api/password";
+import { useFocusFirstInput } from "../hooks/useFocusFirstInput";
 import Seo from "../components/Seo";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
@@ -18,6 +19,7 @@ export default function ResetPasswordPage() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [validationError, setValidationError] = useState("");
+    useFocusFirstInput();
 
     const mutation = useMutation({
         mutationFn: () => resetPassword({ token, newPassword: password }),
