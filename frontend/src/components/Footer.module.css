@@ -9,37 +9,31 @@
  * (0,1,0); doubled-class selectors (.link.link) reach (0,2,0) to win
  * color/font-size overrides regardless of stylesheet injection order.
  *
- * B18 (Footer link touch targets >=44px): on touch devices (max-width: 768px)
- * every link is an inline-flex with min-height: 44px and vertical centering so
- * the tap target meets WCAG 2.5.5. On desktop the footer is a compact single
- * row so links use a comfortable 32px height to keep the bar slim (the
- * original 44px-per-link vertical stack made the footer ~300px tall and ate
- * too much of the content viewport).
+ * B53 (Footer compactness): the footer is a single slim row (~40px tall on
+ * desktop) so it consumes minimal content viewport. Brand + tagline sit on
+ * the left, links inline in the middle, copyright on the right. Mobile
+ * restores 44px touch targets (WCAG 2.5.5) and wraps to multiple rows.
  */
 
 .footer {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-3) var(--space-6) var(--space-2);
-    background-color: var(--surface-2);
-    border-top: 1px solid var(--border-subtle);
-}
-
-/* Compact single row: brand on the left, inline links on the right. */
-.columns {
-    display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-3) var(--space-6);
+    gap: var(--space-1) var(--space-4);
+    padding: var(--space-1) var(--space-6);
+    background-color: var(--surface-2);
+    border-top: 1px solid var(--border-subtle);
+    min-height: 36px;
 }
 
+/* Brand column: logo + tagline inline on the left. */
 .brandColumn {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
-    max-width: 360px;
+    gap: var(--space-2);
+    max-width: 320px;
+    flex-shrink: 0;
 }
 
 /* Fluent Text: doubled class beats Griffel atomic color/font-size. */
@@ -59,15 +53,15 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-1) var(--space-3);
+    gap: 0 var(--space-3);
 }
 
 /* Fluent Link: doubled class beats Griffel atomic. Desktop uses a compact
-   32px height; the 44px touch target is restored on mobile below. */
+   28px height; the 44px touch target is restored on mobile below. */
 .link.link {
     display: inline-flex;
     align-items: center;
-    min-height: 32px;
+    min-height: 28px;
     padding-inline: var(--space-1);
     color: var(--text-secondary);
     font-size: var(--font-size-xs);
@@ -86,30 +80,26 @@
     box-shadow: var(--shadow-focus);
 }
 
-/* Fluent Text: doubled class for the bottom copyright bar. */
+/* Fluent Text: doubled class for the inline copyright. */
 .copyright.copyright {
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--border-subtle);
     color: var(--text-secondary);
     font-size: var(--font-size-xs);
     line-height: var(--line-height-base);
+    flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
     .footer {
-        padding: var(--space-4);
+        padding: var(--space-2) var(--space-4);
+        min-height: 0;
     }
 
-    /* On mobile, stack columns vertically and restore 44px touch targets. */
-    .columns {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-3);
+    /* On mobile, stack rows vertically and restore 44px touch targets. */
+    .brandColumn {
+        max-width: 100%;
     }
 
     .linkColumn {
-        flex-direction: column;
-        align-items: flex-start;
         gap: 0;
     }
 
