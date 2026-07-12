@@ -433,6 +433,7 @@ export default function ChannelThreadPage() {
                                                 setReplyContent(e.target.value)
                                             }
                                             placeholder={t("channels.writeReply")}
+                                            aria-label={t("channels.writeReply")}
                                         />
                                         <div className={styles.replyComposerActions}>
                                             <Button
