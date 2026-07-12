@@ -125,7 +125,11 @@ pre,
 
 /* Tactile feedback for Fluent UI buttons. Fluent v9 buttons render with the
    `fui-Button` class; a 1px press offset gives a subtle physical response.
-   The transition respects prefers-reduced-motion via the global rule above. */
+   The transition respects prefers-reduced-motion via the global rule above.
+   B9: focus-ring visibility in dark mode on subtle buttons is handled in each
+   module via `:focus-visible { box-shadow: var(--shadow-focus) }`, where
+   --shadow-focus is theme-aware in tokens.css (light/dark) so the ring stays
+   visible on subtle buttons without !important. */
 .fui-Button {
     transition: transform var(--motion-fast) var(--motion-ease);
 }
