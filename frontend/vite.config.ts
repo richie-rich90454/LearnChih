@@ -57,6 +57,22 @@ export default defineConfig({
                 // slashes so matching works on Windows and POSIX.
                 manualChunks: (id: string) => {
                     const normalized = id.replace(/\\/g, "/");
+
+                    // --- App code splitting (improves caching and reduces
+                    // initial bundle size by separating stores, hooks, and API
+                    // modules into their own chunks that can be fetched in
+                    // parallel with HTTP/2). ---
+                    if (normalized.includes("/src/store/")) {
+                        return "app-stores";
+                    }
+                    if (normalized.includes("/src/hooks/")) {
+                        return "app-hooks";
+                    }
+                    if (normalized.includes("/src/api/")) {
+                        return "app-api";
+                    }
+
+                    // --- Vendor splitting ---
                     if (!normalized.includes("/node_modules/")) {
                         return undefined;
                     }
@@ -69,11 +85,41 @@ export default defineConfig({
                     ) {
                         return "react-vendor";
                     }
+                    // Split Fluent UI icons from core components — icons
+                    // are large but tree-shakeable; keeping them separate
+                    // allows the component chunk to be smaller.
+                    if (normalized.includes("/@fluentui/react-icons")) {
+                        return "fluent-icons";
+                    }
                     if (normalized.includes("/@fluentui/")) {
                         return "fluent-vendor";
                     }
                     if (normalized.includes("/@tanstack/")) {
                         return "query-vendor";
+                    }
+                    if (
+                        normalized.includes("/gsap") ||
+                        normalized.includes("/@gsap")
+                    ) {
+                        return "gsap-vendor";
+                    }
+                    if (
+                        normalized.includes("/i18next") ||
+                        normalized.includes("/react-i18next")
+                    ) {
+                        return "i18n-vendor";
+                    }
+                    if (normalized.includes("/zustand")) {
+                        return "state-vendor";
+                    }
+                    if (normalized.includes("/react-helmet-async")) {
+                        return "seo-vendor";
+                    }
+                    if (normalized.includes("/axios")) {
+                        return "http-vendor";
+                    }
+                    if (normalized.includes("/zod")) {
+                        return "validation-vendor";
                     }
                     return undefined;
                 },
