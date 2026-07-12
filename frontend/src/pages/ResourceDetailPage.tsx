@@ -205,12 +205,29 @@ export default function ResourceDetailPage() {
 
     const isOwner = !!user && !!resource && user.userId === resource.userId;
 
-    if (isLoading) return <Spinner label={t("common.loading")} />;
+    if (isLoading) {
+        return (
+            <div className={styles.container}>
+                <Seo
+                    title={`${t("common.loading")} — LernChih`}
+                    canonicalPath={`/resources/${id ?? ""}`}
+                />
+                <Spinner label={t("common.loading")} />
+            </div>
+        );
+    }
     if (isError) {
         return (
-            <MessageBar intent="error">
-                <MessageBarBody>{t("errors.loadResource")}</MessageBarBody>
-            </MessageBar>
+            <div className={styles.container}>
+                <Seo
+                    title={`${t("errorPage.title")} — LernChih`}
+                    canonicalPath={`/resources/${id ?? ""}`}
+                    robots="noindex, follow"
+                />
+                <MessageBar intent="error">
+                    <MessageBarBody>{t("errors.loadResource")}</MessageBarBody>
+                </MessageBar>
+            </div>
         );
     }
 
