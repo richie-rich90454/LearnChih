@@ -25,6 +25,9 @@ interface StaggerRevealProps {
 /**
  * Reveals child elements with a staggered fade-up animation when the
  * component mounts. Defaults to animating direct children.
+ * B46: Under prefers-reduced-motion the useLayoutEffect early-returns so no
+ * GSAP set/to runs — children render instantly at their natural opacity/1
+ * with no stagger, fade, or translate.
  */
 export function StaggerReveal({
     children,
