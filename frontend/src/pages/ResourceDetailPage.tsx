@@ -57,6 +57,7 @@ import { recordLastVisited } from "@/components/ResumeCard";
 import { PdfHighlightPanel } from "@/components/PdfHighlightPanel";
 import { AnnotationPanel } from "@/components/AnnotationPanel";
 import { DifficultyRating } from "@/components/DifficultyRating";
+import { TtsNarration } from "@/components/TtsNarration";
 import styles from "./Detail.module.css";
 
 function cx(...parts: Array<string | false | undefined | null>): string {
@@ -273,6 +274,9 @@ export default function ResourceDetailPage() {
                     {t("print.action")}
                 </Button>
             </div>
+
+            {/* TTS narration (F28) */}
+            <TtsNarration text={resource?.description || ""} />
 
             {/* Resource info (wrapped in SplitView for read-along notes) */}
             <SplitView resourceId={id ?? ""} enabled={splitView}>
