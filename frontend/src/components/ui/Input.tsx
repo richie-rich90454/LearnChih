@@ -31,6 +31,12 @@ const sizeClass: Record<InputSize, string> = {
  *
  * `className` is forwarded to the field (preserving prior behavior); use
  * `wrapperClassName` to style the outer stack.
+ *
+ * Focus-order convention (B56): This Input forwards all native Fluent Input
+ * props including `tabIndex`, so multi-step forms can assign explicit
+ * `tabIndex` values (1, 2, 3, ...) to keep Tab focus in a logical order
+ * across revealed steps. Set `tabIndex={-1}` on inputs in hidden/ future
+ * steps so they are skipped until the step becomes active.
  */
 export interface InputProps extends Omit<FluentInputProps, "size"> {
     label?: ReactNode;
