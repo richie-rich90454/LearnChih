@@ -66,6 +66,9 @@
     padding: var(--space-2);
 }
 
+/* B13: on small tablets (<=768px) the fixed 260px sidebar is hidden and nav
+   moves into the Fluent mobile Drawer (size="small"), keeping content width
+   usable on narrow viewports. */
 @media (max-width: 768px) {
     .sidebar {
         display: none;
