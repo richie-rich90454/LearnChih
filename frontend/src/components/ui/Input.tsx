@@ -79,6 +79,8 @@ export function Input({
     wrapperClassName,
     id,
     required,
+    maxLength,
+    value,
     ...rest
 }: InputProps) {
     const reactId = useId();
@@ -86,6 +88,24 @@ export function Input({
     const helperId = `${inputId}-helper`;
     const errorId = `${inputId}-error`;
     const hasError = Boolean(error);
+
+    /*
+     * Character-counter convention (B73): Bounded fields show a "current/max"
+     * counter via the `counter` prop. As a convenience, when `maxLength` is set
+     * but no explicit `counter` is passed, the counter is auto-derived from the
+     * controlled `value` length so callers get a counter for free on bounded
+     * fields. For uncontrolled inputs (no `value`), pass `counter` explicitly.
+     * The native `maxLength` attribute is still forwarded to the field so the
+     * browser enforces the hard cap; the counter is a visual affordance only.
+     */
+    const resolvedCounter =
+        counter ??
+        (typeof maxLength === "number"
+            ? {
+                  current: typeof value === "string" ? value.length : 0,
+                  max: maxLength,
+              }
+            : undefined);
 
     const describedBy = [helperText ? helperId : null, hasError ? errorId : null]
         .filter(Boolean)
@@ -108,7 +128,7 @@ export function Input({
         className,
     );
 
-    const over = counter ? counter.current > counter.max : false;
+    const over = resolvedCounter ? resolvedCounter.current > resolvedCounter.max : false;
 
     return (
         <div className={cx(styles.wrapper, wrapperClassName)}>
@@ -131,13 +151,15 @@ export function Input({
                     className={fieldClasses}
                     size={size}
                     required={required}
+                    maxLength={maxLength}
+                    value={value}
                     aria-invalid={hasError || undefined}
                     aria-required={required || undefined}
                     aria-describedby={describedBy}
                     {...rest}
                 />
             </div>
-            {(helperText || hasError || counter) && (
+            {(helperText || hasError || resolvedCounter) && (
                 <div className={styles.helperRow}>
                     {hasError ? (
                         <p className={styles.errorText} id={errorId} role="alert">
@@ -150,12 +172,12 @@ export function Input({
                     ) : (
                         <span />
                     )}
-                    {counter && (
+                    {resolvedCounter && (
                         <span
                             className={cx(styles.counter, over && styles.counterOver)}
                             aria-hidden="true"
                         >
-                            {counter.current}/{counter.max}
+                            {resolvedCounter.current}/{resolvedCounter.max}
                         </span>
                     )}
                 </div>
