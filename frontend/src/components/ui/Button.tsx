@@ -47,6 +47,12 @@ const sizeClass: Record<ButtonSize, string> = {
  * Implemented as a type alias (not `interface extends`) because Fluent's
  * `ButtonProps` is a polymorphic slot intersection that cannot be extended
  * by an interface declaration.
+ *
+ * Focus management convention (B51): Dialogs and overlays that use this
+ * Button as a trigger rely on `hooks/useFocusTrap` (owned separately) to
+ * restore focus to the trigger element after the overlay closes. This
+ * primitive does NOT manage focus return itself; the overlay owner must
+ * wire `useFocusTrap` so focus returns to the trigger Button on dismiss.
  */
 export type ButtonProps = FluentButtonProps & {
     variant?: ButtonVariant;
