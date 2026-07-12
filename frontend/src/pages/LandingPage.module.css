@@ -139,6 +139,9 @@
 }
 
 .bento {
+    /* B15: Single-column under 640px — the base 1fr template is the mobile
+       default; the 2-col and 3-col layouts are progressive enhancements via
+       min-width media queries below. */
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-4);
