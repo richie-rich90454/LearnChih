@@ -222,6 +222,7 @@ export default function AdminPage() {
                 <div className={styles.toolbarFilter}>
                     <Dropdown
                         placeholder={t("admin.filterByStatus")}
+                        aria-label={t("admin.filterByStatus")}
                         value={statusFilter || undefined}
                         selectedOptions={statusFilter ? [statusFilter] : []}
                         onOptionSelect={(_: unknown, d: { optionValue?: string }) =>
