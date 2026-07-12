@@ -146,7 +146,11 @@ export function AnnotationPanel({ resourceId }: AnnotationPanelProps) {
                 </div>
             )}
 
-            {query.isLoading && <Spinner size="small" />}
+            {query.isLoading && (
+                <div role="status" aria-live="polite">
+                    <Spinner size="small" />
+                </div>
+            )}
             {query.isError && (
                 <ErrorState
                     title={t("annotations.errorTitle")}
