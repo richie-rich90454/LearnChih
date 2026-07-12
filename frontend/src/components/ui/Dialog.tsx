@@ -66,6 +66,10 @@ export function Dialog({
                         with aria-live="polite" so screen readers announce the
                         update. See States.module.css .inlineError. */}
                     <DialogContent className={styles.content}>{content}</DialogContent>
+                    {/* B39: When the `content`/`footer` slots host custom form
+                        fields, each <label> must reference its control via
+                        htmlFor matching the control's id (or wrap the control),
+                        so screen readers announce the field name on focus. */}
                     <DialogActions className={styles.footer}>
                         {footer ?? (
                             <DialogTrigger>
