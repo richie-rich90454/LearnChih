@@ -112,10 +112,10 @@ export default function ProfilePage() {
     if (isError) {
         return (
             <div className={styles.empty} role="alert">
-                <h2 className={styles.threadHeading}>Failed to load profile</h2>
-                <p className={styles.emptyText}>Something went wrong. Please try again.</p>
+                <h2 className={styles.threadHeading}>{t("profile.loadError")}</h2>
+                <p className={styles.emptyText}>{t("profile.loadErrorDescription")}</p>
                 <Button variant="primary" onClick={() => refetch()}>
-                    Retry
+                    {t("common.retry")}
                 </Button>
             </div>
         );
@@ -211,7 +211,7 @@ export default function ProfilePage() {
                                 icon={<Edit24Regular />}
                                 onClick={handleEditOpen}
                             >
-                                Edit
+                                {t("profile.edit")}
                             </Button>
                         ) : (
                             profile && (
@@ -227,21 +227,21 @@ export default function ProfilePage() {
                 <div className={styles.stats}>
                     <div className={styles.statTile}>
                         <span className={styles.statValue}>{profile?.credits ?? 0}</span>
-                        <span className={styles.statLabel}>Credits</span>
+                        <span className={styles.statLabel}>{t("profile.credits")}</span>
                     </div>
                     <div className={styles.statTile}>
                         <span className={styles.statValue}>{profile?.resourceCount ?? 0}</span>
-                        <span className={styles.statLabel}>Resources</span>
+                        <span className={styles.statLabel}>{t("profile.resources")}</span>
                     </div>
                     <div className={styles.statTile}>
                         <span className={styles.statValue}>{profile?.upvoteCount ?? 0}</span>
-                        <span className={styles.statLabel}>Upvotes</span>
+                        <span className={styles.statLabel}>{t("profile.upvotes")}</span>
                     </div>
                     <div className={styles.statTile}>
                         <span className={styles.statValue}>
                             {profile?.createdAt ? new Date(profile.createdAt).getFullYear() : "—"}
                         </span>
-                        <span className={styles.statLabel}>Joined</span>
+                        <span className={styles.statLabel}>{t("profile.joined")}</span>
                     </div>
                 </div>
             </Card>
@@ -249,14 +249,14 @@ export default function ProfilePage() {
             {/* Subjects */}
             <Card padding="lg" className={styles.sectionCard}>
                 <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>Subjects</h2>
+                    <h2 className={styles.sectionTitle}>{t("profile.subjects")}</h2>
                     {isOwnProfile && (
                         <Button
                             variant="subtle"
                             icon={<Edit24Regular />}
                             onClick={handleSubjectsOpen}
                         >
-                            Edit
+                            {t("profile.edit")}
                         </Button>
                     )}
                 </div>
@@ -268,7 +268,7 @@ export default function ProfilePage() {
                             </Badge>
                         ))
                     ) : (
-                        <p className={styles.emptyText}>No subjects added</p>
+                        <p className={styles.emptyText}>{t("profile.noSubjects")}</p>
                     )}
                 </div>
             </Card>
@@ -276,14 +276,14 @@ export default function ProfilePage() {
             {/* Social links */}
             <Card padding="lg" className={styles.sectionCard}>
                 <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>Social Links</h2>
+                    <h2 className={styles.sectionTitle}>{t("profile.socialLinks")}</h2>
                     {isOwnProfile && (
                         <Button
                             variant="subtle"
                             icon={<Add24Regular />}
                             onClick={() => setSocialDialogOpen(true)}
                         >
-                            Add
+                            {t("profile.add")}
                         </Button>
                     )}
                 </div>
@@ -312,7 +312,7 @@ export default function ProfilePage() {
                             </div>
                         ))
                     ) : (
-                        <p className={styles.emptyText}>No social links added</p>
+                        <p className={styles.emptyText}>{t("profile.noSocialLinks")}</p>
                     )}
                 </div>
             </Card>
@@ -339,12 +339,12 @@ export default function ProfilePage() {
             {isOwnProfile && (
                 <Card padding="lg" className={styles.sectionCard}>
                     <div className={styles.sectionHeader}>
-                        <h2 className={styles.sectionTitle}>Notification Preferences</h2>
+                        <h2 className={styles.sectionTitle}>{t("profile.notificationPreferences")}</h2>
                     </div>
                     <div className={styles.stack}>
                         <div className={styles.prefRow}>
                             <Label htmlFor="email-notifications" className={styles.prefLabelTitle}>
-                                Email notifications
+                                {t("profile.emailNotifications")}
                             </Label>
                             <Switch
                                 id="email-notifications"
@@ -359,7 +359,7 @@ export default function ProfilePage() {
                         </div>
                         <div className={styles.prefRow}>
                             <Label htmlFor="push-notifications" className={styles.prefLabelTitle}>
-                                Push notifications
+                                {t("profile.pushNotifications")}
                             </Label>
                             <Switch
                                 id="push-notifications"
@@ -380,16 +380,16 @@ export default function ProfilePage() {
             {isOwnProfile && (
                 <Card padding="lg" className={styles.sectionCard}>
                     <div className={styles.sectionHeader}>
-                        <h2 className={styles.sectionTitle}>Account Security</h2>
+                        <h2 className={styles.sectionTitle}>{t("profile.accountSecurity")}</h2>
                     </div>
                     <div className={styles.stack}>
                         <div className={styles.prefRow}>
                             <div className={styles.prefLabel}>
-                                <span className={styles.prefLabelTitle}>Email address</span>
+                                <span className={styles.prefLabelTitle}>{t("profile.emailAddress")}</span>
                                 <span className={styles.prefLabelDesc}>{profile?.email}</span>
                             </div>
                             <Button variant="outline" onClick={() => setEmailDialogOpen(true)}>
-                                Change email
+                                {t("profile.changeEmail")}
                             </Button>
                         </div>
                         <TwoFactorSetup />
@@ -401,14 +401,14 @@ export default function ProfilePage() {
             {isOwnProfile && (
                 <Card padding="lg" className={styles.sectionCard}>
                     <div className={styles.sectionHeader}>
-                        <h2 className={styles.sectionTitle}>Data &amp; Privacy</h2>
+                        <h2 className={styles.sectionTitle}>{t("profile.dataPrivacy")}</h2>
                     </div>
                     <div className={styles.stack}>
                         <div className={styles.prefRow}>
                             <div className={styles.prefLabel}>
-                                <span className={styles.prefLabelTitle}>Export my data</span>
+                                <span className={styles.prefLabelTitle}>{t("profile.exportMyData")}</span>
                                 <span className={styles.prefLabelDesc}>
-                                    Download a copy of your personal data.
+                                    {t("profile.exportDescription")}
                                 </span>
                             </div>
                             <Button
@@ -416,25 +416,25 @@ export default function ProfilePage() {
                                 onClick={() => exportData.mutate()}
                                 disabled={exportData.isPending}
                             >
-                                {exportData.isPending ? <Spinner size="tiny" /> : "Export"}
+                                {exportData.isPending ? <Spinner size="tiny" /> : t("profile.export")}
                             </Button>
                         </div>
                         <div className={styles.prefRow}>
                             <div className={styles.prefLabel}>
-                                <span className={styles.prefLabelTitle}>Delete my account</span>
+                                <span className={styles.prefLabelTitle}>{t("profile.deleteMyAccount")}</span>
                                 <span className={styles.prefLabelDesc}>
-                                    Permanently remove your account and data.
+                                    {t("profile.deleteDescription")}
                                 </span>
                             </div>
                             <ConfirmDialog
                                 trigger={
                                     <Button appearance="primary" color="danger">
-                                        Delete account
+                                        {t("profile.deleteAccount")}
                                     </Button>
                                 }
-                                title="Delete your account?"
-                                content="This will permanently delete your account and all associated data. This action cannot be undone."
-                                confirmLabel="Delete"
+                                title={t("profile.deleteAccountTitle")}
+                                content={t("profile.deleteAccountContent")}
+                                confirmLabel={t("profile.delete")}
                                 destructive
                                 onConfirm={() => deleteAccount.mutate()}
                             />
@@ -455,20 +455,21 @@ export default function ProfilePage() {
             >
                 <DialogSurface>
                     <DialogBody>
-                        <DialogTitle>Edit Profile</DialogTitle>
+                        <DialogTitle>{t("profile.editProfile")}</DialogTitle>
                         <DialogContent>
                             <div className={styles.dialogForm}>
                                 <Input
-                                    label="Name"
+                                    label={t("profile.name")}
                                     value={editName}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         setEditName(e.target.value)
                                     }
                                     aria-required="true"
                                 />
-                                <Field label="Bio">
+                                <Field label={t("profile.bio")}>
                                     <Textarea
                                         value={editBio}
+                                        aria-label={t("profile.bio")}
                                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                                             setEditBio(e.target.value)
                                         }
@@ -478,14 +479,14 @@ export default function ProfilePage() {
                         </DialogContent>
                         <DialogActions>
                             <Button variant="subtle" onClick={() => setEditDialogOpen(false)}>
-                                Cancel
+                                {t("common.cancel")}
                             </Button>
                             <Button
                                 variant="primary"
                                 onClick={handleEditSave}
                                 disabled={updateProfile.isPending}
                             >
-                                {updateProfile.isPending ? <Spinner size="tiny" /> : "Save"}
+                                {updateProfile.isPending ? <Spinner size="tiny" /> : t("common.save")}
                             </Button>
                         </DialogActions>
                     </DialogBody>
@@ -499,7 +500,7 @@ export default function ProfilePage() {
             >
                 <DialogSurface>
                     <DialogBody>
-                        <DialogTitle>Edit Subjects</DialogTitle>
+                        <DialogTitle>{t("profile.editSubjects")}</DialogTitle>
                         <DialogContent>
                             <div className={styles.tagsRow}>
                                 {SUBJECTS.map((s) => {
@@ -525,14 +526,14 @@ export default function ProfilePage() {
                         </DialogContent>
                         <DialogActions>
                             <Button variant="subtle" onClick={() => setSubjectsDialogOpen(false)}>
-                                Cancel
+                                {t("common.cancel")}
                             </Button>
                             <Button
                                 variant="primary"
                                 onClick={handleSubjectsSave}
                                 disabled={updateSubjects.isPending}
                             >
-                                {updateSubjects.isPending ? <Spinner size="tiny" /> : "Save"}
+                                {updateSubjects.isPending ? <Spinner size="tiny" /> : t("common.save")}
                             </Button>
                         </DialogActions>
                     </DialogBody>
@@ -546,11 +547,11 @@ export default function ProfilePage() {
             >
                 <DialogSurface>
                     <DialogBody>
-                        <DialogTitle>Add Social Link</DialogTitle>
+                        <DialogTitle>{t("profile.addSocialLink")}</DialogTitle>
                         <DialogContent>
                             <div className={styles.dialogForm}>
                                 <Select
-                                    label="Type"
+                                    label={t("profile.type")}
                                     value={socialType}
                                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                                         setSocialType(e.target.value)
@@ -563,34 +564,34 @@ export default function ProfilePage() {
                                     ))}
                                 </Select>
                                 <Input
-                                    label="Label"
+                                    label={t("profile.label")}
                                     value={socialLabel}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         setSocialLabel(e.target.value)
                                     }
-                                    placeholder="e.g. My GitHub"
+                                    placeholder={t("profile.labelPlaceholder")}
                                 />
                                 <Input
-                                    label="URL"
+                                    label={t("profile.url")}
                                     value={socialUrl}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         setSocialUrl(e.target.value)
                                     }
-                                    placeholder="https://..."
+                                    placeholder={t("profile.urlPlaceholder")}
                                     aria-required="true"
                                 />
                             </div>
                         </DialogContent>
                         <DialogActions>
                             <Button variant="subtle" onClick={() => setSocialDialogOpen(false)}>
-                                Cancel
+                                {t("common.cancel")}
                             </Button>
                             <Button
                                 variant="primary"
                                 onClick={handleAddSocial}
                                 disabled={addSocial.isPending || !socialUrl.trim()}
                             >
-                                {addSocial.isPending ? <Spinner size="tiny" /> : "Add"}
+                                {addSocial.isPending ? <Spinner size="tiny" /> : t("profile.add")}
                             </Button>
                         </DialogActions>
                     </DialogBody>
@@ -604,34 +605,33 @@ export default function ProfilePage() {
             >
                 <DialogSurface>
                     <DialogBody>
-                        <DialogTitle>Change Email</DialogTitle>
+                        <DialogTitle>{t("profile.changeEmailTitle")}</DialogTitle>
                         <DialogContent>
                             <div className={styles.dialogForm}>
                                 <Input
-                                    label="New email"
+                                    label={t("profile.newEmail")}
                                     type="email"
                                     value={newEmail}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         setNewEmail(e.target.value)
                                     }
-                                    placeholder="new@university.edu"
+                                    placeholder={t("profile.newEmailPlaceholder")}
                                     aria-required="true"
                                 />
                                 <Input
-                                    label="Current password"
+                                    label={t("profile.currentPassword")}
                                     type="password"
                                     value={emailPassword}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         setEmailPassword(e.target.value)
                                     }
-                                    placeholder="Enter your current password"
+                                    placeholder={t("profile.currentPasswordPlaceholder")}
                                     aria-required="true"
                                 />
                                 {changeEmail.isError && (
                                     <MessageBar intent="error">
                                         <MessageBarBody>
-                                            Failed to change email. Please check your password and
-                                            try again.
+                                            {t("profile.changeEmailError")}
                                         </MessageBarBody>
                                     </MessageBar>
                                 )}
@@ -639,7 +639,7 @@ export default function ProfilePage() {
                         </DialogContent>
                         <DialogActions>
                             <Button variant="subtle" onClick={() => setEmailDialogOpen(false)}>
-                                Cancel
+                                {t("common.cancel")}
                             </Button>
                             <Button
                                 variant="primary"
@@ -650,7 +650,7 @@ export default function ProfilePage() {
                                     !emailPassword.trim()
                                 }
                             >
-                                {changeEmail.isPending ? <Spinner size="tiny" /> : "Change email"}
+                                {changeEmail.isPending ? <Spinner size="tiny" /> : t("profile.changeEmail")}
                             </Button>
                         </DialogActions>
                     </DialogBody>
