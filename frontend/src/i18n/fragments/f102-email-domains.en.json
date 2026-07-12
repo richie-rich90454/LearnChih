@@ -1,0 +1,15 @@
+{
+    "emailDomainPolicy": {
+        "title": "Email domain policy",
+        "mode": "Policy mode",
+        "modeOpen": "Open (no restrictions)",
+        "modeAllowlist": "Allowlist only",
+        "modeDenylist": "Denylist",
+        "allowlist": "Allowlist",
+        "denylist": "Denylist",
+        "noDomains": "No domains.",
+        "domainPlaceholder": "example.com",
+        "add": "Add",
+        "remove": "Remove"
+    }
+}

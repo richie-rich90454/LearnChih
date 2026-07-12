@@ -1,0 +1,97 @@
+/**
+ * EmailDomainPolicy - co-located CSS Module for F102.
+ * No !important. All visuals via design-system tokens.
+ */
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 720px;
+}
+
+.modeField {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.fieldLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.radioGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.lists {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+.listEditor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.listLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.empty {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.domainList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.domainItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--surface-sunken);
+    border-radius: var(--radius-input);
+}
+
+.domainCode {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+}
+
+.addRow {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-2);
+}
+
+.addRow > div:first-child {
+    flex: 1;
+}
+
+@media (max-width: 640px) {
+    .lists {
+        grid-template-columns: 1fr;
+    }
+}

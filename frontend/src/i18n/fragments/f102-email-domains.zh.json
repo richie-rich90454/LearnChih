@@ -1,0 +1,15 @@
+{
+    "emailDomainPolicy": {
+        "title": "邮箱域名策略",
+        "mode": "策略模式",
+        "modeOpen": "开放（无限制）",
+        "modeAllowlist": "仅允许列表",
+        "modeDenylist": "拒绝列表",
+        "allowlist": "允许列表",
+        "denylist": "拒绝列表",
+        "noDomains": "无域名。",
+        "domainPlaceholder": "example.com",
+        "add": "添加",
+        "remove": "移除"
+    }
+}
