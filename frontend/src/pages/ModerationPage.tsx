@@ -157,6 +157,7 @@ export default function ModerationPage() {
                             setStatusFilter(d.optionValue || "")
                         }
                         clearable
+                        aria-label={t("admin.filterByStatus")}
                     >
                         {STATUS_OPTIONS.map((s) => (
                             <Option key={s} value={s}>
