@@ -216,12 +216,14 @@ export default function QuestionBankPage() {
                     placeholder={t("questionBank.searchPlaceholder")}
                     value={search}
                     onChange={(_, d) => setSearch(d.value)}
+                    aria-label={t("common.search")}
                 />
                 <Input
                     wrapperClassName={styles.tagInput}
                     placeholder={t("questionBank.tagPlaceholder")}
                     value={tagFilter}
                     onChange={(_, d) => setTagFilter(d.value)}
+                    aria-label={t("common.filter")}
                 />
             </div>
 
