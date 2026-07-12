@@ -152,7 +152,11 @@ export function PollDisplay({ poll, mode = "single", closesAt }: PollDisplayProp
             })}
 
             <span className={styles.totalVotes}>
-                {voteMutation.isPending && <Spinner size="tiny" />}
+                {voteMutation.isPending && (
+                    <div role="status" aria-live="polite">
+                        <Spinner size="tiny" />
+                    </div>
+                )}
                 {total} {total === 1 ? t("polls.voteSingular", "vote") : t("polls.votes", "votes")}
             </span>
         </div>
