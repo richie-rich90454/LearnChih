@@ -22,6 +22,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-sans);
+    /* B2: body background routes through the --surface-1 semantic token so it
+       follows the active theme automatically (no hardcoded dark-mode override). */
     /* Page background routed through the --surface-1 semantic token so the
        body always has an opaque backdrop (axe-core needs an opaque ancestor
        even when child elements have transparent backgrounds) and follows
