@@ -47,6 +47,7 @@ import NotificationBell from "./NotificationBell";
 import Footer from "./Footer";
 import { WorkspaceTabs } from "./WorkspaceTabs";
 import { ConflictResolverContainer } from "./ConflictResolver";
+import AnnouncementBanner from "./AnnouncementBanner";
 import styles from "./AppLayout.module.css";
 
 interface NavItem {
@@ -232,6 +233,7 @@ export default function AppLayout() {
 
             {/* Main area */}
             <div className={styles.mainArea}>
+                <AnnouncementBanner />
                 <header className={styles.header}>
                     <div className={styles.headerLeft}>
                         <Button
