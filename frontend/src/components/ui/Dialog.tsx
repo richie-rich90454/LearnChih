@@ -29,6 +29,12 @@ export interface DialogProps {
     onConfirm?: () => void;
 }
 
+// B29: Icon-only buttons (e.g. a close "X" trigger) must carry an
+// `aria-label` so screen readers announce their purpose. This Dialog's
+// trigger/confirm buttons render visible text labels, so they are accessible
+// without an aria-label; custom triggers passed via the `trigger` prop must
+// follow the same rule when they contain only an icon.
+
 export function Dialog({
     title,
     content,
