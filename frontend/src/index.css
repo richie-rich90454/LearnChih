@@ -4,6 +4,11 @@
    below. Framework-agnostic (plain CSS custom properties). */
 @import "./design-system/tokens.css";
 
+/* B1: !important baseline. Color overrides were retired in 8b9f5e0 and now
+   route through doubled-class specificity + design tokens. The ONLY remaining
+   !important usages are the 4 prefers-reduced-motion guards below (a sanctioned
+   a11y override that must always win). Do not reintroduce !important for color. */
+
 /* Minimal global reset for Fluent 2 app */
 *,
 *::before,
