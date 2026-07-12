@@ -35,6 +35,8 @@ import { Input } from "@/components/ui/Input";
 import { BacklinksPanel } from "@/components/BacklinksPanel";
 import { TemplateGallery } from "@/components/TemplateGallery";
 import { CollaborativeNoteEditor } from "@/components/CollaborativeNoteEditor";
+import { UndoRedoToolbar } from "@/components/UndoRedoToolbar";
+import { useUndoRedo } from "@/hooks/useUndoRedo";
 import { exportNoteMarkdown, exportNotePdf } from "@/api/noteExport";
 import styles from "./NotesPage.module.css";
 
@@ -80,7 +82,15 @@ export default function NotesPage() {
     const [search, setSearch] = useState("");
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [draftTitle, setDraftTitle] = useState("");
-    const [draftContent, setDraftContent] = useState("");
+    const {
+        present: draftContent,
+        set: setDraftContent,
+        undo,
+        redo,
+        canUndo,
+        canRedo,
+        reset: resetHistory,
+    } = useUndoRedo<string>("");
     const [dirty, setDirty] = useState(false);
     const [collabMode, setCollabMode] = useState(false);
 
@@ -99,7 +109,9 @@ export default function NotesPage() {
     useEffect(() => {
         if (selected) {
             setDraftTitle(selected.title);
-            setDraftContent(selected.content);
+            // Reset history rather than push, so switching notes does not
+            // create undo entries that cross note boundaries.
+            resetHistory(selected.content);
             setDirty(false);
         }
     }, [selectedId, selected?.id]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -385,11 +397,31 @@ export default function NotesPage() {
                                 </div>
                             </div>
 
+                            <UndoRedoToolbar
+                                canUndo={canUndo}
+                                canRedo={canRedo}
+                                onUndo={undo}
+                                onRedo={redo}
+                            />
+
                             <Textarea
                                 value={draftContent}
                                 onChange={(e) => {
                                     setDraftContent(e.target.value);
                                     setDirty(true);
+                                }}
+                                onKeyDown={(e) => {
+                                    // Undo: Ctrl+Z (not shift). Redo: Ctrl+Shift+Z or Ctrl+Y.
+                                    const mod = e.ctrlKey || e.metaKey;
+                                    if (!mod) return;
+                                    const key = e.key.toLowerCase();
+                                    if (key === "z" && !e.shiftKey) {
+                                        e.preventDefault();
+                                        undo();
+                                    } else if ((key === "z" && e.shiftKey) || key === "y") {
+                                        e.preventDefault();
+                                        redo();
+                                    }
                                 }}
                                 placeholder={t("notes.contentPlaceholder")}
                                 className={styles.contentField}

@@ -1,0 +1,9 @@
+{
+    "undoRedo": {
+        "undo": "Undo",
+        "redo": "Redo",
+        "undoShortcut": "Undo (Ctrl+Z)",
+        "redoShortcut": "Redo (Ctrl+Y)",
+        "historyHint": "history"
+    }
+}
