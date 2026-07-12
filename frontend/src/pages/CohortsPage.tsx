@@ -103,7 +103,11 @@ export default function CohortsPage() {
                 />
             )}
 
-            {cohortsQuery.isLoading && <Spinner label={t("common.loading")} />}
+            {cohortsQuery.isLoading && (
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner label={t("common.loading")} />
+                </div>
+            )}
 
             {!cohortsQuery.isLoading && !cohortsQuery.isError && cohorts.length === 0 && (
                 <EmptyState
@@ -385,7 +389,11 @@ function MembersDialog({ cohort, onOpenChange }: MembersDialogProps) {
                             : t("cohorts.membersTitle")}
                     </DialogTitle>
                     <DialogContent>
-                        {membersQuery.isLoading && <Spinner label={t("common.loading")} />}
+                        {membersQuery.isLoading && (
+                            <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                                <Spinner label={t("common.loading")} />
+                            </div>
+                        )}
                         {membersQuery.isError && (
                             <MessageBar intent="error">
                                 <MessageBarBody>{t("cohorts.membersError")}</MessageBarBody>
