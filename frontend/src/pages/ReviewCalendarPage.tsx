@@ -174,7 +174,11 @@ export default function ReviewCalendarPage() {
             {/* Due today section */}
             <section className={styles.section} aria-label={t("review.dueToday")}>
                 <h2 className={styles.sectionTitle}>{t("review.dueToday")}</h2>
-                {isLoading && <Spinner label={t("common.loading")} />}
+                {isLoading && (
+                    <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                        <Spinner label={t("common.loading")} />
+                    </div>
+                )}
                 {!isLoading && dueCount === 0 && (
                     <EmptyState
                         icon={<CheckmarkCircle24Regular />}
