@@ -140,6 +140,9 @@ export function LogoMarkAnimated({ size = 48, className, title }: LogoMarkProps)
     const merged = className ? `${styles.cobalt} ${className}` : styles.cobalt;
     const isDecorative = !title;
 
+    // B49: Under prefers-reduced-motion the animated logo renders fully
+    // drawn immediately — no stroke-dashoffset animation, just the final
+    // cobalt fill via the static MarkSvg.
     if (reduced) {
         return (
             <MarkSvg size={size} fill="currentColor" className={merged} title={title} />
