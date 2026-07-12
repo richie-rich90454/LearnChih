@@ -25,6 +25,12 @@ interface PageTransitionProps {
  * The initial opacity/transform is set by GSAP (not a React inline style)
  * so that re-renders cannot reset the element back to opacity:0 after the
  * animation has completed, which previously left pages visually blank.
+ *
+ * B50: Parallax / sticky-scroll note. Scroll-driven motion components (e.g.
+ * the GSAP ScrollTrigger pinning in StickyScrollStack) must short-circuit
+ * under prefers-reduced-motion and render a static stack instead. This file
+ * does not own parallax, but any future parallax/sticky-scroll component must
+ * call useReducedMotion() and skip pinning/scrub when reduced.
  */
 export function PageTransition({ children, className }: PageTransitionProps) {
     const reduced = useReducedMotion();
