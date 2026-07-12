@@ -4,6 +4,7 @@ import {
     MessageBarBody,
     MessageBarTitle,
     Button,
+    Tooltip,
 } from "@fluentui/react-components";
 import {
     Warning24Regular,
@@ -76,13 +77,15 @@ export function MaintenanceBanner() {
                     <MessageBarTitle>{t("maintenanceBanner.title")}</MessageBarTitle>
                     {config.message}
                 </MessageBarBody>
-                <Button
-                    appearance="subtle"
-                    size="small"
-                    icon={<Dismiss24Regular />}
-                    onClick={() => setDismissed(true)}
-                    aria-label={t("maintenanceBanner.dismiss")}
-                />
+                <Tooltip content={t("maintenanceBanner.dismiss")} relationship="label">
+                    <Button
+                        appearance="subtle"
+                        size="small"
+                        icon={<Dismiss24Regular />}
+                        onClick={() => setDismissed(true)}
+                        aria-label={t("maintenanceBanner.dismiss")}
+                    />
+                </Tooltip>
             </MessageBar>
         </div>
     );
