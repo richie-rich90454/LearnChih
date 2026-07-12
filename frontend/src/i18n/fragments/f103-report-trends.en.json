@@ -1,0 +1,13 @@
+{
+    "reportTrends": {
+        "title": "Content report trends",
+        "total": "{{count}} reports (30d)",
+        "window": "Last 30 days",
+        "reasons": {
+            "spam": "Spam",
+            "harassment": "Harassment",
+            "off-topic": "Off-topic",
+            "other": "Other"
+        }
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "reportTrends": {
+        "title": "内容举报趋势",
+        "total": "{{count}} 次举报（30 天）",
+        "window": "最近 30 天",
+        "reasons": {
+            "spam": "垃圾信息",
+            "harassment": "骚扰",
+            "off-topic": "离题",
+            "other": "其他"
+        }
+    }
+}
