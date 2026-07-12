@@ -1,0 +1,9 @@
+{
+    "channelPinning": {
+        "pinned": "Pinned",
+        "pin": "Pin",
+        "unpin": "Unpin",
+        "moveUp": "Move up",
+        "moveDown": "Move down"
+    }
+}

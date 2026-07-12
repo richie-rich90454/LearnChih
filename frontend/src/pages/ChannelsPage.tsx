@@ -17,7 +17,7 @@ import {
     MessageBarBody,
     Field,
 } from "@fluentui/react-components";
-import { Add24Regular, Chat24Regular, Folder24Regular, FolderAdd24Regular, ChevronRight24Regular, Dismiss24Regular } from "@fluentui/react-icons";
+import { Add24Regular, Chat24Regular, Folder24Regular, FolderAdd24Regular, ChevronRight24Regular, Dismiss24Regular, Pin24Regular, PinOff24Regular, ArrowUp24Regular, ArrowDown24Regular } from "@fluentui/react-icons";
 import { useChannels, useChannel, useCreateChannelThread } from "@/hooks/useChannels";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useTranslation } from "react-i18next";
@@ -33,6 +33,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import useAuthStore from "@/store/authStore";
 import { useChannelFoldersStore } from "@/store/channelFoldersStore";
+import { useChannelPinningStore } from "@/store/channelPinningStore";
 import styles from "./List.module.css";
 import folderStyles from "./ChannelFolders.module.css";
 
@@ -66,6 +67,11 @@ export default function ChannelsPage() {
     const [newFolderName, setNewFolderName] = useState("");
     const [collapsedFolders, setCollapsedFolders] = useState<Record<string, boolean>>({});
 
+    const pinnedIds = useChannelPinningStore((s) => s.pinnedIds);
+    const pinChannel = useChannelPinningStore((s) => s.pin);
+    const unpinChannel = useChannelPinningStore((s) => s.unpin);
+    const reorderPinned = useChannelPinningStore((s) => s.reorderPinned);
+
     const handleCreateFolder = () => {
         if (!newFolderName.trim()) return;
         createFolder(newFolderName.trim());
@@ -87,6 +93,22 @@ export default function ChannelsPage() {
         [channelList, selectedChannelId],
     );
     const threads: ChannelThread[] = channelDetail?.threads || [];
+
+    const pinnedChannels = useMemo(
+        () =>
+            pinnedIds
+                .map((id) => channelList.find((c) => c.id === id))
+                .filter((c): c is Channel => Boolean(c)),
+        [pinnedIds, channelList],
+    );
+
+    const handleMovePinned = (index: number, direction: -1 | 1) => {
+        const next = [...pinnedIds];
+        const swapWith = index + direction;
+        if (swapWith < 0 || swapWith >= next.length) return;
+        [next[index], next[swapWith]] = [next[swapWith], next[index]];
+        reorderPinned(next);
+    };
 
     const [threadSearch, setThreadSearch] = useState<string>("");
     const [threadSort, setThreadSort] = useState<"newest" | "oldest" | "posts">("newest");
@@ -257,6 +279,65 @@ export default function ChannelsPage() {
             <div className={styles.split}>
                 {/* Channel list */}
                 <div className={`${styles.list} ${styles.splitAside}`}>
+                    {/* Pinned channels (F51) */}
+                    {pinnedChannels.length > 0 && (
+                        <section className={folderStyles.foldersSection}>
+                            <div className={folderStyles.folderHeader}>
+                                <span className={folderStyles.folderHeaderButton}>
+                                    <span className={folderStyles.folderIcon}>
+                                        <Pin24Regular />
+                                    </span>
+                                    <span>{t("channelPinning.pinned", "Pinned")}</span>
+                                    <Badge variant="accent" size="small">
+                                        {pinnedChannels.length}
+                                    </Badge>
+                                </span>
+                            </div>
+                            <div className={folderStyles.folderBody}>
+                                {pinnedChannels.map((channel, index) => (
+                                    <div key={channel.id} className={folderStyles.folderItemRow}>
+                                        <HoverLift>
+                                            <Card
+                                                className={`${styles.item} ${styles.itemClickable}${
+                                                    selectedChannelId === channel.id
+                                                        ? ` ${styles.itemSelected}`
+                                                        : ""
+                                                }`}
+                                                padding="sm"
+                                                onClick={() => setSelectedChannelId(channel.id)}
+                                            >
+                                                <span className={styles.itemTitle}>{channel.name}</span>
+                                            </Card>
+                                        </HoverLift>
+                                        <Button
+                                            variant="subtle"
+                                            size="small"
+                                            icon={<ArrowUp24Regular />}
+                                            onClick={() => handleMovePinned(index, -1)}
+                                            disabled={index === 0}
+                                            aria-label={t("channelPinning.moveUp", "Move up")}
+                                        />
+                                        <Button
+                                            variant="subtle"
+                                            size="small"
+                                            icon={<ArrowDown24Regular />}
+                                            onClick={() => handleMovePinned(index, 1)}
+                                            disabled={index === pinnedChannels.length - 1}
+                                            aria-label={t("channelPinning.moveDown", "Move down")}
+                                        />
+                                        <Button
+                                            variant="subtle"
+                                            size="small"
+                                            icon={<PinOff24Regular />}
+                                            onClick={() => unpinChannel(channel.id)}
+                                            aria-label={t("channelPinning.unpin", "Unpin")}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
                     {/* Folder management (F50) */}
                     <div className={folderStyles.newFolderRow}>
                         <input
@@ -364,7 +445,9 @@ export default function ChannelsPage() {
                     {/* Channels not in any folder */}
                     <StaggerReveal>
                         {channelList
-                            .filter((c) => !folderedChannelIds.has(c.id))
+                            .filter(
+                                (c) => !folderedChannelIds.has(c.id) && !pinnedIds.includes(c.id),
+                            )
                             .map((channel) => (
                                 <HoverLift key={channel.id}>
                                     <article>
@@ -379,9 +462,21 @@ export default function ChannelsPage() {
                                         >
                                             <div className={styles.itemHeader}>
                                                 <h3 className={styles.itemTitle}>{channel.name}</h3>
-                                                <Badge variant="neutral" size="small">
-                                                    {channel.threadCount ?? 0} {t("channels.threads")}
-                                                </Badge>
+                                                <div className={folderStyles.folderItemRow}>
+                                                    <Badge variant="neutral" size="small">
+                                                        {channel.threadCount ?? 0} {t("channels.threads")}
+                                                    </Badge>
+                                                    <Button
+                                                        variant="subtle"
+                                                        size="small"
+                                                        icon={<Pin24Regular />}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            pinChannel(channel.id);
+                                                        }}
+                                                        aria-label={t("channelPinning.pin", "Pin")}
+                                                    />
+                                                </div>
                                             </div>
                                             {channel.description && (
                                                 <p className={styles.itemBody}>{channel.description}</p>

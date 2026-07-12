@@ -1,0 +1,9 @@
+{
+    "channelPinning": {
+        "pinned": "已置顶",
+        "pin": "置顶",
+        "unpin": "取消置顶",
+        "moveUp": "上移",
+        "moveDown": "下移"
+    }
+}
