@@ -54,6 +54,9 @@
 }
 
 @media (max-width: 768px) {
+    /* B23: On mobile the split view reflows to a single column; the notes
+       pane becomes static and the textarea shrinks to fit the viewport so
+       the modal scrolls full-height without clipping content. */
     .split {
         grid-template-columns: 1fr;
     }
