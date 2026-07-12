@@ -1,0 +1,24 @@
+/**
+ * ThreadMergeDialog (F52). Token-based; no raw hex, no !important. The Fluent
+ * Dialog surface owns the overlay; these rules own the description text.
+ */
+
+.surface {
+    max-width: 480px;
+}
+
+.description {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+}
+
+.empty {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    font-style: italic;
+}

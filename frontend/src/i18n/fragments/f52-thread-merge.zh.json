@@ -1,0 +1,11 @@
+{
+    "threadMerge": {
+        "button": "合并帖子",
+        "title": "合并帖子",
+        "description": "选择要合并到的目标帖子。",
+        "selectTarget": "选择目标帖子",
+        "noCandidates": "此频道中没有其他帖子。",
+        "confirm": "合并",
+        "queued": "合并已排队 — 需要后端集成"
+    }
+}

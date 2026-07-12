@@ -1,0 +1,11 @@
+{
+    "threadMerge": {
+        "button": "Merge thread",
+        "title": "Merge thread",
+        "description": "Select a target thread to merge this thread into.",
+        "selectTarget": "Select target thread",
+        "noCandidates": "No other threads in this channel.",
+        "confirm": "Merge",
+        "queued": "Merge queued — backend integration required"
+    }
+}

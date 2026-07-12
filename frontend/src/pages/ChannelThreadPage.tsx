@@ -15,6 +15,7 @@ import { MarkdownPreview } from "@/components/MarkdownPreview";
 import { ThreadBadges } from "@/components/ThreadBadges";
 import { ReactionPicker } from "@/components/ReactionPicker";
 import { AmaPanel } from "@/components/AmaPanel";
+import { ThreadMergeDialog } from "@/components/ThreadMergeDialog";
 import { ErrorState } from "@/components/ErrorState";
 import ReportButton from "@/components/ReportButton";
 import { discussionForumPostingSchema, breadcrumbSchema } from "@/components/jsonLd";
@@ -227,6 +228,12 @@ export default function ChannelThreadPage() {
                 <ShareButton title={threadTitle} url={threadUrl} />
                 {authenticated && threadId && (
                     <ThreadSubscription threadId={Number(threadId)} />
+                )}
+                {isAdmin && threadId && (
+                    <ThreadMergeDialog
+                        threadId={Number(threadId)}
+                        threads={channel?.threads ?? []}
+                    />
                 )}
             </div>
 
