@@ -21,6 +21,12 @@ const paddingClass: Record<CardPadding, string> = {
  *    static content cards do not imply interactivity.
  *  - `padding`: token-based padding scale. Defaults to `md`.
  * All native Fluent Card props pass through.
+ *
+ * Nesting convention (B58): A Card may be nested ONE level deep
+ * (card-in-card) to group related content, but card-in-card-in-card is
+ * forbidden - the triple surface border + shadow stack reads as cluttered
+ * and breaks the elevation hierarchy. If you need a third container, use a
+ * plain `div` with a `--border-subtle` divider instead of another Card.
  */
 export interface CardProps extends FluentCardProps {
     interactive?: boolean;
