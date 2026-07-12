@@ -194,6 +194,23 @@
     color: var(--status-success);
 }
 
+/* ----------------------- Autofill theming (B74) ----------------------- */
+/* WebKit paints a hard-coded pale-yellow background + black text on
+   autofilled inputs, which clashes with the dark theme. The 9999s
+   transition delays the background-color change effectively forever so the
+   yellow never appears; the inset box-shadow paints the field background
+   with the theme surface token so it matches the rest of the form.
+   -webkit-text-fill-color + caret-color fix the text/caret to the theme
+   text color so autofilled text stays readable in both light and dark. */
+.shell input:-webkit-autofill,
+.shell input:-webkit-autofill:hover,
+.shell input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-primary);
+    caret-color: var(--text-primary);
+    -webkit-box-shadow: 0 0 0 1000px var(--surface-1) inset;
+    transition: background-color 9999s ease-in-out 0s;
+}
+
 /* ----------------------- Responsive ----------------------- */
 /* Card padding eases under 640px; under 480px the card goes full-bleed
    (no max-width) with a tighter shell padding. Safe-area max() still
