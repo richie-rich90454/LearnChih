@@ -14,6 +14,13 @@ interface PaginationProps {
  * instead of a hairline `<table>`. Pagination sits below whichever layout is
  * active and uses the design-system `--space-*` tokens for spacing.
  */
+/*
+ * Spacing convention (B64): The pagination row uses the design-system
+ * `--space-2` (8px) gap between controls and `--space-4` (16px) padding
+ * around the nav, matching the button-group rhythm (B60) so pagination
+ * never drifts from the rest of the layout. Inline styles consume the
+ * tokens directly since this is a small, self-contained component.
+ */
 export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
     const { t } = useTranslation();
     if (totalPages <= 1) return null;
@@ -22,10 +29,10 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             aria-label={t("pagination.label")}
             style={{
                 display: "flex",
-                gap: 8,
+                gap: "var(--space-2)",
                 alignItems: "center",
                 justifyContent: "center",
-                padding: 16,
+                padding: "var(--space-4)",
             }}
         >
             <Button
