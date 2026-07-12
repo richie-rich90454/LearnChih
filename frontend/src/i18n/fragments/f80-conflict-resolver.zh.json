@@ -1,0 +1,14 @@
+{
+    "conflictResolver": {
+        "title": "解决冲突",
+        "subtitle": "此草稿在离线和服务器上都被编辑过。请选择保留的版本。",
+        "yourVersion": "你的版本",
+        "serverVersion": "服务器版本",
+        "keepMine": "保留我的",
+        "keepServer": "保留服务器版本",
+        "merge": "合并",
+        "mergeLabel": "合并版本（可编辑）",
+        "applyMerge": "应用合并",
+        "mergedPlaceholder": "编辑合并后的文本..."
+    }
+}

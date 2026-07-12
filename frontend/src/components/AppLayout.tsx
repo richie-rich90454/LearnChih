@@ -46,6 +46,7 @@ import { SearchBar } from "./SearchBar";
 import NotificationBell from "./NotificationBell";
 import Footer from "./Footer";
 import { WorkspaceTabs } from "./WorkspaceTabs";
+import { ConflictResolverContainer } from "./ConflictResolver";
 import styles from "./AppLayout.module.css";
 
 interface NavItem {
@@ -332,6 +333,7 @@ export default function AppLayout() {
 
                 <Footer />
             </div>
+            <ConflictResolverContainer />
         </div>
     );
 }

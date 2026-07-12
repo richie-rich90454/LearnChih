@@ -1,0 +1,93 @@
+/**
+ * ConflictResolver - co-located CSS Module. Token-based; no !important.
+ * Owns the side-by-side version panels + merge editor layout inside the
+ * Fluent Dialog surface.
+ */
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 560px;
+    max-width: 90vw;
+}
+
+.panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+@media (max-width: 600px) {
+    .panels {
+        grid-template-columns: 1fr;
+    }
+    .body {
+        min-width: 0;
+    }
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    background-color: var(--surface-1);
+}
+
+.panelHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.panelLabel {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.panelText {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    max-height: 200px;
+    overflow: auto;
+    padding: var(--space-2);
+    background-color: var(--surface-sunken);
+    border-radius: var(--radius-input);
+}
+
+.mergeSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.mergeLabel {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.mergeField {
+    min-height: 120px;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: flex-end;
+}

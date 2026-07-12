@@ -1,0 +1,14 @@
+{
+    "conflictResolver": {
+        "title": "Resolve conflict",
+        "subtitle": "This draft was edited both offline and on the server. Choose which version to keep.",
+        "yourVersion": "Your version",
+        "serverVersion": "Server version",
+        "keepMine": "Keep mine",
+        "keepServer": "Keep server",
+        "merge": "Merge",
+        "mergeLabel": "Merged version (editable)",
+        "applyMerge": "Apply merge",
+        "mergedPlaceholder": "Edit the merged text..."
+    }
+}
