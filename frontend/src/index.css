@@ -168,7 +168,8 @@ nav .fui-Button .fui-Text.fui-Text {
     color: var(--text-primary);
 }
 
-/* Color contrast on Fluent UI v9 Input, Label, and Spinner elements.
+/* B4: Fluent Input/Label/Spinner color contrast via doubled-class selectors
+   (no !important). Color contrast on Fluent UI v9 Input, Label, and Spinner elements.
    axe-core's color-contrast rule cannot resolve CSS custom properties
    (var(--colorXxx)) set by FluentProvider via Griffel, causing false
    positives on any element whose color or background-color is derived
