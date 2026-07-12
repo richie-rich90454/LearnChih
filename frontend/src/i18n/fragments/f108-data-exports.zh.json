@@ -1,0 +1,22 @@
+{
+    "dataExportQueue": {
+        "title": "数据导出",
+        "userId": "用户 ID",
+        "userName": "用户名",
+        "enqueue": "加入导出队列",
+        "requestedAt": "请求时间",
+        "size": "大小",
+        "process": "处理",
+        "markComplete": "标记完成",
+        "markFailed": "标记失败",
+        "download": "下载",
+        "noJobs": "没有导出任务。",
+        "gdprHint": "GDPR 批量导出任务。已完成的导出可下载 30 天。",
+        "status": {
+            "queued": "排队中",
+            "processing": "处理中",
+            "completed": "已完成",
+            "failed": "失败"
+        }
+    }
+}

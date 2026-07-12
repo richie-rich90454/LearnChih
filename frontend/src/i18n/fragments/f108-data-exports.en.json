@@ -1,0 +1,22 @@
+{
+    "dataExportQueue": {
+        "title": "Data exports",
+        "userId": "User ID",
+        "userName": "User name",
+        "enqueue": "Enqueue export",
+        "requestedAt": "Requested",
+        "size": "Size",
+        "process": "Process",
+        "markComplete": "Mark complete",
+        "markFailed": "Mark failed",
+        "download": "Download",
+        "noJobs": "No export jobs.",
+        "gdprHint": "GDPR bulk export jobs. Completed exports are available for download for 30 days.",
+        "status": {
+            "queued": "Queued",
+            "processing": "Processing",
+            "completed": "Completed",
+            "failed": "Failed"
+        }
+    }
+}
