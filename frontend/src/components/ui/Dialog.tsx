@@ -51,6 +51,10 @@ export function Dialog({
             </DialogTrigger>
             <DialogSurface className={styles.surface}>
                 <DialogBody className={styles.body}>
+                    {/* B30: DialogTitle renders an <h2>. Consumers must place a
+                        page <h1> before this dialog and avoid skipping heading
+                        levels (no <h4> immediately after the title) so the
+                        document outline stays valid for screen-reader nav. */}
                     <DialogTitle className={styles.title}>{title}</DialogTitle>
                     <DialogContent className={styles.content}>{content}</DialogContent>
                     <DialogActions className={styles.footer}>
