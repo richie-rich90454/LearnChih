@@ -512,6 +512,7 @@ export default function ResourceDetailPage() {
                             }
                             placeholder={t("resources.writeComment")}
                             className={styles.composerField}
+                            aria-label={t("resources.writeComment")}
                         />
                         <Button
                             variant="primary"

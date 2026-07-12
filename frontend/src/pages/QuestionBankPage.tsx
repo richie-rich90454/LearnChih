@@ -346,6 +346,7 @@ export default function QuestionBankPage() {
                                 placeholder={t("questionBank.questionPlaceholder")}
                                 value={form.question}
                                 onChange={(_, d) => setForm((f) => ({ ...f, question: d.value }))}
+                                aria-label={t("questionBank.questionPlaceholder")}
                             />
                             <div className={styles.optionsSection}>
                                 <span className={styles.optionsLabel}>
@@ -396,6 +397,7 @@ export default function QuestionBankPage() {
                                 onChange={(_, d) =>
                                     setForm((f) => ({ ...f, explanation: d.value }))
                                 }
+                                aria-label={t("questionBank.explanationPlaceholder")}
                             />
                             <Input
                                 label={t("questionBank.tagsLabel")}

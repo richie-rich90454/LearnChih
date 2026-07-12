@@ -156,6 +156,7 @@ export function PdfHighlightPanel({ resourceId }: PdfHighlightPanelProps) {
                         onChange={(e) => setFormText(e.target.value)}
                         placeholder={t("pdfHighlights.textPlaceholder")}
                         className={styles.textArea}
+                        aria-label={t("pdfHighlights.textPlaceholder")}
                         resize="vertical"
                     />
                     <Textarea
@@ -163,6 +164,7 @@ export function PdfHighlightPanel({ resourceId }: PdfHighlightPanelProps) {
                         onChange={(e) => setFormNote(e.target.value)}
                         placeholder={t("pdfHighlights.notePlaceholder")}
                         className={styles.noteArea}
+                        aria-label={t("pdfHighlights.notePlaceholder")}
                         resize="vertical"
                     />
                     <div className={styles.formActions}>
@@ -228,6 +230,7 @@ export function PdfHighlightPanel({ resourceId }: PdfHighlightPanelProps) {
                             defaultValue={h.note ?? ""}
                             placeholder={t("pdfHighlights.notePlaceholder")}
                             className={styles.highlightNote}
+                            aria-label={t("pdfHighlights.notePlaceholder")}
                             onBlur={(e) => {
                                 if (e.target.value !== (h.note ?? "")) {
                                     updateMutation.mutate({

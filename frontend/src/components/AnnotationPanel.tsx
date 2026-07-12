@@ -176,6 +176,7 @@ export function AnnotationPanel({ resourceId }: AnnotationPanelProps) {
                             defaultValue={a.content}
                             placeholder={t("annotations.contentPlaceholder")}
                             className={styles.annotationContent}
+                            aria-label={t("annotations.contentPlaceholder")}
                             onBlur={(e) => {
                                 if (e.target.value !== a.content) {
                                     updateMutation.mutate({
