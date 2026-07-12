@@ -91,6 +91,29 @@
     background-color: var(--surface-sunken);
 }
 
+/* B17: sticky first column on horizontal scroll (mobile). The select-checkbox
+   column pins to the left so it stays visible while scrolling the wide table.
+   Pattern mirrors List.module.css. The corner header gets z-index 3 so it
+   stacks above both the top-sticky headers (z-index: 2) and the left-sticky
+   body cells, staying put in both axes. The first body cell gets an opaque
+   surface background so scrolling content does not show through; the existing
+   row:hover rule (0,4,0) still wins over this (0,3,0) to repaint the sunken
+   hover state on the sticky cell. */
+.table :global([role="columnheader"]):first-child,
+.table :global([role="gridcell"]):first-child {
+    position: sticky;
+    left: 0;
+}
+
+.table :global([role="columnheader"]):first-child {
+    z-index: 3;
+}
+
+.table :global([role="gridcell"]):first-child {
+    z-index: var(--z-base);
+    background-color: var(--surface-2);
+}
+
 /* User cell: name + email stack. */
 .userCell {
     display: flex;
