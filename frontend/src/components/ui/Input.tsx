@@ -81,6 +81,16 @@ export function Input({
         .filter(Boolean)
         .join(" ") || undefined;
 
+    /*
+     * Error-message rendering convention (B68): Field-level error messages
+     * MUST be announced to assistive tech via `aria-describedby` (wired above
+     * so the field points at `errorId`) and rendered with `role="alert"` so
+     * screen readers announce the message when it appears. The visual color
+     * comes from the `--status-danger` token (applied via `.errorText` in
+     * Input.module.css) so error text stays theme-aware and WCAG-compliant in
+     * both light and dark themes. Every field-level error in the app should
+     * follow this same pattern for consistency.
+     */
     const fieldClasses = cx(
         styles.input,
         sizeClass[size],
