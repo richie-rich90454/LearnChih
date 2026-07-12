@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
     Card,
     Badge,
@@ -54,6 +55,7 @@ interface RelatedResourcesProps {
 export function RelatedResources({ resourceId, limit = 5 }: RelatedResourcesProps) {
     const styles = useStyles();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { data, isLoading, isError } = useRelatedResources(resourceId);
 
     const items: Resource[] = (data ?? []).slice(0, limit);
@@ -61,7 +63,11 @@ export function RelatedResources({ resourceId, limit = 5 }: RelatedResourcesProp
     return (
         <section className={styles.root} aria-label="Related resources">
             <Title3 as="h3">Related resources</Title3>
-            {isLoading && <Spinner size="tiny" label="Loading..." />}
+            {isLoading && (
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner size="tiny" label={t("common.loading")} />
+                </div>
+            )}
             {isError && (
                 <MessageBar intent="error">
                     <MessageBarBody>Failed to load related resources.</MessageBarBody>
