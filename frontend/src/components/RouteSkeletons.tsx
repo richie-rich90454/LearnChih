@@ -15,6 +15,14 @@ import {
  * Built on Fluent UI's Skeleton primitives (opaque appearance + wave shimmer).
  * The shimmer is disabled automatically under `prefers-reduced-motion` both
  * by Fluent UI's own styles and by an explicit guard on the page root.
+ *
+ * CONVENTION (B75): Every lazy-loaded route in App.tsx must render inside a
+ * <Suspense> whose fallback delegates to <RouteSkeleton pathname={...} />.
+ * The LoadingFallback component in App.tsx reads `useLocation().pathname` and
+ * hands it to RouteSkeleton, which picks a shape-aware variant via
+ * pickVariant(). When adding a new lazy route, extend pickVariant() with a
+ * matching branch (or fall back to the "default" shape) so the Suspense gap is
+ * never a blank screen.
  */
 
 const useStyles = makeStyles({
