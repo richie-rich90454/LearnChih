@@ -295,10 +295,16 @@ export default function ChannelThreadPage() {
                                 ? t("channels.lockedPlaceholder")
                                 : t("channels.writeReply")
                         }
+                        aria-label={
+                            thread?.locked
+                                ? t("channels.lockedPlaceholder")
+                                : t("channels.writeReply")
+                        }
                         className={styles.composerField}
                         disabled={thread?.locked}
                     />
                     <Dropdown
+                        aria-label={t("channels.markdown")}
                         value={
                             postFormat === "MARKDOWN" ? t("channels.markdown") : t("channels.plain")
                         }
