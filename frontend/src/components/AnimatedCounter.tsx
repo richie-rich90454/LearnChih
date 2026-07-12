@@ -16,6 +16,9 @@ interface AnimatedCounterProps {
  * Animates numeric value changes with a smooth count-up / count-down tween.
  * On first viewport entry, counts up from 0 to the initial value.
  * Respects prefers-reduced-motion by jumping directly to the new value.
+ * B48: When reduced motion is requested the effect sets the final textContent
+ * synchronously and returns before creating any GSAP tween, so the counter
+ * settles instantly with no count-up animation.
  */
 export function AnimatedCounter({
     value,
