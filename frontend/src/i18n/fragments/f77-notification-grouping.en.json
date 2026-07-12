@@ -1,0 +1,14 @@
+{
+    "notificationGroups": {
+        "mentions": "Mentions",
+        "reactions": "Reactions",
+        "replies": "Replies",
+        "system": "System",
+        "markGroupRead": "Mark all read",
+        "collapse": "Collapse",
+        "expand": "Expand",
+        "empty": "No notifications in this group.",
+        "digestHint": "No new notifications — check your weekly digest.",
+        "groupCount": "{{count}} unread"
+    }
+}

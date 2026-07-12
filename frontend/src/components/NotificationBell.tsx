@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Button,
@@ -12,7 +12,7 @@ import {
     Caption1,
     Spinner,
 } from "@fluentui/react-components";
-import { Alert24Regular, Checkmark24Regular } from "@fluentui/react-icons";
+import { Alert24Regular, Checkmark24Regular, Clock24Regular } from "@fluentui/react-icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import {
@@ -20,8 +20,25 @@ import {
     markNotificationRead,
     markAllNotificationsRead,
 } from "../api/notifications";
-import { useNotificationStore } from "../store/notificationStore";
+import { useNotificationStore, type AppNotification } from "../store/notificationStore";
+import { NotificationGroupSection } from "./NotificationGroupSection";
 import styles from "./NotificationBell.module.css";
+
+const GROUP_KEYS = ["mentions", "reactions", "replies", "system"] as const;
+type GroupKey = (typeof GROUP_KEYS)[number];
+
+/** Infers a notification group from its title + message text. */
+function categorize(n: AppNotification): GroupKey {
+    const text = `${n.title} ${n.message}`.toLowerCase();
+    if (text.includes("@") || text.includes("mention")) return "mentions";
+    if (text.includes("react") || text.includes("emoji")) return "reactions";
+    if (text.includes("reply") || text.includes("replied") || text.includes("comment")) {
+        return "replies";
+    }
+    return "system";
+}
+
+const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
 
 export default function NotificationBell() {
     const { t } = useTranslation();
@@ -69,6 +86,57 @@ export default function NotificationBell() {
         if (link) navigate(link);
     };
 
+    // Group notifications by inferred type, preserving GROUP_KEYS order.
+    const grouped = useMemo(() => {
+        const map: Record<GroupKey, AppNotification[]> = {
+            mentions: [],
+            reactions: [],
+            replies: [],
+            system: [],
+        };
+        for (const n of notifications) {
+            map[categorize(n)].push(n);
+        }
+        return map;
+    }, [notifications]);
+
+    // Smart-digest hint: show when the latest notification is older than 24h
+    // (or there are none at all). Notifications are newest-first from the API.
+    const isStale = useMemo(() => {
+        if (notifications.length === 0) return true;
+        const latest = notifications[0]?.createdAt;
+        if (!latest) return true;
+        const age = Date.now() - new Date(latest).getTime();
+        return age >= TWENTY_FOUR_HOURS;
+    }, [notifications]);
+
+    const handleMarkGroupRead = (ids: number[]) => {
+        ids.forEach((id) => {
+            if (!markReadMutation.isPending) markReadMutation.mutate(id);
+        });
+    };
+
+    const renderRow = (n: AppNotification) => (
+        <MenuItem
+            className={!n.read ? styles.unread : undefined}
+            onClick={() => handleItemClick(n.id, n.link)}
+        >
+            <div className={styles.itemContent}>
+                <Text
+                    className={styles.itemTitle}
+                    size={300}
+                    weight={n.read ? "regular" : "semibold"}
+                >
+                    {n.title}
+                </Text>
+                <Caption1 className={styles.itemBody}>{n.message}</Caption1>
+                <Caption1 className={styles.itemTimestamp}>
+                    {new Date(n.createdAt).toLocaleString()}
+                </Caption1>
+            </div>
+        </MenuItem>
+    );
+
     return (
         <Popover open={open} onOpenChange={(_, data) => setOpen(data.open)}>
             <PopoverTrigger disableButtonEnhancement>
@@ -112,35 +180,44 @@ export default function NotificationBell() {
                     </div>
                 )}
 
-                {!isLoading && notifications.length === 0 && (
+                {!isLoading && isStale && (
+                    <div className={styles.digestHint}>
+                        <Clock24Regular />
+                        <span>
+                            {t(
+                                "notificationGroups.digestHint",
+                                "No new notifications — check your weekly digest.",
+                            )}
+                        </span>
+                    </div>
+                )}
+
+                {!isLoading && !isStale && notifications.length === 0 && (
                     <div className={styles.empty}>{t("notifications.noNotifications")}</div>
                 )}
 
-                <MenuList>
-                    {notifications.map((n) => (
-                        <MenuItem
-                            key={n.id}
-                            className={!n.read ? styles.unread : undefined}
-                            onClick={() => handleItemClick(n.id, n.link)}
-                        >
-                            <div className={styles.itemContent}>
-                                <Text
-                                    className={styles.itemTitle}
-                                    size={300}
-                                    weight={n.read ? "regular" : "semibold"}
-                                >
-                                    {n.title}
-                                </Text>
-                                <Caption1 className={styles.itemBody}>
-                                    {n.message}
-                                </Caption1>
-                                <Caption1 className={styles.itemTimestamp}>
-                                    {new Date(n.createdAt).toLocaleString()}
-                                </Caption1>
-                            </div>
-                        </MenuItem>
-                    ))}
-                </MenuList>
+                {notifications.length > 0 && (
+                    <MenuList>
+                        {GROUP_KEYS.map((key) => {
+                            const items = grouped[key];
+                            if (items.length === 0) return null;
+                            return (
+                                <NotificationGroupSection
+                                    key={key}
+                                    group={key}
+                                    label={t(
+                                        `notificationGroups.${key}`,
+                                        key.charAt(0).toUpperCase() + key.slice(1),
+                                    )}
+                                    notifications={items}
+                                    onItemClick={handleItemClick}
+                                    onMarkGroupRead={handleMarkGroupRead}
+                                    renderRow={renderRow}
+                                />
+                            );
+                        })}
+                    </MenuList>
+                )}
 
                 {notifications.length > 0 && (
                     <div className={styles.footer}>

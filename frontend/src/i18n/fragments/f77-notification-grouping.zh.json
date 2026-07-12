@@ -1,0 +1,14 @@
+{
+    "notificationGroups": {
+        "mentions": "提及",
+        "reactions": "反应",
+        "replies": "回复",
+        "system": "系统",
+        "markGroupRead": "全部标为已读",
+        "collapse": "折叠",
+        "expand": "展开",
+        "empty": "该分组暂无通知。",
+        "digestHint": "没有新通知 — 查看每周摘要。",
+        "groupCount": "{{count}} 条未读"
+    }
+}
