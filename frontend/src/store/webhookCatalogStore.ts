@@ -30,6 +30,7 @@ interface WebhookCatalogStore {
     addSubscription: (url: string, eventId: string) => void;
     removeSubscription: (id: string) => void;
     testFire: (eventId: string) => void;
+    retryDelivery: (deliveryId: string) => void;
 }
 
 const generateId = (): string => {
@@ -101,6 +102,23 @@ export const useWebhookCatalogStore = create<WebhookCatalogStore>()(
                         ...state.deliveries,
                     ],
                 })),
+            retryDelivery: (deliveryId: string) =>
+                set((state) => {
+                    const original = state.deliveries.find((d) => d.id === deliveryId);
+                    if (!original) return state;
+                    return {
+                        deliveries: [
+                            {
+                                id: generateId(),
+                                eventId: original.eventId,
+                                timestamp: new Date().toISOString(),
+                                status: 200,
+                                responsePreview: `Retried at ${new Date().toISOString()}`,
+                            },
+                            ...state.deliveries,
+                        ],
+                    };
+                }),
         }),
         { name: "lernchih-webhook-catalog" },
     ),

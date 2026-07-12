@@ -5,6 +5,7 @@ import {
     Delete24Regular,
     Link24Regular,
     CalendarClock24Regular,
+    ArrowCounterclockwise24Regular,
 } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useWebhookCatalogStore } from "@/store/webhookCatalogStore";
@@ -22,6 +23,7 @@ export default function WebhookCatalog() {
     const addSubscription = useWebhookCatalogStore((s) => s.addSubscription);
     const removeSubscription = useWebhookCatalogStore((s) => s.removeSubscription);
     const testFire = useWebhookCatalogStore((s) => s.testFire);
+    const retryDelivery = useWebhookCatalogStore((s) => s.retryDelivery);
 
     const [url, setUrl] = useState("");
     const [eventId, setEventId] = useState(events[0]?.id ?? "");
@@ -199,6 +201,14 @@ export default function WebhookCatalog() {
                                     <code className={styles.deliveryPreview}>
                                         {delivery.responsePreview}
                                     </code>
+                                    <Button
+                                        variant="ghost"
+                                        size="small"
+                                        icon={<ArrowCounterclockwise24Regular />}
+                                        onClick={() => retryDelivery(delivery.id)}
+                                    >
+                                        {t("webhookDeliveries.retry", "Retry")}
+                                    </Button>
                                 </li>
                             ))}
                         </ul>
