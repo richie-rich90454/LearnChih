@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogContent,
 } from "@fluentui/react-components";
-import { PeopleCommunity24Regular, Chat24Regular, Calendar24Regular, Whiteboard24Regular, Call24Regular, ShareScreenStart24Regular } from "@fluentui/react-icons";
+import { PeopleCommunity24Regular, Chat24Regular, Calendar24Regular, Whiteboard24Regular, Call24Regular, ShareScreenStart24Regular, Video24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
     getStudyGroups,
@@ -23,6 +23,7 @@ import { GroupEvents } from "../components/GroupEvents";
 import { Whiteboards } from "../components/Whiteboard";
 import { VoiceRooms } from "../components/VoiceRoom";
 import { ScreenShares } from "../components/ScreenShare";
+import { CoWatch } from "../components/CoWatch";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { Button } from "../components/ui/Button";
@@ -44,6 +45,7 @@ export default function StudyGroupsPage() {
     const [whiteboardGroup, setWhiteboardGroup] = useState<StudyGroup | null>(null);
     const [voiceRoomGroup, setVoiceRoomGroup] = useState<StudyGroup | null>(null);
     const [screenShareGroup, setScreenShareGroup] = useState<StudyGroup | null>(null);
+    const [cowatchGroup, setCowatchGroup] = useState<StudyGroup | null>(null);
 
     const handleJoin = async (id: number) => {
         await joinStudyGroup(id);
@@ -156,6 +158,14 @@ export default function StudyGroupsPage() {
                             >
                                 {t("screenShares.title")}
                             </Button>
+                            <Button
+                                variant="subtle"
+                                size="small"
+                                icon={<Video24Regular />}
+                                onClick={() => setCowatchGroup(group)}
+                            >
+                                {t("coWatch.openButton", "Co-watch")}
+                            </Button>
                         </div>
                     </Card>
                 ))}
@@ -246,6 +256,26 @@ export default function StudyGroupsPage() {
                         </DialogTitle>
                         <DialogContent>
                             {screenShareGroup && <ScreenShares groupId={screenShareGroup.id} />}
+                        </DialogContent>
+                    </DialogBody>
+                </DialogSurface>
+            </Dialog>
+
+            <Dialog
+                open={cowatchGroup !== null}
+                onOpenChange={(_: unknown, d: { open: boolean }) => {
+                    if (!d.open) setCowatchGroup(null);
+                }}
+            >
+                <DialogSurface>
+                    <DialogBody>
+                        <DialogTitle>
+                            {cowatchGroup
+                                ? `${t("coWatch.title", "Co-watch")} — ${cowatchGroup.name}`
+                                : t("coWatch.title", "Co-watch")}
+                        </DialogTitle>
+                        <DialogContent>
+                            {cowatchGroup && <CoWatch groupId={cowatchGroup.id} />}
                         </DialogContent>
                     </DialogBody>
                 </DialogSurface>

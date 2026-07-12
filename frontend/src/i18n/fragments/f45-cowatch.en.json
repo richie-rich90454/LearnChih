@@ -1,0 +1,13 @@
+{
+    "coWatch": {
+        "title": "Co-watch",
+        "noResource": "No resource loaded",
+        "synced": "Synced",
+        "paused": "Paused",
+        "previewLabel": "Preview",
+        "play": "Play",
+        "pause": "Pause",
+        "position": "Playhead position",
+        "openButton": "Co-watch"
+    }
+}

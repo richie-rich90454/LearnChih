@@ -1,0 +1,13 @@
+{
+    "coWatch": {
+        "title": "共同观看",
+        "noResource": "未加载资源",
+        "synced": "已同步",
+        "paused": "已暂停",
+        "previewLabel": "预览",
+        "play": "播放",
+        "pause": "暂停",
+        "position": "播放位置",
+        "openButton": "共同观看"
+    }
+}
