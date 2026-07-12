@@ -45,6 +45,7 @@ export default function QuizPage() {
                 selectedOptions={selectedQuizId ? [selectedQuizId] : []}
                 onOptionSelect={(_, data) => setSelectedQuizId(data.optionValue)}
                 disabled={isLoading}
+                aria-label={t("quizzes.selectQuiz")}
             >
                 {quizOptions.map((q) => (
                     <Option key={q.value} value={q.value}>
