@@ -78,6 +78,7 @@ export function Input({
     className,
     wrapperClassName,
     id,
+    required,
     ...rest
 }: InputProps) {
     const reactId = useId();
@@ -114,6 +115,14 @@ export function Input({
             {label && (
                 <label className={styles.label} htmlFor={inputId}>
                     {label}
+                    {/* Required-field indicator (B71): a red asterisk marks
+                       required fields and is hidden from AT because the field
+                       itself carries aria-required + the native required attr. */}
+                    {required && (
+                        <span className={styles.requiredMark} aria-hidden="true">
+                            {" *"}
+                        </span>
+                    )}
                 </label>
             )}
             <div className={styles.fieldRow}>
@@ -121,7 +130,9 @@ export function Input({
                     id={inputId}
                     className={fieldClasses}
                     size={size}
+                    required={required}
                     aria-invalid={hasError || undefined}
+                    aria-required={required || undefined}
                     aria-describedby={describedBy}
                     {...rest}
                 />
