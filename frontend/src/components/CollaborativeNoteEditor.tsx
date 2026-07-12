@@ -218,6 +218,7 @@ export function CollaborativeNoteEditor({
                         value={content}
                         onChange={(e) => handleContentChange(e.target.value)}
                         placeholder={t("notes.contentPlaceholder")}
+                        aria-label={t("notes.contentPlaceholder")}
                         className={styles.contentField}
                         resize="vertical"
                     />
