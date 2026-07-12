@@ -12,6 +12,11 @@ import { Helmet } from "react-helmet-async";
  * tab, which confuses screen-reader users and breaks SEO/history entries.
  * Always provide a human-readable `title` and a `canonicalPath` matching the
  * route; optional props (description, jsonLd, hreflang) enrich as needed.
+ *
+ * CONVENTION (B87): Search inputs that trigger API calls or expensive filters
+ * must pipe their value through the `useDebounce` hook (src/hooks/useDebounce)
+ * before firing the query. This prevents a request storm on every keystroke.
+ * The hook is already used across SearchPage, NotesPage, ChannelsPage, etc.
  */
 
 export interface SeoProps {
