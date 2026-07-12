@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Spinner } from "@fluentui/react-components";
+import { Spinner, Tooltip } from "@fluentui/react-components";
 import {
     DocumentEdit24Regular,
     ArrowReply24Regular,
@@ -151,13 +151,15 @@ export default function DraftsInboxPage() {
                                 >
                                     {t("draftsInbox.resume")}
                                 </Button>
-                                <Button
-                                    variant="subtle"
-                                    size="small"
-                                    icon={<Delete24Regular />}
-                                    onClick={() => deleteDraft.mutate(item.contentId)}
-                                    aria-label={t("draftsInbox.delete")}
-                                />
+                                <Tooltip content={t("draftsInbox.delete")} relationship="label">
+                                    <Button
+                                        variant="subtle"
+                                        size="small"
+                                        icon={<Delete24Regular />}
+                                        onClick={() => deleteDraft.mutate(item.contentId)}
+                                        aria-label={t("draftsInbox.delete")}
+                                    />
+                                </Tooltip>
                             </div>
                         </Card>
                     ))}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RadioGroup, Radio } from "@fluentui/react-components";
+import { RadioGroup, Radio, Tooltip } from "@fluentui/react-components";
 import { Delete24Regular, Add24Regular } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
@@ -40,13 +40,15 @@ function DomainListEditor({ list }: { list: DomainListName }) {
                     {domains.map((domain) => (
                         <li key={domain} className={styles.domainItem}>
                             <code className={styles.domainCode}>{domain}</code>
-                            <Button
-                                variant="subtle"
-                                size="small"
-                                icon={<Delete24Regular />}
-                                onClick={() => removeDomain(domain, list)}
-                                aria-label={t("emailDomainPolicy.remove", "Remove")}
-                            />
+                            <Tooltip content={t("emailDomainPolicy.remove", "Remove")} relationship="label">
+                                <Button
+                                    variant="subtle"
+                                    size="small"
+                                    icon={<Delete24Regular />}
+                                    onClick={() => removeDomain(domain, list)}
+                                    aria-label={t("emailDomainPolicy.remove", "Remove")}
+                                />
+                            </Tooltip>
                         </li>
                     ))}
                 </ul>

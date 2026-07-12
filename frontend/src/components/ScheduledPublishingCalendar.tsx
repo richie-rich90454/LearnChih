@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Tooltip } from "@fluentui/react-components";
 import {
     ChevronLeft24Regular,
     ChevronRight24Regular,
@@ -103,21 +104,25 @@ export function ScheduledPublishingCalendar() {
         <div className={styles.calendar}>
             <div>
                 <div className={styles.monthHeader}>
-                    <Button
-                        variant="outline"
-                        size="small"
-                        icon={<ChevronLeft24Regular />}
-                        onClick={goPrev}
-                        aria-label={t("scheduledPublishing.previousMonth", "Previous month")}
-                    />
+                    <Tooltip content={t("scheduledPublishing.previousMonth", "Previous month")} relationship="label">
+                        <Button
+                            variant="outline"
+                            size="small"
+                            icon={<ChevronLeft24Regular />}
+                            onClick={goPrev}
+                            aria-label={t("scheduledPublishing.previousMonth", "Previous month")}
+                        />
+                    </Tooltip>
                     <h3 className={styles.monthLabel}>{monthLabel}</h3>
-                    <Button
-                        variant="outline"
-                        size="small"
-                        icon={<ChevronRight24Regular />}
-                        onClick={goNext}
-                        aria-label={t("scheduledPublishing.nextMonth", "Next month")}
-                    />
+                    <Tooltip content={t("scheduledPublishing.nextMonth", "Next month")} relationship="label">
+                        <Button
+                            variant="outline"
+                            size="small"
+                            icon={<ChevronRight24Regular />}
+                            onClick={goNext}
+                            aria-label={t("scheduledPublishing.nextMonth", "Next month")}
+                        />
+                    </Tooltip>
                 </div>
 
                 <table className={styles.table}>

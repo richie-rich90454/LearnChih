@@ -10,6 +10,7 @@
  */
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Tooltip } from "@fluentui/react-components";
 import {
     Folder24Regular,
     FolderOpen24Regular,
@@ -114,30 +115,45 @@ function TreeNode({ folder, depth, selectedFolderId, onSelect }: TreeNodeProps) 
                     </button>
                 )}
                 <div className={styles.rowActions}>
-                    <Button
-                        variant="subtle"
-                        size="small"
-                        icon={<Add24Regular />}
-                        onClick={() => setAddingChild((v) => !v)}
-                        aria-label={t("bookmarkFolders.addChild", { name: folder.name })}
-                    />
-                    <Button
-                        variant="subtle"
-                        size="small"
-                        icon={<Edit24Regular />}
-                        onClick={() => {
-                            setDraftName(folder.name);
-                            setEditing(true);
-                        }}
-                        aria-label={t("bookmarkFolders.rename", { name: folder.name })}
-                    />
-                    <Button
-                        variant="subtle"
-                        size="small"
-                        icon={<Delete24Regular />}
-                        onClick={() => deleteFolder(folder.id)}
-                        aria-label={t("bookmarkFolders.delete", { name: folder.name })}
-                    />
+                    <Tooltip
+                        content={t("bookmarkFolders.addChild", { name: folder.name })}
+                        relationship="label"
+                    >
+                        <Button
+                            variant="subtle"
+                            size="small"
+                            icon={<Add24Regular />}
+                            onClick={() => setAddingChild((v) => !v)}
+                            aria-label={t("bookmarkFolders.addChild", { name: folder.name })}
+                        />
+                    </Tooltip>
+                    <Tooltip
+                        content={t("bookmarkFolders.rename", { name: folder.name })}
+                        relationship="label"
+                    >
+                        <Button
+                            variant="subtle"
+                            size="small"
+                            icon={<Edit24Regular />}
+                            onClick={() => {
+                                setDraftName(folder.name);
+                                setEditing(true);
+                            }}
+                            aria-label={t("bookmarkFolders.rename", { name: folder.name })}
+                        />
+                    </Tooltip>
+                    <Tooltip
+                        content={t("bookmarkFolders.delete", { name: folder.name })}
+                        relationship="label"
+                    >
+                        <Button
+                            variant="subtle"
+                            size="small"
+                            icon={<Delete24Regular />}
+                            onClick={() => deleteFolder(folder.id)}
+                            aria-label={t("bookmarkFolders.delete", { name: folder.name })}
+                        />
+                    </Tooltip>
                 </div>
             </div>
             {addingChild && (
