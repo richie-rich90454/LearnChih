@@ -27,6 +27,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     const mode = useThemeStore((s) => s.mode);
     const origin = useThemeStore((s) => s.origin);
 
+    // B11: keep <html data-theme> in sync with the persisted store at runtime.
+    // The pre-React inline script in index.html sets the attribute before mount
+    // to prevent a flash-of-light-theme on first paint; this effect owns
+    // subsequent runtime toggles.
     useEffect(() => {
         document.documentElement.dataset.theme = mode;
     }, [mode]);
