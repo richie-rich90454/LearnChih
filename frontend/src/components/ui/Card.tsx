@@ -34,6 +34,13 @@ const paddingClass: Record<CardPadding, string> = {
  * forbidden - the triple surface border + shadow stack reads as cluttered
  * and breaks the elevation hierarchy. If you need a third container, use a
  * plain `div` with a `--border-subtle` divider instead of another Card.
+ *
+ * Error-state parity convention (B66): Error states should use the SAME
+ * layout as empty states (see B65) - `display: flex; align-items: center;
+ * justify-content: center; min-height: 50vh;`. The dedicated `ErrorState`
+ * component (owned separately) owns this; when inlining an error state in
+ * a Card, mirror the empty-state layout so the two surfaces stay visually
+ * consistent and a user never perceives an error as a different layout.
  */
 export interface CardProps extends FluentCardProps {
     interactive?: boolean;
