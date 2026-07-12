@@ -118,6 +118,13 @@ export default function FlashcardDeck({ deckId }: FlashcardDeckProps) {
                 className={`${styles.card} ${flipped ? styles.flipped : ""}`}
                 onClick={() => setFlipped((f) => !f)}
                 role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setFlipped((f) => !f);
+                    }
+                }}
                 aria-label={flipped ? "Flashcard back" : "Flashcard front"}
             >
                 <Title3>{flipped ? currentCard.back : currentCard.front}</Title3>
