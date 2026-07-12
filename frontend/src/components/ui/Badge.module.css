@@ -20,6 +20,10 @@
 }
 
 /* ----------------------- Variants ------------------------------------------ */
+/* B35: Status variants (success/warning/danger) use color as ONE cue, not
+   the ONLY cue. Consumers must always render a text label or an icon
+   alongside the variant so meaning survives for color-blind users. A status
+   badge must never be color-only. */
 .badge.accent {
     background-color: var(--accent-soft);
     color: var(--accent);
