@@ -134,7 +134,8 @@ pre,
     transform: translateY(1px);
 }
 
-/* Color contrast on Fluent UI v9 Select components.
+/* B3: Fluent Select color contrast via doubled-class selector (no !important).
+   Color contrast on Fluent UI v9 Select components.
    Fluent's Select does not forward the `style` prop to the underlying
    <select> element, so the native select inherits a transparent background
    and undefined color that fails axe-core / pa11y contrast checks. This
