@@ -98,6 +98,11 @@ export function Button({
     );
 
     return (
+        // Submit-button pending convention (B69): Submit buttons MUST pass the
+        // `loading` prop (not just `disabled`) during a pending request. `loading`
+        // both disables the button (preventing double-submit) and shows a progress
+        // affordance (cursor: progress + Fluent spinner) so the user sees the
+        // request is in flight. See `disabled={loading || disabled}` below.
         <FluentButton
             className={classes}
             appearance={resolvedAppearance}
