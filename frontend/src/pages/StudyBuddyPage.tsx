@@ -77,7 +77,11 @@ export default function StudyBuddyPage() {
                 />
             )}
 
-            {suggestionsQuery.isLoading && <Spinner label={t("common.loading")} />}
+            {suggestionsQuery.isLoading && (
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner label={t("common.loading")} />
+                </div>
+            )}
 
             {!suggestionsQuery.isLoading && !suggestionsQuery.isError && suggestions.length === 0 && (
                 <EmptyState
