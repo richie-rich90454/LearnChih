@@ -1,0 +1,11 @@
+{
+    "threadMove": {
+        "button": "移动帖子",
+        "title": "移动帖子",
+        "description": "选择要将此帖子移动到的频道。",
+        "selectChannel": "选择频道",
+        "noCandidates": "没有其他可用频道。",
+        "confirm": "移动",
+        "queued": "移动已排队"
+    }
+}

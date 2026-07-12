@@ -3,11 +3,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { Textarea, Avatar, Spinner, Dropdown, Option } from "@fluentui/react-components";
 import { ArrowLeft24Regular, Mention24Regular, ChatMultiple24Regular } from "@fluentui/react-icons";
-import { useChannel, useChannelPosts, useCreateChannelPost } from "@/hooks/useChannels";
+import { useChannel, useChannelPosts, useCreateChannelPost, useChannels } from "@/hooks/useChannels";
 import useWebSocket from "@/hooks/useWebSocket";
 import useAuthStore from "@/store/authStore";
 import { useTranslation } from "react-i18next";
-import type { Post, PostFormat } from "@/types";
+import type { Post, PostFormat, Channel } from "@/types";
 import Seo from "@/components/Seo";
 import { StaggerReveal } from "@/components/StaggerReveal";
 import { PresenceIndicator } from "@/components/PresenceIndicator";
@@ -16,6 +16,7 @@ import { ThreadBadges } from "@/components/ThreadBadges";
 import { ReactionPicker } from "@/components/ReactionPicker";
 import { AmaPanel } from "@/components/AmaPanel";
 import { ThreadMergeDialog } from "@/components/ThreadMergeDialog";
+import { ThreadMoveDialog } from "@/components/ThreadMoveDialog";
 import { ErrorState } from "@/components/ErrorState";
 import ReportButton from "@/components/ReportButton";
 import { discussionForumPostingSchema, breadcrumbSchema } from "@/components/jsonLd";
@@ -42,6 +43,7 @@ export default function ChannelThreadPage() {
     const { data: channel } = useChannel(channelId);
     const { data: posts, isLoading, isError, refetch } = useChannelPosts(channelId, threadId);
     const createPost = useCreateChannelPost(channelId, threadId);
+    const { data: allChannelsData } = useChannels();
     const queryClient = useQueryClient();
     const {
         subscribeToChannelThread,
@@ -62,6 +64,10 @@ export default function ChannelThreadPage() {
     const [readPostIds, setReadPostIds] = useState<Set<number>>(new Set());
 
     const isAdmin = user?.role === "ADMIN" || user?.role === "MODERATOR";
+
+    const allChannels: Channel[] = Array.isArray(allChannelsData)
+        ? allChannelsData
+        : (allChannelsData as { content?: Channel[] } | undefined)?.content ?? [];
 
     // Subscribe to real-time updates
     useEffect(() => {
@@ -233,6 +239,12 @@ export default function ChannelThreadPage() {
                     <ThreadMergeDialog
                         threadId={Number(threadId)}
                         threads={channel?.threads ?? []}
+                    />
+                )}
+                {isAdmin && channel && (
+                    <ThreadMoveDialog
+                        currentChannelId={channel.id}
+                        channels={allChannels}
                     />
                 )}
             </div>

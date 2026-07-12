@@ -1,0 +1,11 @@
+{
+    "threadMove": {
+        "button": "Move thread",
+        "title": "Move thread",
+        "description": "Select a channel to move this thread to.",
+        "selectChannel": "Select channel",
+        "noCandidates": "No other channels available.",
+        "confirm": "Move",
+        "queued": "Move queued"
+    }
+}
