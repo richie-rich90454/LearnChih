@@ -20,6 +20,8 @@ interface MagneticButtonProps {
  * springs back to center on leave. The transform is GPU-friendly and is
  * disabled entirely under `prefers-reduced-motion`. Drift is capped at
  * 6px from center so the action never feels jumpy or unhinged.
+ * B45: reduced-motion guard — handleMove early-returns and x/y are pinned to
+ * 0 in the style prop so the wrapper never transforms.
  */
 export function MagneticButton({ children, strength = 0.25 }: MagneticButtonProps) {
     const ref = useRef<HTMLDivElement>(null);
