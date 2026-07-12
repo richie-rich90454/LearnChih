@@ -192,6 +192,7 @@ export default function AiQuizGenerator({
                                 value={quizTitle}
                                 onChange={(_, data) => setQuizTitle(data.value)}
                                 placeholder={t("aiQuiz.quizTitle")}
+                                aria-label={t("aiQuiz.quizTitle")}
                                 wrapperClassName={styles.quizTitleInput}
                             />
                             <Select
