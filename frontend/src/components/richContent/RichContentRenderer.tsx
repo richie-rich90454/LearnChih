@@ -24,6 +24,36 @@ const useStyles = makeStyles({
             borderInlineStartColor: tokens.colorBrandStroke1,
             color: tokens.colorNeutralForeground3,
         },
+        // F55: spoiler / collapsible sections rendered by the server as
+        // native <details>/<summary> elements get branded styling.
+        "& details": {
+            marginBlock: tokens.spacingHorizontalM,
+            padding: 0,
+            border: `1px solid ${tokens.colorNeutralStroke1}`,
+            borderRadius: tokens.borderRadiusMedium,
+            background: tokens.colorNeutralBackground2,
+            overflow: "hidden",
+        },
+        "& summary": {
+            display: "flex",
+            alignItems: "center",
+            gap: tokens.spacingHorizontalXS,
+            padding: `${tokens.spacingHorizontalXS} ${tokens.spacingHorizontalM}`,
+            cursor: "pointer",
+            fontWeight: tokens.fontWeightSemibold,
+            color: tokens.colorNeutralForeground1,
+            listStyle: "none",
+        },
+        "& summary::-webkit-details-marker": {
+            display: "none",
+        },
+        "& summary:hover": {
+            background: tokens.colorNeutralBackground1,
+        },
+        "& details > *:not(summary)": {
+            padding: tokens.spacingHorizontalM,
+            borderTop: `1px solid ${tokens.colorNeutralStroke1}`,
+        },
     },
 });
 
