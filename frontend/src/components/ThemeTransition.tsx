@@ -85,6 +85,10 @@ export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps
         }, el);
 
         return () => {
+            // B7: Regression guard — the GSAP context is always reverted on
+            // cleanup, and the overlay is unmounted via setPrevMode(null) in
+            // the onComplete callback. This ensures the overlay never sticks
+            // on the viewport if the component unmounts mid-animation.
             ctx.revert();
         };
     }, [prevMode, reduced, originX, originY]);
