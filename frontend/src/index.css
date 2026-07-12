@@ -195,7 +195,8 @@ nav .fui-Button .fui-Text.fui-Text {
     color: var(--text-primary);
 }
 
-/* Color contrast on CookieConsent banner text.
+/* B6: CookieConsent text contrast via triple-class selector (no !important).
+   Color contrast on CookieConsent banner text.
    The CookieConsent Card uses a concrete backgroundColor but the
    Body1/Subtitle2 text inside it gets its color from Fluent UI's
    CSS variable-based theme tokens, which axe-core cannot resolve. This
