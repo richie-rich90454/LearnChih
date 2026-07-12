@@ -273,7 +273,13 @@ function AppShell() {
                     </Route>
                 </Route>
 
-                {/* Public catch-all 404 (must be last) */}
+                {/* Public catch-all 404 (must be last).
+                    CONVENTION (B84): Every unknown path — including unknown
+                    nested segments under a matched parent — must fall through
+                    to NotFoundPage. Keep this `<Route path="*">` as the final
+                    sibling so it never accidentally shadows a real route.
+                    When adding a new parent route, ensure its nested children
+                    are exhaustive or rely on this catch-all. */}
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </>
