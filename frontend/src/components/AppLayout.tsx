@@ -166,6 +166,9 @@ export default function AppLayout() {
                                 appearance="subtle"
                                 className={cx(styles.navItem, active && styles.navItemActive)}
                                 onClick={() => handleNav(item.path)}
+                                /* B40: aria-current="page" on the active nav
+                                   item so assistive tech can identify the
+                                   current location in the navigation. */
                                 aria-current={active ? "page" : undefined}
                             >
                                 {item.icon}
