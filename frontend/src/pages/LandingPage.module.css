@@ -329,7 +329,7 @@
 }
 
 /* ----------------------- Responsive ----------------------- */
-/* Hero collapses to a single column on narrow viewports (B14); the image
+/* B14: Hero collapses to a single column on narrow viewports; the image
    drops below the copy so the headline + CTA stay first on mobile. */
 @media (max-width: 900px) {
     .hero {
