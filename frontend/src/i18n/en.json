@@ -373,6 +373,7 @@
     "notifications": {
         "title": "Notifications",
         "markAllRead": "Mark all read",
+        "loading": "Loading notifications…",
         "noNotifications": "No notifications yet.",
         "viewAll": "View all"
     },
@@ -1510,6 +1511,20 @@
         "upvotes": "{{count}} upvotes",
         "general": "General",
         "unknown": "Unknown"
+    },
+    "endorsement": {
+        "title": "Endorsed skills",
+        "loading": "Loading endorsements…",
+        "count": "{{count}} endorsement(s)"
+    },
+    "studyGroupsPage": {
+        "description": "Join or create study groups on LernChih.",
+        "public": "Public",
+        "private": "Private",
+        "join": "Join",
+        "leave": "Leave",
+        "members_one": "{{count}} member",
+        "members_other": "{{count}} members"
     }
 }
 

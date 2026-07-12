@@ -60,12 +60,12 @@ export default function StudyGroupsPage() {
     return (
         <div className={styles.page}>
             <Seo
-                title="Study Groups — LernChih"
-                description="Join or create study groups on LernChih."
+                title={`${t("nav.studyGroups")} — LernChih`}
+                description={t("studyGroupsPage.description")}
                 canonicalPath="/study-groups"
             />
             <header className={styles.pageHeader}>
-                <h1 className={styles.title}>Study Groups</h1>
+                <h1 className={styles.title}>{t("nav.studyGroups")}</h1>
                 <div className={styles.headerActions}>
                     <CreateStudyGroupDialog onCreated={refetch} />
                 </div>
@@ -99,7 +99,7 @@ export default function StudyGroupsPage() {
                         <div className={styles.itemHeader}>
                             <h3 className={styles.itemTitle}>{group.name}</h3>
                             <Badge variant="neutral" size="small">
-                                {group.isPublic ? "Public" : "Private"}
+                                {group.isPublic ? t("studyGroupsPage.public") : t("studyGroupsPage.private")}
                             </Badge>
                         </div>
                         <p className={styles.itemBody}>{group.description}</p>
@@ -109,18 +109,18 @@ export default function StudyGroupsPage() {
                             </Badge>
                         )}
                         <div className={styles.itemMeta}>
-                            {group.memberCount} member{group.memberCount === 1 ? "" : "s"}
+                            {t("studyGroupsPage.members", { count: group.memberCount })}
                         </div>
                         <div className={styles.itemActions}>
                             <Button variant="outline" size="small" onClick={() => handleJoin(group.id)}>
-                                Join
+                                {t("studyGroupsPage.join")}
                             </Button>
                             <Button
                                 variant="subtle"
                                 size="small"
                                 onClick={() => handleLeave(group.id)}
                             >
-                                Leave
+                                {t("studyGroupsPage.leave")}
                             </Button>
                             <Button
                                 variant="subtle"

@@ -365,6 +365,7 @@
     "notifications": {
         "title": "通知",
         "markAllRead": "全部标记为已读",
+        "loading": "正在加载通知……",
         "noNotifications": "暂无通知。",
         "viewAll": "查看全部"
     },
@@ -1520,6 +1521,20 @@
         "upvotes": "{{count}} 赞",
         "general": "通用",
         "unknown": "未知"
+    },
+    "endorsement": {
+        "title": "获得认可的技能",
+        "loading": "正在加载技能认可……",
+        "count": "{{count}} 个认可"
+    },
+    "studyGroupsPage": {
+        "description": "加入或创建 LernChih 上的学习小组。",
+        "public": "公开",
+        "private": "私有",
+        "join": "加入",
+        "leave": "退出",
+        "members_one": "{{count}} 位成员",
+        "members_other": "{{count}} 位成员"
     }
 }
 

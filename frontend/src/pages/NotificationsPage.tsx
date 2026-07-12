@@ -78,9 +78,9 @@ export default function NotificationsPage() {
                     icon={<ArrowLeft24Regular />}
                     onClick={() => navigate(-1)}
                 >
-                    Back
+                    {t("common.back")}
                 </Button>
-                <h1 className={styles.title}>Notifications</h1>
+                <h1 className={styles.title}>{t("notifications.title")}</h1>
                 {notifications.some((n) => !n.read) && (
                     <Button
                         variant="outline"
@@ -88,7 +88,7 @@ export default function NotificationsPage() {
                         onClick={() => markAllMutation.mutate()}
                         disabled={markAllMutation.isPending}
                     >
-                        Mark all read
+                        {t("notifications.markAllRead")}
                     </Button>
                 )}
             </div>
@@ -96,7 +96,7 @@ export default function NotificationsPage() {
             {isLoading && notifications.length === 0 && (
                 <div className={stateStyles.loading} role="status" aria-live="polite">
                     <Spinner />
-                    <p className={stateStyles.loadingLabel}>Loading notifications…</p>
+                    <p className={stateStyles.loadingLabel}>{t("notifications.loading")}</p>
                 </div>
             )}
             {isError && (

@@ -1,4 +1,5 @@
 import { Badge, makeStyles, shorthands } from "@fluentui/react-components";
+import { useTranslation } from "react-i18next";
 import { useEndorsements } from "../hooks/useSocial";
 
 const useStyles = makeStyles({
@@ -20,10 +21,11 @@ interface EndorsementBadgeProps {
 
 export function EndorsementBadge({ userId }: EndorsementBadgeProps) {
     const styles = useStyles();
+    const { t } = useTranslation();
     const { data: endorsements, isLoading } = useEndorsements(userId);
 
     if (isLoading) {
-        return <div>Loading endorsements…</div>;
+        return <div>{t("endorsement.loading")}</div>;
     }
 
     if (!endorsements || endorsements.length === 0) {
@@ -38,14 +40,14 @@ export function EndorsementBadge({ userId }: EndorsementBadgeProps) {
 
     return (
         <div className={styles.root}>
-            <h4 style={{ margin: 0 }}>Endorsed skills</h4>
+            <h4 style={{ margin: 0 }}>{t("endorsement.title")}</h4>
             <div className={styles.skills}>
                 {Object.entries(bySkill).map(([skill, count]) => (
                     <Badge
                         key={skill}
                         appearance="filled"
                         color="success"
-                        title={`${count} endorsement(s)`}
+                        title={t("endorsement.count", { count })}
                         {...shorthands.margin("2px")}
                     >
                         {skill} × {count}
