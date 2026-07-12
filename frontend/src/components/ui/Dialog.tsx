@@ -34,6 +34,11 @@ export interface DialogProps {
 // trigger/confirm buttons render visible text labels, so they are accessible
 // without an aria-label; custom triggers passed via the `trigger` prop must
 // follow the same rule when they contain only an icon.
+//
+// B34: The active locale is synced to <html lang> by i18n/index.ts
+// (syncDocumentLang on languageChanged). Dynamic content rendered into this
+// Dialog in a different language should carry a per-element `lang` attribute
+// (e.g. <DialogContent lang="zh">) so screen readers switch pronunciation.
 
 export function Dialog({
     title,
