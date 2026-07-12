@@ -236,7 +236,11 @@ export function CollaborativeNoteEditor({
                             </Badge>
                         )}
                     </div>
-                    {collaboratorsQuery.isLoading && <Spinner size="tiny" />}
+                    {collaboratorsQuery.isLoading && (
+                        <div role="status" aria-live="polite">
+                            <Spinner size="tiny" />
+                        </div>
+                    )}
                     {!collaboratorsQuery.isLoading &&
                         collaborators.length === 0 && (
                             <p className={styles.collabEmpty}>
