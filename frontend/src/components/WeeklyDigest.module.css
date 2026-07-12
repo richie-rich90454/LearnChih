@@ -1,0 +1,132 @@
+/**
+ * WeeklyDigest (F49). Token-based; no raw hex, no !important. The
+ * design-system Card primitive owns the surface; these rules own the list.
+ */
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+}
+
+.icon {
+    display: inline-flex;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.headerText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-primary);
+}
+
+.subtitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--text-secondary);
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    background-color: var(--surface-2);
+    transition:
+        border-color var(--motion-fast) var(--motion-ease),
+        background-color var(--motion-fast) var(--motion-ease);
+}
+
+.item:hover {
+    border-color: var(--border-strong);
+    background-color: var(--surface-sunken);
+}
+
+.rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    border-radius: var(--radius-pill);
+    background-color: var(--accent-soft);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    flex-shrink: 0;
+}
+
+.itemBody {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.link {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--accent);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.link:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+    border-radius: var(--radius-input);
+}
+
+.author {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .item {
+        transition: none;
+    }
+}

@@ -28,6 +28,7 @@ import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 import { PomodoroTimer } from "@/components/PomodoroTimer";
 import { BuddyMatch } from "@/components/BuddyMatch";
 import { RecommendedResources } from "@/components/RecommendedResources";
+import { WeeklyDigest } from "@/components/WeeklyDigest";
 import styles from "./DashboardPage.module.css";
 
 export default function DashboardPage() {
@@ -132,6 +133,9 @@ export default function DashboardPage() {
 
             {/* Content-based resource recommendations (F23) */}
             <RecommendedResources />
+
+            {/* Weekly digest of top posts (F49) */}
+            <WeeklyDigest />
 
             {/* Quick stats */}
             <div className={styles.statsRow}>
