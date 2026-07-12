@@ -82,6 +82,12 @@
     justify-content: space-between;
     gap: var(--space-4);
     padding: var(--space-2) var(--space-6);
+    /* B20: keep the header clear of the iOS notch / status bar on Safari.
+       env(safe-area-inset-top) is 0 on non-notch devices, so this is a no-op
+       everywhere else. max() preserves the base spacing when there is no
+       inset. The sidebar is hidden <=768px so no header/sidebar misalignment
+       occurs where the notch matters. */
+    padding-top: max(var(--space-2), env(safe-area-inset-top));
     background-color: var(--surface-2);
     border-bottom: 1px solid var(--border-subtle);
     min-height: 56px;
