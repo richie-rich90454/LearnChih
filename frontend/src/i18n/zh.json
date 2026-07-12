@@ -1465,6 +1465,61 @@
         "subject": "科目",
         "level": "级别",
         "reset": "重置"
+    },
+    "flashcardDeck": {
+        "loading": "正在加载抽认卡……",
+        "noCardsTitle": "没有待复习的卡片",
+        "noCardsDescription": "干得漂亮——这副牌已全部复习完。",
+        "cardPosition": "第 {{current}} / {{total}} 张",
+        "frontLabel": "卡片正面",
+        "backLabel": "卡片背面",
+        "frontHint": "正面——点击翻转",
+        "backHint": "背面——点击查看正面",
+        "prev": "上一张",
+        "flip": "翻转",
+        "skip": "跳过",
+        "ratingAgain": "重来",
+        "ratingHard": "困难",
+        "ratingGood": "良好",
+        "ratingEasy": "简单"
+    },
+    "reactionPicker": {
+        "addReaction": "添加反应",
+        "reactWith": "用 {{emoji}} 反应",
+        "reactionCount": "{{count}} 个反应"
+    },
+    "markdownEditor": {
+        "bold": "粗体",
+        "italic": "斜体",
+        "insertLink": "插入链接",
+        "insertImage": "插入图片",
+        "insertCodeBlock": "插入代码块",
+        "placeholder": "使用 Markdown 编写……",
+        "write": "编写",
+        "preview": "预览",
+        "nothingToPreview": "暂无可预览的内容。",
+        "previewHint": "预览为轻量渲染；服务器会通过 OWASP HtmlSanitizer 对存储内容进行消毒。"
+    },
+    "relatedResources": {
+        "sectionLabel": "相关资源",
+        "title": "相关资源",
+        "loadError": "加载相关资源失败。",
+        "empty": "未找到相关资源。"
+    },
+    "trendingResources": {
+        "sectionLabel": "热门资源",
+        "title": "当前热门",
+        "loadError": "加载热门资源失败。",
+        "empty": "暂无热门资源。"
+    },
+    "breadcrumbs": {
+        "navigation": "面包屑导航"
+    },
+    "resourceMeta": {
+        "by": "作者：{{author}}",
+        "upvotes": "{{count}} 赞",
+        "general": "通用",
+        "unknown": "未知"
     }
 }
 

@@ -4,6 +4,7 @@ import {
     BreadcrumbDivider,
     BreadcrumbButton,
 } from "@fluentui/react-components";
+import { useTranslation } from "react-i18next";
 import styles from "./Breadcrumbs.module.css";
 
 export interface Crumb {
@@ -16,8 +17,9 @@ interface BreadcrumbsProps {
 }
 
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
+    const { t } = useTranslation();
     return (
-        <Breadcrumb aria-label="Breadcrumb navigation" className={styles.list}>
+        <Breadcrumb aria-label={t("breadcrumbs.navigation")} className={styles.list}>
             {items.map((item, index) => {
                 const isLast = index === items.length - 1;
                 return (

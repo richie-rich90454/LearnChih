@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Popover, PopoverTrigger, PopoverSurface, Button, Badge } from "@fluentui/react-components";
+import { useTranslation } from "react-i18next";
 import { useReactions, useAddReaction, useRemoveReaction, type Reaction } from "../hooks/useSocial";
 import useAuthStore from "../store/authStore";
 import { ReactionRoster } from "./ReactionRoster";
@@ -11,6 +12,7 @@ interface ReactionPickerProps {
 }
 
 export function ReactionPicker({ postId }: ReactionPickerProps) {
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const [rosterEmoji, setRosterEmoji] = useState<string | null>(null);
     const { data: reactions, isLoading } = useReactions(postId);
@@ -54,7 +56,7 @@ export function ReactionPicker({ postId }: ReactionPickerProps) {
                                 color={mine ? "brand" : "informative"}
                                 style={{ cursor: "pointer" }}
                                 onClick={() => handleReact(emoji)}
-                                title={`${list.length} reaction(s)`}
+                                title={t("reactionPicker.reactionCount", { count: list.length })}
                             >
                                 {emoji} {list.length}
                             </Badge>
@@ -71,7 +73,7 @@ export function ReactionPicker({ postId }: ReactionPickerProps) {
                     <Button
                         appearance="subtle"
                         size="small"
-                        aria-label="Add reaction"
+                        aria-label={t("reactionPicker.addReaction")}
                         disabled={isLoading}
                     >
                         😊 +
@@ -86,7 +88,7 @@ export function ReactionPicker({ postId }: ReactionPickerProps) {
                             appearance="subtle"
                             size="large"
                             onClick={() => handleReact(emoji)}
-                            aria-label={`React with ${emoji}`}
+                            aria-label={t("reactionPicker.reactWith", { emoji })}
                         >
                             {emoji}
                         </Button>

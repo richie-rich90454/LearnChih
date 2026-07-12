@@ -1455,6 +1455,61 @@
         "subject": "Subject",
         "level": "Level",
         "reset": "Reset"
+    },
+    "flashcardDeck": {
+        "loading": "Loading flashcards...",
+        "noCardsTitle": "No cards due",
+        "noCardsDescription": "Great job — you're all caught up with this deck.",
+        "cardPosition": "Card {{current}} of {{total}}",
+        "frontLabel": "Flashcard front",
+        "backLabel": "Flashcard back",
+        "frontHint": "Front — click to flip",
+        "backHint": "Back — click to see front",
+        "prev": "Prev",
+        "flip": "Flip",
+        "skip": "Skip",
+        "ratingAgain": "Again",
+        "ratingHard": "Hard",
+        "ratingGood": "Good",
+        "ratingEasy": "Easy"
+    },
+    "reactionPicker": {
+        "addReaction": "Add reaction",
+        "reactWith": "React with {{emoji}}",
+        "reactionCount": "{{count}} reaction(s)"
+    },
+    "markdownEditor": {
+        "bold": "Bold",
+        "italic": "Italic",
+        "insertLink": "Insert link",
+        "insertImage": "Insert image",
+        "insertCodeBlock": "Insert code block",
+        "placeholder": "Write in Markdown...",
+        "write": "Write",
+        "preview": "Preview",
+        "nothingToPreview": "Nothing to preview yet.",
+        "previewHint": "Preview is a lightweight render; the server sanitizes stored content via OWASP HtmlSanitizer."
+    },
+    "relatedResources": {
+        "sectionLabel": "Related resources",
+        "title": "Related resources",
+        "loadError": "Failed to load related resources.",
+        "empty": "No related resources found."
+    },
+    "trendingResources": {
+        "sectionLabel": "Trending resources",
+        "title": "Trending now",
+        "loadError": "Failed to load trending resources.",
+        "empty": "No trending resources right now."
+    },
+    "breadcrumbs": {
+        "navigation": "Breadcrumb navigation"
+    },
+    "resourceMeta": {
+        "by": "by {{author}}",
+        "upvotes": "{{count}} upvotes",
+        "general": "General",
+        "unknown": "Unknown"
     }
 }
 

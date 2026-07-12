@@ -61,8 +61,8 @@ export function RelatedResources({ resourceId, limit = 5 }: RelatedResourcesProp
     const items: Resource[] = (data ?? []).slice(0, limit);
 
     return (
-        <section className={styles.root} aria-label="Related resources">
-            <Title3 as="h3">Related resources</Title3>
+        <section className={styles.root} aria-label={t("relatedResources.sectionLabel")}>
+            <Title3 as="h3">{t("relatedResources.title")}</Title3>
             {isLoading && (
                 <div role="status" aria-live="polite" aria-label={t("common.loading")}>
                     <Spinner size="tiny" label={t("common.loading")} />
@@ -70,10 +70,10 @@ export function RelatedResources({ resourceId, limit = 5 }: RelatedResourcesProp
             )}
             {isError && (
                 <MessageBar intent="error">
-                    <MessageBarBody>Failed to load related resources.</MessageBarBody>
+                    <MessageBarBody>{t("relatedResources.loadError")}</MessageBarBody>
                 </MessageBar>
             )}
-            {!isLoading && items.length === 0 && <Caption1>No related resources found.</Caption1>}
+            {!isLoading && items.length === 0 && <Caption1>{t("relatedResources.empty")}</Caption1>}
             <div className={styles.list}>
                 {items.map((resource) => (
                     <Card
@@ -84,15 +84,19 @@ export function RelatedResources({ resourceId, limit = 5 }: RelatedResourcesProp
                         <div className={styles.row}>
                             <Subtitle2>{resource.title}</Subtitle2>
                             <Badge appearance="tint" size="small">
-                                {resource.category?.replace("_", " ") ?? "General"}
+                                {resource.category?.replace("_", " ") ?? t("resourceMeta.general")}
                             </Badge>
                         </div>
                         <div className={styles.meta}>
                             <Caption1>
-                                by {resource.authorName ?? resource.userName ?? "Unknown"}
+                                {t("resourceMeta.by", {
+                                    author: resource.authorName ?? resource.userName ?? t("resourceMeta.unknown"),
+                                })}
                             </Caption1>
                             <Caption1>·</Caption1>
-                            <Caption1>{resource.upvoteCount ?? 0} upvotes</Caption1>
+                            <Caption1>
+                                {t("resourceMeta.upvotes", { count: resource.upvoteCount ?? 0 })}
+                            </Caption1>
                         </div>
                     </Card>
                 ))}

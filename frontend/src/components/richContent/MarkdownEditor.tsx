@@ -16,6 +16,7 @@ import {
     Eye24Regular,
     Edit24Regular,
 } from "@fluentui/react-icons";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
     root: {
@@ -100,11 +101,13 @@ function renderMarkdown(md: string): string {
 export function MarkdownEditor({
     value,
     onChange,
-    placeholder = "Write in Markdown...",
+    placeholder,
 }: MarkdownEditorProps) {
     const styles = useStyles();
+    const { t } = useTranslation();
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [mode, setMode] = useState<"edit" | "preview">("edit");
+    const effectivePlaceholder = placeholder ?? t("markdownEditor.placeholder");
 
     const wrapSelection = useCallback(
         (before: string, after: string = before, placeholderText = "") => {
@@ -149,40 +152,40 @@ export function MarkdownEditor({
                     size="small"
                     appearance="subtle"
                     icon={<TextBold24Regular />}
-                    title="Bold"
-                    aria-label="Bold"
+                    title={t("markdownEditor.bold")}
+                    aria-label={t("markdownEditor.bold")}
                     onClick={() => wrapSelection("**", "**", "bold text")}
                 />
                 <Button
                     size="small"
                     appearance="subtle"
                     icon={<TextItalic24Regular />}
-                    title="Italic"
-                    aria-label="Italic"
+                    title={t("markdownEditor.italic")}
+                    aria-label={t("markdownEditor.italic")}
                     onClick={() => wrapSelection("*", "*", "italic text")}
                 />
                 <Button
                     size="small"
                     appearance="subtle"
                     icon={<Link24Regular />}
-                    title="Link"
-                    aria-label="Insert link"
+                    title={t("markdownEditor.insertLink")}
+                    aria-label={t("markdownEditor.insertLink")}
                     onClick={() => wrapSelection("[", "](https://)", "link text")}
                 />
                 <Button
                     size="small"
                     appearance="subtle"
                     icon={<Image24Regular />}
-                    title="Image"
-                    aria-label="Insert image"
+                    title={t("markdownEditor.insertImage")}
+                    aria-label={t("markdownEditor.insertImage")}
                     onClick={() => insertAtCursor("\n![alt text](https://image-url)\n")}
                 />
                 <Button
                     size="small"
                     appearance="subtle"
                     icon={<Code24Regular />}
-                    title="Code block"
-                    aria-label="Insert code block"
+                    title={t("markdownEditor.insertCodeBlock")}
+                    aria-label={t("markdownEditor.insertCodeBlock")}
                     onClick={() => insertAtCursor("\n```\ncode\n```\n")}
                 />
                 <Divider vertical style={{ height: "24px" }} />
@@ -192,7 +195,7 @@ export function MarkdownEditor({
                     icon={<Edit24Regular />}
                     onClick={() => setMode("edit")}
                 >
-                    Write
+                    {t("markdownEditor.write")}
                 </Button>
                 <Button
                     size="small"
@@ -200,7 +203,7 @@ export function MarkdownEditor({
                     icon={<Eye24Regular />}
                     onClick={() => setMode("preview")}
                 >
-                    Preview
+                    {t("markdownEditor.preview")}
                 </Button>
             </div>
 
@@ -210,8 +213,8 @@ export function MarkdownEditor({
                     className={styles.textarea}
                     value={value}
                     onChange={(_e, data) => onChange(data.value)}
-                    placeholder={placeholder}
-                    aria-label={placeholder}
+                    placeholder={effectivePlaceholder}
+                    aria-label={effectivePlaceholder}
                     resize="vertical"
                 />
             ) : (
@@ -221,12 +224,11 @@ export function MarkdownEditor({
                         dangerouslySetInnerHTML={{
                             __html: value.trim()
                                 ? renderMarkdown(value)
-                                : "<em>Nothing to preview yet.</em>",
+                                : `<em>${t("markdownEditor.nothingToPreview")}</em>`,
                         }}
                     />
                     <Caption1>
-                        Preview is a lightweight render; the server sanitizes stored content via
-                        OWASP HtmlSanitizer.
+                        {t("markdownEditor.previewHint")}
                     </Caption1>
                 </div>
             )}

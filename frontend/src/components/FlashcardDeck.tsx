@@ -14,6 +14,7 @@ import {
     ArrowRight24Regular,
     ArrowRotateClockwise24Regular,
 } from "@fluentui/react-icons";
+import { useTranslation } from "react-i18next";
 import { useStudyDeck, useRateCard, type CardRating, type Flashcard } from "../hooks/useFlashcards";
 
 const useStyles = makeStyles({
@@ -61,15 +62,16 @@ interface FlashcardDeckProps {
     deckId: string | number;
 }
 
-const RATINGS: { value: CardRating; label: string }[] = [
-    { value: "AGAIN", label: "Again" },
-    { value: "HARD", label: "Hard" },
-    { value: "GOOD", label: "Good" },
-    { value: "EASY", label: "Easy" },
+const RATINGS: { value: CardRating; labelKey: string }[] = [
+    { value: "AGAIN", labelKey: "flashcardDeck.ratingAgain" },
+    { value: "HARD", labelKey: "flashcardDeck.ratingHard" },
+    { value: "GOOD", labelKey: "flashcardDeck.ratingGood" },
+    { value: "EASY", labelKey: "flashcardDeck.ratingEasy" },
 ];
 
 export default function FlashcardDeck({ deckId }: FlashcardDeckProps) {
     const styles = useStyles();
+    const { t } = useTranslation();
     const { data: session, isLoading } = useStudyDeck(deckId);
     const [index, setIndex] = useState(0);
     const [flipped, setFlipped] = useState(false);
@@ -97,13 +99,19 @@ export default function FlashcardDeck({ deckId }: FlashcardDeckProps) {
         });
     };
 
-    if (isLoading) return <div role="status" aria-live="polite" aria-label="Loading flashcards..."><Spinner label="Loading flashcards..." /></div>;
+    if (isLoading) {
+        return (
+            <div role="status" aria-live="polite" aria-label={t("flashcardDeck.loading")}>
+                <Spinner label={t("flashcardDeck.loading")} />
+            </div>
+        );
+    }
 
     if (!cards.length) {
         return (
             <div className={styles.empty}>
-                <Title3>No cards due</Title3>
-                <Text>Great job — you&apos;re all caught up with this deck.</Text>
+                <Title3>{t("flashcardDeck.noCardsTitle")}</Title3>
+                <Text>{t("flashcardDeck.noCardsDescription")}</Text>
             </div>
         );
     }
@@ -111,7 +119,7 @@ export default function FlashcardDeck({ deckId }: FlashcardDeckProps) {
     return (
         <div className={styles.container}>
             <Caption1>
-                Card {index + 1} of {cards.length}
+                {t("flashcardDeck.cardPosition", { current: index + 1, total: cards.length })}
             </Caption1>
 
             <Card
@@ -125,7 +133,7 @@ export default function FlashcardDeck({ deckId }: FlashcardDeckProps) {
                         setFlipped((f) => !f);
                     }
                 }}
-                aria-label={flipped ? "Flashcard back" : "Flashcard front"}
+                aria-label={flipped ? t("flashcardDeck.backLabel") : t("flashcardDeck.frontLabel")}
             >
                 <Title3>{flipped ? currentCard.back : currentCard.front}</Title3>
                 <Caption1
@@ -134,23 +142,23 @@ export default function FlashcardDeck({ deckId }: FlashcardDeckProps) {
                         color: tokens.colorNeutralForeground3,
                     }}
                 >
-                    {flipped ? "Back — click to see front" : "Front — click to flip"}
+                    {flipped ? t("flashcardDeck.backHint") : t("flashcardDeck.frontHint")}
                 </Caption1>
             </Card>
 
             <div className={styles.controls}>
                 <Button appearance="subtle" icon={<ArrowLeft24Regular />} onClick={handlePrev}>
-                    Prev
+                    {t("flashcardDeck.prev")}
                 </Button>
                 <Button
                     appearance="subtle"
                     icon={<ArrowRotateClockwise24Regular />}
                     onClick={() => setFlipped((f) => !f)}
                 >
-                    Flip
+                    {t("flashcardDeck.flip")}
                 </Button>
                 <Button appearance="subtle" icon={<ArrowRight24Regular />} onClick={handleNext}>
-                    Skip
+                    {t("flashcardDeck.skip")}
                 </Button>
             </div>
 
@@ -163,7 +171,7 @@ export default function FlashcardDeck({ deckId }: FlashcardDeckProps) {
                             onClick={() => handleRate(r.value)}
                             disabled={rateCard.isPending}
                         >
-                            {r.label}
+                            {t(r.labelKey)}
                         </Button>
                     ))}
                 </div>
