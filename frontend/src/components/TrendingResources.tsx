@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
     Card,
     Badge,
@@ -58,6 +59,7 @@ interface TrendingResourcesProps {
 export function TrendingResources({ limit = 5 }: TrendingResourcesProps) {
     const styles = useStyles();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { data, isLoading, isError } = useTrending(limit);
 
     const items: Resource[] = data ?? [];
@@ -65,7 +67,11 @@ export function TrendingResources({ limit = 5 }: TrendingResourcesProps) {
     return (
         <section className={styles.root} aria-label="Trending resources">
             <Title3 as="h3">Trending now</Title3>
-            {isLoading && <Spinner size="tiny" label="Loading..." />}
+            {isLoading && (
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner size="tiny" label={t("common.loading")} />
+                </div>
+            )}
             {isError && (
                 <MessageBar intent="error">
                     <MessageBarBody>Failed to load trending resources.</MessageBarBody>
