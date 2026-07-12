@@ -1,0 +1,9 @@
+{
+    "codeBlock": {
+        "copy": "Copy",
+        "copied": "Code copied to clipboard",
+        "copiedLabel": "Copied",
+        "copyFailed": "Failed to copy code",
+        "run": "Run"
+    }
+}

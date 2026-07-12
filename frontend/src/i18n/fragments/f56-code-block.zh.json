@@ -1,0 +1,9 @@
+{
+    "codeBlock": {
+        "copy": "复制",
+        "copied": "代码已复制到剪贴板",
+        "copiedLabel": "已复制",
+        "copyFailed": "复制代码失败",
+        "run": "运行"
+    }
+}

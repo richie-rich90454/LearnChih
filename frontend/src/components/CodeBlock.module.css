@@ -1,0 +1,115 @@
+/**
+ * CodeBlock (F56). Token-based styling for syntax-highlighted code blocks.
+ * No !important; uses design-system tokens for all colors and spacing.
+ */
+
+.container {
+    margin: var(--space-3) 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    background: var(--surface-sunken);
+    overflow: hidden;
+    transition: border-color var(--motion-fast) var(--motion-ease);
+}
+
+.container:hover {
+    border-color: var(--border-strong);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+}
+
+.filename {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex-shrink: 0;
+}
+
+.body {
+    overflow-x: auto;
+}
+
+.pre {
+    margin: 0;
+    padding: var(--space-3) 0;
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+}
+
+.code {
+    display: block;
+}
+
+.line {
+    display: flex;
+    align-items: flex-start;
+}
+
+.lineNumber {
+    flex: 0 0 40px;
+    padding: 0 var(--space-2);
+    text-align: right;
+    color: var(--text-disabled);
+    user-select: none;
+    font-variant-numeric: tabular-nums;
+}
+
+.lineContent {
+    flex: 1 1 auto;
+    padding-right: var(--space-4);
+    white-space: pre;
+    color: var(--text-primary);
+}
+
+/* Token colors */
+.token_keyword {
+    color: var(--accent);
+    font-weight: var(--font-weight-semibold);
+}
+
+.token_string {
+    color: var(--status-success);
+}
+
+.token_comment {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.token_number {
+    color: var(--status-warning);
+}
+
+.token_function {
+    color: var(--text-primary);
+}
+
+.token_plain {
+    color: var(--text-primary);
+}

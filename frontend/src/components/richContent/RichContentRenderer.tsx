@@ -9,11 +9,12 @@ const useStyles = makeStyles({
         "& pre": {
             padding: tokens.spacingHorizontalM,
             background: tokens.colorNeutralBackground2,
+            border: `1px solid ${tokens.colorNeutralStroke1}`,
             borderRadius: tokens.borderRadiusMedium,
             overflowX: "auto",
         },
         "& code": {
-            fontFamily: "monospace",
+            fontFamily: tokens.fontFamilyMonospace,
             fontSize: "var(--fontSizeBase200)",
         },
         "& blockquote": {
