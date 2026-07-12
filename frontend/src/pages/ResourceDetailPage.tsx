@@ -60,6 +60,7 @@ import { DifficultyRating } from "@/components/DifficultyRating";
 import { TtsNarration } from "@/components/TtsNarration";
 import { ReadAlongHighlight } from "@/components/ReadAlongHighlight";
 import styles from "./Detail.module.css";
+import printStyles from "./ResourceDetailPage.module.css";
 
 function cx(...parts: Array<string | false | undefined | null>): string {
     return parts.filter(Boolean).join(" ");
@@ -236,7 +237,7 @@ export default function ResourceDetailPage() {
     ];
 
     return (
-        <div className={styles.container} ref={contentRef}>
+        <div className={cx(styles.container, printStyles.root)} ref={contentRef}>
             <Seo
                 title={`${resourceTitle} — LernChih`}
                 description={seoDescription}
@@ -245,7 +246,9 @@ export default function ResourceDetailPage() {
                 jsonLd={jsonLd}
                 hreflang
             />
-            <ReadingProgress />
+            <div data-print="hide">
+                <ReadingProgress />
+            </div>
             {/* Back button */}
             <div className={styles.backRow} data-print="hide">
                 <Button
@@ -277,10 +280,14 @@ export default function ResourceDetailPage() {
             </div>
 
             {/* TTS narration (F28) */}
-            <TtsNarration text={resource?.description || ""} />
+            <div data-print="hide">
+                <TtsNarration text={resource?.description || ""} />
+            </div>
 
             {/* Read-along highlight sync (F29) */}
-            <ReadAlongHighlight text={resource?.description || ""} />
+            <div data-print="hide">
+                <ReadAlongHighlight text={resource?.description || ""} />
+            </div>
 
             {/* Resource info (wrapped in SplitView for read-along notes) */}
             <SplitView resourceId={id ?? ""} enabled={splitView}>
@@ -441,29 +448,41 @@ export default function ResourceDetailPage() {
 
             {/* AI flashcard generation (F4) */}
             {authenticated && resource && (
-                <AiFlashcardGenerator resourceId={resource.id} />
+                <div data-print="hide">
+                    <AiFlashcardGenerator resourceId={resource.id} />
+                </div>
             )}
 
             {/* AI quiz generation (F5) */}
             {authenticated && resource && (
-                <AiQuizGenerator resourceId={resource.id} />
+                <div data-print="hide">
+                    <AiQuizGenerator resourceId={resource.id} />
+                </div>
             )}
 
             {/* PDF highlights (F12) */}
             {authenticated && resource && (
-                <PdfHighlightPanel resourceId={resource.id} />
+                <div data-print="hide">
+                    <PdfHighlightPanel resourceId={resource.id} />
+                </div>
             )}
 
             {/* Inline annotations (F13) */}
             {authenticated && resource && (
-                <AnnotationPanel resourceId={resource.id} />
+                <div data-print="hide">
+                    <AnnotationPanel resourceId={resource.id} />
+                </div>
             )}
 
             {/* Resource difficulty self-rating (F22) */}
-            {resource && <DifficultyRating resourceId={resource.id} />}
+            {resource && (
+                <div data-print="hide">
+                    <DifficultyRating resourceId={resource.id} />
+                </div>
+            )}
 
             {/* Thread / Discussion */}
-            <section className={styles.thread} aria-label={t("resources.discussion")}>
+            <section className={styles.thread} aria-label={t("resources.discussion")} data-print="hide">
                 <h2 className={styles.threadHeading}>{t("resources.discussion")}</h2>
 
                 {/* New post */}
@@ -533,7 +552,11 @@ export default function ResourceDetailPage() {
                 </StaggerReveal>
             </section>
 
-            {id && <RelatedResources resourceId={id} />}
+            {id && (
+                <div data-print="hide">
+                    <RelatedResources resourceId={id} />
+                </div>
+            )}
         </div>
     );
 }
