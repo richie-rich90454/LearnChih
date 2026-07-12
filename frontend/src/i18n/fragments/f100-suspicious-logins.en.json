@@ -1,0 +1,13 @@
+{
+    "suspiciousLogins": {
+        "title": "Suspicious logins",
+        "noAlerts": "No suspicious login alerts.",
+        "resolved": "Resolved",
+        "unresolved": "Unresolved",
+        "resolve": "Resolve",
+        "ip": "IP",
+        "location": "Location",
+        "reason": "Reason",
+        "time": "Time"
+    }
+}

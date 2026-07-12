@@ -1,0 +1,68 @@
+/**
+ * SuspiciousLoginAlerts - co-located CSS Module for F100.
+ * No !important. All visuals via design-system tokens.
+ */
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 720px;
+}
+
+.alertCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.alertHead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.alertIcon {
+    display: flex;
+    align-items: center;
+    color: var(--status-warning);
+}
+
+.userName {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.resolveBtn {
+    margin-left: auto;
+}
+
+.alertDetails {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.empty {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    padding: var(--space-4);
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .resolveBtn {
+        margin-left: 0;
+    }
+}

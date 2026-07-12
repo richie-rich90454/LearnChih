@@ -1,0 +1,13 @@
+{
+    "suspiciousLogins": {
+        "title": "可疑登录",
+        "noAlerts": "没有可疑登录警报。",
+        "resolved": "已处理",
+        "unresolved": "未处理",
+        "resolve": "处理",
+        "ip": "IP",
+        "location": "位置",
+        "reason": "原因",
+        "time": "时间"
+    }
+}
