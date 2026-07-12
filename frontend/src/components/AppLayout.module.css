@@ -66,6 +66,13 @@
     padding: var(--space-2);
 }
 
+/* B21: mobile Drawer body keeps its last nav items clear of the iOS home
+   indicator. env(safe-area-inset-bottom) is 0 on devices without one, so
+   max() preserves a minimum bottom spacing everywhere. */
+.drawerBody {
+    padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+}
+
 /* B13: on small tablets (<=768px) the fixed 260px sidebar is hidden and nav
    moves into the Fluent mobile Drawer (size="small"), keeping content width
    usable on narrow viewports. */

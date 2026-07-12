@@ -224,7 +224,7 @@ export default function AppLayout() {
                         <LogoFull size={28} title="LernChih" />
                     </Button>
                 </DrawerHeader>
-                <DrawerBody>
+                <DrawerBody className={styles.drawerBody}>
                     <nav aria-label={t("a11y.mobileNavigation")} className={styles.navList}>
                         <NavLinks />
                     </nav>
