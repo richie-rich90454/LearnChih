@@ -211,6 +211,7 @@ export function MarkdownEditor({
                     value={value}
                     onChange={(_e, data) => onChange(data.value)}
                     placeholder={placeholder}
+                    aria-label={placeholder}
                     resize="vertical"
                 />
             ) : (

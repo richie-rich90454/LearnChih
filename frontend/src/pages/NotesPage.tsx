@@ -429,6 +429,7 @@ export default function NotesPage() {
                                     }
                                 }}
                                 placeholder={t("notes.contentPlaceholder")}
+                                aria-label={t("notes.contentPlaceholder")}
                                 className={styles.contentField}
                                 resize="vertical"
                             />

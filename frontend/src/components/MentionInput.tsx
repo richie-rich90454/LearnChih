@@ -103,7 +103,7 @@ export function MentionInput({
     return (
         <div className={styles.root}>
             {multiline ? (
-                <Textarea {...commonProps} ref={inputRef as React.RefObject<HTMLTextAreaElement>} />
+                <Textarea {...commonProps} ref={inputRef as React.RefObject<HTMLTextAreaElement>} aria-label={placeholder} />
             ) : (
                 <Input {...commonProps} ref={inputRef as React.RefObject<HTMLInputElement>} />
             )}
