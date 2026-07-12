@@ -1,0 +1,130 @@
+/**
+ * RateLimitDashboard - co-located CSS Module for F106.
+ * No !important. All visuals via design-system tokens.
+ */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 720px;
+}
+
+.summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+}
+
+.summaryItem {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.summaryLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.summaryValue {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.sectionHead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+}
+
+.sectionTitle {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.chart {
+    width: 100%;
+    height: auto;
+    max-height: 220px;
+}
+
+.axisLabel {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    fill: var(--text-secondary);
+}
+
+.bar {
+    fill: var(--accent);
+}
+
+.barValue {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    fill: var(--text-primary);
+}
+
+.ipList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ipRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.ipCode {
+    flex: 1;
+    min-width: 140px;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    background-color: var(--surface-sunken);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-input);
+}
+
+.ipCount {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+@media (max-width: 480px) {
+    .summary {
+        gap: var(--space-4);
+    }
+    .ipCode {
+        min-width: 110px;
+    }
+}

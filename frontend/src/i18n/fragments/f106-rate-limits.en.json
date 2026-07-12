@@ -1,0 +1,12 @@
+{
+    "rateLimitDashboard": {
+        "title": "Rate limits",
+        "totalRpm": "Total req/min",
+        "totalBlocked": "Blocked (1h)",
+        "byEndpoint": "Requests per minute by endpoint",
+        "topBlockedIps": "Top blocked IPs",
+        "blocks": "{{count}} blocks",
+        "severityHigh": "High",
+        "severityMedium": "Medium"
+    }
+}

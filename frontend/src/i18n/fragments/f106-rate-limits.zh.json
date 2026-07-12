@@ -1,0 +1,12 @@
+{
+    "rateLimitDashboard": {
+        "title": "速率限制",
+        "totalRpm": "总请求/分钟",
+        "totalBlocked": "已阻止（1 小时）",
+        "byEndpoint": "各端点每分钟请求数",
+        "topBlockedIps": "被阻止最多的 IP",
+        "blocks": "{{count}} 次阻止",
+        "severityHigh": "高",
+        "severityMedium": "中"
+    }
+}
