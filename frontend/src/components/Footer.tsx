@@ -5,6 +5,14 @@ import { LogoMono } from "@/components/Logo";
 import useCookieConsentStore from "@/store/cookieConsentStore";
 import styles from "./Footer.module.css";
 
+/*
+ * Sidebar divider spacing convention (B62): The app sidebar's divider
+ * spacing is owned by `components/AppLayout.module.css` (not owned here).
+ * Dividers between sidebar sections should use `var(--space-4)` padding
+ * above/below and a `--border-subtle` hairline so they match the vertical
+ * rhythm documented in Card.module.css (B57). This footer is documented
+ * here as the layout-adjacent surface that shares the same rhythm tokens.
+ */
 export default function Footer() {
     const { t } = useTranslation();
     const navigate = useNavigate();
