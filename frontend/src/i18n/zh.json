@@ -1384,6 +1384,36 @@
     "workspace": {
         "tabsAriaLabel": "工作区标签页",
         "closeTab": "关闭 {{title}}"
+    },
+    "createStudyGroup": {
+        "trigger": "创建小组",
+        "title": "创建学习小组",
+        "nameLabel": "名称",
+        "namePlaceholder": "例如：微积分学习小组",
+        "descriptionLabel": "描述",
+        "descriptionPlaceholder": "这个小组是关于什么的？",
+        "subjectLabel": "科目",
+        "subjectPlaceholder": "例如：数学",
+        "publicLabel": "公开小组",
+        "privateLabel": "私密小组",
+        "create": "创建"
+    },
+    "pollEditor": {
+        "questionLabel": "问题",
+        "questionPlaceholder": "提出一个问题...",
+        "optionsDivider": "选项",
+        "optionPlaceholder": "选项 {{index}}",
+        "removeOption": "移除选项 {{index}}",
+        "addOption": "添加选项",
+        "saveError": "保存投票失败，请重试。",
+        "save": "保存投票"
+    },
+    "reportDialog": {
+        "trigger": "举报",
+        "title": "举报 {{target}}",
+        "reasonLabel": "原因",
+        "reasonPlaceholder": "你为什么要举报这个内容？",
+        "submit": "提交举报"
     }
 }
 

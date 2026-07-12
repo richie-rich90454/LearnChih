@@ -1374,6 +1374,36 @@
     "workspace": {
         "tabsAriaLabel": "Workspace tabs",
         "closeTab": "Close {{title}}"
+    },
+    "createStudyGroup": {
+        "trigger": "Create Group",
+        "title": "Create Study Group",
+        "nameLabel": "Name",
+        "namePlaceholder": "e.g. Calculus Study Crew",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "What is this group about?",
+        "subjectLabel": "Subject",
+        "subjectPlaceholder": "e.g. Mathematics",
+        "publicLabel": "Public group",
+        "privateLabel": "Private group",
+        "create": "Create"
+    },
+    "pollEditor": {
+        "questionLabel": "Question",
+        "questionPlaceholder": "Ask a question...",
+        "optionsDivider": "Options",
+        "optionPlaceholder": "Option {{index}}",
+        "removeOption": "Remove option {{index}}",
+        "addOption": "Add option",
+        "saveError": "Failed to save poll. Please try again.",
+        "save": "Save poll"
+    },
+    "reportDialog": {
+        "trigger": "Report",
+        "title": "Report {{target}}",
+        "reasonLabel": "Reason",
+        "reasonPlaceholder": "Why are you reporting this?",
+        "submit": "Submit Report"
     }
 }
 

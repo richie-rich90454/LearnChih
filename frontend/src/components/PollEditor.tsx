@@ -12,6 +12,7 @@ import {
 } from "@fluentui/react-components";
 import { Add24Regular, Delete24Regular } from "@fluentui/react-icons";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type { AxiosResponse } from "axios";
 import api from "../api/axios";
 
@@ -60,6 +61,7 @@ interface PollEditorProps {
  */
 export function PollEditor({ postId, onSaved, onCancel }: PollEditorProps) {
     const styles = useStyles();
+    const { t } = useTranslation();
     const [question, setQuestion] = useState("");
     const [options, setOptions] = useState<string[]>(["", ""]);
 
@@ -89,22 +91,22 @@ export function PollEditor({ postId, onSaved, onCancel }: PollEditorProps) {
 
     return (
         <div className={styles.root}>
-            <Field label="Question" required>
+            <Field label={t("pollEditor.questionLabel")} required>
                 <Input
                     value={question}
                     onChange={(_e, data) => setQuestion(data.value)}
-                    placeholder="Ask a question..."
+                    placeholder={t("pollEditor.questionPlaceholder")}
                 />
             </Field>
 
-            <Divider>Options</Divider>
+            <Divider>{t("pollEditor.optionsDivider")}</Divider>
 
             {options.map((option, index) => (
                 <div key={index} className={styles.optionRow}>
                     <Input
                         value={option}
                         onChange={(_e, data) => updateOption(index, data.value)}
-                        placeholder={`Option ${index + 1}`}
+                        placeholder={t("pollEditor.optionPlaceholder", { index: index + 1 })}
                         style={{ flex: 1 }}
                     />
                     <Button
@@ -112,25 +114,25 @@ export function PollEditor({ postId, onSaved, onCancel }: PollEditorProps) {
                         icon={<Delete24Regular />}
                         disabled={options.length <= 2}
                         onClick={() => removeOption(index)}
-                        aria-label={`Remove option ${index + 1}`}
+                        aria-label={t("pollEditor.removeOption", { index: index + 1 })}
                     />
                 </div>
             ))}
 
             <Button appearance="subtle" icon={<Add24Regular />} onClick={addOption}>
-                Add option
+                {t("pollEditor.addOption")}
             </Button>
 
             {saveMutation.isError && (
                 <MessageBar intent="error">
-                    <MessageBarBody>Failed to save poll. Please try again.</MessageBarBody>
+                    <MessageBarBody>{t("pollEditor.saveError")}</MessageBarBody>
                 </MessageBar>
             )}
 
             <div className={styles.actions}>
                 {onCancel && (
                     <Button appearance="secondary" onClick={onCancel}>
-                        Cancel
+                        {t("common.cancel")}
                     </Button>
                 )}
                 <Button
@@ -139,7 +141,7 @@ export function PollEditor({ postId, onSaved, onCancel }: PollEditorProps) {
                     disabled={!canSave || saveMutation.isPending}
                     icon={saveMutation.isPending ? <Spinner size="tiny" /> : undefined}
                 >
-                    Save poll
+                    {t("pollEditor.save")}
                 </Button>
             </div>
         </div>

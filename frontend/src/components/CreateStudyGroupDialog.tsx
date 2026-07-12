@@ -14,6 +14,7 @@ import {
 } from "@fluentui/react-components";
 import { Add24Regular } from "@fluentui/react-icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { createStudyGroup, type CreateStudyGroupRequest } from "@/api/studyGroups";
 import { Button } from "./ui/Button";
 import { Input } from "./ui/Input";
@@ -25,6 +26,7 @@ interface CreateStudyGroupDialogProps {
 }
 
 export function CreateStudyGroupDialog({ onCreated }: CreateStudyGroupDialogProps) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
@@ -58,44 +60,47 @@ export function CreateStudyGroupDialog({ onCreated }: CreateStudyGroupDialogProp
         >
             <DialogTrigger disableButtonEnhancement>
                 <Button variant="primary" icon={<Add24Regular />}>
-                    Create Group
+                    {t("createStudyGroup.trigger")}
                 </Button>
             </DialogTrigger>
             <DialogSurface className={dialogStyles.surface}>
                 <DialogBody className={dialogStyles.body}>
-                    <DialogTitle className={dialogStyles.title}>Create Study Group</DialogTitle>
+                    <DialogTitle className={dialogStyles.title}>
+                        {t("createStudyGroup.title")}
+                    </DialogTitle>
                     <DialogContent className={dialogStyles.content}>
                         <div className={styles.form}>
                             <Input
-                                label="Name"
+                                label={t("createStudyGroup.nameLabel")}
                                 required
                                 value={name}
                                 onChange={(_e, data) => setName(data.value)}
-                                placeholder="e.g. Calculus Study Crew"
+                                placeholder={t("createStudyGroup.namePlaceholder")}
                             />
-                            <Field label="Description" required>
+                            <Field label={t("createStudyGroup.descriptionLabel")} required>
                                 <Textarea
                                     value={description}
                                     onChange={(_e, data) => setDescription(data.value)}
-                                    placeholder="What is this group about?"
+                                    placeholder={t("createStudyGroup.descriptionPlaceholder")}
+                                    aria-label={t("createStudyGroup.descriptionLabel")}
                                 />
                             </Field>
                             <Input
-                                label="Subject"
+                                label={t("createStudyGroup.subjectLabel")}
                                 value={subject}
                                 onChange={(_e, data) => setSubject(data.value)}
-                                placeholder="e.g. Mathematics"
+                                placeholder={t("createStudyGroup.subjectPlaceholder")}
                             />
                             <Switch
                                 checked={isPublic}
                                 onChange={(_e, data) => setIsPublic(data.checked)}
-                                label={isPublic ? "Public group" : "Private group"}
+                                label={isPublic ? t("createStudyGroup.publicLabel") : t("createStudyGroup.privateLabel")}
                             />
                         </div>
                     </DialogContent>
                     <DialogActions className={dialogStyles.footer}>
                         <Button variant="outline" onClick={() => setOpen(false)}>
-                            Cancel
+                            {t("common.cancel")}
                         </Button>
                         <Button
                             variant="primary"
@@ -110,7 +115,7 @@ export function CreateStudyGroupDialog({ onCreated }: CreateStudyGroupDialogProp
                                 })
                             }
                         >
-                            {mutation.isPending ? <Spinner size="tiny" /> : "Create"}
+                            {mutation.isPending ? <Spinner size="tiny" /> : t("createStudyGroup.create")}
                         </Button>
                     </DialogActions>
                 </DialogBody>
