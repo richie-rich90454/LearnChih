@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
     ArrowCounterclockwise24Regular,
     ErrorCircle24Regular,
@@ -12,6 +12,7 @@ import styles from "./ErrorPage.module.css";
 
 export default function ErrorPage() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const handleRetry = () => {
         window.location.reload();
@@ -34,11 +35,13 @@ export default function ErrorPage() {
                     >
                         {t("errorPage.retry")}
                     </Button>
-                    <Link to="/">
-                        <Button variant="outline" icon={<ArrowLeft24Regular />}>
-                            {t("notFound.backToHome")}
-                        </Button>
-                    </Link>
+                    <Button
+                        variant="outline"
+                        icon={<ArrowLeft24Regular />}
+                        onClick={() => navigate("/")}
+                    >
+                        {t("notFound.backToHome")}
+                    </Button>
                 </div>
             </div>
         </main>
