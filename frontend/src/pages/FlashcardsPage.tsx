@@ -107,6 +107,7 @@ export default function FlashcardsPage() {
                     selectedOptions={selectedDeckId ? [selectedDeckId] : []}
                     onOptionSelect={(_, data) => setSelectedDeckId(data.optionValue)}
                     disabled={isLoading}
+                    aria-label={t("flashcards.selectDeck")}
                 >
                     {deckOptions.map((d) => (
                         <Option key={d.value} value={d.value}>
