@@ -539,6 +539,13 @@
         "usageDay": "最近24小时",
         "usageTotal": "总计"
     },
+    "apiDocsPage": {
+        "title": "API",
+        "seoTitle": "API 文档 — LernChih",
+        "openSwagger": "打开 Swagger UI",
+        "swaggerTab": "Swagger UI",
+        "apiKeysTab": "API 密钥"
+    },
     "maintenanceBanner": {
         "title": "维护通知",
         "dismiss": "关闭"

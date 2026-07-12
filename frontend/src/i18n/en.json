@@ -547,6 +547,13 @@
         "usageDay": "Last 24h",
         "usageTotal": "Total"
     },
+    "apiDocsPage": {
+        "title": "API",
+        "seoTitle": "API Docs — LernChih",
+        "openSwagger": "Open Swagger UI",
+        "swaggerTab": "Swagger UI",
+        "apiKeysTab": "API Keys"
+    },
     "maintenanceBanner": {
         "title": "Maintenance Notice",
         "dismiss": "Dismiss"

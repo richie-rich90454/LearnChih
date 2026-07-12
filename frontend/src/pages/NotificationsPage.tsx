@@ -68,7 +68,7 @@ export default function NotificationsPage() {
     return (
         <div className={styles.container}>
             <Seo
-                title="Notifications — LernChih"
+                title={`${t("notifications.title")} — LernChih`}
                 canonicalPath="/notifications"
                 robots="noindex, follow"
             />
