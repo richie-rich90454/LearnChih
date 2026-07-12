@@ -48,7 +48,7 @@ export default function ModuleProgress({ courseId }: { courseId: number }) {
     const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
     if (progressQuery.isLoading) {
-        return <Spinner label={t("moduleProgress.loading")} />;
+        return <div role="status" aria-live="polite" aria-label={t("moduleProgress.loading")}><Spinner label={t("moduleProgress.loading")} /></div>;
     }
 
     if (progressQuery.isError) {
