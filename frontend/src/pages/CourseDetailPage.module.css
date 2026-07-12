@@ -19,3 +19,7 @@
     font-size: var(--font-size-sm);
     color: var(--text-secondary);
 }
+
+.backButton {
+    align-self: flex-start;
+}

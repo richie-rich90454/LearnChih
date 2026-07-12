@@ -1,7 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { ArrowLeft24Regular } from "@fluentui/react-icons";
 import Seo from "../components/Seo";
 import ModuleProgress from "../components/ModuleProgress";
+import { Button } from "../components/ui/Button";
 import styles from "./CourseDetailPage.module.css";
 
 /**
@@ -11,6 +13,7 @@ import styles from "./CourseDetailPage.module.css";
  */
 export default function CourseDetailPage() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const courseId = Number(id);
 
@@ -32,6 +35,15 @@ export default function CourseDetailPage() {
                 title={`${t("resources.course")} — LernChih`}
                 canonicalPath={`/courses/${courseId}`}
             />
+            <Button
+                variant="subtle"
+                size="small"
+                icon={<ArrowLeft24Regular />}
+                onClick={() => navigate("/resources")}
+                className={styles.backButton}
+            >
+                {t("common.back")}
+            </Button>
             <ModuleProgress courseId={courseId} />
         </div>
     );
