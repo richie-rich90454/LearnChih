@@ -22,6 +22,7 @@ import {
 } from "../api/notifications";
 import { useNotificationStore, type AppNotification } from "../store/notificationStore";
 import { NotificationGroupSection } from "./NotificationGroupSection";
+import { SnoozeButton } from "./SnoozeButton";
 import styles from "./NotificationBell.module.css";
 
 const GROUP_KEYS = ["mentions", "reactions", "replies", "system"] as const;
@@ -161,17 +162,20 @@ export default function NotificationBell() {
             <PopoverSurface className={styles.popoverSurface}>
                 <div className={styles.header}>
                     <Text weight="semibold">{t("notifications.title")}</Text>
-                    {unreadCount > 0 && (
-                        <Button
-                            appearance="transparent"
-                            icon={<Checkmark24Regular />}
-                            size="small"
-                            onClick={() => markAllMutation.mutate()}
-                            disabled={markAllMutation.isPending}
-                        >
-                            {t("notifications.markAllRead")}
-                        </Button>
-                    )}
+                    <div className={styles.headerActions}>
+                        <SnoozeButton />
+                        {unreadCount > 0 && (
+                            <Button
+                                appearance="transparent"
+                                icon={<Checkmark24Regular />}
+                                size="small"
+                                onClick={() => markAllMutation.mutate()}
+                                disabled={markAllMutation.isPending}
+                            >
+                                {t("notifications.markAllRead")}
+                            </Button>
+                        )}
+                    </div>
                 </div>
 
                 {isLoading && notifications.length === 0 && (

@@ -1,0 +1,13 @@
+{
+    "snooze": {
+        "snooze": "Snooze",
+        "snoozedUntil": "Snoozed until {{time}}",
+        "unsnooze": "Unsnooze",
+        "duration1h": "1 hour",
+        "duration4h": "4 hours",
+        "untilTomorrow": "Until tomorrow",
+        "custom": "Custom...",
+        "customHours": "hours",
+        "apply": "Apply"
+    }
+}

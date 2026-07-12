@@ -1,0 +1,13 @@
+{
+    "snooze": {
+        "snooze": "免打扰",
+        "snoozedUntil": "免打扰至 {{time}}",
+        "unsnooze": "取消免打扰",
+        "duration1h": "1 小时",
+        "duration4h": "4 小时",
+        "untilTomorrow": "直到明天",
+        "custom": "自定义...",
+        "customHours": "小时",
+        "apply": "应用"
+    }
+}

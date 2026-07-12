@@ -1,0 +1,65 @@
+/**
+ * SnoozeButton - co-located CSS Module. Token-based; no !important.
+ * Owns the snooze dropdown panel + active indicator layout.
+ */
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-2);
+    min-width: 200px;
+}
+
+.optionButton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: none;
+    border-radius: var(--radius-input);
+    background: transparent;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    text-align: start;
+    cursor: pointer;
+    transition: background-color var(--motion-fast) var(--motion-ease);
+}
+
+.optionButton:hover {
+    background-color: var(--surface-sunken);
+}
+
+.optionButton:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+.customRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    border-top: 1px solid var(--border-subtle);
+    margin-top: var(--space-1);
+}
+
+.customLabel {
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+    white-space: nowrap;
+}
+
+.customInput {
+    width: 64px;
+}
+
+.activeIndicator {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--status-warning);
+    font-size: var(--font-size-xs);
+}
