@@ -1,0 +1,63 @@
+/**
+ * ReadAlongHighlight - read-along sentence highlighting (F29). Token-based;
+ * no raw hex, no !important.
+ */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.sentences {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-height: 400px;
+    overflow-y: auto;
+    padding: var(--space-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    background: var(--surface-sunken);
+}
+
+.sentence {
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--text-secondary);
+    border-radius: var(--radius-input);
+    transition: background var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
+}
+
+.sentenceActive {
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--text-primary);
+    background: var(--accent-soft, var(--surface-sunken));
+    border-radius: var(--radius-input);
+    transition: background var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
+}
+
+.noAnim {
+    transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sentence,
+    .sentenceActive {
+        transition: none;
+    }
+}

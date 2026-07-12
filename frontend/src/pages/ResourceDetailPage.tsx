@@ -58,6 +58,7 @@ import { PdfHighlightPanel } from "@/components/PdfHighlightPanel";
 import { AnnotationPanel } from "@/components/AnnotationPanel";
 import { DifficultyRating } from "@/components/DifficultyRating";
 import { TtsNarration } from "@/components/TtsNarration";
+import { ReadAlongHighlight } from "@/components/ReadAlongHighlight";
 import styles from "./Detail.module.css";
 
 function cx(...parts: Array<string | false | undefined | null>): string {
@@ -277,6 +278,9 @@ export default function ResourceDetailPage() {
 
             {/* TTS narration (F28) */}
             <TtsNarration text={resource?.description || ""} />
+
+            {/* Read-along highlight sync (F29) */}
+            <ReadAlongHighlight text={resource?.description || ""} />
 
             {/* Resource info (wrapped in SplitView for read-along notes) */}
             <SplitView resourceId={id ?? ""} enabled={splitView}>
