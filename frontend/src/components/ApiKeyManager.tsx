@@ -78,14 +78,14 @@ export default function ApiKeyManager() {
                         flex: 1,
                     }}
                 >
-                    <Label htmlFor="api-key-name">Key name</Label>
+                    <Label htmlFor="api-key-name">{t("apiKeys.fieldName")}</Label>
                     <Input
                         id="api-key-name"
                         value={newKeyName}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             setNewKeyName(e.target.value)
                         }
-                        placeholder="e.g. CI integration"
+                        placeholder={t("apiKeys.fieldNamePlaceholder")}
                     />
                 </div>
                 <Button
@@ -93,16 +93,15 @@ export default function ApiKeyManager() {
                     onClick={() => createMutation.mutate()}
                     disabled={createMutation.isPending || !newKeyName.trim()}
                 >
-                    {createMutation.isPending ? <Spinner size="tiny" /> : "Generate key"}
+                    {createMutation.isPending ? <Spinner size="tiny" /> : t("apiKeys.createConfirm")}
                 </Button>
             </div>
 
             {createMutation.data?.data && (
                 <MessageBar intent="success">
                     <MessageBarBody>
-                        Key generated:{" "}
-                        <code>{createMutation.data.data.plaintext}</code>. Copy it now — it
-                        won&apos;t be shown again.
+                        {t("apiKeys.keyGenerated")}{" "}
+                        <code>{createMutation.data.data.plaintext}</code>. {t("apiKeys.copyNow")}
                         <Button
                             appearance="subtle"
                             size="small"
@@ -111,7 +110,7 @@ export default function ApiKeyManager() {
                                 handleCopyPlaintext(createMutation.data!.data.plaintext)
                             }
                         >
-                            {copiedId === -1 ? "Copied" : "Copy"}
+                            {copiedId === -1 ? t("apiKeys.copied") : t("apiKeys.copy")}
                         </Button>
                     </MessageBarBody>
                 </MessageBar>
@@ -124,17 +123,17 @@ export default function ApiKeyManager() {
             )}
 
             {!isLoading && keys.length === 0 && (
-                <Text style={{ color: "var(--colorNeutralForeground3)" }}>No API keys yet.</Text>
+                <Text style={{ color: "var(--colorNeutralForeground3)" }}>{t("apiKeys.noKeys")}</Text>
             )}
 
             {!isLoading && keys.length > 0 && (
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHeaderCell>Name</TableHeaderCell>
-                            <TableHeaderCell>Key</TableHeaderCell>
-                            <TableHeaderCell>Created</TableHeaderCell>
-                            <TableHeaderCell>Actions</TableHeaderCell>
+                            <TableHeaderCell>{t("apiKeys.columnName")}</TableHeaderCell>
+                            <TableHeaderCell>{t("apiKeys.columnKey")}</TableHeaderCell>
+                            <TableHeaderCell>{t("apiKeys.createdAt")}</TableHeaderCell>
+                            <TableHeaderCell>{t("apiKeys.columnActions")}</TableHeaderCell>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -161,7 +160,7 @@ export default function ApiKeyManager() {
                                             onClick={() => revokeMutation.mutate(key.id)}
                                             disabled={revokeMutation.isPending || key.revoked}
                                         >
-                                            {key.revoked ? "Revoked" : "Revoke"}
+                                            {key.revoked ? t("apiKeys.revoked") : t("apiKeys.revoke")}
                                         </Button>
                                     </div>
                                 </TableCell>
