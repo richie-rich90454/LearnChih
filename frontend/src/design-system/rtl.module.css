@@ -1,0 +1,58 @@
+/**
+ * RTL-safe spacing utility classes (B93).
+ *
+ * Uses CSS logical properties (margin-inline-start, padding-inline-end, etc.)
+ * instead of physical properties (margin-left, padding-right). Logical
+ * properties automatically mirror in RTL (right-to-left) languages: the browser
+ * maps inline-start to "right" in LTR and "left" in RTL, so the same class
+ * works in both directions without per-direction overrides.
+ *
+ * CONVENTION (B93): Prefer these utilities (or raw logical properties) over
+ * `margin-left` / `padding-right` / `left` / `right` in component CSS. When a
+ * component needs directional spacing, use the logical equivalents:
+ *   - margin-left   → margin-inline-start
+ *   - margin-right  → margin-inline-end
+ *   - padding-left  → padding-inline-start
+ *   - padding-right → padding-inline-end
+ *   - left/right    → inset-inline-start / inset-inline-end
+ *   - text-align: left/right → text-align: start/end
+ *   - border-left   → border-inline-start
+ * The useDir hook (src/hooks/useDir.ts) sets dir="rtl" on the layout root for
+ * zh-Arabic / Hebrew locales; logical properties ensure the layout mirrors.
+ *
+ * Token-based: spacing values come from design-system tokens (--space-*).
+ */
+
+.start1 { margin-inline-start: var(--space-1); }
+.end1   { margin-inline-end: var(--space-1); }
+.start2 { margin-inline-start: var(--space-2); }
+.end2   { margin-inline-end: var(--space-2); }
+.start3 { margin-inline-start: var(--space-3); }
+.end3   { margin-inline-end: var(--space-3); }
+.start4 { margin-inline-start: var(--space-4); }
+.end4   { margin-inline-end: var(--space-4); }
+.start6 { margin-inline-start: var(--space-6); }
+.end6   { margin-inline-end: var(--space-6); }
+
+.padStart2 { padding-inline-start: var(--space-2); }
+.padEnd2   { padding-inline-end: var(--space-2); }
+.padStart3 { padding-inline-start: var(--space-3); }
+.padEnd3   { padding-inline-end: var(--space-3); }
+.padStart4 { padding-inline-start: var(--space-4); }
+.padEnd4   { padding-inline-end: var(--space-4); }
+
+/* Inline start border (mirrors automatically in RTL). */
+.borderStart {
+    border-inline-start: 2px solid var(--border-subtle);
+}
+.borderEnd {
+    border-inline-end: 2px solid var(--border-subtle);
+}
+
+/* Text alignment via logical keywords. */
+.alignStart { text-align: start; }
+.alignEnd   { text-align: end; }
+
+/* Inset positioning via logical properties. */
+.insetStart0 { inset-inline-start: 0; }
+.insetEnd0   { inset-inline-end: 0; }
