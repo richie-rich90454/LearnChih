@@ -1,0 +1,12 @@
+{
+    "backupStatus": {
+        "title": "Backup & restore status",
+        "lastBackup": "Last backup",
+        "nextScheduled": "Next scheduled",
+        "backupSize": "Backup size",
+        "location": "Storage location",
+        "restoreInProgress": "Restore in progress...",
+        "triggerNow": "Trigger backup now",
+        "ok": "OK"
+    }
+}

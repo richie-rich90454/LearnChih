@@ -1,0 +1,12 @@
+{
+    "backupStatus": {
+        "title": "备份与恢复状态",
+        "lastBackup": "上次备份",
+        "nextScheduled": "下次计划备份",
+        "backupSize": "备份大小",
+        "location": "存储位置",
+        "restoreInProgress": "恢复进行中...",
+        "triggerNow": "立即触发备份",
+        "ok": "正常"
+    }
+}
