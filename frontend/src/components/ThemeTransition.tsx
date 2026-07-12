@@ -90,6 +90,11 @@ export function ThemeTransition({ mode, originX, originY }: ThemeTransitionProps
     }, [prevMode, reduced, originX, originY]);
 
     if (reduced || prevMode === null) return null;
+    // B43: Reduced-motion short-circuit. When the user prefers reduced motion
+    // the theme swaps instantly with no overlay/clip-path animation — the
+    // guard above (and the early return in the GSAP effect) ensures no motion
+    // is rendered. This satisfies prefers-reduced-motion at the component
+    // level in addition to the global index.css duration collapse.
 
     return (
         <div
