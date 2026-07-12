@@ -1,4 +1,4 @@
-import { useState, type DragEvent } from "react";
+import { useState, useEffect, type DragEvent } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner, MessageBar, MessageBarBody } from "@fluentui/react-components";
 import type { AxiosResponse } from "axios";
@@ -29,6 +29,24 @@ export type PollMode = "single" | "ranking" | "openEnded";
 interface PollDisplayProps {
     poll: Poll;
     mode?: PollMode;
+    closesAt?: string | null;
+}
+
+/** Hook that returns true once the scheduled close time has passed. */
+function usePollClosed(closesAt?: string | null): boolean {
+    const [now, setNow] = useState(() => Date.now());
+    useEffect(() => {
+        if (!closesAt) return;
+        const target = new Date(closesAt).getTime();
+        if (Number.isNaN(target)) return;
+        if (target <= now) return;
+        const timer = setTimeout(() => setNow(Date.now()), target - now);
+        return () => clearTimeout(timer);
+    }, [closesAt, now]);
+    if (!closesAt) return false;
+    const target = new Date(closesAt).getTime();
+    if (Number.isNaN(target)) return false;
+    return target <= now;
 }
 
 /**
@@ -37,15 +55,16 @@ interface PollDisplayProps {
  *  - ranking: drag-to-reorder list; the submitted order is the vote.
  *  - openEnded: free-text response submitted as the vote.
  *
- * The single mode keeps the original server-backed vote mutation; ranking and
- * openEnded use local state until a backend contract is defined.
+ * When `closesAt` is set and the scheduled time has passed (F47), voting is
+ * disabled and results are revealed.
  *
- * Spec ref: F46.
+ * Spec ref: F46, F47.
  */
-export function PollDisplay({ poll, mode = "single" }: PollDisplayProps) {
+export function PollDisplay({ poll, mode = "single", closesAt }: PollDisplayProps) {
     const { t } = useTranslation();
     const reduced = useReducedMotion();
     const queryClient = useQueryClient();
+    const closed = usePollClosed(closesAt);
 
     const voteMutation = useMutation({
         mutationFn: (optionId: number): Promise<AxiosResponse<Poll>> =>
@@ -57,23 +76,32 @@ export function PollDisplay({ poll, mode = "single" }: PollDisplayProps) {
     });
 
     const hasVoted = poll.votedOptionId !== undefined;
+    const revealResults = hasVoted || closed;
     const total = poll.totalVotes || poll.options.reduce((sum, o) => sum + o.voteCount, 0);
 
     if (mode === "ranking") {
-        return <RankingPoll poll={poll} reduced={reduced} />;
+        return <RankingPoll poll={poll} reduced={reduced} closed={closed} />;
     }
     if (mode === "openEnded") {
-        return <OpenEndedPoll poll={poll} reduced={reduced} />;
+        return <OpenEndedPoll poll={poll} reduced={reduced} closed={closed} />;
     }
 
     return (
         <div className={styles.root}>
             <div className={styles.questionRow}>
                 <span className={styles.question}>{poll.question}</span>
-                <Badge variant="neutral" size="small">
-                    {t("polls.modeSingle", "Single choice")}
+                <Badge variant={closed ? "warning" : "neutral"} size="small">
+                    {closed
+                        ? t("polls.closed", "Closed")
+                        : t("polls.modeSingle", "Single choice")}
                 </Badge>
             </div>
+
+            {closed && (
+                <MessageBar intent="info">
+                    <MessageBarBody>{t("pollSchedule.closedReveal", "Voting closed — results revealed.")}</MessageBarBody>
+                </MessageBar>
+            )}
 
             {voteMutation.isError && (
                 <MessageBar intent="error">
@@ -90,7 +118,7 @@ export function PollDisplay({ poll, mode = "single" }: PollDisplayProps) {
                             <span className={chosen ? styles.optionChosen : styles.optionText}>
                                 {option.text}
                             </span>
-                            {hasVoted ? (
+                            {revealResults ? (
                                 <span className={styles.optionCount}>
                                     {pct}% · {option.voteCount}
                                 </span>
@@ -98,14 +126,14 @@ export function PollDisplay({ poll, mode = "single" }: PollDisplayProps) {
                                 <Button
                                     size="small"
                                     variant={chosen ? "primary" : "outline"}
-                                    disabled={voteMutation.isPending}
+                                    disabled={voteMutation.isPending || closed}
                                     onClick={() => voteMutation.mutate(option.id)}
                                 >
                                     {t("polls.vote", "Vote")}
                                 </Button>
                             )}
                         </div>
-                        {hasVoted && (
+                        {revealResults && (
                             <div
                                 className={styles.barTrack}
                                 role="progressbar"
@@ -133,9 +161,9 @@ export function PollDisplay({ poll, mode = "single" }: PollDisplayProps) {
 
 /**
  * Ranking poll: user drags options into their preferred order, then submits.
- * Uses HTML5 drag-and-drop (no external lib).
+ * Uses HTML5 drag-and-drop (no external lib). Disabled when `closed`.
  */
-function RankingPoll({ poll, reduced }: { poll: Poll; reduced: boolean }) {
+function RankingPoll({ poll, reduced, closed }: { poll: Poll; reduced: boolean; closed: boolean }) {
     const { t } = useTranslation();
     const [order, setOrder] = useState<PollOption[]>(() => [...poll.options]);
     const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -165,8 +193,8 @@ function RankingPoll({ poll, reduced }: { poll: Poll; reduced: boolean }) {
         <div className={styles.root}>
             <div className={styles.questionRow}>
                 <span className={styles.question}>{poll.question}</span>
-                <Badge variant="accent" size="small">
-                    {t("polls.modeRanking", "Ranking")}
+                <Badge variant={closed ? "warning" : "accent"} size="small">
+                    {closed ? t("polls.closed", "Closed") : t("polls.modeRanking", "Ranking")}
                 </Badge>
             </div>
             <p className={styles.hint}>{t("polls.rankingHint", "Drag to reorder, then submit.")}</p>
@@ -177,7 +205,7 @@ function RankingPoll({ poll, reduced }: { poll: Poll; reduced: boolean }) {
                         className={
                             dragIndex === index ? styles.rankItemDragging : styles.rankItem
                         }
-                        draggable={!submitted}
+                        draggable={!submitted && !closed}
                         onDragStart={(e) => handleDragStart(e, index)}
                         onDragOver={handleDragOver}
                         onDrop={(e) => handleDrop(e, index)}
@@ -190,19 +218,21 @@ function RankingPoll({ poll, reduced }: { poll: Poll; reduced: boolean }) {
                     </li>
                 ))}
             </ol>
-            {!submitted ? (
+            {!submitted && !closed ? (
                 <Button
                     variant="primary"
                     size="small"
                     onClick={() => setSubmitted(true)}
-                    disabled={order.length === 0}
+                    disabled={order.length === 0 || closed}
                 >
                     {t("polls.submitRanking", "Submit ranking")}
                 </Button>
             ) : (
-                <MessageBar intent="success">
+                <MessageBar intent={closed ? "info" : "success"}>
                     <MessageBarBody>
-                        {t("polls.rankingSubmitted", "Your ranking was submitted.")}
+                        {closed
+                            ? t("pollSchedule.closedReveal", "Voting closed — results revealed.")
+                            : t("polls.rankingSubmitted", "Your ranking was submitted.")}
                     </MessageBarBody>
                 </MessageBar>
             )}
@@ -211,9 +241,9 @@ function RankingPoll({ poll, reduced }: { poll: Poll; reduced: boolean }) {
 }
 
 /**
- * Open-ended poll: user submits a free-text response.
+ * Open-ended poll: user submits a free-text response. Disabled when `closed`.
  */
-function OpenEndedPoll({ poll, reduced: _reduced }: { poll: Poll; reduced: boolean }) {
+function OpenEndedPoll({ poll, reduced: _reduced, closed }: { poll: Poll; reduced: boolean; closed: boolean }) {
     const { t } = useTranslation();
     const [text, setText] = useState("");
     const [submitted, setSubmitted] = useState(false);
@@ -222,11 +252,11 @@ function OpenEndedPoll({ poll, reduced: _reduced }: { poll: Poll; reduced: boole
         <div className={styles.root}>
             <div className={styles.questionRow}>
                 <span className={styles.question}>{poll.question}</span>
-                <Badge variant="accent" size="small">
-                    {t("polls.modeOpenEnded", "Open-ended")}
+                <Badge variant={closed ? "warning" : "accent"} size="small">
+                    {closed ? t("polls.closed", "Closed") : t("polls.modeOpenEnded", "Open-ended")}
                 </Badge>
             </div>
-            {!submitted ? (
+            {!submitted && !closed ? (
                 <div className={styles.openEndedRow}>
                     <textarea
                         className={styles.textArea}
@@ -234,20 +264,23 @@ function OpenEndedPoll({ poll, reduced: _reduced }: { poll: Poll; reduced: boole
                         onChange={(e) => setText(e.target.value)}
                         placeholder={t("polls.openEndedPlaceholder", "Type your answer...")}
                         rows={3}
+                        disabled={closed}
                     />
                     <Button
                         variant="primary"
                         size="small"
                         onClick={() => setSubmitted(true)}
-                        disabled={!text.trim()}
+                        disabled={!text.trim() || closed}
                     >
                         {t("polls.submitAnswer", "Submit answer")}
                     </Button>
                 </div>
             ) : (
-                <MessageBar intent="success">
+                <MessageBar intent={closed ? "info" : "success"}>
                     <MessageBarBody>
-                        {t("polls.answerSubmitted", "Your answer was submitted.")}
+                        {closed
+                            ? t("pollSchedule.closedReveal", "Voting closed — results revealed.")
+                            : t("polls.answerSubmitted", "Your answer was submitted.")}
                     </MessageBarBody>
                 </MessageBar>
             )}

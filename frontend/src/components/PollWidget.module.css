@@ -1,5 +1,5 @@
 /**
- * PollWidget (F46) wrapper styles. Token-based; no raw hex, no !important.
+ * PollWidget (F46/F47) wrapper styles. Token-based; no raw hex, no !important.
  */
 
 .root {
@@ -11,6 +11,14 @@
     border-radius: var(--radius-card);
 }
 
+.headerRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
 .label {
     font-family: var(--font-sans);
     font-size: var(--font-size-xs);
@@ -18,4 +26,43 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--text-secondary);
+}
+
+.schedulerRow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    background-color: var(--surface-sunken);
+}
+
+.schedulerLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.schedulerActions {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.datetimeInput {
+    width: 100%;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-input);
+    background-color: var(--surface-1);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color-scheme: light dark;
+}
+
+.datetimeInput:focus {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
 }

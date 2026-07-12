@@ -1,0 +1,12 @@
+{
+    "pollSchedule": {
+        "toggle": "定时关闭",
+        "closesAt": "关闭时间",
+        "save": "保存",
+        "clear": "清除",
+        "closedReveal": "投票已关闭 — 显示结果。"
+    },
+    "polls": {
+        "closed": "已关闭"
+    }
+}

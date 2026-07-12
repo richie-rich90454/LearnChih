@@ -1,0 +1,12 @@
+{
+    "pollSchedule": {
+        "toggle": "Schedule close",
+        "closesAt": "Closes at",
+        "save": "Save",
+        "clear": "Clear",
+        "closedReveal": "Voting closed — results revealed."
+    },
+    "polls": {
+        "closed": "Closed"
+    }
+}
