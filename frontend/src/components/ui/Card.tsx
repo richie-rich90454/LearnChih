@@ -4,6 +4,13 @@ import styles from "./Card.module.css";
 /**
  * Design-system Card padding scale, mapped to `--space-*` tokens.
  * `md` is the default and matches a comfortable content card.
+ *
+ * Empty-state layout convention (B65): Empty states rendered inside a
+ * Card should be vertically centered using
+ * `display: flex; align-items: center; justify-content: center; min-height: 50vh;`
+ * The dedicated `EmptyState` component (owned separately) owns this layout;
+ * when inlining an empty state inside a Card, mirror that pattern so every
+ * empty surface shares one vertical centering rhythm.
  */
 export type CardPadding = "none" | "sm" | "md" | "lg";
 
