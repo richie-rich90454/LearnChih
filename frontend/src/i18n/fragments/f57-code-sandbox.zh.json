@@ -1,0 +1,8 @@
+{
+    "codeSandbox": {
+        "run": "运行",
+        "clear": "清除",
+        "editorLabel": "代码编辑器",
+        "output": "控制台输出"
+    }
+}

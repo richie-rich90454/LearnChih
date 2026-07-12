@@ -1,0 +1,155 @@
+/**
+ * CodeSandbox (F57). Token-based styling for the live code execution sandbox.
+ * No !important; transitions respect prefers-reduced-motion.
+ */
+
+.container {
+    margin: var(--space-4) 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    background: var(--surface-2);
+    overflow: hidden;
+    transition: border-color var(--motion-fast) var(--motion-ease);
+}
+
+.container:hover {
+    border-color: var(--border-strong);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--surface-sunken);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+}
+
+.headerIcon {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.title {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex-shrink: 0;
+}
+
+.editorWrapper {
+    padding: var(--space-2);
+    background: var(--surface-sunken);
+}
+
+.editor {
+    width: 100%;
+}
+
+.textarea {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+    min-height: 120px;
+}
+
+.output {
+    border-top: 1px solid var(--border-subtle);
+    background: var(--surface-1);
+}
+
+.outputHeader {
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--surface-sunken);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.outputBody {
+    padding: var(--space-2) var(--space-3);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.logLine,
+.warnLine,
+.errorLine {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.logLine:last-child,
+.warnLine:last-child,
+.errorLine:last-child {
+    border-bottom: none;
+}
+
+.logLine {
+    color: var(--text-primary);
+}
+
+.warnLine {
+    color: var(--status-warning);
+    background: var(--status-warning-soft);
+    padding-left: var(--space-2);
+    padding-right: var(--space-2);
+    margin: 0 calc(-1 * var(--space-2));
+    border-radius: var(--radius-input);
+}
+
+.errorLine {
+    color: var(--status-danger);
+    background: var(--status-danger-soft);
+    padding-left: var(--space-2);
+    padding-right: var(--space-2);
+    margin: 0 calc(-1 * var(--space-2));
+    border-radius: var(--radius-input);
+}
+
+.linePrefix {
+    flex: 0 0 16px;
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+}
+
+.errorPrefix {
+    font-weight: var(--font-weight-bold);
+    color: var(--status-danger);
+}
+
+.logText {
+    margin: 0;
+    flex: 1 1 auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: var(--font-mono);
+}

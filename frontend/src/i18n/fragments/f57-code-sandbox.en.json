@@ -1,0 +1,8 @@
+{
+    "codeSandbox": {
+        "run": "Run",
+        "clear": "Clear",
+        "editorLabel": "Code editor",
+        "output": "Console output"
+    }
+}
