@@ -495,6 +495,10 @@ export default function ChannelsPage() {
                                                             "channelFolders.chooseFolder",
                                                             "Choose folder",
                                                         )}
+                                                        aria-label={t(
+                                                            "channelFolders.chooseFolder",
+                                                            "Choose folder",
+                                                        )}
                                                         onOptionSelect={(_: unknown, data: { optionValue?: string }) => {
                                                             if (data.optionValue) {
                                                                 addChannelToFolder(data.optionValue, channel.id);
@@ -537,6 +541,7 @@ export default function ChannelsPage() {
                             />
                             <Dropdown
                                 placeholder={t("common.sortBy")}
+                                aria-label={t("common.sortBy")}
                                 value={
                                     threadSort === "newest"
                                         ? t("resources.newest")
