@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Popover, PopoverTrigger, PopoverSurface, Button, Badge } from "@fluentui/react-components";
 import { useReactions, useAddReaction, useRemoveReaction, type Reaction } from "../hooks/useSocial";
 import useAuthStore from "../store/authStore";
+import { ReactionRoster } from "./ReactionRoster";
 
 const COMMON_EMOJIS = ["👍", "❤️", "🎉", "🔥", "👀", "💡", "🚀", "✅"];
 
@@ -11,6 +12,7 @@ interface ReactionPickerProps {
 
 export function ReactionPicker({ postId }: ReactionPickerProps) {
     const [open, setOpen] = useState(false);
+    const [rosterEmoji, setRosterEmoji] = useState<string | null>(null);
     const { data: reactions, isLoading } = useReactions(postId);
     const addReaction = useAddReaction(postId);
     const removeReaction = useRemoveReaction(postId);
@@ -38,16 +40,29 @@ export function ReactionPicker({ postId }: ReactionPickerProps) {
             {Object.entries(grouped).map(([emoji, list]) => {
                 const mine = list.some((r) => r.userId === currentUser?.userId);
                 return (
-                    <Badge
+                    <Popover
                         key={emoji}
-                        appearance={mine ? "filled" : "outline"}
-                        color={mine ? "brand" : "informative"}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleReact(emoji)}
-                        title={`${list.length} reaction(s)`}
+                        open={rosterEmoji === emoji}
+                        onOpenChange={(_, d) => {
+                            setRosterEmoji(d.open ? emoji : null);
+                        }}
+                        openOnHover
                     >
-                        {emoji} {list.length}
-                    </Badge>
+                        <PopoverTrigger disableButtonEnhancement>
+                            <Badge
+                                appearance={mine ? "filled" : "outline"}
+                                color={mine ? "brand" : "informative"}
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleReact(emoji)}
+                                title={`${list.length} reaction(s)`}
+                            >
+                                {emoji} {list.length}
+                            </Badge>
+                        </PopoverTrigger>
+                        <PopoverSurface>
+                            <ReactionRoster emoji={emoji} reactions={list} />
+                        </PopoverSurface>
+                    </Popover>
                 );
             })}
 
