@@ -8,6 +8,12 @@
  *   - rest:  --shadow-card  (default, subtle lift)
  *   - lift:  --shadow-lift  (hover when `interactive`)
  * Compound `.card.<modifier>` selectors (0,2,0) beat Griffel atomic (0,1,0).
+ *
+ * Vertical-rhythm convention (B57): Page sections that stack Cards should
+ * separate them with `margin-bottom: var(--space-8)` (32px) for top-level
+ * sections and `var(--space-4)` (16px) for subsections nested inside a
+ * section. Always prefer the `--space-*` token scale over ad-hoc px values
+ * so rhythm stays consistent across pages.
  */
 
 .card {
