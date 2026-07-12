@@ -67,7 +67,8 @@
         "mainNavigation": "Main navigation",
         "mobileNavigation": "Mobile navigation",
         "footerNavigation": "Footer navigation",
-        "openMenu": "Open menu"
+        "openMenu": "Open menu",
+        "accountMenu": "Account menu"
     },
     "theme": {
         "toggle": "Toggle dark mode"

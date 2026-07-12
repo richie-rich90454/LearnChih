@@ -14,6 +14,7 @@ import {
     MenuItem,
     Text,
     Title3,
+    Tooltip,
 } from "@fluentui/react-components";
 import {
     Navigation24Regular,
@@ -192,14 +193,16 @@ export default function AppLayout() {
             {/* Desktop sidebar */}
             <aside className={styles.sidebar} aria-label={t("a11y.sidebar")}>
                 <div className={styles.sidebarHeader}>
-                    <Button
-                        appearance="subtle"
-                        className={styles.brand}
-                        onClick={() => navigate(authenticated ? "/dashboard" : "/")}
-                        aria-label="LernChih"
-                    >
-                        <LogoFull size={28} title="LernChih" />
-                    </Button>
+                    <Tooltip content={t("nav.dashboard")} relationship="description">
+                        <Button
+                            appearance="subtle"
+                            className={styles.brand}
+                            onClick={() => navigate(authenticated ? "/dashboard" : "/")}
+                            aria-label="LernChih"
+                        >
+                            <LogoFull size={28} title="LernChih" />
+                        </Button>
+                    </Tooltip>
                 </div>
                 <div className={styles.sidebarBody}>
                     <nav
@@ -241,13 +244,15 @@ export default function AppLayout() {
                 <AnnouncementBanner />
                 <header className={styles.header}>
                     <div className={styles.headerLeft}>
-                        <Button
-                            appearance="subtle"
-                            icon={<Navigation24Regular />}
-                            className={styles.mobileMenuButton}
-                            onClick={() => setMobileOpen(true)}
-                            aria-label={t("a11y.openMenu")}
-                        />
+                        <Tooltip content={t("a11y.openMenu")} relationship="label">
+                            <Button
+                                appearance="subtle"
+                                icon={<Navigation24Regular />}
+                                className={styles.mobileMenuButton}
+                                onClick={() => setMobileOpen(true)}
+                                aria-label={t("a11y.openMenu")}
+                            />
+                        </Tooltip>
                         <Title3 style={{ display: "none" }}>
                             LernChih
                         </Title3>
@@ -259,45 +264,58 @@ export default function AppLayout() {
 
                     <div className={styles.headerRight}>
                         {authenticated && <NotificationBell />}
-                        <Button
-                            appearance="subtle"
-                            onClick={() => {
-                                const next = i18n.language === "en" ? "zh" : "en";
-                                i18n.changeLanguage(next);
-                                // syncDocumentLang in i18n/index.ts already persists
-                                // the choice to localStorage; no need to duplicate here.
-                            }}
-                            aria-label={`${t("language.label")} (${i18n.language.startsWith("zh") ? "中" : "EN"})`}
+                        <Tooltip content={t("language.label")} relationship="description">
+                            <Button
+                                appearance="subtle"
+                                onClick={() => {
+                                    const next = i18n.language === "en" ? "zh" : "en";
+                                    i18n.changeLanguage(next);
+                                    // syncDocumentLang in i18n/index.ts already persists
+                                    // the choice to localStorage; no need to duplicate here.
+                                }}
+                                aria-label={`${t("language.label")} (${i18n.language.startsWith("zh") ? "中" : "EN"})`}
+                            >
+                                {i18n.language.startsWith("zh") ? "中" : "EN"}
+                            </Button>
+                        </Tooltip>
+                        <Tooltip content={t("theme.toggle")} relationship="label">
+                            <Button
+                                appearance="subtle"
+                                data-tour="theme-toggle"
+                                onClick={(e) => {
+                                    const rect = (
+                                        e.currentTarget as HTMLButtonElement
+                                    ).getBoundingClientRect();
+                                    toggle({
+                                        x: rect.left + rect.width / 2,
+                                        y: rect.top + rect.height / 2,
+                                    });
+                                }}
+                                aria-label={t("theme.toggle")}
+                            >
+                                {mode === "light" ? <WeatherMoon24Regular /> : <WeatherSunny24Regular />}
+                            </Button>
+                        </Tooltip>
+                        <Tooltip
+                            content={t("commandPalette.quickActions.toggleFocusMode")}
+                            relationship="label"
                         >
-                            {i18n.language.startsWith("zh") ? "中" : "EN"}
-                        </Button>
-                        <Button
-                            appearance="subtle"
-                            data-tour="theme-toggle"
-                            onClick={(e) => {
-                                const rect = (
-                                    e.currentTarget as HTMLButtonElement
-                                ).getBoundingClientRect();
-                                toggle({
-                                    x: rect.left + rect.width / 2,
-                                    y: rect.top + rect.height / 2,
-                                });
-                            }}
-                            aria-label={t("theme.toggle")}
-                        >
-                            {mode === "light" ? <WeatherMoon24Regular /> : <WeatherSunny24Regular />}
-                        </Button>
-                        <Button
-                            appearance="subtle"
-                            icon={<Eye24Regular />}
-                            onClick={toggleFocusMode}
-                            aria-pressed={focusMode}
-                            aria-label={t("commandPalette.quickActions.toggleFocusMode")}
-                        />
+                            <Button
+                                appearance="subtle"
+                                icon={<Eye24Regular />}
+                                onClick={toggleFocusMode}
+                                aria-pressed={focusMode}
+                                aria-label={t("commandPalette.quickActions.toggleFocusMode")}
+                            />
+                        </Tooltip>
                         {authenticated ? (
                             <Menu>
                                 <MenuTrigger disableButtonEnhancement>
-                                    <Button appearance="subtle" style={{ gap: "8px" }}>
+                                    <Button
+                                        appearance="subtle"
+                                        style={{ gap: "8px" }}
+                                        aria-label={t("a11y.accountMenu")}
+                                    >
                                         <Avatar name={user?.name || t("common.user")} size={28} />
                                         <Text>{user?.name || t("common.user")}</Text>
                                     </Button>
