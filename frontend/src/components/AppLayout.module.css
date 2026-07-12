@@ -179,7 +179,8 @@
     box-shadow: var(--shadow-focus);
 }
 
-/* Active state: accent-soft bg + accent left bar + primary text.
+/* B8: active accent bar uses theme-aware --accent token (light/dark parity).
+   Active state: accent-soft bg + accent left bar + primary text.
    B8 (active accent bar parity): the left bar uses var(--accent), which is
    theme-aware in tokens.css (cobalt in light, lighter cobalt in dark), so
    the bar has correct contrast/parity in both themes without a hardcoded
