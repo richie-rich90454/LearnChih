@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Dropdown, Input, Option, makeStyles, tokens } from "@fluentui/react-components";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
     root: {
@@ -38,6 +39,7 @@ export function CourseFilters({
     onReset,
 }: CourseFiltersProps) {
     const styles = useStyles();
+    const { t } = useTranslation();
     const [query, setQuery] = useState(initialValue.query ?? "");
     const [subject, setSubject] = useState(initialValue.subject ?? subjects[0]);
     const [level, setLevel] = useState(initialValue.level ?? levels[0]);
@@ -56,10 +58,10 @@ export function CourseFilters({
     return (
         <div className={styles.root}>
             <div className={styles.field}>
-                <label htmlFor="course-search">Search</label>
+                <label htmlFor="course-search">{t("common.search")}</label>
                 <Input
                     id="course-search"
-                    placeholder="Search courses..."
+                    placeholder={t("courseFilters.searchPlaceholder")}
                     value={query}
                     onChange={(e) => {
                         const value = e.target.value;
@@ -70,7 +72,7 @@ export function CourseFilters({
             </div>
 
             <div className={styles.field}>
-                <label htmlFor="course-subject">Subject</label>
+                <label htmlFor="course-subject">{t("courseFilters.subject")}</label>
                 <Dropdown
                     id="course-subject"
                     value={subject}
@@ -90,7 +92,7 @@ export function CourseFilters({
             </div>
 
             <div className={styles.field}>
-                <label htmlFor="course-level">Level</label>
+                <label htmlFor="course-level">{t("courseFilters.level")}</label>
                 <Dropdown
                     id="course-level"
                     value={level}
@@ -110,7 +112,7 @@ export function CourseFilters({
             </div>
 
             <Button appearance="subtle" onClick={reset}>
-                Reset
+                {t("courseFilters.reset")}
             </Button>
         </div>
     );

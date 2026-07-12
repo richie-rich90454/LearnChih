@@ -199,7 +199,7 @@ export function Portfolio({ userId, editable }: PortfolioProps) {
                                     onChange={(_e, data) =>
                                         setForm((f) => ({ ...f, url: data.value }))
                                     }
-                                    placeholder="https://..."
+                                    placeholder={t("portfolio.fieldUrlPlaceholder")}
                                 />
                             </div>
                         </DialogContent>

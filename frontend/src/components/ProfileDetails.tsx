@@ -135,7 +135,7 @@ export function ProfileDetails({ profile, editable }: ProfileDetailsProps) {
                                     <Input
                                         value={timezone}
                                         onChange={(_e, data) => setTimezone(data.value)}
-                                        placeholder="Asia/Shanghai"
+                                        placeholder={t("profileDetails.timezonePlaceholder")}
                                     />
                                 </Field>
                             </div>

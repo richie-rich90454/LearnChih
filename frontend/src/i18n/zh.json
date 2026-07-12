@@ -271,7 +271,8 @@
         "fieldTitlePlaceholder": "例如：毕业设计项目",
         "fieldDescription": "描述",
         "fieldDescriptionPlaceholder": "简要介绍这件作品……",
-        "fieldUrl": "链接"
+        "fieldUrl": "链接",
+        "fieldUrlPlaceholder": "https://..."
     },
     "profileDetails": {
         "title": "个人资料详情",
@@ -283,6 +284,7 @@
         "pronounsPlaceholder": "例如：她/她",
         "timezone": "时区",
         "timezoneHint": "使用 IANA 时区，例如 Asia/Shanghai",
+        "timezonePlaceholder": "Asia/Shanghai",
         "empty": "尚未设置详情。"
     },
     "featuredBadges": {
@@ -1414,6 +1416,12 @@
         "reasonLabel": "原因",
         "reasonPlaceholder": "你为什么要举报这个内容？",
         "submit": "提交举报"
+    },
+    "courseFilters": {
+        "searchPlaceholder": "搜索课程……",
+        "subject": "科目",
+        "level": "级别",
+        "reset": "重置"
     }
 }
 

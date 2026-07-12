@@ -279,7 +279,8 @@
         "fieldTitlePlaceholder": "e.g. Capstone project",
         "fieldDescription": "Description",
         "fieldDescriptionPlaceholder": "Briefly describe this work...",
-        "fieldUrl": "Link"
+        "fieldUrl": "Link",
+        "fieldUrlPlaceholder": "https://..."
     },
     "profileDetails": {
         "title": "Profile details",
@@ -291,6 +292,7 @@
         "pronounsPlaceholder": "e.g. she/her",
         "timezone": "Timezone",
         "timezoneHint": "Use an IANA timezone, e.g. Asia/Shanghai",
+        "timezonePlaceholder": "Asia/Shanghai",
         "empty": "No details set yet."
     },
     "featuredBadges": {
@@ -1404,6 +1406,12 @@
         "reasonLabel": "Reason",
         "reasonPlaceholder": "Why are you reporting this?",
         "submit": "Submit Report"
+    },
+    "courseFilters": {
+        "searchPlaceholder": "Search courses...",
+        "subject": "Subject",
+        "level": "Level",
+        "reset": "Reset"
     }
 }
 
