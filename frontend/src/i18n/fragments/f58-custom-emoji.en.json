@@ -1,0 +1,19 @@
+{
+    "customEmoji": {
+        "button": "Custom emoji",
+        "title": "Upload custom emoji",
+        "description": "Upload an image (max 64 KB) to use as a custom emoji in your posts.",
+        "fileLabel": "Image file",
+        "nameLabel": "Emoji name",
+        "namePlaceholder": "e.g., party_parrot",
+        "preview": "Preview",
+        "upload": "Upload",
+        "existing": "Your custom emojis",
+        "remove": "Remove",
+        "sizeError": "File exceeds 64 KB limit.",
+        "typeError": "Only PNG, JPEG, GIF, WebP, and SVG images are allowed.",
+        "readError": "Failed to read file.",
+        "uploaded": "Custom emoji added.",
+        "removed": "Custom emoji removed."
+    }
+}

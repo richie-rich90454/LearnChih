@@ -1,0 +1,128 @@
+/**
+ * CustomEmojiUploader (F58). Token-based; no !important, no raw hex.
+ */
+
+.surface {
+    max-width: 520px;
+}
+
+.description {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.fileInput {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.preview {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    background: var(--surface-sunken);
+}
+
+.previewImage {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: var(--radius-input);
+    background: var(--surface-2);
+}
+
+.previewSize {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.emojiList {
+    margin-top: var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--space-3);
+}
+
+.emojiListHeader {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-2);
+}
+
+.emojiGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: var(--space-2);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.emojiItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    background: var(--surface-2);
+    transition: border-color var(--motion-fast) var(--motion-ease);
+}
+
+.emojiItem:hover {
+    border-color: var(--border-strong);
+}
+
+.emojiImage {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.emojiName {
+    flex: 1 1 auto;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.removeButton {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
+    padding: 0;
+}
+
+.removeButton:hover {
+    background: var(--status-danger-soft);
+    color: var(--status-danger);
+}

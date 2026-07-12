@@ -18,6 +18,7 @@ import { AmaPanel } from "@/components/AmaPanel";
 import { ThreadMergeDialog } from "@/components/ThreadMergeDialog";
 import { ThreadMoveDialog } from "@/components/ThreadMoveDialog";
 import { RevisionDiffButton } from "@/components/RevisionDiffViewer";
+import { CustomEmojiUploader } from "@/components/CustomEmojiUploader";
 import { ErrorState } from "@/components/ErrorState";
 import ReportButton from "@/components/ReportButton";
 import { discussionForumPostingSchema, breadcrumbSchema } from "@/components/jsonLd";
@@ -306,6 +307,7 @@ export default function ChannelThreadPage() {
                         <Option value="PLAIN">{t("channels.plain")}</Option>
                         <Option value="MARKDOWN">{t("channels.markdown")}</Option>
                     </Dropdown>
+                    {!thread?.locked && <CustomEmojiUploader />}
                     {isAdmin && (
                         <Button
                             variant="outline"

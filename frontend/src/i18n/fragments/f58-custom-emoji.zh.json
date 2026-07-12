@@ -1,0 +1,19 @@
+{
+    "customEmoji": {
+        "button": "自定义表情",
+        "title": "上传自定义表情",
+        "description": "上传一张图片（最大 64 KB）作为帖子中的自定义表情。",
+        "fileLabel": "图片文件",
+        "nameLabel": "表情名称",
+        "namePlaceholder": "例如 party_parrot",
+        "preview": "预览",
+        "upload": "上传",
+        "existing": "你的自定义表情",
+        "remove": "删除",
+        "sizeError": "文件超过 64 KB 限制。",
+        "typeError": "仅支持 PNG、JPEG、GIF、WebP 和 SVG 图片。",
+        "readError": "读取文件失败。",
+        "uploaded": "自定义表情已添加。",
+        "removed": "自定义表情已删除。"
+    }
+}
