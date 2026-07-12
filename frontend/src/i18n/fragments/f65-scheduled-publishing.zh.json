@@ -1,0 +1,28 @@
+{
+    "scheduledPublishing": {
+        "title": "定时发布",
+        "subtitle": "查看草稿何时定时发布。",
+        "previousMonth": "上个月",
+        "nextMonth": "下个月",
+        "today": "今天",
+        "itemsFor": "{{date}} 的项目",
+        "noItems": "当天没有定时项目。",
+        "noItemsMonth": "本月没有定时项目。",
+        "cancel": "取消",
+        "cancelled": "定时已取消。",
+        "weekdayShort": {
+            "sun": "日",
+            "mon": "一",
+            "tue": "二",
+            "wed": "三",
+            "thu": "四",
+            "fri": "五",
+            "sat": "六"
+        },
+        "type": {
+            "post": "帖子",
+            "note": "笔记",
+            "resource": "资源"
+        }
+    }
+}

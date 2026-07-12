@@ -1,0 +1,28 @@
+{
+    "scheduledPublishing": {
+        "title": "Scheduled publishing",
+        "subtitle": "See when your drafts are scheduled to go live.",
+        "previousMonth": "Previous month",
+        "nextMonth": "Next month",
+        "today": "Today",
+        "itemsFor": "Items for {{date}}",
+        "noItems": "No items scheduled for this day.",
+        "noItemsMonth": "No scheduled items this month.",
+        "cancel": "Cancel",
+        "cancelled": "Schedule cancelled.",
+        "weekdayShort": {
+            "sun": "Sun",
+            "mon": "Mon",
+            "tue": "Tue",
+            "wed": "Wed",
+            "thu": "Thu",
+            "fri": "Fri",
+            "sat": "Sat"
+        },
+        "type": {
+            "post": "Post",
+            "note": "Note",
+            "resource": "Resource"
+        }
+    }
+}

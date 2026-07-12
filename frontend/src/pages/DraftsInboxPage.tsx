@@ -6,6 +6,7 @@ import {
     DocumentEdit24Regular,
     ArrowReply24Regular,
     Delete24Regular,
+    CalendarClock24Regular,
 } from "@fluentui/react-icons";
 import Seo from "../components/Seo";
 import { EmptyState } from "../components/EmptyState";
@@ -15,6 +16,7 @@ import { Card } from "../components/ui/Card";
 import { Badge } from "../components/ui/Badge";
 import { useDraftsInbox } from "../hooks/useDraftsInbox";
 import { useDeleteDraft } from "../hooks/useDrafts";
+import { ScheduledPublishingCalendar } from "../components/ScheduledPublishingCalendar";
 import styles from "./List.module.css";
 import pageStyles from "./DraftsInboxPage.module.css";
 
@@ -22,12 +24,15 @@ type FilterType = "ALL" | "NOTE" | "RESOURCE" | "CHANNEL";
 
 const FILTERS: FilterType[] = ["ALL", "NOTE", "RESOURCE", "CHANNEL"];
 
+type ViewType = "inbox" | "scheduled";
+
 export default function DraftsInboxPage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { data: items, isLoading, isError, refetch } = useDraftsInbox();
     const deleteDraft = useDeleteDraft();
     const [filter, setFilter] = useState<FilterType>("ALL");
+    const [view, setView] = useState<ViewType>("inbox");
 
     const filtered = (items ?? []).filter(
         (item) => filter === "ALL" || item.contentType === filter,
@@ -64,25 +69,46 @@ export default function DraftsInboxPage() {
 
             <div className={styles.toolbar}>
                 <div className={styles.filters}>
-                    <span className={pageStyles.filterLabel}>
-                        {t("draftsInbox.filterLabel")}
-                    </span>
-                    {FILTERS.map((f) => (
-                        <button
-                            key={f}
-                            type="button"
-                            className={`${styles.chip} ${
-                                filter === f ? styles.chipActive : ""
-                            }`}
-                            onClick={() => setFilter(f)}
-                        >
-                            {t(`draftsInbox.filter.${f}`)}
-                        </button>
-                    ))}
+                    <button
+                        type="button"
+                        className={`${styles.chip} ${view === "inbox" ? styles.chipActive : ""}`}
+                        onClick={() => setView("inbox")}
+                    >
+                        {t("draftsInbox.title")}
+                    </button>
+                    <button
+                        type="button"
+                        className={`${styles.chip} ${view === "scheduled" ? styles.chipActive : ""}`}
+                        onClick={() => setView("scheduled")}
+                    >
+                        <CalendarClock24Regular />
+                        {t("scheduledPublishing.title", "Scheduled")}
+                    </button>
                 </div>
+                {view === "inbox" && (
+                    <div className={styles.filters}>
+                        <span className={pageStyles.filterLabel}>
+                            {t("draftsInbox.filterLabel")}
+                        </span>
+                        {FILTERS.map((f) => (
+                            <button
+                                key={f}
+                                type="button"
+                                className={`${styles.chip} ${
+                                    filter === f ? styles.chipActive : ""
+                                }`}
+                                onClick={() => setFilter(f)}
+                            >
+                                {t(`draftsInbox.filter.${f}`)}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
 
-            {isLoading ? (
+            {view === "scheduled" ? (
+                <ScheduledPublishingCalendar />
+            ) : isLoading ? (
                 <div className={pageStyles.loading}>
                     <Spinner label={t("common.loading")} />
                 </div>
