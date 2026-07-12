@@ -1,0 +1,20 @@
+{
+    "webhookCatalog": {
+        "title": "Webhook catalog",
+        "subtitle": "Browse webhook events and manage subscriptions.",
+        "eventsHeading": "Event catalog",
+        "subscriptionsHeading": "Subscriptions",
+        "addSubscription": "Add subscription",
+        "urlLabel": "Endpoint URL",
+        "urlPlaceholder": "https://example.com/webhooks",
+        "eventLabel": "Event",
+        "testFire": "Test fire",
+        "remove": "Remove",
+        "active": "Active",
+        "inactive": "Inactive",
+        "payloadSchema": "Payload schema",
+        "noSubscriptions": "No subscriptions yet.",
+        "deliveriesTab": "Delivery logs",
+        "catalogTab": "Catalog"
+    }
+}
