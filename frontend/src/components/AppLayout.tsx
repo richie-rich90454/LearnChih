@@ -180,6 +180,8 @@ export default function AppLayout() {
 
     return (
         <div className={cx(styles.shell, focusMode && styles.focusMode)} dir={dir}>
+            {/* B36: Skip-to-content link is the first focusable element in the
+               DOM, allowing keyboard users to bypass the sidebar/header chrome. */}
             <a href="#main-content" className={styles.skipLink}>
                 {t("a11y.skipToContent")}
             </a>
