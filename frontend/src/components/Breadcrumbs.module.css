@@ -1,0 +1,41 @@
+/**
+ * Breadcrumbs - co-located CSS Module.
+ *
+ * (B63) Long breadcrumb trails can overflow narrow viewports. The container
+ * scrolls horizontally (`overflow-x: auto`) while keeping items on a single
+ * line (`white-space: nowrap`). Individual crumb labels truncate with an
+ * ellipsis (`text-overflow: ellipsis`) so one very long label cannot blow the
+ * row out. The scrollbar is hidden for a cleaner look; keyboard and touch
+ * scroll still work.
+ *
+ * Specificity: plain element wrappers sit at (0,1,0). Fluent Breadcrumb atomic
+ * classes are (0,1,0) so the doubled-class `.list.list` (0,2,0) wins layout
+ * overrides regardless of injection order.
+ */
+
+.list {
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge legacy */
+}
+
+/* Hide the scrollbar in WebKit while keeping scrollability. */
+.list::-webkit-scrollbar {
+    display: none;
+}
+
+/* Crumb label: truncate long labels with an ellipsis. Applied to the
+   BreadcrumbButton content wrapper so Fluent's own padding is preserved. */
+.item {
+    display: inline-flex;
+    align-items: center;
+    max-width: 16rem;
+    overflow: hidden;
+}
+
+.label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
 import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbDivider,
     BreadcrumbButton,
 } from "@fluentui/react-components";
+import styles from "./Breadcrumbs.module.css";
 
 export interface Crumb {
     label: string;
@@ -17,18 +17,18 @@ interface BreadcrumbsProps {
 
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
     return (
-        <Breadcrumb aria-label="Breadcrumb navigation">
+        <Breadcrumb aria-label="Breadcrumb navigation" className={styles.list}>
             {items.map((item, index) => {
                 const isLast = index === items.length - 1;
                 return (
-                    <BreadcrumbItem key={index}>
+                    <BreadcrumbItem key={index} className={styles.item}>
                         {item.href && !isLast ? (
                             <BreadcrumbButton as="a" href={item.href}>
-                                {item.label}
+                                <span className={styles.label}>{item.label}</span>
                             </BreadcrumbButton>
                         ) : (
                             <BreadcrumbButton current={isLast} disabled={isLast}>
-                                {item.label}
+                                <span className={styles.label}>{item.label}</span>
                             </BreadcrumbButton>
                         )}
                     </BreadcrumbItem>
