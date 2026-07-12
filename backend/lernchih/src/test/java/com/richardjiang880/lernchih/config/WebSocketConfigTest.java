@@ -18,7 +18,7 @@ class WebSocketConfigTest {
         StompWebSocketEndpointRegistration registration = mock(StompWebSocketEndpointRegistration.class);
         when(registry.addEndpoint("/ws")).thenReturn(registration);
         when(registration.setAllowedOriginPatterns("http://localhost:*")).thenReturn(registration);
-
+        // SockJS fallback removed — native WebSocket only.
         config.registerStompEndpoints(registry);
     }
 

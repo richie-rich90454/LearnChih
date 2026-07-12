@@ -49,6 +49,7 @@ export default defineConfig({
     build: {
         modulePreload: { polyfill: true },
         cssCodeSplit: true,
+        sourcemap: true,
         rolldownOptions: {
             output: {
                 // Vite 8 (rolldown) requires manualChunks to be a function, not an

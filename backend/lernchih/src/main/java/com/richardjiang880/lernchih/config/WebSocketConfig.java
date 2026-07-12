@@ -15,9 +15,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        // Native WebSocket endpoint — all modern browsers support WebSocket
+        // natively, so the SockJS fallback is no longer needed. This also
+        // removes the deprecated `unload` event listener that sockjs-client
+        // registers, which was flagged by Lighthouse.
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("http://localhost:*")
-                .withSockJS(); // SockJS fallback for browsers without WebSocket support
+                .setAllowedOriginPatterns("http://localhost:*");
     }
 
     @Override

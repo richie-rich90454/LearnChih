@@ -1,6 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
 import { Client, IMessage } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
 import { useQueryClient } from "@tanstack/react-query";
 import useAuthStore from "../store/authStore";
 import type { WebSocketPostMessage, Post } from "../types";
@@ -27,8 +26,9 @@ export default function useWebSocket() {
     const connect = useCallback(() => {
         if (stompClient.current?.active) return;
 
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
         const client = new Client({
-            webSocketFactory: () => new SockJS("/ws"),
+            webSocketFactory: () => new WebSocket(`${protocol}//${window.location.host}/ws`),
             reconnectDelay: 5000,
             connectHeaders: {
                 Authorization: `Bearer ${token}`,
