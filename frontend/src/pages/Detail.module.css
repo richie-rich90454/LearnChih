@@ -605,7 +605,9 @@
     color: var(--text-secondary);
 }
 
-/* ----------------------- Responsive (B26) ----------------------- */
+/* ----------------------- Responsive (B26) -----------------------
+   Under 768px the resource detail reflows: container gap tightens,
+   header padding eases, and the thread nesting flattens. */
 @media (max-width: 768px) {
     .container {
         gap: var(--space-4);
