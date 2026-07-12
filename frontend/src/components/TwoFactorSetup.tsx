@@ -13,6 +13,7 @@ import {
     Card,
 } from "@fluentui/react-components";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { setupTwoFactor, verifyTwoFactor, type TwoFactorSetupResponse } from "../api/twoFactor";
 
 const useStyles = makeStyles({
@@ -46,6 +47,7 @@ const useStyles = makeStyles({
 
 export default function TwoFactorSetup() {
     const styles = useStyles();
+    const { t } = useTranslation();
     const [step, setStep] = useState<"intro" | "setup" | "verified">("intro");
     const [setupData, setSetupData] = useState<TwoFactorSetupResponse | null>(null);
     const [code, setCode] = useState("");
@@ -58,7 +60,7 @@ export default function TwoFactorSetup() {
             setStep("setup");
             setError("");
         },
-        onError: () => setError("Failed to start 2FA setup. Please try again."),
+        onError: () => setError(t("twoFactor.setupFailed")),
     });
 
     const verifyMutation = useMutation({
@@ -67,20 +69,20 @@ export default function TwoFactorSetup() {
             setStep("verified");
             setError("");
         },
-        onError: () => setError("Invalid verification code. Please try again."),
+        onError: () => setError(t("twoFactor.verifyFailed")),
     });
 
     if (step === "intro") {
         return (
             <div className={styles.container}>
-                <Title3>Two-factor authentication</Title3>
-                <Text>Add an extra layer of security by enabling TOTP-based 2FA.</Text>
+                <Title3>{t("twoFactor.title")}</Title3>
+                <Text>{t("twoFactor.intro")}</Text>
                 <Button
                     appearance="primary"
                     onClick={() => setupMutation.mutate()}
                     disabled={setupMutation.isPending}
                 >
-                    {setupMutation.isPending ? <Spinner size="tiny" /> : "Set up 2FA"}
+                    {setupMutation.isPending ? <Spinner size="tiny" /> : t("twoFactor.setUp")}
                 </Button>
                 {error && (
                     <MessageBar intent="error">
@@ -94,11 +96,9 @@ export default function TwoFactorSetup() {
     if (step === "verified") {
         return (
             <div className={styles.container}>
-                <Title3>2FA enabled</Title3>
+                <Title3>{t("twoFactor.enabled")}</Title3>
                 <MessageBar intent="success">
-                    <MessageBarBody>
-                        Two-factor authentication is now active on your account.
-                    </MessageBarBody>
+                    <MessageBarBody>{t("twoFactor.enabledMessage")}</MessageBarBody>
                 </MessageBar>
             </div>
         );
@@ -106,22 +106,22 @@ export default function TwoFactorSetup() {
 
     return (
         <Card className={styles.container}>
-            <Title3>Set up authenticator</Title3>
-            <Text>Scan the QR code with your authenticator app, then enter the 6-digit code.</Text>
+            <Title3>{t("twoFactor.setUpAuthenticator")}</Title3>
+            <Text>{t("twoFactor.scanQr")}</Text>
 
             {setupData?.qrCodeUrl && (
-                <img src={setupData.qrCodeUrl} alt="TOTP QR code" className={styles.qrCode} />
+                <img src={setupData.qrCodeUrl} alt={t("twoFactor.qrAlt")} className={styles.qrCode} />
             )}
 
             <div>
-                <Text>Or enter this secret manually:</Text>
+                <Text>{t("twoFactor.manualSecret")}</Text>
                 <div className={styles.secret}>{setupData?.secret}</div>
             </div>
 
             <div
                 style={{ display: "flex", flexDirection: "column", gap: tokens.spacingVerticalXS }}
             >
-                <Label htmlFor="totp-code">6-digit code</Label>
+                <Label htmlFor="totp-code">{t("twoFactor.codeLabel")}</Label>
                 <Input
                     id="totp-code"
                     value={code}
@@ -136,13 +136,13 @@ export default function TwoFactorSetup() {
                 onClick={() => verifyMutation.mutate()}
                 disabled={verifyMutation.isPending || code.length < 6}
             >
-                {verifyMutation.isPending ? <Spinner size="tiny" /> : "Verify"}
+                {verifyMutation.isPending ? <Spinner size="tiny" /> : t("twoFactor.verify")}
             </Button>
 
             {setupData?.backupCodes && (
                 <div>
-                    <Text weight="semibold">Backup codes</Text>
-                    <Text size={300}>Save these in a secure place.</Text>
+                    <Text weight="semibold">{t("twoFactor.backupCodes")}</Text>
+                    <Text size={300}>{t("twoFactor.saveBackupHint")}</Text>
                     <div className={styles.backupCodes}>
                         {setupData.backupCodes.map((c, i) => (
                             <span key={i}>{c}</span>

@@ -554,6 +554,23 @@
         "swaggerTab": "Swagger UI",
         "apiKeysTab": "API Keys"
     },
+    "twoFactor": {
+        "title": "Two-factor authentication",
+        "intro": "Add an extra layer of security by enabling TOTP-based 2FA.",
+        "setUp": "Set up 2FA",
+        "enabled": "2FA enabled",
+        "enabledMessage": "Two-factor authentication is now active on your account.",
+        "setUpAuthenticator": "Set up authenticator",
+        "scanQr": "Scan the QR code with your authenticator app, then enter the 6-digit code.",
+        "qrAlt": "TOTP QR code",
+        "manualSecret": "Or enter this secret manually:",
+        "codeLabel": "6-digit code",
+        "verify": "Verify",
+        "backupCodes": "Backup codes",
+        "saveBackupHint": "Save these in a secure place.",
+        "setupFailed": "Failed to start 2FA setup. Please try again.",
+        "verifyFailed": "Invalid verification code. Please try again."
+    },
     "maintenanceBanner": {
         "title": "Maintenance Notice",
         "dismiss": "Dismiss"

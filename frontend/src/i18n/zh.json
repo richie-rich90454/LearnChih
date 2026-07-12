@@ -546,6 +546,23 @@
         "swaggerTab": "Swagger UI",
         "apiKeysTab": "API 密钥"
     },
+    "twoFactor": {
+        "title": "双因素认证",
+        "intro": "启用基于 TOTP 的双因素认证，为账户增加额外安全层。",
+        "setUp": "设置 2FA",
+        "enabled": "2FA 已启用",
+        "enabledMessage": "双因素认证已在您的账户上启用。",
+        "setUpAuthenticator": "设置验证器",
+        "scanQr": "使用验证器应用扫描二维码，然后输入 6 位验证码。",
+        "qrAlt": "TOTP 二维码",
+        "manualSecret": "或手动输入此密钥：",
+        "codeLabel": "6 位验证码",
+        "verify": "验证",
+        "backupCodes": "备用恢复码",
+        "saveBackupHint": "请将这些恢复码保存在安全的地方。",
+        "setupFailed": "启动 2FA 设置失败，请重试。",
+        "verifyFailed": "验证码无效，请重试。"
+    },
     "maintenanceBanner": {
         "title": "维护通知",
         "dismiss": "关闭"
