@@ -1,0 +1,131 @@
+/**
+ * AccountDeletionQueue - co-located CSS Module for F109.
+ * No !important. All visuals via design-system tokens.
+ */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 760px;
+}
+
+.addCard {
+    display: flex;
+    flex-direction: column;
+}
+
+.addForm {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.addForm > div {
+    flex: 1;
+    min-width: 120px;
+}
+
+.requestList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.requestCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.requestHead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.userName {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.email {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.requestDetails {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.countdown {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--status-warning);
+    font-weight: var(--font-weight-semibold);
+}
+
+.countdownOverdue {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--status-danger);
+    font-weight: var(--font-weight-bold);
+}
+
+.clockIcon {
+    display: flex;
+    align-items: center;
+}
+
+.empty {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    padding: var(--space-4);
+    text-align: center;
+}
+
+.hint {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--surface-sunken);
+    border-radius: var(--radius-input);
+}
+
+.hintIcon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--accent);
+}
+
+@media (max-width: 640px) {
+    .addForm > div {
+        min-width: 100%;
+    }
+    .requestDetails {
+        gap: var(--space-2);
+    }
+}

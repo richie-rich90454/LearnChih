@@ -1,0 +1,18 @@
+{
+    "accountDeletion": {
+        "title": "Account deletions",
+        "userId": "User ID",
+        "userName": "User name",
+        "email": "Email",
+        "graceDays": "Grace (days)",
+        "request": "Request deletion",
+        "requestedAt": "Requested",
+        "scheduledFor": "Scheduled",
+        "timeRemaining": "Time remaining",
+        "cancelDeletion": "Cancel deletion",
+        "cancelled": "Cancelled",
+        "pending": "Pending",
+        "noRequests": "No deletion requests.",
+        "hint": "Account deletion requests enter a grace period before permanent deletion. Admins can cancel before the scheduled date."
+    }
+}

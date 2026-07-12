@@ -1,0 +1,18 @@
+{
+    "accountDeletion": {
+        "title": "账户删除",
+        "userId": "用户 ID",
+        "userName": "用户名",
+        "email": "邮箱",
+        "graceDays": "宽限期（天）",
+        "request": "请求删除",
+        "requestedAt": "请求时间",
+        "scheduledFor": "计划删除时间",
+        "timeRemaining": "剩余时间",
+        "cancelDeletion": "取消删除",
+        "cancelled": "已取消",
+        "pending": "待处理",
+        "noRequests": "没有删除请求。",
+        "hint": "账户删除请求在永久删除前会进入宽限期。管理员可以在计划日期前取消。"
+    }
+}
