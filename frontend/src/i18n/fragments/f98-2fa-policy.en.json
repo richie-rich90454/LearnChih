@@ -1,0 +1,9 @@
+{
+    "twoFactorPolicy": {
+        "title": "Two-factor enforcement",
+        "toggleAria": "Toggle enforcement",
+        "warning": "Enforcement is active. Affected users must enable 2FA within the grace period or lose access.",
+        "requiredRoles": "Required roles",
+        "gracePeriod": "Grace period (days)"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "twoFactorPolicy": {
+        "title": "双因素强制策略",
+        "toggleAria": "切换强制状态",
+        "warning": "强制策略已启用。受影响的用户必须在宽限期内启用双因素验证，否则将失去访问权限。",
+        "requiredRoles": "要求的角色",
+        "gracePeriod": "宽限期（天）"
+    }
+}

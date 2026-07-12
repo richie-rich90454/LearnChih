@@ -1,0 +1,66 @@
+/**
+ * TwoFactorPolicyPanel - co-located CSS Module for F98.
+ * No !important. All visuals via design-system tokens.
+ */
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 560px;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.switch {
+    margin-left: auto;
+}
+
+.inlineIcon {
+    vertical-align: middle;
+    margin-right: var(--space-1);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.fieldLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.roleList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+@media (max-width: 480px) {
+    .switch {
+        margin-left: 0;
+    }
+}
