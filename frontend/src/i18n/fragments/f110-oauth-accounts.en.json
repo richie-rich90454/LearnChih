@@ -1,0 +1,18 @@
+{
+    "oauthAccounts": {
+        "title": "OAuth accounts",
+        "connectNew": "Connect new account",
+        "selectProvider": "Select provider",
+        "notImplemented": "OAuth flow not implemented in this demo",
+        "noAccounts": "No connected accounts.",
+        "connected": "Connected",
+        "disconnect": "Disconnect",
+        "connectedAt": "Connected",
+        "providers": {
+            "google": "Google",
+            "github": "GitHub",
+            "microsoft": "Microsoft",
+            "apple": "Apple"
+        }
+    }
+}

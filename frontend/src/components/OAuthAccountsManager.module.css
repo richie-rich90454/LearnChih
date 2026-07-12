@@ -1,0 +1,110 @@
+/**
+ * OAuthAccountsManager - co-located CSS Module for F110.
+ * No !important. All visuals via design-system tokens.
+ */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 640px;
+}
+
+.connectRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.connectLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.dropdown {
+    min-width: 180px;
+}
+
+.toast {
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    background-color: var(--accent-soft);
+    border-radius: var(--radius-input);
+    transition: opacity var(--motion-base) var(--motion-ease);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.accountCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.accountHead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.providerIcon {
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+}
+
+.provider {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    text-transform: capitalize;
+}
+
+.disconnectBtn {
+    margin-left: auto;
+}
+
+.accountDetails {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.email {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+}
+
+.empty {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    padding: var(--space-4);
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .disconnectBtn {
+        margin-left: 0;
+    }
+}

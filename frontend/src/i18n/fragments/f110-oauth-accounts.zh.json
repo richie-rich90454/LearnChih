@@ -1,0 +1,18 @@
+{
+    "oauthAccounts": {
+        "title": "OAuth 账户",
+        "connectNew": "连接新账户",
+        "selectProvider": "选择提供商",
+        "notImplemented": "此演示中未实现 OAuth 流程",
+        "noAccounts": "没有已连接的账户。",
+        "connected": "已连接",
+        "disconnect": "断开连接",
+        "connectedAt": "连接时间",
+        "providers": {
+            "google": "Google",
+            "github": "GitHub",
+            "microsoft": "Microsoft",
+            "apple": "Apple"
+        }
+    }
+}
