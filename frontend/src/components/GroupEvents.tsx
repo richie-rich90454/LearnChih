@@ -107,7 +107,11 @@ export function GroupEvents({ groupId }: GroupEventsProps) {
                 </Button>
             </header>
 
-            {isLoading && <Spinner label={t("common.loading")} />}
+            {isLoading && (
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner label={t("common.loading")} />
+                </div>
+            )}
             {isError && (
                 <ErrorState
                     icon={<CalendarClock24Regular />}
@@ -404,7 +408,11 @@ function AttendeesDialog({
                 <DialogBody>
                     <DialogTitle>{t("groupEvents.attendeesTitle")}</DialogTitle>
                     <DialogContent>
-                        {isLoading && <Spinner label={t("common.loading")} />}
+                        {isLoading && (
+                            <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                                <Spinner label={t("common.loading")} />
+                            </div>
+                        )}
                         {!isLoading && list.length === 0 && (
                             <p className={styles.attendeesEmpty}>
                                 {t("groupEvents.attendeesEmpty")}
