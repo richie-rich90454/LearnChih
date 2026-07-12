@@ -225,6 +225,9 @@ nav .fui-Button .fui-Text.fui-Text {
    WebKit/Chromium use `::-webkit-scrollbar*` pseudo-elements.
    Tokens make the colors theme-aware (light/dark) with no media-query duplication. */
 
+/* B12: cross-browser theme-aware scrollbars. Firefox uses scrollbar-color
+   (thumb, track); WebKit/Chromium use ::-webkit-scrollbar* pseudo-elements.
+   Both resolve to theme-aware tokens so light/dark need no media-query fork. */
 /* Firefox */
 * {
     scrollbar-width: thin;
