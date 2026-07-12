@@ -30,6 +30,9 @@ export function useFocusTrap<T extends HTMLElement>(ref: RefObject<T>, active: b
         container.addEventListener("keydown", handleKeyDown);
         return () => {
             container.removeEventListener("keydown", handleKeyDown);
+            // B27: restore focus to the element that held it before the trap
+            // activated so keyboard users return to their original position
+            // (e.g. the trigger button) when the dialog closes.
             previouslyFocused?.focus();
         };
     }, [ref, active]);
