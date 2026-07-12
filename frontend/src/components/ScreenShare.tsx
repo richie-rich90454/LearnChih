@@ -86,7 +86,11 @@ export function ScreenShares({ groupId }: ScreenSharesProps) {
                 </Button>
             </header>
 
-            {isLoading && <Spinner label={t("common.loading")} />}
+            {isLoading && (
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner label={t("common.loading")} />
+                </div>
+            )}
             {isError && (
                 <ErrorState
                     icon={<ProjectionScreen24Regular />}
