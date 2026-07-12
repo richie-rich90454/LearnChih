@@ -1,0 +1,15 @@
+{
+    "revisionDiff": {
+        "button": "View revisions",
+        "title": "Revision history",
+        "description": "Compare two revisions of this post. Lines added are green, lines removed are red.",
+        "from": "From",
+        "to": "To",
+        "noRevisions": "No revision history for this post.",
+        "added": "added",
+        "removed": "removed",
+        "unchanged": "unchanged",
+        "editedBy": "edited by {editor} on {date}",
+        "identical": "The selected revisions are identical."
+    }
+}

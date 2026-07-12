@@ -1,0 +1,15 @@
+{
+    "revisionDiff": {
+        "button": "查看修订历史",
+        "title": "修订历史",
+        "description": "比较此帖子的两个修订版本。新增的行显示为绿色，删除的行显示为红色。",
+        "from": "从",
+        "to": "到",
+        "noRevisions": "此帖子没有修订历史。",
+        "added": "新增",
+        "removed": "删除",
+        "unchanged": "未变",
+        "editedBy": "由 {editor} 于 {date} 编辑",
+        "identical": "所选修订版本完全相同。"
+    }
+}

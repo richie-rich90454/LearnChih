@@ -1,0 +1,125 @@
+/**
+ * RevisionDiffViewer (F54). Displays a line-by-line diff between two post
+ * revisions using the classic Longest Common Subsequence (LCS) dynamic
+ * programming algorithm. Added lines use the success status tokens,
+ * removed lines use the danger status tokens, unchanged lines are muted.
+ *
+ * Spec ref: F54.
+ */
+
+.surface {
+    max-width: 720px;
+}
+
+.description {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
+}
+
+.selectorRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.selectorLabel {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.arrow {
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+}
+
+.diff {
+    margin: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    overflow: hidden;
+    background: var(--surface-sunken);
+}
+
+.line {
+    display: flex;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.line:last-child {
+    border-bottom: none;
+}
+
+.gutter {
+    flex: 0 0 40px;
+    padding: var(--space-1) var(--space-2);
+    text-align: center;
+    color: var(--text-secondary);
+    user-select: none;
+    border-right: 1px solid var(--border-subtle);
+    background: var(--surface-2);
+}
+
+.content {
+    flex: 1 1 auto;
+    padding: var(--space-1) var(--space-3);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.added {
+    background: var(--status-success-soft);
+}
+
+.added .content {
+    color: var(--status-success);
+}
+
+.added .gutter {
+    background: var(--status-success-soft);
+    color: var(--status-success);
+}
+
+.removed {
+    background: var(--status-danger-soft);
+}
+
+.removed .content {
+    color: var(--status-danger);
+}
+
+.removed .gutter {
+    background: var(--status-danger-soft);
+    color: var(--status-danger);
+}
+
+.unchanged .content {
+    color: var(--text-primary);
+}
+
+.empty {
+    margin: 0;
+    padding: var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+}
+
+.meta {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}

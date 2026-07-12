@@ -17,6 +17,7 @@ import { ReactionPicker } from "@/components/ReactionPicker";
 import { AmaPanel } from "@/components/AmaPanel";
 import { ThreadMergeDialog } from "@/components/ThreadMergeDialog";
 import { ThreadMoveDialog } from "@/components/ThreadMoveDialog";
+import { RevisionDiffButton } from "@/components/RevisionDiffViewer";
 import { ErrorState } from "@/components/ErrorState";
 import ReportButton from "@/components/ReportButton";
 import { discussionForumPostingSchema, breadcrumbSchema } from "@/components/jsonLd";
@@ -413,6 +414,7 @@ export default function ChannelThreadPage() {
                                     {authenticated && (
                                         <ReportButton targetType="CHANNEL_POST" targetId={post.id} />
                                     )}
+                                    <RevisionDiffButton postId={post.id} />
                                     {readPostIds.has(post.id) && post.userId === user?.userId && (
                                         <span className={styles.readReceipt}>{t("thread.read")}</span>
                                     )}
