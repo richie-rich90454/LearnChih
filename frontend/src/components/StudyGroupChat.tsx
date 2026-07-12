@@ -42,7 +42,11 @@ export function StudyGroupChat({ groupId }: StudyGroupChatProps) {
     return (
         <div className={styles.chat}>
             <div className={styles.messages} role="log" aria-live="polite">
-                {isLoading && <Spinner size="tiny" />}
+                {isLoading && (
+                    <div role="status" aria-live="polite">
+                        <Spinner size="tiny" />
+                    </div>
+                )}
                 {!isLoading && list.length === 0 && (
                     <div className={styles.empty}>{t("groupChat.empty")}</div>
                 )}
