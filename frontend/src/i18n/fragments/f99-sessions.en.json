@@ -1,0 +1,13 @@
+{
+    "sessionManagement": {
+        "title": "Sessions",
+        "revokeOthers": "Revoke all other sessions",
+        "noSessions": "No active sessions.",
+        "current": "Current",
+        "revoke": "Revoke",
+        "revokeAria": "Revoke session",
+        "browser": "Browser",
+        "ip": "IP",
+        "lastActive": "Last active"
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "sessionManagement": {
+        "title": "会话",
+        "revokeOthers": "撤销所有其他会话",
+        "noSessions": "没有活跃会话。",
+        "current": "当前",
+        "revoke": "撤销",
+        "revokeAria": "撤销会话",
+        "browser": "浏览器",
+        "ip": "IP",
+        "lastActive": "最近活跃"
+    }
+}
