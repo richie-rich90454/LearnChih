@@ -72,6 +72,14 @@ export function Button({
     className,
     ...rest
 }: ButtonProps) {
+    /*
+     * Overlay focus-trap convention (B52): Overlays such as the CommandPalette
+     * and any custom dropdown/portal that this Button opens MUST trap keyboard
+     * focus within themselves while open (use `hooks/useFocusTrap`). The Button
+     * primitive only provides the trigger + a11y semantics; focus trapping is
+     * the overlay's responsibility so Tab/Shift+Tab cannot escape to the
+     * background page while the overlay is visible.
+     */
     const resolvedAppearance = variant ? variantToAppearance[variant] : appearance;
     const resolvedSize = (size ?? "medium") as ButtonSize;
 
