@@ -15,6 +15,7 @@ import {
     Spinner,
     MessageBar,
     MessageBarBody,
+    Tooltip,
 } from "@fluentui/react-components";
 import {
     Add24Regular,
@@ -475,26 +476,35 @@ export default function ResourcesPage() {
                                     <h3 className={styles.itemTitle}>{resource.title}</h3>
                                     <div className={styles.itemActions}>
                                         {authenticated && (
-                                            <Button
-                                                variant="subtle"
-                                                size="small"
-                                                icon={
-                                                    isBookmarked(resource.id) ? (
-                                                        <Bookmark24Filled />
-                                                    ) : (
-                                                        <Bookmark24Regular />
-                                                    )
-                                                }
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    toggleBookmark(resource.id, resource.title);
-                                                }}
-                                                aria-label={
+                                            <Tooltip
+                                                content={
                                                     isBookmarked(resource.id)
                                                         ? t("common.removeBookmark")
                                                         : t("common.addBookmark")
                                                 }
-                                            />
+                                                relationship="label"
+                                            >
+                                                <Button
+                                                    variant="subtle"
+                                                    size="small"
+                                                    icon={
+                                                        isBookmarked(resource.id) ? (
+                                                            <Bookmark24Filled />
+                                                        ) : (
+                                                            <Bookmark24Regular />
+                                                        )
+                                                    }
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        toggleBookmark(resource.id, resource.title);
+                                                    }}
+                                                    aria-label={
+                                                        isBookmarked(resource.id)
+                                                            ? t("common.removeBookmark")
+                                                            : t("common.addBookmark")
+                                                    }
+                                                />
+                                            </Tooltip>
                                         )}
                                         <Badge variant="neutral" size="small">
                                             {resource.category?.replace("_", " ") ||

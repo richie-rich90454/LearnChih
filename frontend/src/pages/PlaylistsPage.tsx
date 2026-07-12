@@ -16,6 +16,7 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    Tooltip,
 } from "@fluentui/react-components";
 import {
     ArrowUp24Regular,
@@ -333,44 +334,50 @@ export default function PlaylistsPage() {
                                             {item.resourceTitle || `#${item.resourceId}`}
                                         </button>
                                         <div className={styles.itemControls}>
-                                            <Button
-                                                variant="subtle"
-                                                size="small"
-                                                icon={<ArrowUp24Regular />}
-                                                disabled={idx === 0 || moveMutation.isPending}
-                                                onClick={() =>
-                                                    moveMutation.mutate({
-                                                        itemId: item.id,
-                                                        direction: "up",
-                                                    })
-                                                }
-                                                aria-label={t("playlists.moveUp")}
-                                            />
-                                            <Button
-                                                variant="subtle"
-                                                size="small"
-                                                icon={<ArrowDown24Regular />}
-                                                disabled={
-                                                    idx === items.length - 1 ||
-                                                    moveMutation.isPending
-                                                }
-                                                onClick={() =>
-                                                    moveMutation.mutate({
-                                                        itemId: item.id,
-                                                        direction: "down",
-                                                    })
-                                                }
-                                                aria-label={t("playlists.moveDown")}
-                                            />
-                                            <Button
-                                                variant="subtle"
-                                                size="small"
-                                                icon={<Delete24Regular />}
-                                                onClick={() =>
-                                                    removeItemMutation.mutate(item.id)
-                                                }
-                                                aria-label={t("playlists.removeItem")}
-                                            />
+                                            <Tooltip content={t("playlists.moveUp")} relationship="label">
+                                                <Button
+                                                    variant="subtle"
+                                                    size="small"
+                                                    icon={<ArrowUp24Regular />}
+                                                    disabled={idx === 0 || moveMutation.isPending}
+                                                    onClick={() =>
+                                                        moveMutation.mutate({
+                                                            itemId: item.id,
+                                                            direction: "up",
+                                                        })
+                                                    }
+                                                    aria-label={t("playlists.moveUp")}
+                                                />
+                                            </Tooltip>
+                                            <Tooltip content={t("playlists.moveDown")} relationship="label">
+                                                <Button
+                                                    variant="subtle"
+                                                    size="small"
+                                                    icon={<ArrowDown24Regular />}
+                                                    disabled={
+                                                        idx === items.length - 1 ||
+                                                        moveMutation.isPending
+                                                    }
+                                                    onClick={() =>
+                                                        moveMutation.mutate({
+                                                            itemId: item.id,
+                                                            direction: "down",
+                                                        })
+                                                    }
+                                                    aria-label={t("playlists.moveDown")}
+                                                />
+                                            </Tooltip>
+                                            <Tooltip content={t("playlists.removeItem")} relationship="label">
+                                                <Button
+                                                    variant="subtle"
+                                                    size="small"
+                                                    icon={<Delete24Regular />}
+                                                    onClick={() =>
+                                                        removeItemMutation.mutate(item.id)
+                                                    }
+                                                    aria-label={t("playlists.removeItem")}
+                                                />
+                                            </Tooltip>
                                         </div>
                                     </div>
                                 ))}

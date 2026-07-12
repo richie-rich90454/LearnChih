@@ -16,6 +16,7 @@ import {
     MessageBar,
     MessageBarBody,
     Field,
+    Tooltip,
 } from "@fluentui/react-components";
 import { Add24Regular, Chat24Regular, Folder24Regular, FolderAdd24Regular, ChevronRight24Regular, Dismiss24Regular, Pin24Regular, PinOff24Regular, ArrowUp24Regular, ArrowDown24Regular } from "@fluentui/react-icons";
 import { useChannels, useChannel, useCreateChannelThread } from "@/hooks/useChannels";
@@ -313,29 +314,35 @@ export default function ChannelsPage() {
                                                 <span className={styles.itemTitle}>{channel.name}</span>
                                             </Card>
                                         </HoverLift>
-                                        <Button
-                                            variant="subtle"
-                                            size="small"
-                                            icon={<ArrowUp24Regular />}
-                                            onClick={() => handleMovePinned(index, -1)}
-                                            disabled={index === 0}
-                                            aria-label={t("channelPinning.moveUp", "Move up")}
-                                        />
-                                        <Button
-                                            variant="subtle"
-                                            size="small"
-                                            icon={<ArrowDown24Regular />}
-                                            onClick={() => handleMovePinned(index, 1)}
-                                            disabled={index === pinnedChannels.length - 1}
-                                            aria-label={t("channelPinning.moveDown", "Move down")}
-                                        />
-                                        <Button
-                                            variant="subtle"
-                                            size="small"
-                                            icon={<PinOff24Regular />}
-                                            onClick={() => unpinChannel(channel.id)}
-                                            aria-label={t("channelPinning.unpin", "Unpin")}
-                                        />
+                                        <Tooltip content={t("channelPinning.moveUp", "Move up")} relationship="label">
+                                            <Button
+                                                variant="subtle"
+                                                size="small"
+                                                icon={<ArrowUp24Regular />}
+                                                onClick={() => handleMovePinned(index, -1)}
+                                                disabled={index === 0}
+                                                aria-label={t("channelPinning.moveUp", "Move up")}
+                                            />
+                                        </Tooltip>
+                                        <Tooltip content={t("channelPinning.moveDown", "Move down")} relationship="label">
+                                            <Button
+                                                variant="subtle"
+                                                size="small"
+                                                icon={<ArrowDown24Regular />}
+                                                onClick={() => handleMovePinned(index, 1)}
+                                                disabled={index === pinnedChannels.length - 1}
+                                                aria-label={t("channelPinning.moveDown", "Move down")}
+                                            />
+                                        </Tooltip>
+                                        <Tooltip content={t("channelPinning.unpin", "Unpin")} relationship="label">
+                                            <Button
+                                                variant="subtle"
+                                                size="small"
+                                                icon={<PinOff24Regular />}
+                                                onClick={() => unpinChannel(channel.id)}
+                                                aria-label={t("channelPinning.unpin", "Unpin")}
+                                            />
+                                        </Tooltip>
                                     </div>
                                 ))}
                             </div>
@@ -426,18 +433,20 @@ export default function ChannelsPage() {
                                                         <span className={styles.itemTitle}>{channel.name}</span>
                                                     </Card>
                                                 </HoverLift>
-                                                <Button
-                                                    variant="subtle"
-                                                    size="small"
-                                                    icon={<Dismiss24Regular />}
-                                                    onClick={() =>
-                                                        removeChannelFromFolder(folder.id, channel.id)
-                                                    }
-                                                    aria-label={t(
-                                                        "channelFolders.removeFromFolder",
-                                                        "Remove from folder",
-                                                    )}
-                                                />
+                                                <Tooltip content={t("channelFolders.removeFromFolder", "Remove from folder")} relationship="label">
+                                                    <Button
+                                                        variant="subtle"
+                                                        size="small"
+                                                        icon={<Dismiss24Regular />}
+                                                        onClick={() =>
+                                                            removeChannelFromFolder(folder.id, channel.id)
+                                                        }
+                                                        aria-label={t(
+                                                            "channelFolders.removeFromFolder",
+                                                            "Remove from folder",
+                                                        )}
+                                                    />
+                                                </Tooltip>
                                             </div>
                                         ))}
                                     </div>
@@ -470,16 +479,18 @@ export default function ChannelsPage() {
                                                     <Badge variant="neutral" size="small">
                                                         {channel.threadCount ?? 0} {t("channels.threads")}
                                                     </Badge>
-                                                    <Button
-                                                        variant="subtle"
-                                                        size="small"
-                                                        icon={<Pin24Regular />}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            pinChannel(channel.id);
-                                                        }}
-                                                        aria-label={t("channelPinning.pin", "Pin")}
-                                                    />
+                                                    <Tooltip content={t("channelPinning.pin", "Pin")} relationship="label">
+                                                        <Button
+                                                            variant="subtle"
+                                                            size="small"
+                                                            icon={<Pin24Regular />}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                pinChannel(channel.id);
+                                                            }}
+                                                            aria-label={t("channelPinning.pin", "Pin")}
+                                                        />
+                                                    </Tooltip>
                                                 </div>
                                             </div>
                                             {channel.description && (

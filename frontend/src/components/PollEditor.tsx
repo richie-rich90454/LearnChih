@@ -9,6 +9,7 @@ import {
     Spinner,
     MessageBar,
     MessageBarBody,
+    Tooltip,
 } from "@fluentui/react-components";
 import { Add24Regular, Delete24Regular } from "@fluentui/react-icons";
 import { useMutation } from "@tanstack/react-query";
@@ -109,13 +110,15 @@ export function PollEditor({ postId, onSaved, onCancel }: PollEditorProps) {
                         placeholder={t("pollEditor.optionPlaceholder", { index: index + 1 })}
                         style={{ flex: 1 }}
                     />
-                    <Button
-                        appearance="subtle"
-                        icon={<Delete24Regular />}
-                        disabled={options.length <= 2}
-                        onClick={() => removeOption(index)}
-                        aria-label={t("pollEditor.removeOption", { index: index + 1 })}
-                    />
+                    <Tooltip content={t("pollEditor.removeOption", { index: index + 1 })} relationship="label">
+                        <Button
+                            appearance="subtle"
+                            icon={<Delete24Regular />}
+                            disabled={options.length <= 2}
+                            onClick={() => removeOption(index)}
+                            aria-label={t("pollEditor.removeOption", { index: index + 1 })}
+                        />
+                    </Tooltip>
                 </div>
             ))}
 
