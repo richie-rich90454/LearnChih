@@ -132,7 +132,9 @@
     /* ---------------------------------------------------------------- */
     /* Use these layers instead of ad-hoc z values. The transient layer
        is reserved for the ThemeTransition reveal overlay which must sit
-       above all app content but below browser chrome. */
+       above all app content but below browser chrome. The celebration
+       layer sits one step above transient so pointer-events:none
+       decoration (confetti) renders above the theme reveal overlay. */
     --z-base: 0;
     --z-dropdown: 100;
     --z-sticky: 200;
@@ -142,6 +144,7 @@
     --z-toast: 1000;
     --z-tooltip: 1100;
     --z-transient: 9998;
+    --z-celebration: 9999;
 
     /* ---------------------------------------------------------------- */
     /* 3. Semantic tokens - LIGHT defaults                              */
