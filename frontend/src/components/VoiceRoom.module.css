@@ -50,7 +50,7 @@
 
 .roomName {
     margin: 0;
-    font-size: 1.05rem;
+    font-size: var(--font-size-base);
     font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
 }
@@ -134,7 +134,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
     color: var(--text-primary);
 }
 
