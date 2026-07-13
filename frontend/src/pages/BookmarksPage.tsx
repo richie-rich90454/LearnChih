@@ -104,7 +104,7 @@ export default function BookmarksPage() {
     const folderList = useMemo(() => Object.values(folders), [folders]);
 
     return (
-        <main className={styles.page}>
+        <div className={styles.page}>
             <Seo
                 title={`${t("bookmarks.title")} — LernChih`}
                 description={t("bookmarks.description")}
@@ -319,6 +319,6 @@ export default function BookmarksPage() {
                     </section>
                 </div>
             )}
-        </main>
+        </div>
     );
 }
