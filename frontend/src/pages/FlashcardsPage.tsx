@@ -52,7 +52,7 @@ export default function FlashcardsPage() {
     };
 
     return (
-        <main className={styles.container}>
+        <div className={styles.container}>
             <Seo
                 title={`${t("flashcards.title")} — LernChih`}
                 description={t("flashcards.description")}
@@ -249,6 +249,6 @@ export default function FlashcardsPage() {
                         ))}
                 </section>
             )}
-        </main>
+        </div>
     );
 }
