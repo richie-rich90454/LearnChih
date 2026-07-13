@@ -13,7 +13,7 @@
 
 .panelTitle {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: var(--font-size-xl);
     font-weight: var(--font-weight-bold);
     color: var(--text-primary);
 }
@@ -59,7 +59,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm);
     color: var(--text-secondary);
 }
 
@@ -105,7 +105,7 @@
 
 .previewError {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm);
     color: var(--status-danger);
 }
 
@@ -116,7 +116,7 @@
 }
 
 .participantsLabel {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
     color: var(--text-secondary);
 }
@@ -155,7 +155,7 @@
 .formError {
     margin: 0;
     padding: var(--space-2) var(--space-3);
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm);
     color: var(--status-danger);
     background: var(--status-danger-soft);
     border-radius: var(--radius-input);
