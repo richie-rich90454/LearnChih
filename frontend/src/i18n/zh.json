@@ -550,6 +550,11 @@
         "swaggerTab": "Swagger UI",
         "apiKeysTab": "API 密钥"
     },
+    "follow": {
+        "follow": "关注",
+        "following": "已关注",
+        "loading": "加载中……"
+    },
     "twoFactor": {
         "title": "双因素认证",
         "intro": "启用基于 TOTP 的双因素认证，为账户增加额外安全层。",

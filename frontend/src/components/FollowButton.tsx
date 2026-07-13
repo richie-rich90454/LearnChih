@@ -1,4 +1,5 @@
 import { Button } from "@fluentui/react-components";
+import { useTranslation } from "react-i18next";
 import { useFollow } from "../hooks/useSocial";
 
 interface FollowButtonProps {
@@ -6,12 +7,13 @@ interface FollowButtonProps {
 }
 
 export function FollowButton({ userId }: FollowButtonProps) {
+    const { t } = useTranslation();
     const { data, toggle, isPending, isLoading } = useFollow(userId);
 
     if (isLoading) {
         return (
             <Button appearance="subtle" disabled>
-                Loading…
+                {t("follow.loading")}
             </Button>
         );
     }
@@ -23,8 +25,9 @@ export function FollowButton({ userId }: FollowButtonProps) {
             appearance={following ? "outline" : "primary"}
             onClick={() => toggle()}
             disabled={isPending}
+            aria-pressed={following}
         >
-            {following ? "Following" : "Follow"}
+            {following ? t("follow.following") : t("follow.follow")}
         </Button>
     );
 }

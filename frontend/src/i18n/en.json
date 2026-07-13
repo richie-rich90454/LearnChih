@@ -558,6 +558,11 @@
         "swaggerTab": "Swagger UI",
         "apiKeysTab": "API Keys"
     },
+    "follow": {
+        "follow": "Follow",
+        "following": "Following",
+        "loading": "Loading…"
+    },
     "twoFactor": {
         "title": "Two-factor authentication",
         "intro": "Add an extra layer of security by enabling TOTP-based 2FA.",
