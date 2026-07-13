@@ -23,7 +23,7 @@ const useLogoStyles = makeStyles({
     wordmark: {
         fontFamily:
             "var(--font-sans, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif)",
-        fontWeight: 700,
+        fontWeight: "var(--font-weight-bold)",
         letterSpacing: "-0.02em",
         lineHeight: 1,
         // Color and background are set via inline styles in LogoFull to
