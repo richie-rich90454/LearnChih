@@ -22,7 +22,7 @@ export default function QuizPage() {
     const quizOptions = quizzes?.map((q) => ({ value: String(q.id), label: q.title })) || [];
 
     return (
-        <main className={styles.container}>
+        <div className={styles.container}>
             <Seo
                 title={`${t("quizzes.title")} — LernChih`}
                 description={t("quizzes.description")}
@@ -95,6 +95,6 @@ export default function QuizPage() {
                     <QuizAnalyticsPanel quizId={selectedQuizId} />
                 </>
             )}
-        </main>
+        </div>
     );
 }
