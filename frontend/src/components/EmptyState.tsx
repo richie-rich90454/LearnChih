@@ -21,7 +21,7 @@ export interface EmptyStateProps {
  *   - NotesPage, DraftsInboxPage, LeaderboardPage, ChannelsPage,
  *     DashboardPage, StudyGroupsPage, FlashcardsPage, BookmarksPage,
  *     StudyStatsPage, StudyBuddyPage, SearchPage, ReviewCalendarPage,
- *     ResourcesPage, QuizPage, QuestionBankPage, PlaylistsPage,
+ *     ResourcesPage, QuizPage, PlaylistsPage,
  *     NotificationsPage, MessagesPage, DueTodayPage, CohortsPage.
  * When adding a new data page, import and render <EmptyState> in its
  * empty branch instead of an ad-hoc message.

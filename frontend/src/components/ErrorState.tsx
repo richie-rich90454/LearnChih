@@ -24,7 +24,7 @@ export interface ErrorStateProps {
  *   - ChannelThreadPage, NotesPage, DraftsInboxPage, LeaderboardPage,
  *     ChannelsPage, DashboardPage, StudyGroupsPage, StudyStatsPage,
  *     StudyBuddyPage, SearchPage, ReviewCalendarPage, ResourcesPage,
- *     QuestionBankPage, PlaylistsPage, NotificationsPage, DueTodayPage,
+ *     PlaylistsPage, NotificationsPage, DueTodayPage,
  *     CohortsPage.
  * When adding a new data page, import and render <ErrorState onRetry={refetch}>
  * in its error branch instead of an ad-hoc message bar.
