@@ -11,7 +11,7 @@ export default function NotFoundPage() {
     const navigate = useNavigate();
 
     return (
-        <main className={styles.page}>
+        <div className={styles.page}>
             <Seo title={t("notFound.title")} canonicalPath="/404" robots="noindex, follow" />
             <div className={stateStyles.empty}>
                 <div className={styles.code} aria-hidden="true">
@@ -36,6 +36,6 @@ export default function NotFoundPage() {
                     </Button>
                 </div>
             </div>
-        </main>
+        </div>
     );
 }
