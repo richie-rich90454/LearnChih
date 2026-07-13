@@ -31,7 +31,7 @@ const useStyles = makeStyles({
         border: `1px solid ${tokens.colorNeutralStroke1}`,
         borderRadius: tokens.borderRadiusMedium,
         boxShadow: tokens.shadow16,
-        zIndex: 1000,
+        zIndex: "var(--z-dropdown)",
         maxHeight: "360px",
         overflowY: "auto",
     },
