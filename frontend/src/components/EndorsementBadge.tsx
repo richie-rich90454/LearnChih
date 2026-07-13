@@ -6,12 +6,12 @@ const useStyles = makeStyles({
     root: {
         display: "flex",
         flexDirection: "column",
-        gap: "8px",
+        gap: "var(--space-2)",
     },
     skills: {
         display: "flex",
         flexWrap: "wrap",
-        gap: "4px",
+        gap: "var(--space-1)",
     },
 });
 
