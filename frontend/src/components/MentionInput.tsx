@@ -105,7 +105,7 @@ export function MentionInput({
             {multiline ? (
                 <Textarea {...commonProps} ref={inputRef as React.RefObject<HTMLTextAreaElement>} aria-label={placeholder} />
             ) : (
-                <Input {...commonProps} ref={inputRef as React.RefObject<HTMLInputElement>} />
+                <Input {...commonProps} ref={inputRef as React.RefObject<HTMLInputElement>} aria-label={placeholder} />
             )}
             {showSuggestions && filtered.length > 0 && (
                 <div className={styles.suggestions}>
