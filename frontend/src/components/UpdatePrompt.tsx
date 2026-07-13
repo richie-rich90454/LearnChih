@@ -29,7 +29,7 @@ export function UpdatePrompt() {
     return (
         <MessageBar
             intent="info"
-            style={{ position: "fixed", bottom: 16, right: 16, zIndex: 1000 }}
+            style={{ position: "fixed", bottom: 16, right: 16, zIndex: "var(--z-toast)" }}
         >
             <MessageBarBody>
                 <MessageBarTitle>{t("pwa.updateAvailable")}</MessageBarTitle>
