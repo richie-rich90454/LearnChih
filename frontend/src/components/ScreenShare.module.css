@@ -14,7 +14,7 @@
 .panelTitle {
     margin: 0;
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     color: var(--text-primary);
 }
 
@@ -51,7 +51,7 @@
 .sessionSharer {
     margin: 0;
     font-size: 1.05rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
 }
 
