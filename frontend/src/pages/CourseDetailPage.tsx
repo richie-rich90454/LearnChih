@@ -44,6 +44,7 @@ export default function CourseDetailPage() {
             >
                 {t("common.back")}
             </Button>
+            <h1 className="visually-hidden">{t("resources.course")}</h1>
             <ModuleProgress courseId={courseId} />
         </div>
     );
