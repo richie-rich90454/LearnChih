@@ -2,7 +2,7 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 
 const useStyles = makeStyles({
     root: {
-        lineHeight: "1.6",
+        lineHeight: "var(--line-height-relaxed)",
         color: tokens.colorNeutralForeground1,
         "& img": { maxWidth: "100%", height: "auto", borderRadius: tokens.borderRadiusMedium },
         "& a": { color: tokens.colorBrandForegroundLink },
