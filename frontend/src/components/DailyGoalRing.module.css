@@ -81,7 +81,7 @@
 
 .ringText {
     font-family: var(--font-mono);
-    font-size: 24px;
+    font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-bold);
     fill: var(--text-primary);
 }
