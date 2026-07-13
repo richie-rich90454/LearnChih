@@ -114,7 +114,7 @@
     max-height: 70vh;
     object-fit: cover;
     border-radius: var(--radius-card);
-    box-shadow: 0 24px 60px rgba(30, 79, 216, 0.16);
+    box-shadow: var(--shadow-hero);
 }
 
 /* ----------------------- Logo wall band ----------------------- */

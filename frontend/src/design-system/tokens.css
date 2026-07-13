@@ -180,6 +180,7 @@
     --shadow-card: 0 4px 12px rgba(30, 79, 216, 0.08);
     --shadow-lift: 0 8px 24px rgba(30, 79, 216, 0.12);
     --shadow-focus: 0 0 0 3px rgba(30, 79, 216, 0.24);
+    --shadow-hero: 0 24px 60px rgba(30, 79, 216, 0.16);
 
     /* Status semantic tokens (Phase 1B additive). Used by Badge variants
        and Input error states. Each pair is a foreground + soft background
@@ -228,6 +229,7 @@
         --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
         --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.5);
         --shadow-focus: 0 0 0 3px rgba(91, 141, 239, 0.4);
+        --shadow-hero: 0 24px 60px rgba(0, 0, 0, 0.5);
 
         --status-success: #4cc38a;
         --status-success-soft: rgba(76, 195, 138, 0.16);
@@ -272,6 +274,7 @@
     --shadow-card: 0 4px 12px rgba(30, 79, 216, 0.08);
     --shadow-lift: 0 8px 24px rgba(30, 79, 216, 0.12);
     --shadow-focus: 0 0 0 3px rgba(30, 79, 216, 0.24);
+    --shadow-hero: 0 24px 60px rgba(30, 79, 216, 0.16);
 
     --status-success: #1a7f4e;
     --status-success-soft: #e3f4ec;
@@ -307,6 +310,7 @@
     --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
     --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.5);
     --shadow-focus: 0 0 0 3px rgba(91, 141, 239, 0.4);
+    --shadow-hero: 0 24px 60px rgba(0, 0, 0, 0.5);
 
     --status-success: #4cc38a;
     --status-success-soft: rgba(76, 195, 138, 0.16);
