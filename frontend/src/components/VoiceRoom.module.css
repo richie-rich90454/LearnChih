@@ -14,7 +14,7 @@
 .panelTitle {
     margin: 0;
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     color: var(--text-primary);
 }
 
@@ -51,7 +51,7 @@
 .roomName {
     margin: 0;
     font-size: 1.05rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
 }
 
@@ -117,7 +117,7 @@
 
 .participantsLabel {
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     color: var(--text-secondary);
 }
 
