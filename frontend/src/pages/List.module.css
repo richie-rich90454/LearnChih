@@ -283,7 +283,7 @@
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-input);
     box-shadow: var(--shadow-lift);
-    z-index: 10;
+    z-index: var(--z-dropdown);
     display: flex;
     flex-direction: column;
     padding: var(--space-1);
