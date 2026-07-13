@@ -328,6 +328,7 @@ export default function NotesPage() {
                                         setDirty(true);
                                     }}
                                     placeholder={t("notes.titleField")}
+                                    aria-label={t("notes.titleField")}
                                     wrapperClassName={styles.titleInput}
                                     size="large"
                                 />
