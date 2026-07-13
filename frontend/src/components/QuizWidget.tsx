@@ -63,8 +63,8 @@ const useStyles = makeStyles({
     detailRow: {
         display: "flex",
         alignItems: "center",
-        gap: "8px",
-        marginBottom: "8px",
+        gap: "var(--space-2)",
+        marginBottom: "var(--space-2)",
     },
     feedback: {
         display: "flex",
