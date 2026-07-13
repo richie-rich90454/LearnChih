@@ -144,7 +144,7 @@
 .navSection {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--space-0);
 }
 
 /* Section labels are Fluent Caption1 (a Text variant). Doubled class reaches
