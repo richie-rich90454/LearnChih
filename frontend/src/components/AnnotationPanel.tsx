@@ -102,6 +102,7 @@ export function AnnotationPanel({ resourceId }: AnnotationPanelProps) {
                     size="small"
                     icon={<Add24Regular />}
                     onClick={() => setAdding((v) => !v)}
+                    aria-pressed={adding}
                 >
                     {t("annotations.add")}
                 </Button>

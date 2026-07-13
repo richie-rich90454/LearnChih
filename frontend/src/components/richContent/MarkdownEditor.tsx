@@ -200,6 +200,7 @@ export function MarkdownEditor({
                     appearance={mode === "edit" ? "primary" : "subtle"}
                     icon={<Edit24Regular />}
                     onClick={() => setMode("edit")}
+                    aria-pressed={mode === "edit"}
                 >
                     {t("markdownEditor.write")}
                 </Button>
@@ -208,6 +209,7 @@ export function MarkdownEditor({
                     appearance={mode === "preview" ? "primary" : "subtle"}
                     icon={<Eye24Regular />}
                     onClick={() => setMode("preview")}
+                    aria-pressed={mode === "preview"}
                 >
                     {t("markdownEditor.preview")}
                 </Button>

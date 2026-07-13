@@ -113,6 +113,7 @@ export function PdfHighlightPanel({ resourceId }: PdfHighlightPanelProps) {
                     size="small"
                     icon={<Add24Regular />}
                     onClick={() => setAdding((v) => !v)}
+                    aria-pressed={adding}
                 >
                     {t("pdfHighlights.add")}
                 </Button>

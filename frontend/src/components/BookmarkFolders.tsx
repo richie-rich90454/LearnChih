@@ -218,6 +218,7 @@ export function BookmarkFolders({ selectedFolderId, onSelect }: BookmarkFoldersP
                     icon={<Add24Regular />}
                     onClick={() => setAdding((v) => !v)}
                     aria-label={t("bookmarkFolders.addRoot")}
+                    aria-pressed={adding}
                 >
                     {t("bookmarkFolders.add")}
                 </Button>
