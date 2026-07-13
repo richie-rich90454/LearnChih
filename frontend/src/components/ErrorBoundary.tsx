@@ -31,7 +31,7 @@ class ErrorBoundaryComponent extends Component<ErrorBoundaryProps, ErrorBoundary
         if (this.state.hasError) {
             if (fallback) return fallback;
             return (
-                <div role="alert" style={{ padding: 24, textAlign: "center" }}>
+                <div role="alert" style={{ padding: "var(--space-6)", textAlign: "center" }}>
                     <h2>{i18n.t("errorBoundary.title")}</h2>
                     <p>{this.state.error?.message || i18n.t("errorBoundary.unexpectedError")}</p>
                     <button
@@ -39,7 +39,7 @@ class ErrorBoundaryComponent extends Component<ErrorBoundaryProps, ErrorBoundary
                             this.setState({ hasError: false, error: null });
                             window.location.reload();
                         }}
-                        style={{ marginTop: 12, padding: "8px 16px", cursor: "pointer" }}
+                        style={{ marginTop: "var(--space-3)", padding: "var(--space-2) var(--space-4)", cursor: "pointer" }}
                     >
                         {i18n.t("errorBoundary.reload")}
                     </button>
