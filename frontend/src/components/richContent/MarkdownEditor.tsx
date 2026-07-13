@@ -41,7 +41,7 @@ const useStyles = makeStyles({
         border: `1px solid ${tokens.colorNeutralStroke1}`,
         borderRadius: tokens.borderRadiusMedium,
         overflowX: "auto",
-        lineHeight: "1.6",
+        lineHeight: "var(--line-height-relaxed)",
         "& h1": { fontSize: "var(--fontSizeHero700)" },
         "& h2": { fontSize: "var(--fontSizeHero500)" },
         "& h3": { fontSize: "var(--fontSizeBase500)" },
