@@ -38,7 +38,7 @@ export function ReactionPicker({ postId }: ReactionPickerProps) {
     };
 
     return (
-        <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--space-1)", flexWrap: "wrap" }}>
             {Object.entries(grouped).map(([emoji, list]) => {
                 const mine = list.some((r) => r.userId === currentUser?.userId);
                 return (
@@ -80,7 +80,7 @@ export function ReactionPicker({ postId }: ReactionPickerProps) {
                     </Button>
                 </PopoverTrigger>
                 <PopoverSurface
-                    style={{ display: "flex", gap: 4, flexWrap: "wrap", maxWidth: 280 }}
+                    style={{ display: "flex", gap: "var(--space-1)", flexWrap: "wrap", maxWidth: 280 }}
                 >
                     {COMMON_EMOJIS.map((emoji) => (
                         <Button
