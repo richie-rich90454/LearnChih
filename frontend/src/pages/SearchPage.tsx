@@ -124,7 +124,7 @@ export default function SearchPage() {
                         }}
                     >
                         <div className={styles.itemHeader}>
-                            <h3 className={styles.itemTitle}>{result.title}</h3>
+                            <h2 className={styles.itemTitle}>{result.title}</h2>
                             <Badge variant="accent" size="small">
                                 {result.type}
                             </Badge>

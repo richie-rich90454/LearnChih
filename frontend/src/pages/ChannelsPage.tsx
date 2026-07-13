@@ -474,7 +474,7 @@ export default function ChannelsPage() {
                                             onClick={() => setSelectedChannelId(channel.id)}
                                         >
                                             <div className={styles.itemHeader}>
-                                                <h3 className={styles.itemTitle}>{channel.name}</h3>
+                                                <h2 className={styles.itemTitle}>{channel.name}</h2>
                                                 <div className={folderStyles.folderItemRow}>
                                                     <Badge variant="neutral" size="small">
                                                         {channel.threadCount ?? 0} {t("channels.threads")}

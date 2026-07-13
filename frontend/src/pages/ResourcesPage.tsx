@@ -473,7 +473,7 @@ export default function ResourcesPage() {
                                 }
                             >
                                 <div className={styles.itemHeader}>
-                                    <h3 className={styles.itemTitle}>{resource.title}</h3>
+                                    <h2 className={styles.itemTitle}>{resource.title}</h2>
                                     <div className={styles.itemActions}>
                                         {authenticated && (
                                             <Tooltip

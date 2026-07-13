@@ -201,9 +201,9 @@ export default function LeaderboardPage() {
                                                 name={item.name || t("common.user")}
                                                 size={32}
                                             />
-                                            <h3 className={styles.itemTitle}>
+                                            <h2 className={styles.itemTitle}>
                                                 {item.name || t("common.unknown")}
-                                            </h3>
+                                            </h2>
                                         </div>
                                         {rank <= 3 ? (
                                             <Badge variant="accent" size="medium">

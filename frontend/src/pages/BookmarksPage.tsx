@@ -215,9 +215,9 @@ export default function BookmarksPage() {
                                                     className={styles.batchSelectAll}
                                                 />
                                                 <div>
-                                                    <h3 className={styles.itemTitle}>
+                                                    <h2 className={styles.itemTitle}>
                                                         {item.title}
-                                                    </h3>
+                                                    </h2>
                                                     {item.folderId &&
                                                     folders[item.folderId] ? (
                                                         <Badge variant="accent" size="small">

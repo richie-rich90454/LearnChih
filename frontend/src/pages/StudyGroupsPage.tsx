@@ -97,7 +97,7 @@ export default function StudyGroupsPage() {
                 {groups.map((group) => (
                     <Card key={group.id} className={styles.item} padding="md">
                         <div className={styles.itemHeader}>
-                            <h3 className={styles.itemTitle}>{group.name}</h3>
+                            <h2 className={styles.itemTitle}>{group.name}</h2>
                             <Badge variant="neutral" size="small">
                                 {group.isPublic ? t("studyGroupsPage.public") : t("studyGroupsPage.private")}
                             </Badge>

@@ -133,9 +133,9 @@ export default function DraftsInboxPage() {
                             padding="md"
                         >
                             <div>
-                                <h3 className={styles.itemTitle}>
+                                <h2 className={styles.itemTitle}>
                                     {item.title || t("draftsInbox.untitled")}
-                                </h3>
+                                </h2>
                                 <Badge variant="neutral" size="small">
                                     {t(`draftsInbox.filter.${item.contentType}`)}
                                 </Badge>
