@@ -63,7 +63,7 @@ const useStyles = makeStyles({
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "2px",
+        padding: "var(--space-0)",
         border: "none",
         borderRadius: tokens.borderRadiusSmall,
         backgroundColor: "transparent",
