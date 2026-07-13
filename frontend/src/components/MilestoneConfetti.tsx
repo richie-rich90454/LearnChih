@@ -165,7 +165,7 @@ export function MilestoneConfetti({
                 position: "fixed",
                 inset: 0,
                 pointerEvents: "none",
-                zIndex: 9999,
+                zIndex: "var(--z-celebration)",
             }}
         />
     );
