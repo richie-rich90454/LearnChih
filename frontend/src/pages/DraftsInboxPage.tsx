@@ -49,7 +49,7 @@ export default function DraftsInboxPage() {
     };
 
     return (
-        <main className={`${styles.page} ${styles.pageNarrow}`}>
+        <div className={`${styles.page} ${styles.pageNarrow}`}>
             <Seo
                 title={`${t("draftsInbox.title")} — LernChih`}
                 description={t("draftsInbox.description")}
@@ -165,6 +165,6 @@ export default function DraftsInboxPage() {
                     ))}
                 </div>
             )}
-        </main>
+        </div>
     );
 }
