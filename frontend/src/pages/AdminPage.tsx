@@ -242,7 +242,7 @@ export default function AdminPage() {
             {isLoading && <SkeletonList count={4} />}
             {isError && (
                 <div role="alert" className={styles.errorState}>
-                    <h3 className={styles.errorTitle}>{t("admin.loadError")}</h3>
+                    <h2 className={styles.errorTitle}>{t("admin.loadError")}</h2>
                     <p className={styles.errorText}>{t("errors.generic")}</p>
                     <Button variant="primary" onClick={() => refetch()}>
                         {t("errors.retry")}

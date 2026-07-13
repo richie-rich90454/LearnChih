@@ -141,7 +141,7 @@ export default function ModerationQueuePage() {
 
             {isError && (
                 <div role="alert" className={styles.errorState}>
-                    <h3 className={styles.errorTitle}>{t("moderationQueue.loadError")}</h3>
+                    <h2 className={styles.errorTitle}>{t("moderationQueue.loadError")}</h2>
                     <Button variant="primary" onClick={() => refetch()}>
                         {t("errors.retry")}
                     </Button>

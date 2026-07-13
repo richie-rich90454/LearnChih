@@ -196,7 +196,7 @@ export default function AdminUsersPage() {
 
             {isError && (
                 <div role="alert" className={styles.errorState}>
-                    <h3 className={styles.errorTitle}>{t("adminUsers.loadError")}</h3>
+                    <h2 className={styles.errorTitle}>{t("adminUsers.loadError")}</h2>
                     <Button variant="primary" onClick={() => refetch()}>
                         {t("errors.retry")}
                     </Button>

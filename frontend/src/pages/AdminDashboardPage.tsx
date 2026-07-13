@@ -384,7 +384,7 @@ export default function AdminDashboardPage() {
 
             {isError && (
                 <div role="alert" className={styles.errorState}>
-                    <h3 className={styles.errorTitle}>{t("admin.kpisLoadError")}</h3>
+                    <h2 className={styles.errorTitle}>{t("admin.kpisLoadError")}</h2>
                     <Button variant="primary" onClick={() => refetch()}>
                         {t("errors.retry")}
                     </Button>
