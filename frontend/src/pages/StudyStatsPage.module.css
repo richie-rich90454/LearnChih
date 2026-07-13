@@ -138,14 +138,14 @@
 
 .barValue {
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: var(--font-size-xs);
     font-weight: var(--font-weight-semibold);
     fill: var(--text-primary);
 }
 
 .axisLabel {
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: var(--font-size-xs);
     fill: var(--text-secondary);
 }
 
