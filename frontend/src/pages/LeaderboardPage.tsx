@@ -29,15 +29,15 @@ export default function LeaderboardPage() {
 
     if (isLoading) {
         return (
-            <main className={`${styles.page} ${styles.pageNarrow}`}>
+            <div className={`${styles.page} ${styles.pageNarrow}`}>
                 <SkeletonLine width="40%" />
                 <SkeletonList count={5} />
-            </main>
+            </div>
         );
     }
     if (isError) {
         return (
-            <main className={`${styles.page} ${styles.pageNarrow}`}>
+            <div className={`${styles.page} ${styles.pageNarrow}`}>
                 <Seo
                     title={`${t("leaderboard.title")} — LernChih`}
                     description={t("leaderboard.description")}
@@ -51,7 +51,7 @@ export default function LeaderboardPage() {
                     onRetry={() => refetch()}
                     retryLabel={t("error.tryAgain")}
                 />
-            </main>
+            </div>
         );
     }
 
