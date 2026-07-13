@@ -313,7 +313,7 @@ export default function AppLayout() {
                                 <MenuTrigger disableButtonEnhancement>
                                     <Button
                                         appearance="subtle"
-                                        style={{ gap: "8px" }}
+                                        style={{ gap: "var(--space-2)" }}
                                         aria-label={t("a11y.accountMenu")}
                                     >
                                         <Avatar name={user?.name || t("common.user")} size={28} />
