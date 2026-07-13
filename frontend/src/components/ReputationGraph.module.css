@@ -34,7 +34,7 @@
 
 .axisText {
     font-family: var(--font-sans);
-    font-size: 10px;
+    font-size: var(--font-size-xs);
     fill: var(--text-secondary);
 }
 
