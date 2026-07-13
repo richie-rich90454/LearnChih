@@ -49,7 +49,7 @@ export default function CookieConsent() {
                             <Link
                                 href="#"
                                 target="_blank"
-                                rel="noreferrer"
+                                rel="noopener noreferrer"
                                 className={styles.privacyLink}
                             >
                                 privacy notice
