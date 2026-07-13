@@ -37,7 +37,7 @@ const useStyles = makeStyles({
         gap: tokens.spacingHorizontalS,
     },
     rank: {
-        fontWeight: 600,
+        fontWeight: "var(--font-weight-semibold)",
         color: tokens.colorBrandForeground1,
         minWidth: "24px",
     },
