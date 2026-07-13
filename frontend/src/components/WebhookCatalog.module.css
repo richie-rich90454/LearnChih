@@ -59,7 +59,7 @@
     font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
     background-color: var(--surface-sunken);
-    padding: 2px var(--space-2);
+    padding: var(--space-0) var(--space-2);
     border-radius: var(--radius-input);
 }
 
@@ -166,7 +166,7 @@
     font-size: var(--font-size-xs);
     color: var(--text-primary);
     background-color: var(--surface-sunken);
-    padding: 2px var(--space-2);
+    padding: var(--space-0) var(--space-2);
     border-radius: var(--radius-input);
 }
 
@@ -232,7 +232,7 @@
     font-size: var(--font-size-xs);
     color: var(--text-secondary);
     background-color: var(--surface-sunken);
-    padding: 2px var(--space-2);
+    padding: var(--space-0) var(--space-2);
     border-radius: var(--radius-input);
 }
 
