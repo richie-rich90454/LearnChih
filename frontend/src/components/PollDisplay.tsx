@@ -269,6 +269,7 @@ function OpenEndedPoll({ poll, reduced: _reduced, closed }: { poll: Poll; reduce
                         placeholder={t("polls.openEndedPlaceholder", "Type your answer...")}
                         rows={3}
                         disabled={closed}
+                        aria-label={t("polls.openEndedPlaceholder", "Type your answer...")}
                     />
                     <Button
                         variant="primary"
