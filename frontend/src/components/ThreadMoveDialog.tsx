@@ -71,6 +71,7 @@ export function ThreadMoveDialog({ currentChannelId, channels }: ThreadMoveDialo
                         ) : (
                             <Dropdown
                                 placeholder={t("threadMove.selectChannel", "Select channel")}
+                                aria-label={t("threadMove.selectChannel", "Select channel")}
                                 value={
                                     targetId
                                         ? candidates.find((c) => String(c.id) === targetId)?.name ?? ""
