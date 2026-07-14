@@ -212,7 +212,9 @@ export default function ResourceDetailPage() {
                     title={`${t("common.loading")} — LernChih`}
                     canonicalPath={`/resources/${id ?? ""}`}
                 />
-                <Spinner label={t("common.loading")} />
+                <div role="status" aria-live="polite">
+                    <Spinner label={t("common.loading")} />
+                </div>
             </div>
         );
     }
@@ -532,7 +534,11 @@ export default function ResourceDetailPage() {
                 )}
 
                 {/* Posts list */}
-                {postsLoading && <Spinner size="small" />}
+                {postsLoading && (
+                    <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                        <Spinner size="small" />
+                    </div>
+                )}
                 <StaggerReveal className={styles.postsList}>
                     {postList.length === 0 && !postsLoading && (
                         <p className={styles.emptyText}>{t("resources.noComments")}</p>

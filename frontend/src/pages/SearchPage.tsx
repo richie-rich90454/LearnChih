@@ -90,7 +90,11 @@ export default function SearchPage() {
                 aria-label={t("search.placeholder")}
             />
 
-            {isFetching && <Spinner label={t("search.searching")} />}
+            {isFetching && (
+                <div role="status" aria-live="polite">
+                    <Spinner label={t("search.searching")} />
+                </div>
+            )}
             {isError && (
                 <ErrorState
                     title={t("error.searchTitle")}
