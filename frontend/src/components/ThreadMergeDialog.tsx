@@ -73,6 +73,7 @@ export function ThreadMergeDialog({ threadId, threads }: ThreadMergeDialogProps)
                         ) : (
                             <Dropdown
                                 placeholder={t("threadMerge.selectTarget", "Select target thread")}
+                                aria-label={t("threadMerge.selectTarget", "Select target thread")}
                                 value={
                                     targetId
                                         ? candidates.find((c) => String(c.id) === targetId)?.title ?? ""
