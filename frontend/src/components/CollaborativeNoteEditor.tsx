@@ -213,6 +213,7 @@ export function CollaborativeNoteEditor({
                         placeholder={t("notes.titleField")}
                         wrapperClassName={styles.titleInput}
                         size="large"
+                        aria-label={t("notes.titleField")}
                     />
                     <Textarea
                         value={content}
