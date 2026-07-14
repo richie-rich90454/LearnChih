@@ -228,7 +228,7 @@ export function CollaborativeNoteEditor({
                     <p className={styles.syncLabel}>{syncLabel}</p>
                 </div>
 
-                <aside className={styles.collabPane}>
+                <aside className={styles.collabPane} aria-label={t("collaboration.collaborators")}>
                     <div className={styles.collabHeader}>
                         <h3 className={styles.collabTitle}>
                             {t("collaboration.collaborators")}

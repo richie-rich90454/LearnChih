@@ -249,7 +249,7 @@ export default function NotesPage() {
 
             <div className={styles.layout}>
                 {/* Note list */}
-                <aside className={styles.listPane}>
+                <aside className={styles.listPane} aria-label={t("notes.title")}>
                     <div className={styles.searchRow}>
                         <Input
                             value={search}

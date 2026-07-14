@@ -138,7 +138,7 @@ export default function BookmarksPage() {
                 />
             ) : (
                 <div className={styles.split}>
-                    <aside className={styles.splitAside}>
+                    <aside className={styles.splitAside} aria-label={t("bookmarkFolders.heading", "Folders")}>
                         <BookmarkFolders
                             selectedFolderId={selectedFolderId}
                             onSelect={setSelectedFolderId}

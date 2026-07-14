@@ -232,7 +232,7 @@ export default function PlaylistsPage() {
             )}
 
             <div className={styles.split}>
-                <aside className={styles.aside}>
+                <aside className={styles.aside} aria-label={t("playlists.title")}>
                     <div className={styles.listCol}>
                         {playlists.map((p) => (
                             <Card
