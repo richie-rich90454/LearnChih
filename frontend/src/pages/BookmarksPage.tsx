@@ -195,11 +195,23 @@ export default function BookmarksPage() {
                                             key={item.resourceId}
                                             className={`${styles.item} ${styles.itemRow} ${styles.itemClickable} ${isSelected ? styles.itemSelected : ""}`}
                                             padding="md"
+                                            role="button"
+                                            tabIndex={0}
                                             onClick={() => {
                                                 if (selectedCount > 0) {
                                                     toggleSelected(item.resourceId);
                                                 } else {
                                                     navigate(`/resources/${item.resourceId}`);
+                                                }
+                                            }}
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter" || e.key === " ") {
+                                                    e.preventDefault();
+                                                    if (selectedCount > 0) {
+                                                        toggleSelected(item.resourceId);
+                                                    } else {
+                                                        navigate(`/resources/${item.resourceId}`);
+                                                    }
                                                 }
                                             }}
                                         >
