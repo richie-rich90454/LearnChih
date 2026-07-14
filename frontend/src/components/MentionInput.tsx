@@ -116,7 +116,12 @@ export function MentionInput({
                             role="button"
                             tabIndex={0}
                             onClick={() => handleSelect(user)}
-                            onKeyDown={(e) => e.key === "Enter" && handleSelect(user)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    handleSelect(user);
+                                }
+                            }}
                         >
                             <Body1>@{user.name}</Body1>
                         </div>

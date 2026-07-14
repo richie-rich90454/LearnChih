@@ -342,7 +342,10 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                         tabIndex={0}
                                         onClick={() => go(shortcut.path)}
                                         onKeyDown={(e) => {
-                                            if (e.key === "Enter") go(shortcut.path);
+                                            if (e.key === "Enter" || e.key === " ") {
+                                                e.preventDefault();
+                                                go(shortcut.path);
+                                            }
                                         }}
                                     >
                                         <div className={styles.itemLeft}>
@@ -362,7 +365,10 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                         tabIndex={0}
                                         onClick={action.execute}
                                         onKeyDown={(e) => {
-                                            if (e.key === "Enter") action.execute();
+                                            if (e.key === "Enter" || e.key === " ") {
+                                                e.preventDefault();
+                                                action.execute();
+                                            }
                                         }}
                                     >
                                         <div className={styles.itemLeft}>
@@ -396,7 +402,10 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                                 tabIndex={0}
                                                 onClick={action.execute}
                                                 onKeyDown={(e) => {
-                                                    if (e.key === "Enter") action.execute();
+                                                    if (e.key === "Enter" || e.key === " ") {
+                                                        e.preventDefault();
+                                                        action.execute();
+                                                    }
                                                 }}
                                             >
                                                 <div className={styles.itemLeft}>
@@ -426,7 +435,10 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                                     tabIndex={0}
                                                     onClick={() => goAlias(alias)}
                                                     onKeyDown={(e) => {
-                                                        if (e.key === "Enter") goAlias(alias);
+                                                        if (e.key === "Enter" || e.key === " ") {
+                                                            e.preventDefault();
+                                                            goAlias(alias);
+                                                        }
                                                     }}
                                                 >
                                                     <div className={styles.itemLeft}>
@@ -471,7 +483,10 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                         tabIndex={0}
                                         onClick={() => go(result.url)}
                                         onKeyDown={(e) => {
-                                            if (e.key === "Enter") go(result.url);
+                                            if (e.key === "Enter" || e.key === " ") {
+                                                e.preventDefault();
+                                                go(result.url);
+                                            }
                                         }}
                                     >
                                         <div className={styles.itemLeft}>
@@ -496,7 +511,10 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                                                 tabIndex={0}
                                                 onClick={() => go(shortcut.path)}
                                                 onKeyDown={(e) => {
-                                                    if (e.key === "Enter") go(shortcut.path);
+                                                    if (e.key === "Enter" || e.key === " ") {
+                                                        e.preventDefault();
+                                                        go(shortcut.path);
+                                                    }
                                                 }}
                                             >
                                                 <div className={styles.itemLeft}>
