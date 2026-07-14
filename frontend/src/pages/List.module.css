@@ -184,6 +184,11 @@
     cursor: pointer;
 }
 
+.itemClickable:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--shadow-focus);
+}
+
 .itemHeader {
     display: flex;
     align-items: flex-start;
