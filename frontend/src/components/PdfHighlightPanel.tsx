@@ -226,6 +226,7 @@ export function PdfHighlightPanel({ resourceId }: PdfHighlightPanelProps) {
                                 onClick={() => deleteMutation.mutate(h.id)}
                                 loading={deleteMutation.isPending}
                                 className={styles.deleteBtn}
+                                aria-label={t("pdfHighlights.delete", "Delete highlight")}
                             />
                         </div>
                         <blockquote className={styles.highlightText}>

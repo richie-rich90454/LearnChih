@@ -1064,7 +1064,8 @@
         "empty": "暂无高亮。添加一个开始构建你的标注集。",
         "errorTitle": "无法加载高亮",
         "errorDescription": "暂时无法加载你的高亮，请稍后重试。",
-        "page": "第"
+        "page": "第",
+        "delete": "删除高亮"
     },
     "annotations": {
         "title": "批注",

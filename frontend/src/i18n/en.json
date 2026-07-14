@@ -1072,7 +1072,8 @@
         "empty": "No highlights yet. Add one to start building your annotation set.",
         "errorTitle": "Couldn't load highlights",
         "errorDescription": "We couldn't load your highlights. Please try again.",
-        "page": "p."
+        "page": "p.",
+        "delete": "Delete highlight"
     },
     "annotations": {
         "title": "Annotations",
