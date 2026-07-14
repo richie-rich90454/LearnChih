@@ -247,7 +247,7 @@ export function ProductTour() {
                 <p className={styles.tooltipStep}>
                     {t("tour.stepOf", { current: step + 1, total: STEPS.length })}
                 </p>
-                <h3 className={styles.tooltipTitle}>{t(STEPS[step].titleKey)}</h3>
+                <h2 className={styles.tooltipTitle}>{t(STEPS[step].titleKey)}</h2>
                 <p className={styles.tooltipBody}>{t(STEPS[step].bodyKey)}</p>
                 <div className={styles.tooltipActions}>
                     <Button variant="ghost" size="small" onClick={finish}>

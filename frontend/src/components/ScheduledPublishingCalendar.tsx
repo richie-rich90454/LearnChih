@@ -113,7 +113,7 @@ export function ScheduledPublishingCalendar() {
                             aria-label={t("scheduledPublishing.previousMonth", "Previous month")}
                         />
                     </Tooltip>
-                    <h3 className={styles.monthLabel}>{monthLabel}</h3>
+                    <h2 className={styles.monthLabel}>{monthLabel}</h2>
                     <Tooltip content={t("scheduledPublishing.nextMonth", "Next month")} relationship="label">
                         <Button
                             variant="outline"
@@ -194,11 +194,11 @@ export function ScheduledPublishingCalendar() {
             </div>
 
             <aside className={styles.sidePanel} aria-label={t("scheduledPublishing.subtitle", "See when your drafts are scheduled to go live.")}>
-                <h4 className={styles.sidePanelTitle}>
+                <h3 className={styles.sidePanelTitle}>
                     {t("scheduledPublishing.itemsFor", "Items for {{date}}", {
                         date: selectedDate.toLocaleDateString(),
                     })}
-                </h4>
+                </h3>
                 {selectedItems.length === 0 ? (
                     <p className={styles.sidePanelEmpty}>
                         {t("scheduledPublishing.noItems", "No items scheduled for this day.")}

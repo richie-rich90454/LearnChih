@@ -40,7 +40,7 @@ export function EndorsementBadge({ userId }: EndorsementBadgeProps) {
 
     return (
         <div className={styles.root}>
-            <h3 style={{ margin: 0 }}>{t("endorsement.title")}</h3>
+            <h2 style={{ margin: 0 }}>{t("endorsement.title")}</h2>
             <div className={styles.skills}>
                 {Object.entries(bySkill).map(([skill, count]) => (
                     <Badge
