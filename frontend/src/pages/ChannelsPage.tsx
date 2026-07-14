@@ -309,7 +309,15 @@ export default function ChannelsPage() {
                                                         : ""
                                                 }`}
                                                 padding="sm"
+                                                role="button"
+                                                tabIndex={0}
                                                 onClick={() => setSelectedChannelId(channel.id)}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter" || e.key === " ") {
+                                                        e.preventDefault();
+                                                        setSelectedChannelId(channel.id);
+                                                    }
+                                                }}
                                             >
                                                 <span className={styles.itemTitle}>{channel.name}</span>
                                             </Card>
@@ -428,7 +436,15 @@ export default function ChannelsPage() {
                                                                 : ""
                                                         }`}
                                                         padding="sm"
+                                                        role="button"
+                                                        tabIndex={0}
                                                         onClick={() => setSelectedChannelId(channel.id)}
+                                                        onKeyDown={(e) => {
+                                                            if (e.key === "Enter" || e.key === " ") {
+                                                                e.preventDefault();
+                                                                setSelectedChannelId(channel.id);
+                                                            }
+                                                        }}
                                                     >
                                                         <span className={styles.itemTitle}>{channel.name}</span>
                                                     </Card>
