@@ -109,6 +109,7 @@ export function PollEditor({ postId, onSaved, onCancel }: PollEditorProps) {
                         onChange={(_e, data) => updateOption(index, data.value)}
                         placeholder={t("pollEditor.optionPlaceholder", { index: index + 1 })}
                         style={{ flex: 1 }}
+                        aria-label={t("pollEditor.optionPlaceholder", { index: index + 1 })}
                     />
                     <Tooltip content={t("pollEditor.removeOption", { index: index + 1 })} relationship="label">
                         <Button
