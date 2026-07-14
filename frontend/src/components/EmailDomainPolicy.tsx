@@ -58,6 +58,10 @@ function DomainListEditor({ list }: { list: DomainListName }) {
                     placeholder={t("emailDomainPolicy.domainPlaceholder", "example.com")}
                     value={value}
                     onChange={(_, d) => setValue(d.value)}
+                    aria-label={t("emailDomainPolicy.domainInputAria", {
+                        defaultValue: "Add domain to {{list}}",
+                        list: t(labelKey, list),
+                    })}
                 />
                 <Button
                     variant="outline"
