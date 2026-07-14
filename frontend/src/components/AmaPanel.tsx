@@ -85,6 +85,7 @@ export function AmaPanel({ threadId, isOwner = false }: AmaPanelProps) {
                     onChange={(e) => setDraft(e.target.value)}
                     placeholder={t("ama.askPlaceholder", "Ask a question...")}
                     rows={2}
+                    aria-label={t("ama.askPlaceholder", "Ask a question...")}
                 />
                 <Button
                     variant="primary"
