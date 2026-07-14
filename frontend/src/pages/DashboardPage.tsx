@@ -177,7 +177,15 @@ export default function DashboardPage() {
                             interactive
                             padding="md"
                             className={styles.quickLinkCard}
+                            role="button"
+                            tabIndex={0}
                             onClick={() => navigate("/resources")}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    navigate("/resources");
+                                }
+                            }}
                         >
                             <div className={styles.quickLinkLeft}>
                                 <span className={styles.quickLinkIcon}>
@@ -195,7 +203,15 @@ export default function DashboardPage() {
                             interactive
                             padding="md"
                             className={styles.quickLinkCard}
+                            role="button"
+                            tabIndex={0}
                             onClick={() => navigate("/channels")}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    navigate("/channels");
+                                }
+                            }}
                         >
                             <div className={styles.quickLinkLeft}>
                                 <span className={styles.quickLinkIcon}>
@@ -213,7 +229,15 @@ export default function DashboardPage() {
                             interactive
                             padding="md"
                             className={styles.quickLinkCard}
+                            role="button"
+                            tabIndex={0}
                             onClick={() => navigate("/leaderboard")}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    navigate("/leaderboard");
+                                }
+                            }}
                         >
                             <div className={styles.quickLinkLeft}>
                                 <span className={styles.quickLinkIcon}>
@@ -257,7 +281,15 @@ export default function DashboardPage() {
                                     interactive
                                     padding="md"
                                     className={styles.resourceCard}
+                                    role="button"
+                                    tabIndex={0}
                                     onClick={() => navigate(`/resources/${resource.id}`)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter" || e.key === " ") {
+                                            e.preventDefault();
+                                            navigate(`/resources/${resource.id}`);
+                                        }
+                                    }}
                                 >
                                     <div className={styles.cardHeader}>
                                         <h3 className={styles.resourceTitle}>{resource.title}</h3>

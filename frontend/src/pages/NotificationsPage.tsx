@@ -121,7 +121,15 @@ export default function NotificationsPage() {
                     interactive
                     padding="md"
                     className={cx(styles.notificationCard, !n.read && styles.unread)}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => handleClick(n.id, n.link)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            handleClick(n.id, n.link);
+                        }
+                    }}
                 >
                     <p className={cx(styles.notificationTitle, !n.read && styles.notificationTitleUnread)}>
                         {n.title}

@@ -110,7 +110,15 @@ export default function DueTodayPage() {
                             interactive
                             padding="md"
                             className={styles.itemCard}
+                            role="button"
+                            tabIndex={0}
                             onClick={() => navigate(item.destination)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    navigate(item.destination);
+                                }
+                            }}
                         >
                             <span className={styles.itemIcon} aria-hidden>
                                 {itemIcon(item.type)}

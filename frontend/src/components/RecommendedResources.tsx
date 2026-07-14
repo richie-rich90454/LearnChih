@@ -104,7 +104,15 @@ export function RecommendedResources() {
                             interactive
                             padding="md"
                             className={styles.card}
+                            role="button"
+                            tabIndex={0}
                             onClick={() => navigate(`/resources/${item.id}`)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    navigate(`/resources/${item.id}`);
+                                }
+                            }}
                         >
                             <h3 className={styles.title}>{item.title}</h3>
                             {item.description && (
