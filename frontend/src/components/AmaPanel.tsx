@@ -146,6 +146,7 @@ export function AmaPanel({ threadId, isOwner = false }: AmaPanelProps) {
                                     onChange={(e) => setAnswerDraft(e.target.value)}
                                     placeholder={t("ama.answerPlaceholder", "Write your answer...")}
                                     rows={2}
+                                    aria-label={t("ama.answerPlaceholder", "Write your answer...")}
                                 />
                                 <div className={styles.answerActions}>
                                     <Button
