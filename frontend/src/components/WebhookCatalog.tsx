@@ -107,6 +107,7 @@ export default function WebhookCatalog() {
                                     className={styles.select}
                                     value={eventId}
                                     onChange={(e) => setEventId(e.target.value)}
+                                    aria-label={t("webhookCatalog.eventLabel", "Event")}
                                 >
                                     {events.map((event) => (
                                         <option key={event.id} value={event.id}>
