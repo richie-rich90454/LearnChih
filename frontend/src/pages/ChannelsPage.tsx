@@ -393,6 +393,7 @@ export default function ChannelsPage() {
                                         className={folderStyles.folderHeaderButton}
                                         onClick={() => toggleFolder(folder.id)}
                                         aria-expanded={!collapsed}
+                                        aria-controls={`folder-body-${folder.id}`}
                                     >
                                         <span className={folderStyles.folderIcon}>
                                             <Folder24Regular />
@@ -420,7 +421,10 @@ export default function ChannelsPage() {
                                     />
                                 </div>
                                 {!collapsed && (
-                                    <div className={folderStyles.folderBody}>
+                                    <div
+                                        id={`folder-body-${folder.id}`}
+                                        className={folderStyles.folderBody}
+                                    >
                                         {folderChannels.length === 0 && (
                                             <p className={styles.itemBody}>
                                                 {t("channelFolders.emptyFolder", "No channels in this folder.")}

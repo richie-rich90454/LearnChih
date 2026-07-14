@@ -58,6 +58,7 @@ export function NotificationGroupSection({
                     className={styles.headerButton}
                     onClick={() => toggle(group)}
                     aria-expanded={!collapsed}
+                    aria-controls={`notification-group-${group}`}
                     aria-label={
                         collapsed
                             ? t("notificationGroups.expand", "Expand")
@@ -92,7 +93,10 @@ export function NotificationGroupSection({
                     </Button>
                 )}
             </div>
-            <div className={collapsed ? styles.bodyCollapsed : styles.body}>
+            <div
+                id={`notification-group-${group}`}
+                className={collapsed ? styles.bodyCollapsed : styles.body}
+            >
                 {notifications.length === 0 ? (
                     <p className={styles.groupLabel} style={{ padding: "var(--space-2) var(--space-3)", color: "var(--text-secondary)" }}>
                         {t("notificationGroups.empty", "No notifications in this group.")}
