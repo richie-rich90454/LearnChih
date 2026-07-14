@@ -177,6 +177,7 @@ export function AnnotationPanel({ resourceId }: AnnotationPanelProps) {
                                 onClick={() => deleteMutation.mutate(a.id)}
                                 loading={deleteMutation.isPending}
                                 className={styles.deleteBtn}
+                                aria-label={t("annotations.delete", "Delete annotation")}
                             />
                         </div>
                         <Textarea

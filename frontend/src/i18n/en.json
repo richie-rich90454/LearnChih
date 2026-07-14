@@ -1082,7 +1082,8 @@
         "contentPlaceholder": "Write your annotation...",
         "empty": "No annotations yet. Add one to start a discussion with yourself.",
         "errorTitle": "Couldn't load annotations",
-        "errorDescription": "We couldn't load your annotations. Please try again."
+        "errorDescription": "We couldn't load your annotations. Please try again.",
+        "delete": "Delete annotation"
     },
     "profile": {
         "title": "Profile",

@@ -1074,7 +1074,8 @@
         "contentPlaceholder": "撰写批注内容...",
         "empty": "暂无批注。添加一个开始记录你的思考。",
         "errorTitle": "无法加载批注",
-        "errorDescription": "暂时无法加载你的批注，请稍后重试。"
+        "errorDescription": "暂时无法加载你的批注，请稍后重试。",
+        "delete": "删除批注"
     },
     "profile": {
         "title": "个人资料",
