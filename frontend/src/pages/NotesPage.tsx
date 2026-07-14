@@ -301,7 +301,7 @@ export default function NotesPage() {
                 </aside>
 
                 {/* Editor */}
-                <section className={styles.editorPane}>
+                <section className={styles.editorPane} aria-label={t("notes.title")}>
                     {!selected ? (
                         <EmptyState
                             icon={<Document24Regular />}

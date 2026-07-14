@@ -241,7 +241,7 @@ export default function LandingPage() {
             </section>
 
             {/* Section 5: CTA band */}
-            <section className={styles.ctaSection}>
+            <section className={styles.ctaSection} aria-label={t("landing.ctaHeading")}>
                 <div className={styles.container}>
                     <div className={styles.ctaBand}>
                         <h2 className={styles.ctaHeading}>{t("landing.ctaHeading")}</h2>

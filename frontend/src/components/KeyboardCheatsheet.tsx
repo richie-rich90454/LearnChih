@@ -139,6 +139,7 @@ export function KeyboardCheatsheet() {
                                 <section
                                     key={category.titleKey}
                                     className={styles.category}
+                                    aria-label={t(category.titleKey)}
                                 >
                                     <h3 className={styles.categoryTitle}>
                                         {t(category.titleKey)}

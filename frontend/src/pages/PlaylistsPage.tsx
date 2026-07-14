@@ -258,7 +258,7 @@ export default function PlaylistsPage() {
                     </div>
                 </aside>
 
-                <section className={styles.main}>
+                <section className={styles.main} aria-label={t("playlists.title")}>
                     {selectedId === null && (
                         <EmptyState
                             icon={<List24Regular />}

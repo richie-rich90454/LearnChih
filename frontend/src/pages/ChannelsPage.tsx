@@ -286,7 +286,7 @@ export default function ChannelsPage() {
                 <div className={`${styles.list} ${styles.splitAside}`}>
                     {/* Pinned channels (F51) */}
                     {pinnedChannels.length > 0 && (
-                        <section className={folderStyles.foldersSection}>
+                        <section className={folderStyles.foldersSection} aria-label={t("channelPinning.pinned", "Pinned")}>
                             <div className={folderStyles.folderHeader}>
                                 <span className={folderStyles.folderHeaderButton}>
                                     <span className={folderStyles.folderIcon}>
@@ -386,7 +386,7 @@ export default function ChannelsPage() {
                             .map((cid) => channelList.find((c) => c.id === cid))
                             .filter((c): c is Channel => Boolean(c));
                         return (
-                            <section key={folder.id} className={folderStyles.foldersSection}>
+                            <section key={folder.id} className={folderStyles.foldersSection} aria-label={folder.name}>
                                 <div className={folderStyles.folderHeader}>
                                     <button
                                         type="button"

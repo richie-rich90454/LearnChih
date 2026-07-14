@@ -144,7 +144,7 @@ export default function BookmarksPage() {
                             onSelect={setSelectedFolderId}
                         />
                     </aside>
-                    <section className={styles.splitMain}>
+                    <section className={styles.splitMain} aria-label={t("bookmarks.title")}>
                         {selectedCount > 0 && (
                             <div className={styles.batchBar} role="status" aria-live="polite">
                                 <div className={styles.batchBarLead}>
