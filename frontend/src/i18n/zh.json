@@ -96,7 +96,8 @@
         "closeSidebar": "关闭侧边栏",
         "openSidebar": "打开侧边栏",
         "loadingContent": "正在加载内容，请稍候",
-        "errorOccurred": "发生错误"
+        "errorOccurred": "发生错误",
+        "opensInNewWindow": "（在新窗口中打开）"
     },
     "auth": {
         "loginTitle": "登录",

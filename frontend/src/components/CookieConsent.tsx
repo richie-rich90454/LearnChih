@@ -53,6 +53,7 @@ export default function CookieConsent() {
                                 className={styles.privacyLink}
                             >
                                 privacy notice
+                                <span className="visually-hidden">{t("a11y.opensInNewWindow")}</span>
                             </Link>
                             .
                         </Trans>

@@ -95,7 +95,8 @@
         "closeSidebar": "Close sidebar",
         "openSidebar": "Open sidebar",
         "loadingContent": "Loading content, please wait",
-        "errorOccurred": "An error occurred"
+        "errorOccurred": "An error occurred",
+        "opensInNewWindow": "(opens in a new window)"
     },
     "theme": {
         "toggle": "Toggle dark mode"

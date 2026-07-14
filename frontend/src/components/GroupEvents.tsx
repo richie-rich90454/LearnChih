@@ -204,6 +204,7 @@ function EventCard({ event, onRsvp, onAttendees, onDelete, t }: EventCardProps) 
                             rel="noopener noreferrer"
                         >
                             {t("groupEvents.meetingLink")}
+                            <span className="visually-hidden">{t("a11y.opensInNewWindow")}</span>
                         </a>
                     </div>
                 )}

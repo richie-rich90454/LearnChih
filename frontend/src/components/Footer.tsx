@@ -33,9 +33,11 @@ export default function Footer() {
                 <Link className={styles.link} onClick={() => navigate("/api-docs")}>{t("footer.apiDocs")}</Link>
                 <Link className={styles.link} href="/api/feeds/rss" target="_blank" rel="noopener noreferrer">
                     {t("footer.rss")}
+                    <span className="visually-hidden">{t("a11y.opensInNewWindow")}</span>
                 </Link>
                 <Link className={styles.link} href="/api/feeds/atom" target="_blank" rel="noopener noreferrer">
                     {t("footer.atom")}
+                    <span className="visually-hidden">{t("a11y.opensInNewWindow")}</span>
                 </Link>
                 <Link className={styles.link} onClick={() => navigate("/privacy")}>{t("footer.privacy")}</Link>
                 <Link className={styles.link} onClick={() => navigate("/terms")}>{t("footer.terms")}</Link>

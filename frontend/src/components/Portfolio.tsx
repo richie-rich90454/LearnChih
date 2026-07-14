@@ -127,6 +127,7 @@ export function Portfolio({ userId, editable }: PortfolioProps) {
                                             className={styles.itemLink}
                                         >
                                             {t("portfolio.open")}
+                                            <span className="visually-hidden">{t("a11y.opensInNewWindow")}</span>
                                         </a>
                                     )}
                                 </div>

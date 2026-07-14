@@ -299,6 +299,7 @@ export default function ProfilePage() {
                                     className={styles.socialLink}
                                 >
                                     {social.url}
+                                    <span className="visually-hidden">{t("a11y.opensInNewWindow")}</span>
                                 </a>
                                 {isOwnProfile && (
                                     <Button
