@@ -104,7 +104,7 @@ export default function AiFlashcardGenerator({
             )}
 
             {status === "generating" && (
-                <div className={styles.loading}>
+                <div className={styles.loading} role="status" aria-live="polite">
                     <Spinner size="tiny" />
                     <span>{t("aiFlashcards.generating")}</span>
                 </div>

@@ -109,7 +109,7 @@ export default function DraftsInboxPage() {
             {view === "scheduled" ? (
                 <ScheduledPublishingCalendar />
             ) : isLoading ? (
-                <div className={pageStyles.loading}>
+                <div className={pageStyles.loading} role="status" aria-live="polite">
                     <Spinner label={t("common.loading")} />
                 </div>
             ) : isError ? (

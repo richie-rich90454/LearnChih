@@ -112,7 +112,7 @@ export default function AiQuizGenerator({
             )}
 
             {status === "generating" && (
-                <div className={styles.loading}>
+                <div className={styles.loading} role="status" aria-live="polite">
                     <Spinner size="tiny" />
                     <span>{t("aiQuiz.generating")}</span>
                 </div>

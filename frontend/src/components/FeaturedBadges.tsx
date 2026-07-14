@@ -138,7 +138,9 @@ export function FeaturedBadges({ userId, editable }: FeaturedBadgesProps) {
                                 })}
                             </p>
                             {earnedQuery.isLoading ? (
-                                <Spinner size="tiny" />
+                                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                                    <Spinner size="tiny" />
+                                </div>
                             ) : earnedQuery.data &&
                               earnedQuery.data.length > 0 ? (
                                 <div className={styles.pickerGrid}>

@@ -181,7 +181,9 @@ export default function AdminUsersPage() {
                     />
                 </div>
                 {(updateRole.isPending || updateStatus.isPending) && (
-                    <Spinner size="tiny" aria-label={t("common.loading")} />
+                    <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                        <Spinner size="tiny" aria-label={t("common.loading")} />
+                    </div>
                 )}
             </div>
 

@@ -267,7 +267,9 @@ export default function PlaylistsPage() {
                         />
                     )}
                     {selectedId !== null && detailQuery.isLoading && (
-                        <Spinner label={t("common.loading")} />
+                        <div role="status" aria-live="polite">
+                            <Spinner label={t("common.loading")} />
+                        </div>
                     )}
                     {selectedId !== null && detail && (
                         <Card padding="lg" className={styles.detailCard}>
