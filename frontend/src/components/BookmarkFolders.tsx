@@ -238,6 +238,7 @@ export function BookmarkFolders({ selectedFolderId, onSelect }: BookmarkFoldersP
                             if (e.key === "Escape") setAdding(false);
                         }}
                         size="small"
+                        aria-label={t("bookmarkFolders.rootInputAria", "New top-level folder name")}
                     />
                     <Button variant="primary" size="small" onClick={commitAdd}>
                         {t("common.create")}
