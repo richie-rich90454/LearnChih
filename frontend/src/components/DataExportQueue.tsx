@@ -104,6 +104,7 @@ function JobRow({ job }: { job: ExportJob }) {
                         onClick={() => window.open(job.downloadUrl, "_blank")}
                     >
                         {t("dataExportQueue.download", "Download")}
+                        <span className="visually-hidden">{t("a11y.opensInNewWindow")}</span>
                     </Button>
                 )}
             </div>

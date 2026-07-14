@@ -285,7 +285,7 @@ export function CodeBlock({
                             size="small"
                             icon={<Play24Regular />}
                             onClick={handleRun}
-                            aria-label={t("codeBlock.run", "Run code")}
+                            aria-label={`${t("codeBlock.run", "Run code")} ${t("a11y.opensInNewWindow")}`}
                         >
                             {t("codeBlock.run", "Run")}
                         </Button>

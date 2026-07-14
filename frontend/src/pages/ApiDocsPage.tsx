@@ -34,6 +34,7 @@ export default function ApiDocsPage() {
                         onClick={() => window.open("/swagger-ui.html", "_blank")}
                     >
                         {t("apiDocsPage.openSwagger")}
+                        <span className="visually-hidden">{t("a11y.opensInNewWindow")}</span>
                     </Button>
                 </div>
             </div>

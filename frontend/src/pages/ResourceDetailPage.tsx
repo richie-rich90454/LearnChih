@@ -459,6 +459,7 @@ export default function ResourceDetailPage() {
                             onClick={() => window.open(resource.url, "_blank")}
                         >
                             {t("resources.openLink")}
+                            <span className="visually-hidden">{t("a11y.opensInNewWindow")}</span>
                         </Button>
                     )}
                 </div>

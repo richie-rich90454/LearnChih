@@ -144,6 +144,9 @@ export default function SearchPage() {
                             </Badge>
                         </div>
                         {result.snippet && <p className={styles.itemBody}>{result.snippet}</p>}
+                        {result.url.startsWith("http") && (
+                            <span className="visually-hidden">{t("a11y.opensInNewWindow")}</span>
+                        )}
                     </Card>
                 ))}
             </div>
