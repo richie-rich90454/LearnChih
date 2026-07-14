@@ -167,6 +167,10 @@ function TreeNode({ folder, depth, selectedFolderId, onSelect }: TreeNodeProps) 
                             if (e.key === "Escape") setAddingChild(false);
                         }}
                         size="small"
+                        aria-label={t("bookmarkFolders.childInputAria", {
+                            defaultValue: "Add child folder to {{name}}",
+                            name: folder.name,
+                        })}
                     />
                     <Button variant="primary" size="small" onClick={commitAddChild}>
                         {t("common.create")}
