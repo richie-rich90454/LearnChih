@@ -23,7 +23,7 @@ export default function QuizAnalyticsPanel({
 
     if (isLoading) {
         return (
-            <div className={styles.loading}>
+            <div className={styles.loading} role="status" aria-live="polite">
                 <Spinner size="tiny" />
                 <span>{t("quizzes.analyticsLoading")}</span>
             </div>

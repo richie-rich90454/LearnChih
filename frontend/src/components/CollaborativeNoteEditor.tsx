@@ -132,7 +132,9 @@ export function CollaborativeNoteEditor({
     if (noteQuery.isLoading) {
         return (
             <Card padding="lg" className={styles.container}>
-                <Spinner size="small" />
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner size="small" />
+                </div>
             </Card>
         );
     }
