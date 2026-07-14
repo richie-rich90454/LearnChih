@@ -89,7 +89,7 @@ export function BadgesWidget({ userId }: BadgesWidgetProps) {
         sessionStorage.setItem("lernchih-earned-count", String(earned));
     }, [data, reduced]);
 
-    if (isLoading) return <Spinner size="tiny" label={t("badges.loading")} />;
+    if (isLoading) return <div role="status" aria-live="polite"><Spinner size="tiny" label={t("badges.loading")} /></div>;
     if (isError) {
         return (
             <MessageBar intent="error">

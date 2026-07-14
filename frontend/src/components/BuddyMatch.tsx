@@ -37,7 +37,9 @@ export function BuddyMatch() {
     if (suggestionsQuery.isLoading) {
         return (
             <Card padding="lg" className={styles.section}>
-                <Spinner size="tiny" />
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner size="tiny" />
+                </div>
             </Card>
         );
     }
