@@ -39,6 +39,7 @@ export default function OAuthAccountsManager() {
                 </span>
                 <Dropdown
                     placeholder={t("oauthAccounts.selectProvider", "Select provider")}
+                    aria-label={t("oauthAccounts.selectProvider", "Select provider")}
                     onOptionSelect={(_, d) => {
                         if (d.optionValue) {
                             handleConnect(d.optionValue as OAuthProvider);
