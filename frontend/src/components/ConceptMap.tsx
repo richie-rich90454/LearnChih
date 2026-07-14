@@ -188,6 +188,7 @@ export default function ConceptMap({ subjectId }: ConceptMapProps) {
                     value={label}
                     onChange={(_, d) => setLabel(d.value)}
                     wrapperClassName={styles.labelField}
+                    aria-label={t("conceptMap.nodeLabel")}
                 />
                 <Select
                     className={styles.parentSelect}
