@@ -1059,6 +1059,7 @@
         "add": "添加高亮",
         "pageNumber": "页码",
         "color": "颜色",
+        "colorOption": "{{color}}",
         "textPlaceholder": "粘贴或输入高亮文本...",
         "notePlaceholder": "添加备注（可选）...",
         "empty": "暂无高亮。添加一个开始构建你的标注集。",

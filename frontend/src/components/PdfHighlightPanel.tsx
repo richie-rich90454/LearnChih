@@ -131,10 +131,14 @@ export function PdfHighlightPanel({ resourceId }: PdfHighlightPanelProps) {
                             min={1}
                         />
                         <div className={styles.colorPicker}>
-                            <label className={styles.colorLabel}>
+                            <span className={styles.colorLabel}>
                                 {t("pdfHighlights.color")}
-                            </label>
-                            <div className={styles.colorSwatches}>
+                            </span>
+                            <div
+                                className={styles.colorSwatches}
+                                role="radiogroup"
+                                aria-label={t("pdfHighlights.color")}
+                            >
                                 {COLORS.map((c) => (
                                     <button
                                         key={c}
@@ -146,7 +150,12 @@ export function PdfHighlightPanel({ resourceId }: PdfHighlightPanelProps) {
                                         }
                                         style={{ background: `var(--highlight-${c})` }}
                                         onClick={() => setFormColor(c)}
-                                        aria-label={c}
+                                        role="radio"
+                                        aria-checked={formColor === c}
+                                        aria-label={t("pdfHighlights.colorOption", {
+                                            defaultValue: "{{color}}",
+                                            color: c,
+                                        })}
                                     />
                                 ))}
                             </div>

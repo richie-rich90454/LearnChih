@@ -1067,6 +1067,7 @@
         "add": "Add highlight",
         "pageNumber": "Page",
         "color": "Color",
+        "colorOption": "{{color}}",
         "textPlaceholder": "Paste or type the highlighted text...",
         "notePlaceholder": "Add a note (optional)...",
         "empty": "No highlights yet. Add one to start building your annotation set.",
