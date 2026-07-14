@@ -29,6 +29,10 @@ const useStyles = makeStyles({
     card: {
         padding: tokens.spacingHorizontalM,
         cursor: "pointer",
+        "&:focus-visible": {
+            outline: "2px solid transparent",
+            boxShadow: "var(--shadow-focus)",
+        },
     },
     row: {
         display: "flex",
@@ -85,7 +89,15 @@ export function TrendingResources({ limit = 5 }: TrendingResourcesProps) {
                     <Card
                         key={resource.id}
                         className={styles.card}
+                        role="button"
+                        tabIndex={0}
                         onClick={() => navigate(`/resources/${resource.id}`)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                navigate(`/resources/${resource.id}`);
+                            }
+                        }}
                     >
                         <div className={styles.row}>
                             <div className={styles.row}>
