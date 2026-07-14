@@ -52,6 +52,15 @@ export default function SearchPage() {
         createSavedSearch.mutate({ query: debouncedQuery.trim() });
     };
 
+    const handleResultActivate = (result: SearchResult) => {
+        // External URLs open in a new tab; internal paths use react-router.
+        if (result.url.startsWith("http")) {
+            window.open(result.url, "_blank", "noopener noreferrer");
+        } else {
+            window.location.href = result.url;
+        }
+    };
+
     return (
         <div className={`${styles.page} ${styles.pageNarrow}`}>
             <Seo
@@ -118,12 +127,13 @@ export default function SearchPage() {
                         key={`${result.type}-${result.id}`}
                         className={`${styles.item} ${styles.itemClickable}`}
                         padding="md"
-                        onClick={() => {
-                            // External URLs open in a new tab; internal paths use react-router.
-                            if (result.url.startsWith("http")) {
-                                window.open(result.url, "_blank", "noopener noreferrer");
-                            } else {
-                                window.location.href = result.url;
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => handleResultActivate(result)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                handleResultActivate(result);
                             }
                         }}
                     >
