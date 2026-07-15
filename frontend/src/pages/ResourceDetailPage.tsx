@@ -521,6 +521,13 @@ export default function ResourceDetailPage() {
                             variant="primary"
                             onClick={handlePost}
                             disabled={createPost.isPending || !newPost.trim()}
+                            /* B-ui-179: preserve accessible name while the
+                               pending Spinner replaces the visible label. */
+                            aria-label={
+                                createPost.isPending
+                                    ? t("resources.post")
+                                    : undefined
+                            }
                         >
                             {createPost.isPending ? <Spinner size="tiny" /> : t("resources.post")}
                         </Button>
