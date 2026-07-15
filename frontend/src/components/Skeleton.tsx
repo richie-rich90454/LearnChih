@@ -1,4 +1,5 @@
 import { Skeleton as FluentSkeleton, SkeletonItem } from "@fluentui/react-components";
+import { useTranslation } from "react-i18next";
 
 export function SkeletonLine({ width = "100%" }: { width?: string }) {
     return (
@@ -20,8 +21,22 @@ export function SkeletonCard() {
 }
 
 export function SkeletonList({ count = 5 }: { count?: number }) {
+    /*
+     * B-ui-191: expose the skeleton as a status region so assistive tech
+     * announces that content is loading. Without role="status" and
+     * aria-live="polite", screen readers silently show the skeleton
+     * placeholders with no "loading" announcement, violating WCAG 4.1.3
+     * (Status Messages). The aria-label uses the common.loading translation
+     * key with a sensible default.
+     */
+    const { t } = useTranslation();
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div
+            style={{ display: "flex", flexDirection: "column", gap: 12 }}
+            role="status"
+            aria-live="polite"
+            aria-label={t("common.loading", "Loading")}
+        >
             {Array.from({ length: count }).map((_, i) => (
                 <SkeletonCard key={i} />
             ))}
