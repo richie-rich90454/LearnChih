@@ -43,8 +43,8 @@ export function StudyGroupChat({ groupId }: StudyGroupChatProps) {
         <div className={styles.chat}>
             <div className={styles.messages} role="log" aria-live="polite">
                 {isLoading && (
-                    <div role="status" aria-live="polite">
-                        <Spinner size="tiny" />
+                    <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                        <Spinner size="tiny" aria-hidden="true" />
                     </div>
                 )}
                 {!isLoading && list.length === 0 && (

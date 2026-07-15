@@ -103,8 +103,8 @@ export function TemplateGallery({
                     <DialogTitle>{t("notes.templateGallery")}</DialogTitle>
                     <DialogContent className={styles.content}>
                         {query.isLoading && (
-                            <div role="status" aria-live="polite">
-                                <Spinner size="small" />
+                            <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                                <Spinner size="small" aria-hidden="true" />
                             </div>
                         )}
                         {query.isError && (

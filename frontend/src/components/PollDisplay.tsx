@@ -153,9 +153,9 @@ export function PollDisplay({ poll, mode = "single", closesAt }: PollDisplayProp
 
             <span className={styles.totalVotes}>
                 {voteMutation.isPending && (
-                    <div role="status" aria-live="polite">
-                        <Spinner size="tiny" />
-                    </div>
+                    <span role="status" aria-live="polite" aria-label={t("polls.submitting", "Submitting vote")}>
+                        <Spinner size="tiny" aria-hidden="true" />
+                    </span>
                 )}
                 {total} {total === 1 ? t("polls.voteSingular", "vote") : t("polls.votes", "votes")}
             </span>

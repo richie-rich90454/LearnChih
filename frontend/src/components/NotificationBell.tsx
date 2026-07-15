@@ -179,8 +179,8 @@ export default function NotificationBell() {
                 </div>
 
                 {isLoading && notifications.length === 0 && (
-                    <div className={styles.empty} role="status" aria-live="polite">
-                        <Spinner size="tiny" />
+                    <div className={styles.empty} role="status" aria-live="polite" aria-label={t("common.loading")}>
+                        <Spinner size="tiny" aria-hidden="true" />
                     </div>
                 )}
 

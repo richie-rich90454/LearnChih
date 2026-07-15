@@ -27,7 +27,11 @@ export function ThreadSubscription({ threadId }: ThreadSubscriptionProps) {
     };
 
     if (isLoading) {
-        return <Spinner size="tiny" />;
+        return (
+            <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                <Spinner size="tiny" aria-hidden="true" />
+            </div>
+        );
     }
 
     return (
