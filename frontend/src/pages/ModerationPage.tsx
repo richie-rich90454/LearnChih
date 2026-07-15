@@ -274,6 +274,13 @@ export default function ModerationPage() {
                                 variant="primary"
                                 onClick={handleDelete}
                                 disabled={deleteResource.isPending || deletePost.isPending}
+                                /* B-ui-172: preserve accessible name while
+                                   the pending Spinner replaces the label. */
+                                aria-label={
+                                    deleteResource.isPending || deletePost.isPending
+                                        ? t("admin.delete")
+                                        : undefined
+                                }
                             >
                                 {deleteResource.isPending || deletePost.isPending ? (
                                     <Spinner size="tiny" />
