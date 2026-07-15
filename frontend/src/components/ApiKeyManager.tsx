@@ -92,6 +92,18 @@ export default function ApiKeyManager() {
                     appearance="primary"
                     onClick={() => createMutation.mutate()}
                     disabled={createMutation.isPending || !newKeyName.trim()}
+                    /*
+                     * B-ui-161: When pending, the only child is a Fluent
+                     * Spinner with no `label` prop, so the button's
+                     * accessible name collapses to empty. Mirror the visible
+                     * label via aria-label while loading so assistive tech
+                     * still announces the action (WCAG 4.1.3 / 1.3.1).
+                     */
+                    aria-label={
+                        createMutation.isPending
+                            ? t("apiKeys.createConfirm")
+                            : undefined
+                    }
                 >
                     {createMutation.isPending ? <Spinner size="tiny" /> : t("apiKeys.createConfirm")}
                 </Button>
