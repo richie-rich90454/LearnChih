@@ -144,6 +144,13 @@ export default function VerifyEmailPage() {
                         size="large"
                         className={styles.submit}
                         disabled={verifyMutation.isPending || code.join("").length !== 6}
+                        /* B-ui-184: preserve accessible name while the
+                           pending Spinner replaces the visible label. */
+                        aria-label={
+                            verifyMutation.isPending
+                                ? t("auth.verifyButton")
+                                : undefined
+                        }
                     >
                         {verifyMutation.isPending ? (
                             <Spinner size="tiny" />
