@@ -148,6 +148,11 @@ function RateLimitDialog({
                             variant="primary"
                             onClick={handleSave}
                             disabled={setLimit.isPending}
+                            /* B-ui-162: preserve accessible name while the
+                               pending Spinner replaces the visible label. */
+                            aria-label={
+                                setLimit.isPending ? t("common.save") : undefined
+                            }
                         >
                             {setLimit.isPending ? (
                                 <Spinner size="tiny" />
@@ -401,6 +406,13 @@ export default function ApiKeysPage() {
                                     createKey.isPending ||
                                     !name.trim() ||
                                     scopes.length === 0
+                                }
+                                /* B-ui-162: preserve accessible name while
+                                   the pending Spinner replaces the label. */
+                                aria-label={
+                                    createKey.isPending
+                                        ? t("apiKeys.createConfirm")
+                                        : undefined
                                 }
                             >
                                 {createKey.isPending ? (
