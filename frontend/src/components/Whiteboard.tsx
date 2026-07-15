@@ -382,7 +382,7 @@ function EditorDialog({ board, groupId, onClose, t }: EditorDialogProps) {
                     </DialogTitle>
                     <DialogContent>
                         <div className={styles.toolbar} role="toolbar" aria-label={t("whiteboards.toolbar", "Drawing tools")}>
-                            <div className={styles.toolGroup}>
+                            <div className={styles.toolGroup} role="group" aria-label={t("whiteboards.color")}>
                                 {COLORS.map((c) => (
                                     <button
                                         key={c}
@@ -397,11 +397,12 @@ function EditorDialog({ board, groupId, onClose, t }: EditorDialogProps) {
                                             setColor(c);
                                             setIsErasing(false);
                                         }}
-                                        aria-label={t("whiteboards.color")}
+                                        aria-label={`${t("whiteboards.color")} ${c}`}
+                                        aria-pressed={!isErasing && color === c}
                                     />
                                 ))}
                             </div>
-                            <div className={styles.toolGroup}>
+                            <div className={styles.toolGroup} role="group" aria-label={t("whiteboards.strokeWidth")}>
                                 {WIDTHS.map((w) => (
                                     <button
                                         key={w}
@@ -412,7 +413,8 @@ function EditorDialog({ board, groupId, onClose, t }: EditorDialogProps) {
                                                 : styles.widthBtn
                                         }
                                         onClick={() => setWidth(w)}
-                                        aria-label={t("whiteboards.strokeWidth")}
+                                        aria-label={`${t("whiteboards.strokeWidth")} ${w}`}
+                                        aria-pressed={width === w}
                                     >
                                         <span
                                             className={styles.widthDot}
@@ -427,6 +429,7 @@ function EditorDialog({ board, groupId, onClose, t }: EditorDialogProps) {
                                     size="small"
                                     icon={<Eraser24Regular />}
                                     onClick={() => setIsErasing((v) => !v)}
+                                    aria-pressed={isErasing}
                                 >
                                     {t("whiteboards.eraser")}
                                 </Button>
