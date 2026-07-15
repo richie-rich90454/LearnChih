@@ -96,6 +96,13 @@ export default function LoginPage() {
                         size="large"
                         className={styles.submit}
                         disabled={loginMutation.isPending}
+                        /* B-ui-171: preserve accessible name while the
+                           pending Spinner replaces the visible label. */
+                        aria-label={
+                            loginMutation.isPending
+                                ? t("auth.signInButton")
+                                : undefined
+                        }
                     >
                         {loginMutation.isPending ? <Spinner size="tiny" /> : t("auth.signInButton")}
                     </Button>
