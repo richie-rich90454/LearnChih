@@ -416,6 +416,13 @@ export default function ProfilePage() {
                                 variant="outline"
                                 onClick={() => exportData.mutate()}
                                 disabled={exportData.isPending}
+                                /* B-ui-175: preserve accessible name while
+                                   the pending Spinner replaces the label. */
+                                aria-label={
+                                    exportData.isPending
+                                        ? t("profile.export")
+                                        : undefined
+                                }
                             >
                                 {exportData.isPending ? <Spinner size="tiny" /> : t("profile.export")}
                             </Button>
@@ -486,6 +493,11 @@ export default function ProfilePage() {
                                 variant="primary"
                                 onClick={handleEditSave}
                                 disabled={updateProfile.isPending}
+                                aria-label={
+                                    updateProfile.isPending
+                                        ? t("common.save")
+                                        : undefined
+                                }
                             >
                                 {updateProfile.isPending ? <Spinner size="tiny" /> : t("common.save")}
                             </Button>
@@ -533,6 +545,11 @@ export default function ProfilePage() {
                                 variant="primary"
                                 onClick={handleSubjectsSave}
                                 disabled={updateSubjects.isPending}
+                                aria-label={
+                                    updateSubjects.isPending
+                                        ? t("common.save")
+                                        : undefined
+                                }
                             >
                                 {updateSubjects.isPending ? <Spinner size="tiny" /> : t("common.save")}
                             </Button>
@@ -591,6 +608,11 @@ export default function ProfilePage() {
                                 variant="primary"
                                 onClick={handleAddSocial}
                                 disabled={addSocial.isPending || !socialUrl.trim()}
+                                aria-label={
+                                    addSocial.isPending
+                                        ? t("profile.add")
+                                        : undefined
+                                }
                             >
                                 {addSocial.isPending ? <Spinner size="tiny" /> : t("profile.add")}
                             </Button>
@@ -649,6 +671,11 @@ export default function ProfilePage() {
                                     changeEmail.isPending ||
                                     !newEmail.trim() ||
                                     !emailPassword.trim()
+                                }
+                                aria-label={
+                                    changeEmail.isPending
+                                        ? t("profile.changeEmail")
+                                        : undefined
                                 }
                             >
                                 {changeEmail.isPending ? <Spinner size="tiny" /> : t("profile.changeEmail")}
