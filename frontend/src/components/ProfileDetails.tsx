@@ -148,6 +148,13 @@ export function ProfileDetails({ profile, editable }: ProfileDetailsProps) {
                                 variant="primary"
                                 onClick={handleSubmit}
                                 disabled={updateProfile.isPending}
+                                /* B-ui-166: preserve accessible name while
+                                   the pending Spinner replaces the label. */
+                                aria-label={
+                                    updateProfile.isPending
+                                        ? t("common.save")
+                                        : undefined
+                                }
                             >
                                 {updateProfile.isPending ? (
                                     <Spinner size="tiny" />
