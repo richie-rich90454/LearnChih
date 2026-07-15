@@ -238,6 +238,14 @@ export default function ChannelsPage() {
                                                 variant="primary"
                                                 onClick={handleCreateThread}
                                                 disabled={createThread.isPending || !threadTitle.trim()}
+                                                /* B-ui-164: preserve accessible
+                                                   name while the pending
+                                                   Spinner replaces the label. */
+                                                aria-label={
+                                                    createThread.isPending
+                                                        ? t("common.create")
+                                                        : undefined
+                                                }
                                             >
                                                 {createThread.isPending ? (
                                                     <Spinner size="tiny" />
