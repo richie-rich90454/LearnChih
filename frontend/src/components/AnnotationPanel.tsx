@@ -148,8 +148,8 @@ export function AnnotationPanel({ resourceId }: AnnotationPanelProps) {
             )}
 
             {query.isLoading && (
-                <div role="status" aria-live="polite">
-                    <Spinner size="small" />
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner size="small" aria-hidden="true" />
                 </div>
             )}
             {query.isError && (

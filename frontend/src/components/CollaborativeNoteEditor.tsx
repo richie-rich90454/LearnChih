@@ -240,8 +240,8 @@ export function CollaborativeNoteEditor({
                         )}
                     </div>
                     {collaboratorsQuery.isLoading && (
-                        <div role="status" aria-live="polite">
-                            <Spinner size="tiny" />
+                        <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                            <Spinner size="tiny" aria-hidden="true" />
                         </div>
                     )}
                     {!collaboratorsQuery.isLoading &&
