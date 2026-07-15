@@ -112,6 +112,13 @@ export default function ResetPasswordPage() {
                         size="large"
                         className={styles.submit}
                         disabled={!token || mutation.isPending}
+                        /* B-ui-178: preserve accessible name while the
+                           pending Spinner replaces the visible label. */
+                        aria-label={
+                            mutation.isPending
+                                ? t("auth.resetPasswordButton")
+                                : undefined
+                        }
                     >
                         {mutation.isPending ? (
                             <Spinner size="tiny" />
