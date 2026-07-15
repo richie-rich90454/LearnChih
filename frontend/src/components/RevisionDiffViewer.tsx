@@ -176,6 +176,11 @@ export function RevisionDiffViewer({ postId }: RevisionDiffViewerProps) {
                                             setFromId(data.optionValue ?? "")
                                         }
                                         style={{ minWidth: 220 }}
+                                        /* B-ui-185: associate the visible
+                                           "From" span label with the dropdown
+                                           so screen readers announce the
+                                           purpose (WCAG 1.3.1, 3.3.2, 4.1.2). */
+                                        aria-label={t("revisionDiff.from", "From")}
                                     >
                                         {sorted.map((r) => (
                                             <Option key={r.id} value={r.id}>
@@ -198,6 +203,7 @@ export function RevisionDiffViewer({ postId }: RevisionDiffViewerProps) {
                                             setToId(data.optionValue ?? "")
                                         }
                                         style={{ minWidth: 220 }}
+                                        aria-label={t("revisionDiff.to", "To")}
                                     >
                                         {sorted.map((r) => (
                                             <Option key={r.id} value={r.id}>
