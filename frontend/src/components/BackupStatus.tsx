@@ -92,6 +92,13 @@ export default function BackupStatus() {
                 disabled={triggering}
                 className={styles.trigger}
                 style={reduced ? { transitionDuration: "0ms" } : undefined}
+                /* B-ui-163: preserve accessible name while the pending
+                   Spinner replaces the visible label. */
+                aria-label={
+                    triggering
+                        ? t("backupStatus.triggerNow", "Trigger backup now")
+                        : undefined
+                }
             >
                 {triggering ? (
                     <Spinner size="tiny" />
