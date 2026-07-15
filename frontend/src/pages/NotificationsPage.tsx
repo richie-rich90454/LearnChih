@@ -95,7 +95,7 @@ export default function NotificationsPage() {
 
             {isLoading && notifications.length === 0 && (
                 <div className={stateStyles.loading} role="status" aria-live="polite">
-                    <Spinner />
+                    <Spinner aria-hidden="true" />
                     <p className={stateStyles.loadingLabel}>{t("notifications.loading")}</p>
                 </div>
             )}

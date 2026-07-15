@@ -56,7 +56,7 @@ export default function QuizPage() {
 
             {isLoading && (
                 <div className={stateStyles.loading} role="status" aria-live="polite">
-                    <Spinner />
+                    <Spinner aria-hidden="true" />
                     <p className={stateStyles.loadingLabel}>{t("quizzes.loadingQuizzes")}</p>
                 </div>
             )}

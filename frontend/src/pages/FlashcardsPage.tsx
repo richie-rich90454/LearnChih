@@ -119,7 +119,7 @@ export default function FlashcardsPage() {
 
             {isLoading && (
                 <div className={stateStyles.loading} role="status" aria-live="polite">
-                    <Spinner />
+                    <Spinner aria-hidden="true" />
                     <p className={stateStyles.loadingLabel}>{t("flashcards.loadingDecks")}</p>
                 </div>
             )}
@@ -184,7 +184,7 @@ export default function FlashcardsPage() {
                     </h2>
                     {sharedWithMeQuery.isLoading && (
                         <div className={stateStyles.loading} role="status" aria-live="polite">
-                            <Spinner size="tiny" />
+                            <Spinner size="tiny" aria-hidden="true" />
                             <p className={stateStyles.loadingLabel}>{t("shareDeck.loading")}</p>
                         </div>
                     )}

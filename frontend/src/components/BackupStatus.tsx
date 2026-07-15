@@ -44,7 +44,7 @@ export default function BackupStatus() {
 
             {restoreInProgress && (
                 <div className={styles.restoreRow} role="status">
-                    <Spinner size="tiny" />
+                    <Spinner size="tiny" aria-hidden="true" />
                     <span>
                         {t("backupStatus.restoreInProgress", "Restore in progress...")}
                     </span>
