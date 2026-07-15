@@ -247,6 +247,16 @@ export default function PlaylistsPage() {
                                     type="button"
                                     className={styles.playlistBtn}
                                     onClick={() => setSelectedId(p.id)}
+                                    /* B-ui-188: the playlist list stays visible
+                                       while a playlist is selected (visual
+                                       highlight via playlistCardActive).
+                                       Expose the selected state to assistive
+                                       tech via aria-current="true" so screen
+                                       readers can announce which playlist is
+                                       the currently active one (WCAG 1.3.1
+                                       Info and Relationships, 4.1.2 Name,
+                                       Role, Value). */
+                                    aria-current={selectedId === p.id ? "true" : undefined}
                                 >
                                     <span className={styles.playlistName}>{p.name}</span>
                                     <Badge variant="neutral" size="small">
