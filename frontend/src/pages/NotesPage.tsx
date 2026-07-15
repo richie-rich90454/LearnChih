@@ -287,6 +287,13 @@ export default function NotesPage() {
                                             : styles.listItem
                                     }
                                     onClick={() => handleSelect(note)}
+                                    /* B-ui-189: the note list stays visible
+                                       while a note is selected (visual
+                                       highlight via listItemActive). Expose
+                                       the selected state via aria-current so
+                                       screen readers can announce which note
+                                       is currently active (WCAG 1.3.1, 4.1.2). */
+                                    aria-current={note.id === selectedId ? "true" : undefined}
                                 >
                                     <span className={styles.listItemTitle}>
                                         {note.title}
