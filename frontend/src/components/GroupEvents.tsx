@@ -109,7 +109,7 @@ export function GroupEvents({ groupId }: GroupEventsProps) {
 
             {isLoading && (
                 <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                    <Spinner label={t("common.loading")} />
+                    <Spinner label={t("common.loading")} aria-hidden="true" />
                 </div>
             )}
             {isError && (
@@ -411,7 +411,7 @@ function AttendeesDialog({
                     <DialogContent>
                         {isLoading && (
                             <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                                <Spinner label={t("common.loading")} />
+                                <Spinner label={t("common.loading")} aria-hidden="true" />
                             </div>
                         )}
                         {!isLoading && list.length === 0 && (

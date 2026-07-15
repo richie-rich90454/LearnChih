@@ -105,7 +105,7 @@ export default function CohortsPage() {
 
             {cohortsQuery.isLoading && (
                 <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                    <Spinner label={t("common.loading")} />
+                    <Spinner label={t("common.loading")} aria-hidden="true" />
                 </div>
             )}
 
@@ -391,7 +391,7 @@ function MembersDialog({ cohort, onOpenChange }: MembersDialogProps) {
                     <DialogContent>
                         {membersQuery.isLoading && (
                             <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                                <Spinner label={t("common.loading")} />
+                                <Spinner label={t("common.loading")} aria-hidden="true" />
                             </div>
                         )}
                         {membersQuery.isError && (

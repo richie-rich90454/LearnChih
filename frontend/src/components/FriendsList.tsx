@@ -36,7 +36,7 @@ export function FriendsList() {
         return (
             <Card padding="lg" className={styles.section}>
                 <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                    <Spinner size="tiny" />
+                    <Spinner size="tiny" aria-hidden="true" />
                 </div>
             </Card>
         );

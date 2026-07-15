@@ -73,7 +73,7 @@ export function TrendingResources({ limit = 5 }: TrendingResourcesProps) {
             <Title3 as="h3">{t("trendingResources.title")}</Title3>
             {isLoading && (
                 <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                    <Spinner size="tiny" label={t("common.loading")} />
+                    <Spinner size="tiny" label={t("common.loading")} aria-hidden="true" />
                 </div>
             )}
             {isError && (

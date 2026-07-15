@@ -148,7 +148,7 @@ export default function StudyStatsPage() {
 
             {isLoading && (
                 <div role="status" aria-live="polite" aria-label={t("studyStats.loading")}>
-                    <Spinner label={t("studyStats.loading")} />
+                    <Spinner label={t("studyStats.loading")} aria-hidden="true" />
                 </div>
             )}
 

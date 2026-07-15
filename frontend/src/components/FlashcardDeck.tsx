@@ -102,7 +102,7 @@ export default function FlashcardDeck({ deckId }: FlashcardDeckProps) {
     if (isLoading) {
         return (
             <div role="status" aria-live="polite" aria-label={t("flashcardDeck.loading")}>
-                <Spinner label={t("flashcardDeck.loading")} />
+                <Spinner label={t("flashcardDeck.loading")} aria-hidden="true" />
             </div>
         );
     }

@@ -87,7 +87,7 @@ export default function SystemHealthPage() {
             <div className={styles.refreshRow}>
                 {isLoading ? (
                     <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                        <Spinner size="tiny" />
+                        <Spinner size="tiny" aria-hidden="true" />
                     </div>
                 ) : (
                     <Button variant="outline" size="small" onClick={() => refetch()}>

@@ -79,7 +79,7 @@ export default function StudyBuddyPage() {
 
             {suggestionsQuery.isLoading && (
                 <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                    <Spinner label={t("common.loading")} />
+                    <Spinner label={t("common.loading")} aria-hidden="true" />
                 </div>
             )}
 

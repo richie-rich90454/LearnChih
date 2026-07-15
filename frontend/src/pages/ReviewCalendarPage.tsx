@@ -176,7 +176,7 @@ export default function ReviewCalendarPage() {
                 <h2 className={styles.sectionTitle}>{t("review.dueToday")}</h2>
                 {isLoading && (
                     <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                        <Spinner label={t("common.loading")} />
+                        <Spinner label={t("common.loading")} aria-hidden="true" />
                     </div>
                 )}
                 {!isLoading && dueCount === 0 && (
