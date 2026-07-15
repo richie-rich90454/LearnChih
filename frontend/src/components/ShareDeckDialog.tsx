@@ -155,7 +155,7 @@ export default function ShareDeckDialog({
                             }
                             icon={
                                 shareMutation.isPending ? (
-                                    <Spinner size="tiny" />
+                                    <Spinner size="tiny" aria-hidden="true" />
                                 ) : undefined
                             }
                         >

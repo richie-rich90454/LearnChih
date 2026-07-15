@@ -143,7 +143,7 @@ export function PollEditor({ postId, onSaved, onCancel }: PollEditorProps) {
                     appearance="primary"
                     onClick={handleSave}
                     disabled={!canSave || saveMutation.isPending}
-                    icon={saveMutation.isPending ? <Spinner size="tiny" /> : undefined}
+                    icon={saveMutation.isPending ? <Spinner size="tiny" aria-hidden="true" /> : undefined}
                 >
                     {t("pollEditor.save")}
                 </Button>

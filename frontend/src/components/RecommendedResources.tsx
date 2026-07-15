@@ -77,7 +77,7 @@ export function RecommendedResources() {
 
             {isLoading && (
                 <div className={styles.loading} role="status" aria-live="polite">
-                    <Spinner size="tiny" />
+                    <Spinner size="tiny" aria-hidden="true" />
                     <span>{t("recommendations.loading")}</span>
                 </div>
             )}
