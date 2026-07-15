@@ -79,7 +79,14 @@ export default function LeaderboardPage() {
         : [];
 
     return (
-        <main className={`${styles.page} ${styles.pageNarrow}`}>
+        /*
+         * B-ui-186: Render a <div> rather than <main>. This page is rendered
+         * inside AppLayout's <main id="main-content"> landmark; declaring a
+         * second <main> would create duplicate main landmarks, which violates
+         * WCAG 1.3.1 (Info and Relationships) and 2.4.1 (Bypass Blocks) and
+         * confuses screen-reader "jump to main" shortcuts.
+         */
+        <div className={`${styles.page} ${styles.pageNarrow}`}>
             <Seo
                 title={`${t("leaderboard.title")} — LernChih`}
                 description={t("leaderboard.description")}
@@ -226,6 +233,6 @@ export default function LeaderboardPage() {
                     </div>
                 </>
             )}
-        </main>
+        </div>
     );
 }
