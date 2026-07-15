@@ -108,6 +108,11 @@ export function BulkUserActions({
                                     setConfirmOpen(false);
                                     onAction("DELETE");
                                 }}
+                                /* B-ui-168: preserve accessible name while
+                                   the pending Spinner replaces the label. */
+                                aria-label={
+                                    pending ? t("common.delete") : undefined
+                                }
                             >
                                 {pending ? <Spinner size="tiny" /> : t("common.delete")}
                             </Button>
