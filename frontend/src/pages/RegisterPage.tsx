@@ -142,6 +142,13 @@ export default function RegisterPage() {
                         size="large"
                         className={styles.submit}
                         disabled={registerMutation.isPending}
+                        /* B-ui-176: preserve accessible name while the
+                           pending Spinner replaces the visible label. */
+                        aria-label={
+                            registerMutation.isPending
+                                ? t("auth.registerButton")
+                                : undefined
+                        }
                     >
                         {registerMutation.isPending ? (
                             <Spinner size="tiny" />
