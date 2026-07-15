@@ -282,6 +282,7 @@ export default function ResourcesPage() {
                                                 <Field label={t("resources.file")}>
                                                     <input
                                                         type="file"
+                                                        aria-label={t("resources.file")}
                                                         onChange={(
                                                             e: React.ChangeEvent<HTMLInputElement>,
                                                         ) => setFile(e.target.files?.[0] ?? null)}
