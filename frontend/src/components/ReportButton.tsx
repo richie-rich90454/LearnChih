@@ -77,6 +77,13 @@ export default function ReportButton({ targetType, targetId }: ReportButtonProps
                             loading={createReport.isPending}
                             disabled={!reason.trim()}
                             onClick={handleSubmit}
+                            /* B-ui-177: preserve accessible name while the
+                               pending Spinner replaces the visible label. */
+                            aria-label={
+                                createReport.isPending
+                                    ? t("reportDialog.submit")
+                                    : undefined
+                            }
                         >
                             {createReport.isPending ? <Spinner size="tiny" /> : t("reportDialog.submit")}
                         </Button>
