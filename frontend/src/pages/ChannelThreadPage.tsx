@@ -355,7 +355,14 @@ export default function ChannelThreadPage() {
             <div className={styles.typingRow} aria-live="polite">
                 {Object.keys(typingUsers).length > 0 && (
                     <>
-                        <Spinner size="tiny" />
+                        {/*
+                         * B-ui-167: The Spinner is purely decorative; the
+                         * adjacent <span> already conveys "X is typing..."
+                         * and aria-live="polite" on the row announces it.
+                         * Mark the Spinner aria-hidden so screen readers do
+                         * not also announce a redundant progressbar role.
+                         */}
+                        <Spinner size="tiny" aria-hidden="true" />
                         <span>
                             {Object.values(typingUsers).join(", ")}{" "}
                             {Object.keys(typingUsers).length === 1
