@@ -215,6 +215,11 @@ export function Portfolio({ userId, editable }: PortfolioProps) {
                                 variant="primary"
                                 onClick={handleSubmit}
                                 disabled={pending || !form.title.trim()}
+                                /* B-ui-174: preserve accessible name while
+                                   the pending Spinner replaces the label. */
+                                aria-label={
+                                    pending ? t("common.save") : undefined
+                                }
                             >
                                 {pending ? <Spinner size="tiny" /> : t("common.save")}
                             </Button>
