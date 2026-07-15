@@ -139,7 +139,7 @@ export function FeaturedBadges({ userId, editable }: FeaturedBadgesProps) {
                             </p>
                             {earnedQuery.isLoading ? (
                                 <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                                    <Spinner size="tiny" />
+                                    <Spinner size="tiny" aria-hidden="true" />
                                 </div>
                             ) : earnedQuery.data &&
                               earnedQuery.data.length > 0 ? (

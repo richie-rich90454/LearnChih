@@ -108,7 +108,7 @@ export function Portfolio({ userId, editable }: PortfolioProps) {
 
             {isLoading ? (
                 <div className={styles.loading} role="status" aria-live="polite" aria-label={t("common.loading")}>
-                    <Spinner size="tiny" />
+                    <Spinner size="tiny" aria-hidden="true" />
                 </div>
             ) : items.length === 0 ? (
                 <p className={styles.empty}>{t("portfolio.empty")}</p>

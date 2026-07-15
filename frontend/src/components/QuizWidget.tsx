@@ -150,7 +150,7 @@ export default function QuizWidget({ quizId }: QuizWidgetProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [secondsLeft, quiz, started, result]);
 
-    if (isLoading) return <div role="status" aria-live="polite" aria-label={t("quizzes.loading")}><Spinner label={t("quizzes.loading")} /></div>;
+    if (isLoading) return <div role="status" aria-live="polite" aria-label={t("quizzes.loading")}><Spinner label={t("quizzes.loading")} aria-hidden="true" /></div>;
     if (!quiz || !quiz.questions.length) {
         return (
             <div className={styles.empty}>

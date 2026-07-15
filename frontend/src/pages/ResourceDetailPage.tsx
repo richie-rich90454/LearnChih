@@ -544,7 +544,7 @@ export default function ResourceDetailPage() {
                 {/* Posts list */}
                 {postsLoading && (
                     <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                        <Spinner size="small" />
+                        <Spinner size="small" aria-hidden="true" />
                     </div>
                 )}
                 <StaggerReveal className={styles.postsList}>

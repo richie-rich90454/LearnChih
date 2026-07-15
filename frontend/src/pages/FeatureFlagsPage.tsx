@@ -143,7 +143,7 @@ export default function FeatureFlagsPage() {
                                     <div className={styles.flagFooter}>
                                         {isPending ? (
                                             <span role="status" aria-live="polite" aria-label={t("common.loading")}>
-                                                <Spinner size="tiny" />
+                                                <Spinner size="tiny" aria-hidden="true" />
                                             </span>
                                         ) : (
                                             <span className={styles.lastUpdated}>
