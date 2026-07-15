@@ -32,7 +32,7 @@ class ErrorBoundaryComponent extends Component<ErrorBoundaryProps, ErrorBoundary
             if (fallback) return fallback;
             return (
                 <div role="alert" style={{ padding: "var(--space-6)", textAlign: "center" }}>
-                    <h2>{i18n.t("errorBoundary.title")}</h2>
+                    <h1>{i18n.t("errorBoundary.title")}</h1>
                     <p>{this.state.error?.message || i18n.t("errorBoundary.unexpectedError")}</p>
                     <button
                         onClick={() => {

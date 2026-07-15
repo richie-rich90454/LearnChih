@@ -80,6 +80,7 @@ export default function DashboardPage() {
                     canonicalPath="/"
                     hreflang
                 />
+                <h1 className="visually-hidden">{t("nav.dashboard")}</h1>
                 <ErrorState
                     title={t("error.dashboardTitle")}
                     description={t("error.dashboardDescription")}

@@ -66,6 +66,7 @@ export default function DueTodayPage() {
                     canonicalPath="/due-today"
                     hreflang
                 />
+                <h1 className="visually-hidden">{t("dueToday.title")}</h1>
                 <ErrorState
                     title={t("dueToday.errorTitle")}
                     description={t("dueToday.errorDescription")}

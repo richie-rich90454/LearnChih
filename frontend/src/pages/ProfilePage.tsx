@@ -112,7 +112,7 @@ export default function ProfilePage() {
     if (isError) {
         return (
             <div className={styles.empty} role="alert">
-                <h2 className={styles.threadHeading}>{t("profile.loadError")}</h2>
+                <h1 className={styles.threadHeading}>{t("profile.loadError")}</h1>
                 <p className={styles.emptyText}>{t("profile.loadErrorDescription")}</p>
                 <Button variant="primary" onClick={() => refetch()}>
                     {t("common.retry")}

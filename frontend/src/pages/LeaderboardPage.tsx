@@ -44,6 +44,7 @@ export default function LeaderboardPage() {
                     canonicalPath="/leaderboard"
                     hreflang
                 />
+                <h1 className="visually-hidden">{t("leaderboard.title")}</h1>
                 <ErrorState
                     icon={<Trophy24Regular />}
                     title={t("error.leaderboardTitle")}
