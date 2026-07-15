@@ -77,6 +77,13 @@ export default function ForgotPasswordPage() {
                                 size="large"
                                 className={styles.submit}
                                 disabled={mutation.isPending}
+                                /* B-ui-170: preserve accessible name while
+                                   the pending Spinner replaces the label. */
+                                aria-label={
+                                    mutation.isPending
+                                        ? t("auth.sendResetLink")
+                                        : undefined
+                                }
                             >
                                 {mutation.isPending ? (
                                     <Spinner size="tiny" />
