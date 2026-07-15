@@ -30,8 +30,8 @@ export function SavedSearches({ onRun, activeQuery }: SavedSearchesProps) {
 
     if (isLoading) {
         return (
-            <div className={styles.loading}>
-                <Spinner size="tiny" />
+            <div className={styles.loading} role="status" aria-live="polite" aria-label={t("common.loading")}>
+                <Spinner size="tiny" aria-hidden="true" />
             </div>
         );
     }

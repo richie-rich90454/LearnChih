@@ -157,7 +157,9 @@ export function SearchBar({
                             <Dismiss24Regular />
                         </button>
                     ) : isFetching ? (
-                        <Spinner size="tiny" />
+                        <span role="status" aria-live="polite" aria-label={t("common.loading")}>
+                            <Spinner size="tiny" aria-hidden="true" />
+                        </span>
                     ) : null
                 }
                 aria-label={t("search.ariaLabel")}

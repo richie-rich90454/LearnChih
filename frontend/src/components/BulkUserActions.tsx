@@ -78,7 +78,11 @@ export function BulkUserActions({
                 >
                     {t("bulkActions.delete")}
                 </Button>
-                {pending && <Spinner size="tiny" aria-label={t("common.loading")} />}
+                {pending && (
+                    <span role="status" aria-live="polite" aria-label={t("common.loading")}>
+                        <Spinner size="tiny" aria-hidden="true" />
+                    </span>
+                )}
             </div>
             <Button
                 variant="ghost"

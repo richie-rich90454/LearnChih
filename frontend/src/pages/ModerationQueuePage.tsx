@@ -133,7 +133,9 @@ export default function ModerationQueuePage() {
                     </Dropdown>
                 </div>
                 {anyPending && (
-                    <Spinner size="tiny" aria-label={t("common.loading")} />
+                    <span role="status" aria-live="polite" aria-label={t("common.loading")}>
+                        <Spinner size="tiny" aria-hidden="true" />
+                    </span>
                 )}
             </div>
 
