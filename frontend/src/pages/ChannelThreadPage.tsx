@@ -480,7 +480,7 @@ export default function ChannelThreadPage() {
                                                 }
                                             >
                                                 {createPost.isPending ? (
-                                                    <Spinner size="tiny" />
+                                                    <Spinner size="tiny" aria-hidden="true" />
                                                 ) : (
                                                     t("channels.postReply")
                                                 )}

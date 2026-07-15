@@ -551,7 +551,7 @@ export default function ProfilePage() {
                                         : undefined
                                 }
                             >
-                                {updateSubjects.isPending ? <Spinner size="tiny" /> : t("common.save")}
+                                {updateSubjects.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("common.save")}
                             </Button>
                         </DialogActions>
                     </DialogBody>
@@ -678,7 +678,7 @@ export default function ProfilePage() {
                                         : undefined
                                 }
                             >
-                                {changeEmail.isPending ? <Spinner size="tiny" /> : t("profile.changeEmail")}
+                                {changeEmail.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("profile.changeEmail")}
                             </Button>
                         </DialogActions>
                     </DialogBody>

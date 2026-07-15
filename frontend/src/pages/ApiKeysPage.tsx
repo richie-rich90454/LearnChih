@@ -416,7 +416,7 @@ export default function ApiKeysPage() {
                                 }
                             >
                                 {createKey.isPending ? (
-                                    <Spinner size="tiny" />
+                                    <Spinner size="tiny" aria-hidden="true" />
                                 ) : (
                                     t("apiKeys.createConfirm")
                                 )}

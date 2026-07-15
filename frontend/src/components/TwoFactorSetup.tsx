@@ -148,7 +148,7 @@ export default function TwoFactorSetup() {
                         : undefined
                 }
             >
-                {verifyMutation.isPending ? <Spinner size="tiny" /> : t("twoFactor.verify")}
+                {verifyMutation.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("twoFactor.verify")}
             </Button>
 
             {setupData?.backupCodes && (
