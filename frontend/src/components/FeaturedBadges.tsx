@@ -192,6 +192,13 @@ export function FeaturedBadges({ userId, editable }: FeaturedBadgesProps) {
                                 variant="primary"
                                 onClick={handleSubmit}
                                 disabled={setFeatured.isPending}
+                                /* B-ui-181: preserve accessible name while
+                                   the pending Spinner replaces the label. */
+                                aria-label={
+                                    setFeatured.isPending
+                                        ? t("common.save")
+                                        : undefined
+                                }
                             >
                                 {setFeatured.isPending ? (
                                     <Spinner size="tiny" />
