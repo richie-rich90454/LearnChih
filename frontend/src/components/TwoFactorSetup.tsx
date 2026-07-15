@@ -81,6 +81,13 @@ export default function TwoFactorSetup() {
                     appearance="primary"
                     onClick={() => setupMutation.mutate()}
                     disabled={setupMutation.isPending}
+                    /* B-ui-183: preserve accessible name while the pending
+                       Spinner replaces the visible label. */
+                    aria-label={
+                        setupMutation.isPending
+                            ? t("twoFactor.setUp")
+                            : undefined
+                    }
                 >
                     {setupMutation.isPending ? <Spinner size="tiny" /> : t("twoFactor.setUp")}
                 </Button>
@@ -135,6 +142,11 @@ export default function TwoFactorSetup() {
                 appearance="primary"
                 onClick={() => verifyMutation.mutate()}
                 disabled={verifyMutation.isPending || code.length < 6}
+                aria-label={
+                    verifyMutation.isPending
+                        ? t("twoFactor.verify")
+                        : undefined
+                }
             >
                 {verifyMutation.isPending ? <Spinner size="tiny" /> : t("twoFactor.verify")}
             </Button>
