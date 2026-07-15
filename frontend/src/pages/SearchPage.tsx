@@ -100,8 +100,8 @@ export default function SearchPage() {
             />
 
             {isFetching && (
-                <div role="status" aria-live="polite">
-                    <Spinner label={t("search.searching")} />
+                <div role="status" aria-live="polite" aria-label={t("search.searching")}>
+                    <Spinner label={t("search.searching")} aria-hidden="true" />
                 </div>
             )}
             {isError && (

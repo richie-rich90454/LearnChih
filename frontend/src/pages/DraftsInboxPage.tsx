@@ -118,8 +118,8 @@ export default function DraftsInboxPage() {
             {view === "scheduled" ? (
                 <ScheduledPublishingCalendar />
             ) : isLoading ? (
-                <div className={pageStyles.loading} role="status" aria-live="polite">
-                    <Spinner label={t("common.loading")} />
+                <div className={pageStyles.loading} role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner label={t("common.loading")} aria-hidden="true" />
                 </div>
             ) : isError ? (
                 <ErrorState

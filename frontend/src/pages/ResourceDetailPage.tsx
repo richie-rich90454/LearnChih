@@ -212,8 +212,8 @@ export default function ResourceDetailPage() {
                     title={`${t("common.loading")} — LernChih`}
                     canonicalPath={`/resources/${id ?? ""}`}
                 />
-                <div role="status" aria-live="polite">
-                    <Spinner label={t("common.loading")} />
+                <div role="status" aria-live="polite" aria-label={t("common.loading")}>
+                    <Spinner label={t("common.loading")} aria-hidden="true" />
                 </div>
             </div>
         );
