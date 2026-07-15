@@ -63,6 +63,11 @@ export function SavedSearches({ onRun, activeQuery }: SavedSearchesProps) {
                                 className={styles.runButton}
                                 onClick={() => onRun(s.query)}
                                 title={t("savedSearches.run", { name: s.name })}
+                                /* B-ui-190: expose the active saved search to
+                                   assistive tech via aria-current so screen
+                                   readers can announce which search is
+                                   currently applied (WCAG 1.3.1, 4.1.2). */
+                                aria-current={isActive ? "true" : undefined}
                             >
                                 <span className={styles.name}>{s.name}</span>
                                 <span className={styles.query}>{s.query}</span>
