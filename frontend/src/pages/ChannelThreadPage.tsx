@@ -333,6 +333,11 @@ export default function ChannelThreadPage() {
                         variant="primary"
                         onClick={handlePost}
                         disabled={createPost.isPending || !newPost.trim() || thread?.locked}
+                        /* B-ui-165: preserve accessible name while the
+                           pending Spinner replaces the visible label. */
+                        aria-label={
+                            createPost.isPending ? t("channels.reply") : undefined
+                        }
                     >
                         {createPost.isPending ? <Spinner size="tiny" /> : t("channels.reply")}
                     </Button>
@@ -458,6 +463,14 @@ export default function ChannelThreadPage() {
                                                 size="small"
                                                 disabled={!replyContent.trim() || createPost.isPending}
                                                 onClick={() => handleReply(post.id)}
+                                                /* B-ui-165: preserve accessible
+                                                   name while the pending Spinner
+                                                   replaces the visible label. */
+                                                aria-label={
+                                                    createPost.isPending
+                                                        ? t("channels.postReply")
+                                                        : undefined
+                                                }
                                             >
                                                 {createPost.isPending ? (
                                                     <Spinner size="tiny" />
