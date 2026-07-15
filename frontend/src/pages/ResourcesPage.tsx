@@ -346,6 +346,14 @@ export default function ResourcesPage() {
                                             variant="primary"
                                             onClick={handleCreate}
                                             disabled={createMutation.isPending || !title}
+                                            /* B-ui-180: preserve accessible
+                                               name while the pending Spinner
+                                               replaces the visible label. */
+                                            aria-label={
+                                                createMutation.isPending
+                                                    ? t("common.upload")
+                                                    : undefined
+                                            }
                                         >
                                             {createMutation.isPending ? (
                                                 <Spinner size="tiny" />
