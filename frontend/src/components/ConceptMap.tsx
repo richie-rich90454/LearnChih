@@ -164,7 +164,7 @@ export default function ConceptMap({ subjectId }: ConceptMapProps) {
     if (isLoading) {
         return (
             <div className={styles.stateWrap} role="status" aria-live="polite" aria-label={t("common.loading")}>
-                <Spinner size="large" />
+                <Spinner size="large" aria-hidden="true" />
             </div>
         );
     }

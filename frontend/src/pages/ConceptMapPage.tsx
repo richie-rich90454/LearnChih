@@ -46,7 +46,7 @@ export default function ConceptMapPage() {
             <div className={styles.selectorRow}>
                 {subjectsQuery.isLoading ? (
                     <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                        <Spinner size="small" />
+                        <Spinner size="small" aria-hidden="true" />
                     </div>
                 ) : subjectsQuery.isError ? (
                     <MessageBar intent="error">

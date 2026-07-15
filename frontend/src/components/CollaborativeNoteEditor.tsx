@@ -133,7 +133,7 @@ export function CollaborativeNoteEditor({
         return (
             <Card padding="lg" className={styles.container}>
                 <div role="status" aria-live="polite" aria-label={t("common.loading")}>
-                    <Spinner size="small" />
+                    <Spinner size="small" aria-hidden="true" />
                 </div>
             </Card>
         );
