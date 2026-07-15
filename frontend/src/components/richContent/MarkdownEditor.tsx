@@ -148,7 +148,7 @@ export function MarkdownEditor({
 
     return (
         <div className={styles.root}>
-            <div className={styles.toolbar}>
+            <div className={styles.toolbar} role="toolbar" aria-label={t("markdownEditor.toolbar", "Formatting toolbar")}>
                 <Tooltip content={t("markdownEditor.bold")} relationship="label">
                     <Button
                         size="small"

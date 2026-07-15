@@ -381,7 +381,7 @@ function EditorDialog({ board, groupId, onClose, t }: EditorDialogProps) {
                         {board ? `${t("whiteboards.editorTitle")} — ${board.title}` : t("whiteboards.editorTitle")}
                     </DialogTitle>
                     <DialogContent>
-                        <div className={styles.toolbar}>
+                        <div className={styles.toolbar} role="toolbar" aria-label={t("whiteboards.toolbar", "Drawing tools")}>
                             <div className={styles.toolGroup}>
                                 {COLORS.map((c) => (
                                     <button
