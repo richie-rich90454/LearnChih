@@ -403,6 +403,17 @@ export default function QuizWidget({ quizId }: QuizWidgetProps) {
                         appearance="primary"
                         onClick={handleNext}
                         disabled={!canAdvance || submitQuiz.isPending}
+                        /* B-ui-182: preserve accessible name while the
+                           pending Spinner replaces the visible label. The
+                           label is conditional (submit on last question,
+                           next otherwise), so mirror the same condition. */
+                        aria-label={
+                            submitQuiz.isPending
+                                ? isLast
+                                    ? t("common.submit")
+                                    : t("quizzes.next")
+                                : undefined
+                        }
                     >
                         {submitQuiz.isPending ? (
                             <Spinner size="tiny" />
