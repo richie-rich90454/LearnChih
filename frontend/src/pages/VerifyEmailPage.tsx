@@ -153,7 +153,7 @@ export default function VerifyEmailPage() {
                         }
                     >
                         {verifyMutation.isPending ? (
-                            <Spinner size="tiny" />
+                            <Spinner size="tiny" aria-hidden="true" />
                         ) : (
                             t("auth.verifyButton")
                         )}

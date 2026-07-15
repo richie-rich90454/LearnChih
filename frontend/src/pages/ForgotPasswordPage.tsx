@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
                                 }
                             >
                                 {mutation.isPending ? (
-                                    <Spinner size="tiny" />
+                                    <Spinner size="tiny" aria-hidden="true" />
                                 ) : (
                                     t("auth.sendResetLink")
                                 )}

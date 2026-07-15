@@ -424,7 +424,7 @@ export default function ProfilePage() {
                                         : undefined
                                 }
                             >
-                                {exportData.isPending ? <Spinner size="tiny" /> : t("profile.export")}
+                                {exportData.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("profile.export")}
                             </Button>
                         </div>
                         <div className={styles.prefRow}>
@@ -499,7 +499,7 @@ export default function ProfilePage() {
                                         : undefined
                                 }
                             >
-                                {updateProfile.isPending ? <Spinner size="tiny" /> : t("common.save")}
+                                {updateProfile.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("common.save")}
                             </Button>
                         </DialogActions>
                     </DialogBody>
@@ -614,7 +614,7 @@ export default function ProfilePage() {
                                         : undefined
                                 }
                             >
-                                {addSocial.isPending ? <Spinner size="tiny" /> : t("profile.add")}
+                                {addSocial.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("profile.add")}
                             </Button>
                         </DialogActions>
                     </DialogBody>

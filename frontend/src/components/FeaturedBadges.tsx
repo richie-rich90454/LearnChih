@@ -201,7 +201,7 @@ export function FeaturedBadges({ userId, editable }: FeaturedBadgesProps) {
                                 }
                             >
                                 {setFeatured.isPending ? (
-                                    <Spinner size="tiny" />
+                                    <Spinner size="tiny" aria-hidden="true" />
                                 ) : (
                                     t("common.save")
                                 )}

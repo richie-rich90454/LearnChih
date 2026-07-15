@@ -122,7 +122,7 @@ export function CreateStudyGroupDialog({ onCreated }: CreateStudyGroupDialogProp
                                     : undefined
                             }
                         >
-                            {mutation.isPending ? <Spinner size="tiny" /> : t("createStudyGroup.create")}
+                            {mutation.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("createStudyGroup.create")}
                         </Button>
                     </DialogActions>
                 </DialogBody>

@@ -137,7 +137,7 @@ export default function PasswordBreachCheck() {
                     }
                 >
                     {state.status === "loading" ? (
-                        <Spinner size="tiny" />
+                        <Spinner size="tiny" aria-hidden="true" />
                     ) : (
                         t("passwordBreach.check", "Check")
                     )}

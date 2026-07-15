@@ -416,7 +416,7 @@ export default function QuizWidget({ quizId }: QuizWidgetProps) {
                         }
                     >
                         {submitQuiz.isPending ? (
-                            <Spinner size="tiny" />
+                            <Spinner size="tiny" aria-hidden="true" />
                         ) : isLast ? (
                             t("common.submit")
                         ) : (

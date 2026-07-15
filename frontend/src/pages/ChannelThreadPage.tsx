@@ -339,7 +339,7 @@ export default function ChannelThreadPage() {
                             createPost.isPending ? t("channels.reply") : undefined
                         }
                     >
-                        {createPost.isPending ? <Spinner size="tiny" /> : t("channels.reply")}
+                        {createPost.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("channels.reply")}
                     </Button>
                 </div>
             ) : (

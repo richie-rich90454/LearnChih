@@ -221,7 +221,7 @@ export function Portfolio({ userId, editable }: PortfolioProps) {
                                     pending ? t("common.save") : undefined
                                 }
                             >
-                                {pending ? <Spinner size="tiny" /> : t("common.save")}
+                                {pending ? <Spinner size="tiny" aria-hidden="true" /> : t("common.save")}
                             </Button>
                         </DialogActions>
                     </DialogBody>

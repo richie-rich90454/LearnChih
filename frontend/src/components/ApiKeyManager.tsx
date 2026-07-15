@@ -105,7 +105,7 @@ export default function ApiKeyManager() {
                             : undefined
                     }
                 >
-                    {createMutation.isPending ? <Spinner size="tiny" /> : t("apiKeys.createConfirm")}
+                    {createMutation.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("apiKeys.createConfirm")}
                 </Button>
             </div>
 

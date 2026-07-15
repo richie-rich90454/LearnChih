@@ -157,7 +157,7 @@ export function ProfileDetails({ profile, editable }: ProfileDetailsProps) {
                                 }
                             >
                                 {updateProfile.isPending ? (
-                                    <Spinner size="tiny" />
+                                    <Spinner size="tiny" aria-hidden="true" />
                                 ) : (
                                     t("common.save")
                                 )}

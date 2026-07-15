@@ -283,7 +283,7 @@ export default function ModerationPage() {
                                 }
                             >
                                 {deleteResource.isPending || deletePost.isPending ? (
-                                    <Spinner size="tiny" />
+                                    <Spinner size="tiny" aria-hidden="true" />
                                 ) : (
                                     t("admin.delete")
                                 )}

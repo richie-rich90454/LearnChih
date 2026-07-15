@@ -85,7 +85,7 @@ export default function ReportButton({ targetType, targetId }: ReportButtonProps
                                     : undefined
                             }
                         >
-                            {createReport.isPending ? <Spinner size="tiny" /> : t("reportDialog.submit")}
+                            {createReport.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("reportDialog.submit")}
                         </Button>
                     </DialogActions>
                 </DialogBody>

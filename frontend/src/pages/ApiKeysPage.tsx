@@ -155,7 +155,7 @@ function RateLimitDialog({
                             }
                         >
                             {setLimit.isPending ? (
-                                <Spinner size="tiny" />
+                                <Spinner size="tiny" aria-hidden="true" />
                             ) : (
                                 t("common.save")
                             )}

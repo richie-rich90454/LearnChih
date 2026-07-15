@@ -121,7 +121,7 @@ export default function ResetPasswordPage() {
                         }
                     >
                         {mutation.isPending ? (
-                            <Spinner size="tiny" />
+                            <Spinner size="tiny" aria-hidden="true" />
                         ) : (
                             t("auth.resetPasswordButton")
                         )}

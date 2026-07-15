@@ -104,7 +104,7 @@ export default function LoginPage() {
                                 : undefined
                         }
                     >
-                        {loginMutation.isPending ? <Spinner size="tiny" /> : t("auth.signInButton")}
+                        {loginMutation.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("auth.signInButton")}
                     </Button>
                 </form>
 

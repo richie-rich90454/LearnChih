@@ -101,7 +101,7 @@ export default function BackupStatus() {
                 }
             >
                 {triggering ? (
-                    <Spinner size="tiny" />
+                    <Spinner size="tiny" aria-hidden="true" />
                 ) : (
                     t("backupStatus.triggerNow", "Trigger backup now")
                 )}

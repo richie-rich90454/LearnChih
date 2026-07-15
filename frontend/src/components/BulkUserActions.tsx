@@ -118,7 +118,7 @@ export function BulkUserActions({
                                     pending ? t("common.delete") : undefined
                                 }
                             >
-                                {pending ? <Spinner size="tiny" /> : t("common.delete")}
+                                {pending ? <Spinner size="tiny" aria-hidden="true" /> : t("common.delete")}
                             </Button>
                         </DialogActions>
                     </DialogBody>

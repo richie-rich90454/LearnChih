@@ -151,7 +151,7 @@ export default function RegisterPage() {
                         }
                     >
                         {registerMutation.isPending ? (
-                            <Spinner size="tiny" />
+                            <Spinner size="tiny" aria-hidden="true" />
                         ) : (
                             t("auth.registerButton")
                         )}

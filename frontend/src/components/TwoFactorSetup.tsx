@@ -89,7 +89,7 @@ export default function TwoFactorSetup() {
                             : undefined
                     }
                 >
-                    {setupMutation.isPending ? <Spinner size="tiny" /> : t("twoFactor.setUp")}
+                    {setupMutation.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("twoFactor.setUp")}
                 </Button>
                 {error && (
                     <MessageBar intent="error">

@@ -529,7 +529,7 @@ export default function ResourceDetailPage() {
                                     : undefined
                             }
                         >
-                            {createPost.isPending ? <Spinner size="tiny" /> : t("resources.post")}
+                            {createPost.isPending ? <Spinner size="tiny" aria-hidden="true" /> : t("resources.post")}
                         </Button>
                     </div>
                 ) : (
