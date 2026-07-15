@@ -73,6 +73,11 @@ export default function DraftsInboxPage() {
                         type="button"
                         className={`${styles.chip} ${view === "inbox" ? styles.chipActive : ""}`}
                         onClick={() => setView("inbox")}
+                        /* B-ui-187: these chips behave as toggle buttons
+                           (one active view at a time). Without aria-pressed,
+                           assistive tech announces only "button" with no
+                           state, violating WCAG 4.1.2 (Name, Role, Value). */
+                        aria-pressed={view === "inbox"}
                     >
                         {t("draftsInbox.title")}
                     </button>
@@ -80,8 +85,11 @@ export default function DraftsInboxPage() {
                         type="button"
                         className={`${styles.chip} ${view === "scheduled" ? styles.chipActive : ""}`}
                         onClick={() => setView("scheduled")}
+                        aria-pressed={view === "scheduled"}
                     >
-                        <CalendarClock24Regular />
+                        {/* Decorative icon; the visible text label conveys
+                            meaning, so hide the icon from screen readers. */}
+                        <CalendarClock24Regular aria-hidden="true" />
                         {t("scheduledPublishing.title", "Scheduled")}
                     </button>
                 </div>
@@ -98,6 +106,7 @@ export default function DraftsInboxPage() {
                                     filter === f ? styles.chipActive : ""
                                 }`}
                                 onClick={() => setFilter(f)}
+                                aria-pressed={filter === f}
                             >
                                 {t(`draftsInbox.filter.${f}`)}
                             </button>
