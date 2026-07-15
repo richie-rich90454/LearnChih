@@ -128,6 +128,13 @@ export default function PasswordBreachCheck() {
                     onClick={handleCheck}
                     disabled={!password || state.status === "loading"}
                     icon={state.status === "loading" ? undefined : <ShieldCheckmark24Regular />}
+                    /* B-ui-173: preserve accessible name while the pending
+                       Spinner replaces the visible label. */
+                    aria-label={
+                        state.status === "loading"
+                            ? t("passwordBreach.check", "Check")
+                            : undefined
+                    }
                 >
                     {state.status === "loading" ? (
                         <Spinner size="tiny" />
