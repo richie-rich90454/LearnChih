@@ -114,6 +114,13 @@ export function CreateStudyGroupDialog({ onCreated }: CreateStudyGroupDialogProp
                                     isPublic,
                                 })
                             }
+                            /* B-ui-169: preserve accessible name while the
+                               pending Spinner replaces the visible label. */
+                            aria-label={
+                                mutation.isPending
+                                    ? t("createStudyGroup.create")
+                                    : undefined
+                            }
                         >
                             {mutation.isPending ? <Spinner size="tiny" /> : t("createStudyGroup.create")}
                         </Button>
