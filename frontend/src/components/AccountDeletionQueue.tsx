@@ -111,6 +111,7 @@ export default function AccountDeletionQueue() {
                     <Input
                         label={t("accountDeletion.email", "Email")}
                         type="email"
+                        autoComplete="off"
                         value={email}
                         onChange={(_, d) => setEmail(d.value)}
                     />

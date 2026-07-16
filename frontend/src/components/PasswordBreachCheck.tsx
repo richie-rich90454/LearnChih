@@ -119,6 +119,7 @@ export default function PasswordBreachCheck() {
                 <Input
                     label={t("passwordBreach.label", "Password")}
                     type="password"
+                    autoComplete="off"
                     value={password}
                     onChange={(_, d) => setPassword(d.value)}
                     placeholder={t("passwordBreach.placeholder", "Enter a password")}
