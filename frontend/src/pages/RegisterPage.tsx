@@ -88,6 +88,7 @@ export default function RegisterPage() {
                     <Input
                         id="name"
                         label={requiredLabel(t("auth.username"))}
+                        autoComplete="username"
                         size="large"
                         value={name}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -101,6 +102,7 @@ export default function RegisterPage() {
                         id="email"
                         label={requiredLabel(t("auth.email"))}
                         type="email"
+                        autoComplete="email"
                         size="large"
                         value={email}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -114,6 +116,7 @@ export default function RegisterPage() {
                         id="password"
                         label={requiredLabel(t("auth.password"))}
                         type="password"
+                        autoComplete="new-password"
                         size="large"
                         value={password}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -127,6 +130,7 @@ export default function RegisterPage() {
                         id="confirmPassword"
                         label={requiredLabel(t("auth.confirmPassword"))}
                         type="password"
+                        autoComplete="new-password"
                         size="large"
                         value={confirmPassword}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
