@@ -69,8 +69,8 @@ const useStyles = makeStyles({
         backgroundColor: "transparent",
         color: tokens.colorNeutralForeground3,
         cursor: "pointer",
-        minWidth: "20px",
-        minHeight: "20px",
+        minWidth: "24px",
+        minHeight: "24px",
         "&:hover": {
             color: tokens.colorNeutralForeground1,
             backgroundColor: tokens.colorNeutralBackground1Hover,
