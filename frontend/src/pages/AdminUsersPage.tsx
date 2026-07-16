@@ -220,6 +220,7 @@ export default function AdminUsersPage() {
                         items={users}
                         columns={columns as any}
                         getRowId={(item: AdminUserSummary) => item.id}
+                        aria-label={t("adminUsers.gridLabel")}
                     >
                         <DataGridHeader>
                             <DataGridRow>

@@ -163,6 +163,7 @@ export default function AuditLogPage() {
                         items={entries}
                         columns={columns as any}
                         getRowId={(item: AuditLogEntry) => item.id}
+                        aria-label={t("auditLog.gridLabel")}
                     >
                         <DataGridHeader>
                             <DataGridRow>
