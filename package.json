@@ -2,7 +2,7 @@
     "name": "lernchih",
     "private": true,
     "version": "0.0.0",
-    "description": "LernChih — learn together, grow faster.",
+    "description": "LernChih",
     "type": "module",
     "scripts": {
         "dev": "concurrently -n frontend,backend -c cyan,green \"npm:dev:frontend\" \"npm:dev:backend\"",
