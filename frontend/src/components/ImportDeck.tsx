@@ -117,13 +117,16 @@ export function ImportDeck() {
                     <p className={styles.previewLabel}>
                         {t("importDeck.preview", "Preview (first 5 cards)")}
                     </p>
-                    <table className={styles.table}>
+                    <table
+                        className={styles.table}
+                        aria-label={t("importDeck.preview", "Preview (first 5 cards)")}
+                    >
                         <thead>
                             <tr>
-                                <th className={styles.th}>
+                                <th className={styles.th} scope="col">
                                     {t("importDeck.front", "Front")}
                                 </th>
-                                <th className={styles.th}>
+                                <th className={styles.th} scope="col">
                                     {t("importDeck.back", "Back")}
                                 </th>
                             </tr>
