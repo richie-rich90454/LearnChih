@@ -49,7 +49,7 @@ export default function LoginPage() {
                     </MessageBar>
                 )}
 
-                <form className={styles.form} onSubmit={handleSubmit}>
+                <form className={styles.form} onSubmit={handleSubmit} aria-label={t("auth.signInTitle")}>
                     <Input
                         id="email"
                         label={

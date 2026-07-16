@@ -47,6 +47,7 @@ export default function ForgotPasswordPage() {
                         )}
                         <form
                             className={styles.form}
+                            aria-label={t("auth.forgotPasswordTitle")}
                             onSubmit={(e) => {
                                 e.preventDefault();
                                 mutation.mutate();

@@ -81,7 +81,7 @@ export default function ResetPasswordPage() {
                     </MessageBar>
                 )}
 
-                <form className={styles.form} onSubmit={handleSubmit}>
+                <form className={styles.form} onSubmit={handleSubmit} aria-label={t("auth.resetPasswordTitle")}>
                     <Input
                         id="password"
                         label={requiredLabel(t("auth.newPassword"))}

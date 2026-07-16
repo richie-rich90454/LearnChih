@@ -84,7 +84,7 @@ export default function RegisterPage() {
                     </MessageBar>
                 )}
 
-                <form className={styles.form} onSubmit={handleSubmit}>
+                <form className={styles.form} onSubmit={handleSubmit} aria-label={t("auth.registerTitle")}>
                     <Input
                         id="name"
                         label={requiredLabel(t("auth.username"))}

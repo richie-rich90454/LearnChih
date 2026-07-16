@@ -128,7 +128,7 @@ export default function VerifyEmailPage() {
                     </MessageBar>
                 )}
 
-                <form className={styles.form} onSubmit={handleSubmit}>
+                <form className={styles.form} onSubmit={handleSubmit} aria-label={t("auth.verifyEmailHeading")}>
                     <div className={styles.fieldGroup} onPaste={handlePaste}>
                         {code.map((digit, i) => (
                             <Input
