@@ -164,6 +164,7 @@ export function SearchBar({
                 }
                 aria-label={t("search.ariaLabel")}
                 aria-expanded={showDropdown}
+                aria-haspopup="listbox"
                 aria-controls="search-results"
                 role="combobox"
             />
@@ -187,7 +188,10 @@ export function SearchBar({
                             tabIndex={0}
                             onClick={() => handleSelect(result)}
                             onKeyDown={(e) => {
-                                if (e.key === "Enter") handleSelect(result);
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    handleSelect(result);
+                                }
                             }}
                         >
                             <div className={styles.resultTop}>
