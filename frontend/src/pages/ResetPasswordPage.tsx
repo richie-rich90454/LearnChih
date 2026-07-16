@@ -86,6 +86,7 @@ export default function ResetPasswordPage() {
                         id="password"
                         label={requiredLabel(t("auth.newPassword"))}
                         type="password"
+                        autoComplete="new-password"
                         size="large"
                         value={password}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -98,6 +99,7 @@ export default function ResetPasswordPage() {
                         id="confirmPassword"
                         label={requiredLabel(t("auth.confirmNewPassword"))}
                         type="password"
+                        autoComplete="new-password"
                         size="large"
                         value={confirmPassword}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
