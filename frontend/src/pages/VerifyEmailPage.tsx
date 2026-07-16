@@ -146,6 +146,8 @@ export default function VerifyEmailPage() {
                                 }
                                 maxLength={i === 0 ? 6 : 1}
                                 autoComplete={i === 0 ? "one-time-code" : undefined}
+                                inputMode="numeric"
+                                pattern="[0-9]*"
                                 aria-label={t("auth.digitLabel", { index: i + 1 })}
                             />
                         ))}
