@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, useCallback } from "react";
+import { useEffect, useLayoutEffect, useState, useCallback, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -81,6 +81,14 @@ export function ProductTour() {
     const [step, setStep] = useState<number | null>(null);
     const [rect, setRect] = useState<Rect | null>(null);
 
+    // Focus management: when the tour opens, save the currently focused
+    // element so it can be restored on close, and move focus into the dialog
+    // so keyboard and screen-reader users land inside the modal. The dialog
+    // root is tabIndex={-1} so it is programmatically focusable but skipped
+    // in the normal Tab order (the first Tab moves to the Skip button).
+    const rootRef = useRef<HTMLDivElement>(null);
+    const previousActiveRef = useRef<HTMLElement | null>(null);
+
     // Auto-start for first-time users on the dashboard.
     useEffect(() => {
         if (isCompleted()) return;
@@ -97,6 +105,69 @@ export function ProductTour() {
         setRect(null);
     }, []);
 
+    // Move focus into the dialog on open and restore it on close. This pairs
+    // with aria-modal="true" so screen readers treat the tour as a true modal.
+    useEffect(() => {
+        if (step === null) {
+            // Closing: restore focus to the element that had it before opening.
+            const prev = previousActiveRef.current;
+            if (prev && typeof prev.focus === "function") {
+                prev.focus();
+            }
+            previousActiveRef.current = null;
+            return;
+        }
+        // Opening: save current focus and move it into the dialog.
+        const active = typeof document !== "undefined" ? document.activeElement : null;
+        if (active && active instanceof HTMLElement && active !== rootRef.current) {
+            previousActiveRef.current = active;
+        }
+        // Defer focus until after paint so the dialog is in the DOM.
+        const id = window.requestAnimationFrame(() => {
+            rootRef.current?.focus();
+        });
+        return () => window.cancelAnimationFrame(id);
+    }, [step]);
+
+    // Focus trap: keep Tab focus cycling within the dialog while it is open.
+    // The only tabbable elements are the Skip and Next/Done buttons; we walk
+    // the dialog subtree for them so the trap stays correct as the buttons
+    // re-render between steps.
+    const onKeyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === "Escape") {
+                e.preventDefault();
+                finish();
+                return;
+            }
+            if (e.key !== "Tab") return;
+            const root = rootRef.current;
+            if (!root) return;
+            const tabbable = root.querySelectorAll<HTMLElement>(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+            );
+            if (tabbable.length === 0) {
+                e.preventDefault();
+                root.focus();
+                return;
+            }
+            const first = tabbable[0];
+            const last = tabbable[tabbable.length - 1];
+            if (e.shiftKey) {
+                if (document.activeElement === first || document.activeElement === root) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            } else {
+                if (document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        },
+        [finish],
+    );
+
     const next = useCallback(() => {
         setStep((prev) => {
             if (prev === null) return prev;
@@ -105,18 +176,9 @@ export function ProductTour() {
         });
     }, []);
 
-    // Escape closes (and marks completed so it doesn't relaunch).
-    useEffect(() => {
-        if (step === null) return;
-        const onKey = (e: KeyboardEvent) => {
-            if (e.key === "Escape") {
-                e.preventDefault();
-                finish();
-            }
-        };
-        window.addEventListener("keydown", onKey);
-        return () => window.removeEventListener("keydown", onKey);
-    }, [step, finish]);
+    // Escape is handled by the dialog root's onKeyDown (above) which also
+    // traps Tab focus. The focus trap guarantees the dialog root receives the
+    // keydown, so a separate window listener is not needed.
 
     // Measure the current target; re-measure on scroll/resize.
     useLayoutEffect(() => {
@@ -221,7 +283,15 @@ export function ProductTour() {
         : null;
 
     return (
-        <div className={styles.root} role="dialog" aria-label={t("tour.title")}>
+        <div
+            className={styles.root}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("tour.title")}
+            ref={rootRef}
+            tabIndex={-1}
+            onKeyDown={onKeyDown}
+        >
             {/* Click catcher: blocks interaction with the app beneath. */}
             <div className={styles.catcher} />
             {/* Dark backdrop with a hole for the target. */}
