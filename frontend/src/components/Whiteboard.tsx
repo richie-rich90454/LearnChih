@@ -458,6 +458,8 @@ function EditorDialog({ board, groupId, onClose, t }: EditorDialogProps) {
                                 className={styles.canvas}
                                 viewBox={`0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}`}
                                 preserveAspectRatio="xMidYMid meet"
+                                role="img"
+                                aria-label={t("whiteboard.canvasLabel", "Collaborative whiteboard canvas")}
                                 onPointerDown={handlePointerDown}
                                 onPointerMove={handlePointerMove}
                                 onPointerUp={handlePointerUp}
