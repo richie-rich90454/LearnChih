@@ -288,6 +288,7 @@ function CreateCohortDialog({
                     <DialogContent>
                         <form
                             className={styles.form}
+                            aria-label={t("cohorts.createTitle")}
                             onSubmit={(e) => {
                                 e.preventDefault();
                                 handleSubmit();
