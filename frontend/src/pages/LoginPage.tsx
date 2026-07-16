@@ -61,6 +61,7 @@ export default function LoginPage() {
                             </>
                         }
                         type="email"
+                        autoComplete="email"
                         size="large"
                         value={email}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -81,6 +82,7 @@ export default function LoginPage() {
                             </>
                         }
                         type="password"
+                        autoComplete="current-password"
                         size="large"
                         value={password}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
