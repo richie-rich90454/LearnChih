@@ -125,7 +125,13 @@ export function ScheduledPublishingCalendar() {
                     </Tooltip>
                 </div>
 
-                <table className={styles.table}>
+                <table
+                    className={styles.table}
+                    aria-label={t("scheduledPublishing.calendarLabel", {
+                        defaultValue: "Calendar — {month}",
+                        month: monthLabel,
+                    })}
+                >
                     <thead className={styles.thead}>
                         <tr>
                             {WEEKDAY_KEYS.map((k) => (

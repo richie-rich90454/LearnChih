@@ -241,7 +241,11 @@ export default function ReviewCalendarPage() {
                             </span>
                         ))}
                     </div>
-                    <div className={styles.heatmap} role="grid">
+                    <div
+                        className={styles.heatmap}
+                        role="grid"
+                        aria-label={t("review.calendarLabel")}
+                    >
                         {cells.map((cell) => (
                             <div
                                 key={cell.key}
