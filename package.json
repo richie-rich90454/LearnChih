@@ -23,7 +23,7 @@
         "generate-api": "npm --prefix frontend run generate-api"
     },
     "devDependencies": {
-        "concurrently": "^9.1.0"
+        "concurrently": "^10.0.3"
     },
     "engines": {
         "node": ">=22.18.0"
