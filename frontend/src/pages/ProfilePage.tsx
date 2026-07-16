@@ -468,6 +468,7 @@ export default function ProfilePage() {
                             <div className={styles.dialogForm}>
                                 <Input
                                     label={t("profile.name")}
+                                    autoComplete="name"
                                     value={editName}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         setEditName(e.target.value)
@@ -634,6 +635,7 @@ export default function ProfilePage() {
                                 <Input
                                     label={t("profile.newEmail")}
                                     type="email"
+                                    autoComplete="email"
                                     value={newEmail}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         setNewEmail(e.target.value)
@@ -644,6 +646,7 @@ export default function ProfilePage() {
                                 <Input
                                     label={t("profile.currentPassword")}
                                     type="password"
+                                    autoComplete="current-password"
                                     value={emailPassword}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         setEmailPassword(e.target.value)
