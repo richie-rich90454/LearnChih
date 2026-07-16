@@ -315,6 +315,10 @@
     outline: none;
 }
 
+.moveMenuItem:focus-visible {
+    box-shadow: var(--shadow-focus);
+}
+
 /* ----------------------- Table (Leaderboard) ----------------------- */
 .tableWrap {
     overflow-x: auto;
