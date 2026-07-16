@@ -262,6 +262,11 @@ export default function BookmarksPage() {
                                                         aria-label={t("bookmarks.moveTo", {
                                                             title: item.title,
                                                         })}
+                                                        aria-haspopup="menu"
+                                                        aria-expanded={
+                                                            menuOpenForResource ===
+                                                            item.resourceId
+                                                        }
                                                     />
                                                     {menuOpenForResource === item.resourceId && (
                                                         <div
@@ -273,6 +278,7 @@ export default function BookmarksPage() {
                                                         >
                                                             <button
                                                                 type="button"
+                                                                role="menuitem"
                                                                 className={styles.moveMenuItem}
                                                                 onClick={() => {
                                                                     moveBookmark(
@@ -288,6 +294,7 @@ export default function BookmarksPage() {
                                                                 <button
                                                                     key={f.id}
                                                                     type="button"
+                                                                    role="menuitem"
                                                                     className={
                                                                         styles.moveMenuItem
                                                                     }
