@@ -31,6 +31,18 @@ export default function VerifyEmailPage() {
 
     const handleChange = (index: number, value: string) => {
         if (!/^\d*$/.test(value)) return; // Only digits
+        // Handle multi-digit auto-fill (e.g., OTP from SMS via
+        // autoComplete="one-time-code" on the first input).
+        if (value.length > 1) {
+            const digits = value.slice(0, 6).split("");
+            const newCode = [...code];
+            for (let i = 0; i < 6; i++) {
+                newCode[i] = digits[i] ?? "";
+            }
+            setCode(newCode);
+            inputRefs.current[Math.min(digits.length, 6) - 1]?.focus();
+            return;
+        }
         const newCode = [...code];
         newCode[index] = value.slice(-1); // Keep only last digit
         setCode(newCode);
@@ -132,7 +144,8 @@ export default function VerifyEmailPage() {
                                 onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
                                     handleKeyDown(i, e)
                                 }
-                                maxLength={1}
+                                maxLength={i === 0 ? 6 : 1}
+                                autoComplete={i === 0 ? "one-time-code" : undefined}
                                 aria-label={t("auth.digitLabel", { index: i + 1 })}
                             />
                         ))}
