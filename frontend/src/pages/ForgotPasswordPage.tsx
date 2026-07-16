@@ -63,6 +63,7 @@ export default function ForgotPasswordPage() {
                                     </>
                                 }
                                 type="email"
+                                autoComplete="email"
                                 size="large"
                                 value={email}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
