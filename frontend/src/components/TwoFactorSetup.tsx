@@ -135,6 +135,9 @@ export default function TwoFactorSetup() {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
                     placeholder="000000"
                     maxLength={6}
+                    autoComplete="one-time-code"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                 />
             </div>
 
