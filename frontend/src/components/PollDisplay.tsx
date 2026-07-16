@@ -140,6 +140,11 @@ export function PollDisplay({ poll, mode = "single", closesAt }: PollDisplayProp
                                 aria-valuenow={pct}
                                 aria-valuemin={0}
                                 aria-valuemax={100}
+                                aria-label={t("polls.optionResult", {
+                                    defaultValue: "{option}: {percent}%",
+                                    option: option.text,
+                                    percent: pct,
+                                })}
                             >
                                 <div
                                     className={reduced ? styles.barFillStatic : styles.barFill}
