@@ -163,7 +163,10 @@
 
 .body a {
     color: var(--accent);
-    text-decoration: none;
+    /* WCAG 1.4.1 (Use of Color): links in body text must be distinguishable
+       by more than color alone. The accent-to-text contrast (~2.98:1) is
+       just below the 3:1 threshold, so keep the default underline. */
+    text-decoration: underline;
     transition: color var(--motion-fast) var(--motion-ease);
 }
 .body a:hover {
@@ -287,7 +290,9 @@
 }
 .postBody a {
     color: var(--accent);
-    text-decoration: none;
+    /* WCAG 1.4.1 (Use of Color): keep underline so links in post body text
+       are distinguishable by more than color alone. */
+    text-decoration: underline;
     transition: color var(--motion-fast) var(--motion-ease);
 }
 .postBody a:hover {
