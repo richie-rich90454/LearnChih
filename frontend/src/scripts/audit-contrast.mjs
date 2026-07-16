@@ -51,34 +51,17 @@ const BODY_PAIRS = [
 ];
 
 // B42: Large-text / UI-component pairs audited at the 3:1 threshold. These
-// cover status badge foregrounds on their soft tinted backgrounds (Badges use
-// >=14px medium weight; the tinted soft bg carries an alpha in dark mode so
-// the `backdrop` token is composited underneath) and text-on-accent for filled
-// buttons (UI graphics). 3:1 is the WCAG AA minimum for large text and for UI
-// component boundaries/graphics.
+// cover text-on-accent for filled buttons (UI graphics) and accent text on
+// accent-soft backgrounds. 3:1 is the WCAG AA minimum for large text (>=24px
+// regular or >=18.66px bold) and for UI component boundaries/graphics.
+//
+// NOTE: Badge text pairs were previously listed here at 3:1 on the assumption
+// that Badges qualify as large text (>=14px medium weight). WCAG 2.1 defines
+// large text as >=24px regular OR >=18.66px at font-weight 700 (bold). Badge
+// text is 12-14px at weight 500 (medium), which is NORMAL text and must meet
+// 4.5:1. The badge pairs are now audited separately in BADGE_TEXT_PAIRS below.
 const LARGE_UI_PAIRS = [
-    // Light theme — status badge fg on soft bg, text on accent fill.
-    {
-        theme: "light",
-        fg: "--status-success",
-        bg: "--status-success-soft",
-        backdrop: "--surface-1",
-        label: "success badge text on success-soft",
-    },
-    {
-        theme: "light",
-        fg: "--status-warning",
-        bg: "--status-warning-soft",
-        backdrop: "--surface-1",
-        label: "warning badge text on warning-soft",
-    },
-    {
-        theme: "light",
-        fg: "--status-danger",
-        bg: "--status-danger-soft",
-        backdrop: "--surface-1",
-        label: "danger badge text on danger-soft",
-    },
+    // Light theme — text on accent fill, accent text on accent-soft.
     {
         theme: "light",
         fg: "--text-on-accent",
@@ -96,6 +79,48 @@ const LARGE_UI_PAIRS = [
     // Dark theme — soft backgrounds are rgba; composited over the dark surface.
     {
         theme: "dark",
+        fg: "--text-on-accent",
+        bg: "--accent-fill",
+        backdrop: "--surface-1",
+        label: "button text on accent fill",
+    },
+    {
+        theme: "dark",
+        fg: "--accent",
+        bg: "--accent-soft",
+        backdrop: "--surface-1",
+        label: "accent text on accent-soft",
+    },
+];
+
+// Badge text pairs audited at the 4.5:1 body-text threshold. Badge text is
+// 12-14px at font-weight 500 (medium), which is normal text per WCAG 2.1 —
+// not large text — so the 3:1 large-text threshold does NOT apply. The soft
+// backgrounds carry alpha in dark mode and are composited over --surface-1.
+const BADGE_TEXT_PAIRS = [
+    {
+        theme: "light",
+        fg: "--status-success",
+        bg: "--status-success-soft",
+        backdrop: "--surface-1",
+        label: "success badge text on success-soft",
+    },
+    {
+        theme: "light",
+        fg: "--status-warning",
+        bg: "--status-warning-soft",
+        backdrop: "--surface-1",
+        label: "warning badge text on warning-soft",
+    },
+    {
+        theme: "light",
+        fg: "--status-danger",
+        bg: "--status-danger-soft",
+        backdrop: "--surface-1",
+        label: "danger badge text on danger-soft",
+    },
+    {
+        theme: "dark",
         fg: "--status-success",
         bg: "--status-success-soft",
         backdrop: "--surface-1",
@@ -114,20 +139,6 @@ const LARGE_UI_PAIRS = [
         bg: "--status-danger-soft",
         backdrop: "--surface-1",
         label: "danger badge text on danger-soft",
-    },
-    {
-        theme: "dark",
-        fg: "--text-on-accent",
-        bg: "--accent-fill",
-        backdrop: "--surface-1",
-        label: "button text on accent fill",
-    },
-    {
-        theme: "dark",
-        fg: "--accent",
-        bg: "--accent-soft",
-        backdrop: "--surface-1",
-        label: "accent text on accent-soft",
     },
 ];
 
@@ -301,13 +312,19 @@ function main() {
         BODY_TEXT_MIN,
         themes,
     );
+    const badgeFailures = runPass(
+        "badge-text pairs (WCAG AA 4.5:1, normal text)",
+        BADGE_TEXT_PAIRS,
+        BODY_TEXT_MIN,
+        themes,
+    );
     const uiFailures = runPass(
         "large-text / UI pairs (WCAG AA)",
         LARGE_UI_PAIRS,
         LARGE_TEXT_UI_MIN,
         themes,
     );
-    const totalFailures = bodyFailures + uiFailures;
+    const totalFailures = bodyFailures + badgeFailures + uiFailures;
     console.log(
         `[audit-contrast] total failures: ${totalFailures}`,
     );
