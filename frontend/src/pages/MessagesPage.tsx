@@ -175,6 +175,7 @@ export default function MessagesPage() {
 
                             <form
                                 className={styles.composer}
+                                aria-label={t("messages.composerLabel", "Send a message")}
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     handleSend();

@@ -67,6 +67,7 @@ export function StudyGroupChat({ groupId }: StudyGroupChatProps) {
 
             <form
                 className={styles.composer}
+                aria-label={t("groupChat.composerLabel", "Send a message")}
                 onSubmit={(e) => {
                     e.preventDefault();
                     handleSend();
