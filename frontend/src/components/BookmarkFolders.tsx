@@ -249,6 +249,7 @@ export function BookmarkFolders({ selectedFolderId, onSelect }: BookmarkFoldersP
                 type="button"
                 className={`${styles.row} ${selectedFolderId === null ? styles.rowSelected : ""}`}
                 onClick={() => onSelect(null)}
+                aria-pressed={selectedFolderId === null}
             >
                 <span className={styles.expandBtn} aria-hidden="true">
                     <Folder24Regular />
