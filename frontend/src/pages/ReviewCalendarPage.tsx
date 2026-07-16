@@ -246,28 +246,35 @@ export default function ReviewCalendarPage() {
                         role="grid"
                         aria-label={t("review.calendarLabel")}
                     >
-                        {cells.map((cell) => (
-                            <div
-                                key={cell.key}
-                                role="gridcell"
-                                className={`${styles.cell} ${levelClass(cell.count)} ${
-                                    cell.isToday ? styles.cellToday : ""
-                                }`}
-                                title={
-                                    cell.count > 0
-                                        ? t("review.cellTooltip", {
-                                              count: cell.count,
-                                              date: cell.date.toLocaleDateString(),
-                                          })
-                                        : cell.date.toLocaleDateString()
-                                }
-                            >
-                                <span className={styles.cellDay}>{cell.date.getDate()}</span>
-                                {cell.count > 0 && (
-                                    <span className={styles.cellCount}>{cell.count}</span>
-                                )}
-                            </div>
-                        ))}
+                        {cells.map((cell) => {
+                            const cellLabel =
+                                cell.count > 0
+                                    ? t("review.cellTooltip", {
+                                          count: cell.count,
+                                          date: cell.date.toLocaleDateString(),
+                                      })
+                                    : cell.date.toLocaleDateString();
+                            return (
+                                <div
+                                    key={cell.key}
+                                    role="gridcell"
+                                    className={`${styles.cell} ${levelClass(cell.count)} ${
+                                        cell.isToday ? styles.cellToday : ""
+                                    }`}
+                                    title={cellLabel}
+                                    aria-label={cellLabel}
+                                >
+                                    <span className={styles.cellDay} aria-hidden="true">
+                                        {cell.date.getDate()}
+                                    </span>
+                                    {cell.count > 0 && (
+                                        <span className={styles.cellCount} aria-hidden="true">
+                                            {cell.count}
+                                        </span>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                     <div className={styles.legend}>
                         <span className={styles.legendLabel}>{t("review.less")}</span>
