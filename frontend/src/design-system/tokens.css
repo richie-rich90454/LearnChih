@@ -185,9 +185,9 @@
     /* Status semantic tokens (Phase 1B additive). Used by Badge variants
        and Input error states. Each pair is a foreground + soft background
        tuned for WCAG AA contrast on the soft background. */
-    --status-success: #1a7f4e;
+    --status-success: #176b40;
     --status-success-soft: #e3f4ec;
-    --status-warning: #9a6700;
+    --status-warning: #8a5d00;
     --status-warning-soft: #fdf0d9;
     --status-danger: #c4252e;
     --status-danger-soft: #fde8e8;
@@ -276,9 +276,9 @@
     --shadow-focus: 0 0 0 3px rgba(30, 79, 216, 0.24);
     --shadow-hero: 0 24px 60px rgba(30, 79, 216, 0.16);
 
-    --status-success: #1a7f4e;
+    --status-success: #176b40;
     --status-success-soft: #e3f4ec;
-    --status-warning: #9a6700;
+    --status-warning: #8a5d00;
     --status-warning-soft: #fdf0d9;
     --status-danger: #c4252e;
     --status-danger-soft: #fde8e8;
